@@ -1,0 +1,17 @@
+.classpath
+.project
+.settings
+.mymetadata
+.myeclipse
+.DS_Store
+.idea
+*/*.iml
+/out
+classes
+build
+*/WebRoot/META-INF/
+*/WebRoot/WEB-INF/lib/
+*/WebRoot/WEB-INF/conf/*.properties
+*/WebRoot/WEB-INF/doc/
+*/build.properties
+*/documents/javadoc
