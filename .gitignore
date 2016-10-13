@@ -7,7 +7,7 @@
 .idea
 */*.iml
 /out
-classes
+*/classes
 build
 */WebRoot/META-INF/
 */WebRoot/WEB-INF/lib/
