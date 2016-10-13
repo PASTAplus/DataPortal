@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="deploy" name="DataPortal">
+	<!-- Properties files -->
+	<property file="build.properties" />
+	<property file="./WebRoot/WEB-INF/conf/dataportal.properties" />
+
+	<!-- Properties for building and deploying -->
+	<property name="build.dir" location="build" />
+	<property name="src.dir" value="src" />
+	<property name="web.dir" value="WebRoot" />
+	<property name="classes.dir" value="${web.dir}/WEB-INF/classes" />
+	<property name="conf.dir" value="${web.dir}/WEB-INF/conf" />
+	<property name="web.lib.dir" value="${web.dir}/WEB-INF/lib" />
+	<property name="webapp.name" value="nis" />
+	<property name="war.name" value="${webapp.name}.war" />
+	<property name="deploy.dir" value="${tomcat.home}/webapps" />
+	<property name="doc.dir" value="documents" />
+	<property name="api.dir" value="${doc.dir}/web-service-api" />
+	<property name="javadoc.dir" location="${doc.dir}/javadoc" />
+	<property name="common.code.dir" value="../common" />
+	<property name="common.jar.dir" value="${common.code.dir}/build/jar" />
+	<property name="doc.util.dir" value="../doc-util" />
+	<property name="source.files.to.copy" value="**/*.properties,**/*.xml" />
+
+	<!-- Properties for JUnit testing -->
+	<property name="test.dir" location="${build.dir}/test" />
+	<property name="test.classes.dir" location="${test.dir}/classes" />
+	<property name="test.data.dir" location="${test.dir}/data" />
+	<property name="test.reports.dir" location="${test.dir}/reports" />
+	<property name="test.coverage.dir" location="${test.dir}/coverage" />
+
+	<!-- Prepare needed directories files -->
+	<target name="prepare">
+
+		<!-- Make sure the browse directory contains a browse cache file -->
+		<copy todir="${browse.dir}" preservelastmodified="true" verbose="true" filtering="no" overwrite="false">
+			<fileset dir="${web.dir}/browse">
+				<include name="browseCache.xml" />
+			</fileset>
+		</copy>
+
+		<!-- Make a data directory that holds data files for desktop uploads -->
+		<mkdir dir="${web.dir}/data" />
+
+	</target>
+
+	<!-- Copy log4j.properties.template to log4j.properties if the latter is missing -->
+	<target name="check-log4j-exists" unless="is-common-code">
+		<condition property="log4j-is-missing">
+			<not>
+				<available file="${conf.dir}/log4j.properties" />
+			</not>
+		</condition>
+	</target>
+	<target name="copylog4j" depends="check-log4j-exists" if="log4j-is-missing">
+		<copy file="${conf.dir}/log4j.properties.template" tofile="${conf.dir}/log4j.properties" preservelastmodified="true" verbose="true" filtering="no" />
+	</target>
+
+	<!-- Path for compiling the source code -->
+	<path id="compile.classpath">
+		<fileset dir="${web.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${tomcat.lib}">
+			<include name="servlet*.jar" />
+		</fileset>
+		<pathelement path="${web.dir}/WEB-INF" />
+	</path>
+
+	<!-- Path for compiling the JUnit test code -->
+	<path id="test.compile.classpath">
+		<path refid="compile.classpath" />
+		<pathelement location="${classes.dir}" />
+	</path>
+
+	<!-- Path for executing the JUnit test code -->
+	<path id="test.classpath">
+		<path refid="test.compile.classpath" />
+		<pathelement location="${test.classes.dir}" />
+	</path>
+
+	<target name="clean" description="Deletes compiled classes">
+		<echo>Cleaning build and classes directories: ${basedir}/${classes.dir}</echo>
+		<delete dir="${build.dir}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${classes.dir}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="compile" depends="prepare,copylog4j" description="Compiles all Java source files">
+		<mkdir dir="${classes.dir}" />
+		<javac destdir="${classes.dir}" debug="true" deprecation="true" failonerror="true" optimize="false" includeantruntime="false">
+			<src path="${src.dir}" />
+			<classpath refid="compile.classpath" />
+		</javac>
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}" includes="${source.files.to.copy}" />
+		</copy>
+	</target>
+
+	<!-- Cleans and initializes the JUnit test directories -->
+	<target name="test-init">
+		<mkdir dir="${test.classes.dir}" />
+		<delete dir="${test.data.dir}" />
+		<delete dir="${test.reports.dir}" />
+		<mkdir dir="${test.data.dir}" />
+		<mkdir dir="${test.reports.dir}" />
+	</target>
+
+	<target name="test-compile" depends="compile,test-init" description="Compiles all JUnit test files">
+		<javac destdir="${test.classes.dir}" debug="true" srcdir="test">
+			<classpath refid="test.compile.classpath" />
+		</javac>
+		<copy todir="${test.classes.dir}">
+			<fileset dir="test" includes="${source.files.to.copy}" />
+		</copy>
+	</target>
+
+	<target name="test" depends="test-compile" description="Executes the JUnit test suites">
+		<junit printsummary="false" haltonfailure="false" errorProperty="test.failed" failureProperty="test.failed" fork="true">
+			<jvmarg value="-Duser.dir=${basedir}" />
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+			<classpath refid="test.classpath" />
+			<test name="${testcase}" todir="${test.data.dir}" if="testcase" />
+			<batchtest fork="yes" todir="${test.data.dir}" unless="testcase">
+				<fileset dir="test">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport todir="${test.data.dir}">
+			<fileset dir="${test.data.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${test.reports.dir}" />
+		</junitreport>
+		<fail if="test.failed">
+	      One or more JUnit tests failed or had errors.
+	      Check ${test.reports.dir}.
+	    </fail>
+	</target>
+
+	<target name="war" depends="compile" description="Creates a .war file">
+		<mkdir dir="${build.dir}" />
+		<war basedir="${web.dir}" destfile="${build.dir}/${war.name}" webxml="${web.dir}/WEB-INF/web.xml">
+			<include name="demo/**" />
+			<include name="docs/**" />
+			<include name="xsl/**" />
+			<exclude name="WEB-INF/**" />
+			<webinf dir="${web.dir}/WEB-INF/">
+				<include name="**/*.*" />
+				<exclude name="**/.svn*" />
+				<exclude name="**/.git*" />
+				<exclude name="**/.#*" />
+			</webinf>
+			<fileset dir="${web.dir}">
+				<include name="**/robots.txt" />
+				<include name="**/*.js" />
+				<include name="**/*.jsp" />
+				<include name="**/*.html" />
+				<include name="**/*.css" />
+				<include name="**/*.png" />
+				<include name="**/*.jpg" />
+				<include name="**/*.gif" />
+				<include name="**/*.xml" />
+				<include name="data" />
+			</fileset>
+		</war>
+	</target>
+
+	<target name="deploy" depends="war" description="Deploys the web application to Tomcat (default target)">
+		<copy file="${build.dir}/${war.name}" todir="${deploy.dir}" preservelastmodified="true" verbose="true" filtering="no" />
+	</target>
+
+	<target name="javadoc" description="Generates Javadoc HTML" depends="compile">
+		<delete dir="${javadoc.dir}" />
+		<javadoc sourcepath="${src.dir}" classpathref="compile.classpath" destdir="${javadoc.dir}">
+			<link href="http://download.oracle.com/javase/8/docs/api/" />
+			<link href="http://jersey.java.net/nonav/apidocs/1.5/jersey/" />
+			<link href="${basedir}/${common.code.dir}/documents/javadoc/" />
+			<link href="http://www.unboundid.com/products/ldap-sdk/docs/javadoc" />
+			<link href="http://jaxb.java.net/nonav/2.2.3u1/docs/api/" />
+		</javadoc>
+	</target>
+
+	<target name="diagnostics">
+		<echoproperties />
+	</target>
+
+</project>
