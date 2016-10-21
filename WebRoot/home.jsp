@@ -169,25 +169,23 @@
 					<div class="row-fluid">
 						<div class="span12">
 							<div class="recent_title">
-								<h2>Welcome to the LTER Network Data Portal</h2>
+								<h2>Welcome to the EDI Data Portal</h2>
 							</div>
 							<span class="row-fluid separator_border"></span>
 						</div>
 						<div class="row-fluid">
 							<p>Data are one of the most valuable products of the 
-							Long Term Ecological Research (LTER) Network. Data and 
-							metadata derived from publicly funded research in the 
-							U.S. LTER Network are made available online with as 
+							Environmental Data Initiative (EDI). Data and 
+							metadata derived from publicly funded research are made available online with as 
 							few restrictions as possible, on a non-discriminatory 
-							basis. In return, the LTER Network expects data users 
+							basis. In return, EDI expects data users 
 							to <em>act ethically</em> by contacting the 
 							investigator prior to the use of data for publication.
 							</p>
-							<p>The LTER Network Information System Data Portal contains 
-							ecological data packages contributed by past and present 
-							LTER sites. Please review the
-							<a class="searchsubcat" href="http://www.lternet.edu/data/netpolicy.html" target="_blank">
-							LTER Data Policy</a> before downloading any data product. 
+							<p>The EDI Data Portal contains environmental and 
+							ecological data packages contributed by a number of participating organizations. Please review the
+							<a class="searchsubcat" href="http://environmentaldatainitiative.org" target="_blank">
+							EDI Data Policy</a> before downloading any data product. 
 							We request that you cite data sources in your published 
 							and unpublished works whenever possible. Digital object 
 							identifiers (DOI) are provided for each dataset to facilitate 
@@ -202,12 +200,12 @@
 							class="tooltip">Register now</span>!
 							</p>
 							-->
-							<p>LTER Network scientists make every effort to release 
+							<p>Contributing scientists make every effort to release 
 							data in a timely fashion and with attention to accurate, 
 							well-designed and well-documented data. To understand 
 							data fully, please read the associated metadata and 
 							contact data providers if you have any questions. The 
-							LTER Network is not responsible for misinterpretation 
+							Environmental Data Initiative is not responsible for misinterpretation 
 							of data resulting from failure to consult metadata or 
 							data providers.</p>
 						</div>

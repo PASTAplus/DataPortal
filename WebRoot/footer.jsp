@@ -151,20 +151,14 @@ if (recentScope4 != null && !recentScope4.equals("")) {
 					</span>
 					<div class="row-fluid">
 						<div class="span12 ">
-							Copyright 2009-2014 <a href="http://www.lternet.edu">Long Term Ecological Research
-							Network</a>. This material is based upon work supported 
-							by the <a href="http://www.nsf.gov/">National Science 
-							Foundation</a> under Cooperative Agreements
-							<a href="http://www.fastlane.nsf.gov/servlet/showaward?award=0832652" target="_blank">
-							#DEB-0832652</a> and
-							<a href="http://www.fastlane.nsf.gov/servlet/showaward?award=0936498" target="_blank">
-							#DEB-0936498</a>. Any opinions, findings, conclusions, 
-							or recommendations expressed in the material are those 
-							of the author(s) and do not necessarily reflect the 
-							views of the National Science Foundation. Please
-							<a href="http://www.LTERnet.edu/contact" target="_blank">
-							contact us</a> with questions, comments, or for technical 
-							assistance regarding this web site or the LTER Network.<br/><br/>
+							Copyright 2016 <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>. 
+							This material is based upon work supported by the National Science Foundation under grants 
+							#1565103 and #1629233. Any opinions, findings, conclusions, or recommendations 
+							expressed in the material are those of the author(s) and do not necessarily reflect the views of 
+							the National Science Foundation. Please
+							<a href="mailto:info@environmentaldatainitiative.org">contact us</a> 
+							with questions, comments, or for technical assistance regarding this web site or the 
+							Environmental Data Initiative.<br/><br/>
 						</div>
 					</div>
 				</div>
@@ -173,7 +167,7 @@ if (recentScope4 != null && !recentScope4.equals("")) {
     	<div class="row-fluid">
 			<div class="span12">
 				<div class="container nis-logos-div">
-						LTER is proud to be affiliated with the following organizations:
+						EDI is proud to be affiliated with the following organizations:
 						<a href="https://www.dataone.org/"><img id="dataone-img" class="nis-logos-img" alt="DataONE logo" src="images/DataONE_LOGO.jpg" title="DataONE logo"></a>
 						<a href="http://www.esipfed.org/"><img id="esip-img" class="nis-logos-img" alt="ESIP logo" src="images/ESIP-logo.jpg" title="ESIP logo"></a>
 						<!-- <a href="https://www.incommon.org/"><img id="incommon-participant-img" class="nis-logos-img" alt="InCommon Participant logo" src="images/InC_Participant.png" title="InCommon Participant logo"></a> -->

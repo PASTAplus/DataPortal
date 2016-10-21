@@ -68,9 +68,12 @@
 <div class="container">
 	<div class="row-fluid header_container">
 		<div class="span3">
+		<!--  
 			<a href="home.jsp">
-			  <img alt="LTER Network Data Portal logo" src="images/nis_logo.png" title="LTER : Network">
+			  <img alt="Environmental Data Initiative logo" src="images/EDI-logo-300DPI_5.png" title="EDI">
 			</a>
+		-->
+		    <span class="title_size">EDI Data Portal</span>
 	 </div>
 			<div class="span9 menu">
 			<nav role="navigation">
@@ -79,16 +82,16 @@
 				<li<%= dataClass %>><a href="#">Data</a>
 				<ul class="sub-menu">
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="LTER : Network"> 
+					<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
 					Browse Data By:</p>
-					<li><a href="browse.jsp">Keyword or LTER Site</a> </li>
+					<li><a href="browse.jsp">Keyword or Research Site</a> </li>
 					<li><a href="scopebrowse">Package Identifier</a> </li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="LTER : Network"> 
+					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
 					Search Data:</p>
 					<li><a href="advancedSearch.jsp">Advanced Search</a> </li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="LTER : Network"> 
+					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
 					Store Data:</p>
 					<li><a href="savedDataServlet">Your Data Shelf</a> </li>
 				</ul>
@@ -96,22 +99,22 @@
 				<li<%= toolsClass %>><a href="#">Tools</a>
 				<ul class="sub-menu">
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Data Packages:</p>
 					<!-- <li><a href="dataPackageEvaluate.jsp">Evaluate Data Packages</a></li> -->
 					<li><a href="harvester.jsp">Evaluate/Upload Data Packages</a></li>
 					<li><a href="harvestReport.jsp">View Evaluate/Upload Results</a></li>
 					<!--  <li><a href="dataPackageDelete.jsp">Delete Data Packages</a></li> -->
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Events:</p>
 					<li><a href="eventSubscribe.jsp">Event Subscriptions</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Provenance:</p>
 					<li><a href="provenanceGenerator.jsp">Provenance Generator</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Reports:</p>
 					<li><a href="auditReport.jsp">Audit Reports</a></li>
 					<li><a href="dataPackageAudit.jsp">Data Package Access Reports</a></li>
@@ -120,18 +123,18 @@
 				<li<%= helpClass %>><a href="#">Help</a>
 				<ul class="sub-menu">
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Support:</p>
 				  <!-- <li><a href="help.jsp">How Do I...</a></li> -->
 				  <li><a href="contact.jsp">Contact Us</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Resources:</p>
-				  <li><a href="resources.jsp">LTER Resources</a></li>
+				  <li><a href="resources.jsp">Additional Resources</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="LTER : Network"> 
+					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					About:</p>
-				  <li><a href="about.jsp">About the LTER Network Data Portal</a></li>
+				  <li><a href="about.jsp">About the EDI Data Portal</a></li>
 				</ul>
 				</li>
 				<li<%= loginClass %>><%= identity %></li>

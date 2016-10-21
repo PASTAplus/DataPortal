@@ -55,8 +55,8 @@ public class GrowthStats {
   private static final Logger logger = Logger.getLogger(GrowthStats.class);
   private static final String RESOURCE_REGISTRY = "datapackagemanager.resource_registry";
 
-  // Create new calendar for PASTA origin at 2013-01-01 00:00:00
-  private static final GregorianCalendar origin = new GregorianCalendar(2013, 0, 1, 0, 0, 0);
+  // Create new calendar for EDI origin at 2016-07-01 00:00:00
+  private static final GregorianCalendar origin = new GregorianCalendar(2016, 6, 1, 0, 0, 0);
 
  /* Constructors */
 
@@ -125,19 +125,22 @@ public class GrowthStats {
     int i;
 
     StringBuilder json = new StringBuilder();
+    int nLabels = labels.size();
 
-    for (i = 0; i < labels.size() - 1; i++) {
+    
+    for (i = 0; i < nLabels - 1; i++) {
       pkgCDist += pkgFreq.get(i);
       siteCDist += siteFreq.get(i);
       json.append(String.format("['%s',%d,%d],%n", labels.get(i), pkgCDist,
                                    siteCDist));
     }
 
-    i = labels.size() - 1;
-    pkgCDist += pkgFreq.get(i);
-    siteCDist += siteFreq.get(i);
-    json.append(String.format("['%s',%d,%d]%n", labels.get(i), pkgCDist,
-                                 siteCDist));
+    i = nLabels - 1;
+	if (i >= 0) {
+		pkgCDist += pkgFreq.get(i);
+		siteCDist += siteFreq.get(i);
+		json.append(String.format("['%s',%d,%d]%n", labels.get(i), pkgCDist, siteCDist));
+	}
 
     return json.toString();
 
