@@ -67,15 +67,11 @@
 </div>
 <div class="container">
 	<div class="row-fluid header_container">
-		<div class="span3">
-		<!--  
-			<a href="home.jsp">
-			  <img alt="Environmental Data Initiative logo" src="images/EDI-logo-300DPI_5.png" title="EDI">
-			</a>
-		-->
-		    <span class="title_size">EDI Data Portal</span>
+		<div class="span4">
+			<a href="http://environmentaldatainitiative.org"><img id="edi-img" class="nis-logos-img" alt="Environmental Data Initiative logo" src="images/EDI-logo-300DPI_5.png" title="EDI"></a>
+		    <span>EDI Data Portal</span>
 	 </div>
-			<div class="span9 menu">
+			<div class="span8 menu">
 			<nav role="navigation">
 			<ul id="menu-nav" class="menu">
 				<li<%= homeClass %>><a href="home.jsp">Home</a></li>

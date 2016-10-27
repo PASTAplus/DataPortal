@@ -174,40 +174,38 @@
 							<span class="row-fluid separator_border"></span>
 						</div>
 						<div class="row-fluid">
-							<p>Data are one of the most valuable products of the 
-							Environmental Data Initiative (EDI). Data and 
-							metadata derived from publicly funded research are made available online with as 
-							few restrictions as possible, on a non-discriminatory 
-							basis. In return, EDI expects data users 
-							to <em>act ethically</em> by contacting the 
-							investigator prior to the use of data for publication.
-							</p>
-							<p>The EDI Data Portal contains environmental and 
-							ecological data packages contributed by a number of participating organizations. Please review the
-							<a class="searchsubcat" href="http://environmentaldatainitiative.org" target="_blank">
-							EDI Data Policy</a> before downloading any data product. 
-							We request that you cite data sources in your published 
-							and unpublished works whenever possible. Digital object 
-							identifiers (DOI) are provided for each dataset to facilitate 
-							citation. </p>
-							<!--  
-							<p>Voluntary registration on this site will allow us 
-							to notify you of updates to data and metadata of interest 
-							and of corrections made to data. In addition, your validated 
-							login will gain you access to even more data where contributors 
-							have asked for additional information on use.
-							<span name="New user registration for non-LTER members coming soon!" 
-							class="tooltip">Register now</span>!
-							</p>
-							-->
-							<p>Contributing scientists make every effort to release 
-							data in a timely fashion and with attention to accurate, 
-							well-designed and well-documented data. To understand 
-							data fully, please read the associated metadata and 
-							contact data providers if you have any questions. The 
-							Environmental Data Initiative is not responsible for misinterpretation 
-							of data resulting from failure to consult metadata or 
-							data providers.</p>
+<p>Data are one of the most valuable products of the 
+<a class="searchsubcat" href="http://environmentaldatainitiative.org">Environmental Data Initiative</a>
+(EDI). Data and metadata derived from publicly funded research are made 
+available online with as few restrictions as possible, on a non-discriminatory 
+basis. In return, EDI expects data users to <em>act ethically</em> by contacting 
+the investigator prior to the use of data for publication.</p>
+							
+<p>The EDI Data Portal contains environmental and ecological data packages 
+contributed by a number of participating organizations. Please review the
+<a class="searchsubcat" href="http://environmentaldatainitiative.org">EDI Data Policy</a> 
+before downloading any data product. We request that you cite data sources in 
+your published and unpublished works whenever possible. Digital object 
+identifiers (DOI) are provided for each dataset to facilitate citation. </p>
+
+<!--  
+<p>Voluntary registration on this site will allow us 
+to notify you of updates to data and metadata of interest 
+and of corrections made to data. In addition, your validated 
+login will gain you access to even more data where contributors 
+have asked for additional information on use.
+<span name="New user registration for non-LTER members coming soon!" 
+class="tooltip">Register now</span>!
+</p>
+-->
+
+<p>Contributing scientists make every effort to release data in a timely fashion 
+and with attention to accurate, well-designed and well-documented data. To 
+understand data fully, please read the associated metadata and contact data 
+providers if you have any questions. The Environmental Data Initiative is not 
+responsible for misinterpretation of data resulting from failure to consult 
+metadata or data providers.</p>
+
 						</div>
 					</div>
 				</div>
@@ -215,9 +213,9 @@
 					<div class="row-fluid">
 						<div class="row-fluid">
 								    <div id="chart_div"></div>
-								    <p id="nis-growth">Site contributed data packages: <b><%= numDataPackagesSites %></b><br />
-									     Total data packages: <b><%= numDataPackages %></b>
-								    </p>
+<p id="nis-growth">Site contributed data packages: <b><%= numDataPackagesSites %></b><br />
+Total data packages: <b><%= numDataPackages %></b></p>
+
 						</div>
 					</div>
 				</div>
@@ -225,7 +223,7 @@
 		</div>
 	</div>
         
-		<jsp:include page="footer.jsp" />
+<jsp:include page="footer.jsp" />
 		
 </div>
 

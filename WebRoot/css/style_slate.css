@@ -2885,6 +2885,12 @@ p.cite cite {
 	width: 81px;
 }
 
+#edi-img {
+	/* Original dimensions of EDI Logo are 111 by 109 (H X W) */
+	height: 61px;
+	width: 60px;
+}
+
 #dataone-img {
 	/* Original dimensions of DataONE_Logo.jpg are 95 X 400 (H X W) */
 	height: 20px;
