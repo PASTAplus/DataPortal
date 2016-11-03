@@ -171,7 +171,7 @@
 										  <a data-toggle="tab" href="#tab3">Spatial / Place Name</a> 
 										</li>
 										<li>
-										  <a data-toggle="tab" href="#tab1">LTER Sites</a>
+										  <a data-toggle="tab" href="#tab1">Sites</a>
 										</li>
 										<li>
 										  <a data-toggle="tab" href="#tab2">Subject</a>
@@ -296,16 +296,6 @@
 																  
 										  <div id="tab1" class="tab-pane  ">
 												<table>
-												  <!--
-													<tr>
-														<td valign="top">
-														  <h3 class="separator_border labelBolder span4" for="advancedsearch">LTER Sites</h3>
-														</td>
-													</tr>
-													<tr>
-														<td class="spacersmh"></td>
-													</tr>
-													-->
 													<tr>
 														<td valign="top">
                               <select class="select-width-auto" name="siteValues" multiple="multiple" size="10">
