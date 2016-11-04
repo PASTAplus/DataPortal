@@ -4,12 +4,17 @@
 db.Adapter=PostgresAdapter
 db.Driver=org.postgresql.Driver
 db.URL=jdbc:postgresql://localhost/pasta
-db.pkg.URL=jdbc:postgresql://package.lternet.edu:5432/pasta
+db.MaxConnections=10
 db.ServerName=localhost
 db.Name=pasta
 db.User=pasta
 db.Password=HIDEPASSWORD
 db.MaxConnections=10
+db.pkg.Driver=org.postgresql.Driver
+db.pkg.URL=jdbc:postgresql://package.lternet.edu:5432/pasta
+db.pkg.Name=pasta
+db.pkg.User=pasta
+db.pkg.Password=HIDEPASSWORD
 
 # Junit properties
 dataportal.test.emlFileName=NoneSuchBugCount.xml

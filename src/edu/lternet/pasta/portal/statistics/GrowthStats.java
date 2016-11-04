@@ -64,10 +64,10 @@ public class GrowthStats {
 
     Configuration options = ConfigurationListener.getOptions();
 
-    String dbDriver = options.getString("db.Driver");
+    String dbDriver = options.getString("db.pkg.Driver");
     String dbUrl = options.getString("db.pkg.URL");
-    String dbUser = options.getString("db.User");
-    String dbPassword = options.getString("db.Password");
+    String dbUser = options.getString("db.pkg.User");
+    String dbPassword = options.getString("db.pkg.Password");
 	this.databaseClient = new DatabaseClient(dbDriver, dbUrl, dbUser, dbPassword);
   }
 
