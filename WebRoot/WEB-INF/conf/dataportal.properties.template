@@ -45,7 +45,7 @@ pasta.port=443
 pasta.uriHead=https://pasta.lternet.edu/package/
 
 # Data Package Management properties
-dataportal.desktopUrlHead=https://portal.lternet.edu/nis/data
+dataportal.desktopUrlHead=https://portal.edirepository.org/nis/data
 browse.dir=/home/pasta/local/browse
 emlutility.xslpath=/WEB-INF/xsl/eml-2.xsl
 reportutility.xslpath=/WEB-INF/xsl/qualityReportFull.xsl
@@ -57,7 +57,7 @@ resultsetutility.xslpath=/WEB-INF/xsl/solrResultset.xsl
 auditreport.limit=10000
 auditreport.xslpath=/WEB-INF/xsl/auditReport.xsl
 datapackageaudit.xslpath=/WEB-INF/xsl/dataPackageAudit.xsl
-system.cwd=/home/pasta/git/NIS/DataPortal2
+system.cwd=/home/pasta/git/DataPortal
 pastaclient.maxidletime=1800000
 pastaclient.idlesleeptime=30000
 pastaclient.initialsleeptime=15000
