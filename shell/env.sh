@@ -16,3 +16,7 @@ export DATAPORTAL=$GIT/DataPortal
 export TOMCAT=/var/lib/tomcat8
 export WEBAPPS=$TOMCAT/webapps
 alias tomcat_ps='ps auwwx | grep catalina.startup.Bootstrap' # show Tomcat processes
+
+# New aliases for Tomcat 8 on EDI Data Portal servers
+alias tomcat_start="sudo /usr/bin/service tomcat8 start"
+alias tomcat_stop="sudo /usr/bin/service tomcat8 stop"
