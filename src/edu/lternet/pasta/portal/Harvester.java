@@ -34,6 +34,12 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
@@ -47,6 +53,7 @@ import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
 import edu.lternet.pasta.common.EmlUtility;
 import edu.lternet.pasta.common.ResourceNotFoundException;
+import edu.lternet.pasta.common.EmlPackageIdFormat.Delimiter;
 
 /**
  * 
@@ -127,6 +134,9 @@ public class Harvester implements Runnable {
    * No command arguments are needed.
    */
   public static void main(String[] args) {
+	  
+	EmlPackageId epid = generateDummyEmlPackageId("edi");
+	  
     String testURL = "http://trachyte.lternet.edu:8080/testData/NoneSuchBugCountDuplicateEntity.xml";
     //String testMetacatHarvestURL = "http://trachyte.lternet.edu:8080/testData/trachyteHarvestList.xml";
     String uid = null;
@@ -318,32 +328,160 @@ public class Harvester implements Runnable {
   }
 
   
+  private Integer getNextIdentifier(DataPackageManagerClient dpmClient, String scope) 
+      throws Exception {
+	  Integer nextIdentifier = null;
+	  
+	  String resourceRegistryIdentifiers = dpmClient.listDataPackageIdentifiers(scope);
+	  String workingOnIdentifiers = dpmClient.listWorkingOn();
+	  TreeSet<Integer> idSet = new TreeSet<Integer>();
+	  
+	  StringTokenizer stringTokenizer = new StringTokenizer(resourceRegistryIdentifiers, "\n");
+	  while (stringTokenizer.hasMoreElements()) {
+		 String token = stringTokenizer.nextToken();
+		 Integer identifier = Integer.valueOf(Integer.parseInt(token));
+		 idSet.add(identifier);
+	  }
+	  
+	  stringTokenizer = new StringTokenizer(workingOnIdentifiers, "\n");
+      String PACKAGE_ID_PATTERN = "<packageId>(\\w+)\\.(\\d+)\\.(\\d+)</packageId>";
+      Pattern packageIdPattern = Pattern.compile(PACKAGE_ID_PATTERN);
+	  while (stringTokenizer.hasMoreElements()) {
+		  String line = stringTokenizer.nextToken();
+		  Matcher matcher = packageIdPattern.matcher(line);
+		  if (matcher.find()) {
+			  String workingOnScope = matcher.group(1);
+			  if (workingOnScope != null && workingOnScope.equals(scope)) {
+				  String identifierStr = matcher.group(2);
+				  String revision = matcher.group(3);
+				  Integer identifier = Integer.valueOf(Integer.parseInt(identifierStr));
+				  idSet.add(identifier);
+			  }
+		  }
+	  }
+	  
+	  int i = 1;
+	  while (nextIdentifier == null) {
+		  Integer candidate = new Integer(i);
+		  if (idSet.contains(candidate)) {
+			  i++;
+		  }
+		  else {
+			  nextIdentifier = candidate;
+		  }
+	  }
+	  
+	  return nextIdentifier;
+  }
+  
+  
+  /**
+   * Boolean to determine whether the specified EML document has a "wildcard"
+   * packageId. That is, a packageId that the Data Portal should assign the
+   * next available identifier. For now, the only wildcard packageId is
+   * "edi.0.0".
+   * 
+   * @param emlFile   The EML file whose packageId is to be inspected
+   * @return  true if the EML has a wildcard packageId, else false
+   */
+  public static boolean isWildcardPackageId(File emlFile) {
+	  String rawPackageId = null;
+		
+	  try {
+		  rawPackageId = EmlUtility.rawPackageIdFromEML(emlFile);
+	  } 
+	  catch (IOException | ParserConfigurationException e) {
+			;
+	  }
+		
+	  String EDI_WILDCARD = "edi";
+	  boolean isWildcard = rawPackageId != null && 
+			       rawPackageId.equals(EDI_WILDCARD);
+
+	  return isWildcard;
+  }
+  
+    
+  private static EmlPackageId generateDummyEmlPackageId(String scope) {
+	  EmlPackageId dummyId = null;	  
+	  Date now = new Date();
+	  long nowTime = now.getTime();
+	  String nowStr = String.format("%d", nowTime);
+	  Pattern pattern = Pattern.compile("\\d\\d(\\d\\d\\d\\d\\d\\d\\d\\d\\d)\\d\\d");
+	  Matcher matcher = pattern.matcher(nowStr);
+	  Integer identifier = null;
+	  
+	  if (matcher.find()) {
+		  String match = matcher.group(1);
+		  identifier = Integer.parseInt(match);
+	  }  
+	  
+	  Integer revision = new Integer(1);
+	  dummyId = new EmlPackageId(scope, identifier, revision);
+	  
+	  return dummyId;
+  }
+  
+  
   /*
    * Harvests or evaluates a single EML document.
    */
-	private void processEMLFile(String harvestDirPath, String uid, File emlFile, boolean isEvaluate) {
+	private void processEMLFile(String harvestDirPath, String uid, File emlFile, 
+			                    boolean isEvaluate, boolean autoAssign) {
 		String filename = "serviceMessage.txt";
+
 		String packageId = "";
 		EmlPackageId emlPackageId = null;
 
 		try {
 			DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
 			String serviceMessage = null;
-
+			
 			/*
-			 * Parse the packageId from the EML document.
-			 * 
-			 * If we fail to determine the packageId value by parsing the EML
-			 * document, then assign a dummy value. Increment the integer part
-			 * of the dummy value to ensure uniqueness during this harvest.
+			 * Is the packageId attribute value a "wildcard" value?
 			 */
-			try {
-				emlPackageId = EmlUtility.emlPackageIdFromEML(emlFile);
+			if (autoAssign && isWildcardPackageId(emlFile)) {
+				
+				String EDI_SCOPE = "edi";
+
+				/*
+				 * If this is evaluate mode, generate a dummy packageId to
+				 * use only to pass evaluation.
+				 */
+				if (isEvaluate) {
+					emlPackageId = generateDummyEmlPackageId(EDI_SCOPE);
+				}
+				/*
+				 * If this is not evaluate, assign the next available identifier 
+				 * to the packageId.
+				 */
+				else {
+					Integer identifier = getNextIdentifier(dpmClient, EDI_SCOPE);
+					Integer revision = new Integer(1);
+					emlPackageId = new EmlPackageId(EDI_SCOPE, identifier, revision);
+				}
+
 				EmlPackageIdFormat epif = new EmlPackageIdFormat();
 				packageId = epif.format(emlPackageId);
+				EmlUtility.setPackageId(emlFile, packageId);
 			}
-			catch (Exception e) {
-				packageId = "Unknown-Package-ID-" + dummyPackageIdCounter++;
+
+			if (emlPackageId == null) {
+				/*
+				 * Parse the packageId from the EML document.
+				 * 
+				 * If we fail to determine the packageId value by parsing the
+				 * EML document, then assign a dummy value. Increment the
+				 * integer part of the dummy value to ensure uniqueness during
+				 * this harvest.
+				 */
+				try {
+					emlPackageId = EmlUtility.emlPackageIdFromEML(emlFile);
+					EmlPackageIdFormat epif = new EmlPackageIdFormat();
+					packageId = epif.format(emlPackageId);
+				} catch (Exception e) {
+					packageId = "Unknown-Package-ID-" + dummyPackageIdCounter++;
+				}
 			}
 
 			String packageIdPath = harvestDirPath + "/" + packageId;
@@ -565,8 +703,9 @@ public class Harvester implements Runnable {
            * Save the EML to file then process it for evaluation or upload
            */
           if (emlString != null) {
+          	boolean autoAssign = false;
             File emlFile = saveEmlToFile(harvestEMLPath, emlString, evaluate);
-            processEMLFile(harvestDirPath, uid, emlFile, evaluate);
+            processEMLFile(harvestDirPath, uid, emlFile, evaluate, autoAssign);
             // Sleep to allow DAS database connection recovery
             Thread.sleep(30000);
           }
@@ -597,8 +736,9 @@ public class Harvester implements Runnable {
      * Save the EML to file then process it for evaluation or upload
      */
     if (emlString != null) {
+    	boolean autoAssign = false;
       File emlFile = saveEmlToFile(harvestEMLPath, emlString, evaluate);
-      processEMLFile(harvestDirPath, uid, emlFile, evaluate);
+      processEMLFile(harvestDirPath, uid, emlFile, evaluate, autoAssign);
     }
   }
    
@@ -607,8 +747,9 @@ public class Harvester implements Runnable {
    * Inserts or evaluates a single EML document, passed in as an XML file.
    * 
    * @param emlFile  the EML XML document file
+   * @param autoAssign   invoke auto-assignment of next available identifier
    */
-  public void processSingleDocument(File emlFile) 
+  public void processSingleDocument(File emlFile, boolean autoAssign) 
           throws Exception {
     // Directory for storing harvester files for this harvest
     Harvester.createDirectory(harvestDirPath);
@@ -621,7 +762,7 @@ public class Harvester implements Runnable {
      * Process the EML file for evaluation or upload
      */
     if (emlFile != null) {
-      processEMLFile(harvestDirPath, uid, emlFile, evaluate);
+      processEMLFile(harvestDirPath, uid, emlFile, evaluate, autoAssign);
     }
   }
    

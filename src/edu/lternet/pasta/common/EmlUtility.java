@@ -39,17 +39,21 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import edu.lternet.pasta.common.EmlPackageIdFormat.Delimiter;
+import edu.ucsb.nceas.utilities.XMLUtilities;
 import eml.ecoinformatics_org.access_2_1.AccessType;
 import eml.ecoinformatics_org.access_2_1.ObjectFactory;
 //import eml.ecoinformatics_org.eml_2_1.Eml;
@@ -124,6 +128,73 @@ public final class EmlUtility {
     
     
     /**
+     * Sets the packageId attribute value for the specified file to the
+     * specified value.
+     * 
+     * @param emlFile       The EML file to be modified with the new packageId.
+     * @param packageId     The new packageId value.
+     * @throws Exception
+     */
+    public static void setPackageId(File emlFile, String packageId) 
+    		throws Exception {
+        Document emlDocument = XmlUtility.xmlFileToDocument(emlFile);
+        Element rootElement = emlDocument.getDocumentElement();
+        rootElement.setAttribute("packageId", packageId);
+	    String levelOneEMLString = XMLUtilities.getDOMTreeAsString(rootElement);
+	    FileUtils.writeStringToFile(emlFile, levelOneEMLString, "UTF-8");
+    }
+    
+    
+	/*
+	 * Returns the raw packageId attribute value by parsing an EML file.
+	 */
+	public static String rawPackageIdFromEML(File emlFile) 
+		throws IOException, ParserConfigurationException {
+		String rawPackageId = "";
+
+		if (emlFile != null) {
+			String emlString = FileUtils.readFileToString(emlFile);
+			
+			try {
+				DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+				Document document = documentBuilder.parse(IOUtils.toInputStream(emlString));
+				rawPackageId = getRawEmlPackageId(document);
+			}
+			/*
+			 * If a parsing exception is thrown, attempt to parse the packageId
+			 * using regular expressions. This could be fooled by comments text
+			 * in the EML document but is still better than nothing at all.
+			 */
+			catch (SAXException e) {
+				StringTokenizer stringTokenizer = new StringTokenizer(emlString, "\n");
+				Pattern doubleQuotePattern = Pattern.compile("packageId=\"([^\"]*)\"");
+				Pattern singleQuotePattern = Pattern.compile("packageId='([^']*)'");
+				while (stringTokenizer.hasMoreElements()) {
+					String token = stringTokenizer.nextToken();
+					if (token.contains("packageId")) {
+
+						Matcher doubleQuoteMatcher = doubleQuotePattern.matcher(token);
+						if (doubleQuoteMatcher.find()) {
+							rawPackageId = doubleQuoteMatcher.group(1);
+							break;
+						}
+
+						Matcher singleQuoteMatcher = singleQuotePattern.matcher(token);
+						if (singleQuoteMatcher.find()) {
+							rawPackageId = singleQuoteMatcher.group(1);
+							break;
+						}
+
+					}
+				}
+			}
+		}
+
+		return rawPackageId;
+	}    
+    
+	
+   /**
      * Returns the packageId of the provided EML document without parsing it
      * (the packageId). If the document does not contain the attribute
      * {@code //@packageId}, or if it does not have a value, an empty string

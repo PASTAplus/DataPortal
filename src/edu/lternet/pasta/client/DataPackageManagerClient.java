@@ -633,6 +633,7 @@ public class DataPackageManagerClient extends PastaClient {
 
 		return entityString;
 	}
+	
 
 	/**
 	 * Executes the 'listDataPackageIdentifiers' web service method.
@@ -673,6 +674,7 @@ public class DataPackageManagerClient extends PastaClient {
 		return entityString;
 	}
 
+	
 	/**
 	 * Executes the 'listDataPackageRevisions' web service method.
 	 * 
@@ -929,6 +931,43 @@ public class DataPackageManagerClient extends PastaClient {
 	public String listServiceMethods() throws Exception {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String url = BASE_URL + "/service-methods";
+		HttpGet httpGet = new HttpGet(url);
+		String entityString = null;
+
+		// Set header content
+		if (this.token != null) {
+			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			HttpEntity httpEntity = httpResponse.getEntity();
+			entityString = EntityUtils.toString(httpEntity);
+			if (statusCode != HttpStatus.SC_OK) {
+				handleStatusCode(statusCode, entityString);
+			}
+		} finally {
+			closeHttpClient(httpClient);
+		}
+
+		return entityString;
+	}
+
+	
+	/**
+	 * Executes the 'listWorkingOn' web service method.
+	 * 
+	 * @return an XML list of data packages currently being uploaded by the 
+	 *         Data Package Manager (see Data Package Manager for full
+	 *         documentation of the XML).
+	 * @see <a target="top"
+	 *      href="http://package.lternet.edu/package/docs/api">Data Package
+	 *      Manager web service API</a>
+	 */
+	public String listWorkingOn() throws Exception {
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String url = BASE_URL + "/workingon/eml";
 		HttpGet httpGet = new HttpGet(url);
 		String entityString = null;
 
