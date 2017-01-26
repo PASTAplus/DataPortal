@@ -69,6 +69,7 @@ public class DataPackageManagerClientTest {
 
 
 	static final String solrQuery = "LTER";
+	static final String RESERVATION_SCOPE = "xyz";
 
   /*
    * Instance fields
@@ -231,6 +232,87 @@ public class DataPackageManagerClientTest {
       fail(e.getMessage());
     }
   }
+
+
+    /**
+     * Test the Create Reservation use case
+     */
+    @Test
+    public void testCreateReservation() {
+		try {
+			String identifier = dpmClient.createReservation(RESERVATION_SCOPE);
+			try {
+				Integer identifierInt = Integer.parseInt(identifier);
+				System.out.println(String.format("Reserved ID: %d", identifierInt));
+			} 
+			catch (NumberFormatException e) {
+				fail("Could not parse the returned identifier value: " + identifier);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+
+    /**
+     * Test the ListReservationIdentifiers use case
+     */
+    @Test
+    public void testListReservationIdentifiers() {
+		try {
+			String identifierList = dpmClient.listReservationIdentifiers(RESERVATION_SCOPE);
+			assertTrue(identifierList != null && identifierList.length() > 0);
+			System.out.println(
+					String.format(
+							"Reserved identifiers for %s:\n%s", 
+							RESERVATION_SCOPE, identifierList));
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+
+    /**
+     * Test the ListActiveReservations use case
+     */
+    @Test
+    public void testListActiverReservations() {
+		try {
+			String xml = dpmClient.listActiveReservations();
+			assertTrue(xml != null && xml.startsWith("<reservations>"));
+			System.out.println(
+					String.format(
+							"Acitve Reservations:\n%s", 
+						    xml));
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+
+    /**
+     * Test the ListWorkingOn user case
+     */
+    @Test
+    public void testListWorkingOn() {
+		try {
+			String xml = dpmClient.listWorkingOn();
+			assertTrue(xml != null && xml.startsWith("<workingOn>"));
+			System.out.println(
+					String.format(
+							"Working on:\n%s", 
+							xml));
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
 
 
   /**

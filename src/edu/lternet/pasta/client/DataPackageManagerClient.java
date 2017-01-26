@@ -56,6 +56,7 @@ import edu.lternet.pasta.common.EmlUtility;
 import edu.lternet.pasta.common.FileUtility;
 import edu.lternet.pasta.common.ResourceNotFoundException;
 import edu.lternet.pasta.common.UserErrorException;
+import edu.lternet.pasta.portal.ConfigurationListener;
 
 /**
  * @author dcosta
@@ -107,7 +108,38 @@ public class DataPackageManagerClient extends PastaClient {
 	/*
 	 * Class Methods
 	 */
+	
+	
+	/**
+	 * Note: Before running this test program, login to the Data Portal
+	 * as user LNO. This will insert a token for "LNO" into the token store.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		String uid = "LNO";
+	    ConfigurationListener.configure();
+		
+		try {
+			DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
+			String workingOn = dpmc.listWorkingOn();
+			System.out.println("Working On:");
+			System.out.println(workingOn);
+			String activeReservations = dpmc.listActiveReservations();
+			System.out.println("Active Reservations:");
+			System.out.println(activeReservations);
+			String reservationIds = dpmc.listReservationIdentifiers("edi");
+			System.out.println("Reservation IDs for 'edi':");
+			System.out.println(reservationIds);
+			String identifierValue = dpmc.createReservation("edi");
+			System.out.println("Reserved identifier: edi." + identifierValue);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	
 	/**
 	 * Determine the test identifier used for testing data package operations.
 	 * Eliminate identifiers that were previously deleted or are currently in use.
@@ -968,6 +1000,122 @@ public class DataPackageManagerClient extends PastaClient {
 	public String listWorkingOn() throws Exception {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String url = BASE_URL + "/workingon/eml";
+		HttpGet httpGet = new HttpGet(url);
+		String entityString = null;
+
+		// Set header content
+		if (this.token != null) {
+			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			HttpEntity httpEntity = httpResponse.getEntity();
+			entityString = EntityUtils.toString(httpEntity);
+			if (statusCode != HttpStatus.SC_OK) {
+				handleStatusCode(statusCode, entityString);
+			}
+		} finally {
+			closeHttpClient(httpClient);
+		}
+
+		return entityString;
+	}
+
+	
+	/**
+	 * Executes the 'listActiveReservations' web service method.
+	 * 
+	 * @return an XML-formatted list of all active reservations currently in
+	 *         PASTA.
+	 * 
+	 * @see <a target="top"
+	 *      href="http://package.lternet.edu/package/docs/api">Data Package
+	 *      Manager web service API</a>
+	 */
+	public String listActiveReservations() throws Exception {
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String url = BASE_URL + "/reservations/eml";
+		HttpGet httpGet = new HttpGet(url);
+		String entityString = null;
+
+		// Set header content
+		if (this.token != null) {
+			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			HttpEntity httpEntity = httpResponse.getEntity();
+			entityString = EntityUtils.toString(httpEntity);
+			if (statusCode != HttpStatus.SC_OK) {
+				handleStatusCode(statusCode, entityString);
+			}
+		} finally {
+			closeHttpClient(httpClient);
+		}
+
+		return entityString;
+	}
+
+	
+	/**
+	 * Executes the 'createReservation' web service method, reserving the next
+	 * available identifier for the specified scope.
+	 * 
+	 * @param  scope  the scope value for which the identifier is to be 
+	 *                reserved, e.g. "edi"
+	 * @return a numeric identifier value indicating the identifier of the
+	 *         reserved data package
+	 * 
+	 * @see <a target="top"
+	 *      href="http://package.lternet.edu/package/docs/api">Data Package
+	 *      Manager web service API</a>
+	 */
+	public String createReservation(String scope) throws Exception {
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String url = BASE_URL + "/reservations/eml/" + scope;
+		HttpPost httpPost = new HttpPost(url);
+		String entityString = null;
+
+		// Set header content
+		if (this.token != null) {
+			httpPost.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			HttpEntity httpEntity = httpResponse.getEntity();
+			entityString = EntityUtils.toString(httpEntity);
+			if (statusCode != HttpStatus.SC_CREATED) {
+				handleStatusCode(statusCode, entityString);
+			}
+		} finally {
+			closeHttpClient(httpClient);
+		}
+
+		return entityString;
+	}
+
+	
+	/**
+	 * Executes the 'listReservationIdentifiers' web service method.
+	 * 
+	 * @param  scope  the scope value under which the list of identifiers
+	 *                is reserved, e.g. "edi"
+	 * @return a newline-separated list of numeric identifier values currently 
+     *         reserved for the specified scope.
+	 * 
+	 * @see <a target="top"
+	 *      href="http://package.lternet.edu/package/docs/api">Data Package
+	 *      Manager web service API</a>
+	 */
+	public String listReservationIdentifiers(String scope) throws Exception {
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String url = BASE_URL + "/reservations/eml/" + scope;
 		HttpGet httpGet = new HttpGet(url);
 		String entityString = null;
 
