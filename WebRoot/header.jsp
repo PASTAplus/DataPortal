@@ -13,8 +13,9 @@
 		identity = "<a href='./login.jsp'>Login</a>";
 		uname = "";
 		welcomeBack = "";
-	} else {
-    identity = "<a id=\"login\" href=\"./logout\">Log Out</a>";
+	} 
+	else {
+        identity = "<a id=\"login\" href=\"./logout\">Log Out</a>";
 		uname = uid;
 		welcomeBack = "Welcome Back";
 	}
@@ -49,6 +50,7 @@
            pageName.equals("harvestReport") ||
            //pageName.equals("dataPackageDelete") ||
            pageName.equals("eventSubscribe") ||
+           pageName.equals("reservations") ||
            pageName.equals("provenanceGenerator") ||
            pageName.equals("dataPackageAudit") ||
            pageName.equals("auditReport")
@@ -93,7 +95,8 @@
 				</ul>
 				</li>
 				<li<%= toolsClass %>><a href="#">Tools</a>
-				<ul class="sub-menu">
+				  <ul class="sub-menu">
+					
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Data Packages:</p>
@@ -101,20 +104,28 @@
 					<li><a href="harvester.jsp">Evaluate/Upload Data Packages</a></li>
 					<li><a href="harvestReport.jsp">View Evaluate/Upload Results</a></li>
 					<!--  <li><a href="dataPackageDelete.jsp">Delete Data Packages</a></li> -->
+					
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Events:</p>
 					<li><a href="eventSubscribe.jsp">Event Subscriptions</a></li>
+					
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Provenance:</p>
 					<li><a href="provenanceGenerator.jsp">Provenance Generator</a></li>
+					
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Reports:</p>
 					<li><a href="auditReport.jsp">Audit Reports</a></li>
 					<li><a href="dataPackageAudit.jsp">Data Package Access Reports</a></li>
-				</ul>
+                    
+                    <p class="smallmenu pull-left nis-navigation-submenu">
+                    <img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
+                    Reservations:</p>
+                    <li><a href="reservations.jsp">Data Package Identifier Reservations</a></li>
+				  </ul>
 				</li>
 				<li<%= helpClass %>><a href="#">Help</a>
 				<ul class="sub-menu">

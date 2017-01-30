@@ -29,6 +29,13 @@
     <servlet-class>edu.lternet.pasta.portal.LogoutServlet</servlet-class>
   </servlet>
   <servlet>
+    <description>Reserve Identifier Servlet</description>
+    <display-name>ReserveIdentifierServlet</display-name>
+    <servlet-name>ReserveIdentifierServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.ReserveIdentifierServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet>
     <description>Event Subscribe Servlet</description>
     <display-name>EventSubscribeServlet</display-name>
     <servlet-name>EventSubscribeServlet</servlet-name>
@@ -217,6 +224,10 @@
   <servlet-mapping>
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReserveIdentifierServlet</servlet-name>
+    <url-pattern>/reserveidentifier</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>EventSubscribeServlet</servlet-name>
