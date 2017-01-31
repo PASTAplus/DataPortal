@@ -112,46 +112,11 @@
 								<div class="table-row">
 									<div class="table-cell"></div>
 								</div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                       <label class="labelBold">Package ID Options:</label>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                        <input checked="checked" name="autoAssign" type="radio" value="0" />
-                                        Use the packageId attribute value as documented in the EML
-                                    </div>
-                                    <div class="table-cell">
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                        <input name="autoAssign" type="radio" value="1" /> 
-                                        I am inserting a new EDI data package using <code>packageId="edi"</code> in my EML. Please assign the next available<br/>&nbsp;&nbsp;&nbsp; 
-                                        identifier and I will edit my EML document with the new identifier after the upload has completed.
-                                        &nbsp;&nbsp;
-                                        <span name='<%= Tooltip.AUTO_ASSIGN %>'
-                                          class="tooltip">
-                                            <img src="images/hand.png" />
-                                            <dfn>Please note</dfn>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell"></div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell"></div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell"></div>
-                                </div>
 								<div class="table-row">
 									<div class="table-cell">
-									   <label class="labelBold">Data Upload Options:</label>
-									</div>
-								</div>
+                    <label class="labelBold">Data Upload Options:</label>
+                  </div>
+                </div>
 								<div class="table-row">
 									<div class="table-cell">
 									    <input checked="checked" name="desktopUpload" type="radio" value="0" />
@@ -164,13 +129,14 @@
 									<div class="table-cell">
 								    	<input name="desktopUpload" type="radio" value="1" /> 
 										I want to manually upload the data by selecting files on my local system
-                                        &nbsp;&nbsp;
+									</div>
+									<div class="table-cell">
 									<span name='<%= Tooltip.DESKTOP_HARVEST %>'
 									      class="tooltip">
 									    <img src="images/hand.png" />
 									    <dfn>Please note</dfn>
 								    </span>
-                                    </div>
+									</div>
 								</div>
 								<div class="table-row">
 									<div class="table-cell"></div>

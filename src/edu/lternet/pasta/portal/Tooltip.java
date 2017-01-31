@@ -34,9 +34,6 @@ package edu.lternet.pasta.portal;
  */
 public class Tooltip {
 	
-	public static final String AUTO_ASSIGN = 
-			"Only use this option when evaluating or inserting a new EDI data package, not when updating an existing data package.";
-
 	public static final String DESKTOP_HARVEST = 
 			"When using this method to upload data, online data URLs documented in the EML will be replaced with links to the data files you select.";
 

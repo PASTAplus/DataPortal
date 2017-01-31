@@ -156,7 +156,6 @@ public class HarvesterServlet extends DataPortalServlet {
 		String harvestListURL = null;
 		String harvestReportId = null;
 		boolean isDesktopUpload = false;
-		boolean isAutoAssign = false;
 		boolean isEvaluate = false;
 		String uid = (String) httpSession.getAttribute("uid");
 		String urlTextArea = null;
@@ -226,11 +225,6 @@ public class HarvesterServlet extends DataPortalServlet {
 									   ) {
 										isEvaluate = true;
 									}
-									else if (fieldName.equals("autoAssign") && 
-											 fieldValue.equalsIgnoreCase("1")
-											) {
-											isAutoAssign = true;
-									}
 									else if (fieldName.equals("desktopUpload") && 
 											 fieldValue.equalsIgnoreCase("1")
 											) {
@@ -276,7 +270,6 @@ public class HarvesterServlet extends DataPortalServlet {
 						harvestReportId = (String) httpSession.getAttribute("harvestReportId");
 						String dataPath = servletContext.getRealPath(DESKTOP_DATA_DIR);
 				        String harvestPath = String.format("%s/%s", dataPath, harvestReportId);
-				        isAutoAssign = (Boolean) httpSession.getAttribute("isAutoAssign");
 						
 						Collection<Part> parts = request.getParts();
 						String objectName = null;
@@ -338,10 +331,9 @@ public class HarvesterServlet extends DataPortalServlet {
 						httpSession.setAttribute("emlFile", emlFile);
 						httpSession.setAttribute("harvestReportId", harvestReportId);
 						httpSession.setAttribute("isEvaluate", new Boolean(isEvaluate));
-						httpSession.setAttribute("isAutoAssign", new Boolean(isAutoAssign));
 					}
 					else {
-						harvester.processSingleDocument(emlFile, isAutoAssign);
+						harvester.processSingleDocument(emlFile);
 					}
 				}
 				else if (documentURLs != null) {

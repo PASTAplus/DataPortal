@@ -69,7 +69,7 @@ public class DataPackageManagerClientTest {
 
 
 	static final String solrQuery = "LTER";
-	static final String RESERVATION_SCOPE = "xyz";
+	static final String RESERVATION_SCOPE = "knb-lter-nin";
 
   /*
    * Instance fields
