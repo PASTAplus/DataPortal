@@ -89,7 +89,7 @@ public class DataPortalServlet extends HttpServlet {
    */
   public static String getTitleText(String pageTitle) {
 	  return String.format(
-			  "Data Portal - %s | Long Term Ecological Research Network (LTER)",
+			  "Data Portal - %s | Environmental Data Initiative (EDI)",
 			  pageTitle);
   }
 
