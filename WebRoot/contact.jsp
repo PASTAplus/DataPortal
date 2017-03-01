@@ -69,7 +69,7 @@
 </ul>
 								<h3>E-Mail Address</h3>
 								<ul class="no-list-style">
-									<li><a href="mailto:info@environmentaldatainitiative.org">info@environmentaldatainitiative.org</a></li>
+									<li><a href="mailto:support@environmentaldatainitiative.org">support@environmentaldatainitiative.org</a></li>
 								</ul>
 								<h3>Mailing Address</h3>
 								<ul class="no-list-style">
