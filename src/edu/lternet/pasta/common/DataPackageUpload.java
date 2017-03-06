@@ -25,7 +25,16 @@
 package edu.lternet.pasta.common;
 
 
-public class DataPackageUpload {
+/**
+ * 
+ * @author Duane Costa
+ * 
+ * The DataPackageUpload class holds the content of an individual data
+ * package upload record. It has been expanded to also represent data
+ * package delete records.
+ *
+ */
+public class DataPackageUpload implements Comparable<DataPackageUpload> {
 	
 	/*
 	 *  Class fields
@@ -55,7 +64,9 @@ public class DataPackageUpload {
 	 * 
 	 * @param dpmClient      the DataPackageManager client
 	 * @param uploadDate     the upload date
-	 * @param serviceMethod  one of "createDataPackage" or "updateDataPackage"
+	 * @param serviceMethod  one of "createDataPackage" or 
+	 *                              "updateDataPackage" or
+	 *                              "deleteDataPackage"
 	 * @param scope          the data package scope value
 	 * @param identifier     the data package identifier value
 	 * @param revision       the data package revision value
@@ -116,31 +127,39 @@ public class DataPackageUpload {
 	public String toXML() {
 		String xmlString = null;
 		StringBuffer stringBuffer = new StringBuffer("");
-
-		stringBuffer.append("  <dataPackageUpload>\n");
+		String dataPackageElementName = "dataPackage";
+		
+		stringBuffer.append(String.format("  <%s>\n", dataPackageElementName));
 		stringBuffer.append(String.format("    <packageId>%s</packageId>\n", packageId));
 		stringBuffer.append(String.format("    <scope>%s</scope>\n", scope));
 		stringBuffer.append(String.format("    <identifier>%d</identifier>\n", identifier));
 		stringBuffer.append(String.format("    <revision>%d</revision>\n", revision));
 		stringBuffer.append(String.format("    <serviceMethod>%s</serviceMethod>\n", serviceMethod));
-		stringBuffer.append(String.format("    <uploadDate>%s</uploadDate>\n", uploadDate));
-		stringBuffer.append("  </dataPackageUpload>\n");
+		stringBuffer.append(String.format("    <date>%s</date>\n", uploadDate));
+		stringBuffer.append(String.format("  </%s>\n", dataPackageElementName));
 
 		xmlString = stringBuffer.toString();
 		return xmlString;
 	}
-	  
-	
-	protected String parseElement(String xml, String elementName) {
-		String elementText = "";
 
-		String startTag = String.format("<%s>", elementName);
-		String endTag = String.format("</%s>", elementName);
-		int start = xml.indexOf(startTag) + startTag.length();
-		int end = xml.indexOf(endTag);
-		elementText = xml.substring(start, end);
 
-		return elementText;
+	/**
+	 * Allows sorting of DataPackageUpload objects.
+	 */
+	@Override
+	public int compareTo(DataPackageUpload dpu) {
+		/*
+		 * If date strings are the same, order by revision ascending
+		 */
+		if (this.uploadDate.equals(dpu.uploadDate)) {
+			return this.revision.compareTo(dpu.revision);
+		}
+		/*
+		 * but most of the time we'll be comparing the date strings
+		 */
+		else {
+			return this.uploadDate.compareTo(dpu.uploadDate);
+		}
 	}
 		  
 }
