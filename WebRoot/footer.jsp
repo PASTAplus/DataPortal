@@ -151,7 +151,7 @@ if (recentScope4 != null && !recentScope4.equals("")) {
 					</span>
 					<div class="row-fluid">
 						<div class="span12 ">
-							Copyright 2016 <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>. 
+							Copyright 2017 <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>. 
 							This material is based upon work supported by the National Science Foundation under grants 
 							#1565103 and #1629233. Any opinions, findings, conclusions, or recommendations 
 							expressed in the material are those of the author(s) and do not necessarily reflect the views of 
