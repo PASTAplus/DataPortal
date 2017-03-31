@@ -73,6 +73,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 	
 	private static String pastaUriHead;
 	private static final String forward = "./dataPackageSummary.jsp";
+	private static final String PUBLISHER = "Environmental Data Initiative. ";
+	private static final String DxDoiOrg = "http://dx.doi.org/";
 
 
 	/**
@@ -167,7 +169,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String googleMapHTML = "";
 		String packageIdHTML = "";
 		String resourcesHTML = "";
-		String citationHTML = "";
+		String citationLinkHTML = "";
 		String provenanceHTML = "";
 		String codeGenerationHTML = "";
 		String digitalObjectIdentifier = "";
@@ -702,7 +704,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 								+ "revision="
 								+ revision
 								+ "\">How to cite this data package</a>\n");
-				citationHTML = citationHTMLBuilder.toString();
+				citationLinkHTML = citationHTMLBuilder.toString();
 
 				String dataSourcesStr = dpmClient.listDataSources(scope, id, revision);
 				
@@ -813,6 +815,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 		catch (Exception e) {
 			handleDataPortalError(logger, e);
 		}
+		
+		String citationHTML = this.citationFormatter(uid, scope, id, revision);
+
 
 		request.setAttribute("dataPackageTitleHTML", titleHTML);
 		request.setAttribute("dataPackageCreatorsHTML", creatorsHTML);
@@ -823,13 +828,14 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("googleMapHTML", googleMapHTML);
 		request.setAttribute("dataPackageIdHTML", packageIdHTML);
 		request.setAttribute("dataPackageResourcesHTML", resourcesHTML);
-		request.setAttribute("dataPackageCitationHTML", citationHTML);
+		request.setAttribute("citationLinkHTML", citationLinkHTML);
 		request.setAttribute("digitalObjectIdentifier", digitalObjectIdentifier);
 		request.setAttribute("intellectualRightsHTML", intellectualRightsHTML);
 		request.setAttribute("pastaDataObjectIdentifier",
 				pastaDataObjectIdentifier);
 		request.setAttribute("provenanceHTML", provenanceHTML);
 		request.setAttribute("codeGenerationHTML", codeGenerationHTML);
+		request.setAttribute("citationHTML", citationHTML);
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
 		requestDispatcher.forward(request, response);
@@ -954,4 +960,164 @@ public class MapBrowseServlet extends DataPortalServlet {
 		}
 	}
 
+	
+	/**
+	 * Formats the output for the data package citation.
+	 * 
+	 * @param scope
+	 *          The data package scope (namespace) value
+	 * @param id
+	 *          The data package identifier (accession number) value
+	 * @param revision
+	 *          The data package revision value
+	 * 
+	 * @return The formatted citation as HTML
+	 */
+	private String citationFormatter(String uid, String scope, Integer identifier, String revision) {
+
+		String html = null;
+
+		String emlString = null;
+		EmlObject emlObject = null;
+		ArrayList<Title> titles = null;
+		ArrayList<ResponsibleParty> creators = null;
+
+		String titleText = "";
+		String creatorText = "";
+		String orgText = "";
+		String pubDateText = null;
+		String citationId = "";
+		String caveat = "";
+		String citationUrl = "";
+
+		DataPackageManagerClient dpmClient = null;
+
+		try {
+
+			dpmClient = new DataPackageManagerClient(uid);
+
+			emlString = dpmClient.readMetadata(scope, identifier, revision);
+			emlObject = new EmlObject(emlString);
+
+			titles = emlObject.getTitles();
+
+			if (titles != null) {
+
+				for (Title title : titles) {
+					if (title.getTitleType().equals(Title.MAIN)) {
+						titleText += title.getTitle() + ".";
+					}
+				}
+
+			}
+
+			creators = emlObject.getCreators();
+
+			if (creators != null) {
+
+				Integer personCount = emlObject.getPersonCount();
+				Integer orgCount = emlObject.getOrgCount();
+				Integer cnt = 0;
+
+				// Citations should include only person names, if possible
+				if (personCount != 0) {
+
+					for (ResponsibleParty creator : creators) {
+						
+						String individualName = creator.getIndividualName();
+
+						if (individualName != null) {
+							cnt++;
+							if (cnt == personCount) {
+								creatorText += individualName + " ";
+							} else {
+								creatorText += individualName + "; ";
+							}
+						}
+
+					}
+
+				} else if (orgCount != 0) { // otherwise, use organization names
+
+					for (ResponsibleParty creator : creators) {
+
+						String organizationName = creator.getOrganizationName();
+
+						if (organizationName != null) {
+							cnt++;
+							if (cnt == orgCount) {
+								creatorText += organizationName + " ";
+							} else {
+								creatorText += organizationName + "; ";
+							}
+						}
+
+					}
+
+				}
+
+			}
+
+			creators = emlObject.getCreators();
+
+			if (creators != null) {
+
+				Integer orgCount = emlObject.getOrgCount();
+				Integer cnt = 0;
+
+				if (orgCount != 0) {
+
+					for (ResponsibleParty creator : creators) {
+
+						String organizationName = creator.getOrganizationName();
+						
+						if (organizationName != null) {
+							if (!orgText.contains(organizationName)) {
+								cnt++;
+									orgText += organizationName + "; ";
+							}
+						}
+
+					}
+
+				}
+
+			}
+
+			try {
+				citationId = dpmClient.readDataPackageDoi(scope, identifier, revision);
+				citationId = citationId.replace("doi:", DxDoiOrg);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				e.printStackTrace();
+				citationId = dpmClient.getPastaPackageUri(scope, identifier, revision);
+				caveat = "Note: DOIs are generated hourly for all data packages"
+				    + " that are \"publicly\" accessible.";
+			}
+			
+			citationUrl = "<a href=\"" + citationId + "\">" + citationId + "</a>"; 
+
+			String pubDate = emlObject.getPubDate();
+
+			if (pubDate != null) {
+				pubDateText = " (" + pubDate + ")";
+			}
+			else {
+				pubDateText = "";
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+			html = "<p class=\"warning\">" + e.getMessage() + "</p>\n";
+			return html;
+		}
+
+		html = String.format("<ul class=\"no-list-style\"><li>%s%s: <cite>%s</cite> %s %s %s</li><li>%s</li></ul>", 
+	               creatorText.trim(), pubDateText, titleText, orgText, PUBLISHER, citationUrl, caveat);
+		
+		return html;
+
+	}
+	
 }
