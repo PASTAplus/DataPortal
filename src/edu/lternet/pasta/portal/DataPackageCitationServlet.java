@@ -248,8 +248,8 @@ public class DataPackageCitationServlet extends DataPortalServlet {
 				if (personCount != 0) {
 
 					for (ResponsibleParty creator : creators) {
-						
-						String individualName = creator.getIndividualName();
+						boolean useFullGivenName = false;
+						String individualName = creator.getIndividualName(useFullGivenName);
 
 						if (individualName != null) {
 							cnt++;
@@ -322,7 +322,7 @@ public class DataPackageCitationServlet extends DataPortalServlet {
 			
 			citationUrl = "<a href=\"" + citationId + "\">" + citationId + "</a>"; 
 
-			String pubDate = emlObject.getPubDate();
+			String pubDate = emlObject.getPubYear();
 
 			if (pubDate != null) {
 				pubDateText += "(" + pubDate + "): ";

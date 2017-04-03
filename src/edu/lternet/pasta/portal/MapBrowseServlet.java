@@ -161,6 +161,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 		HttpSession httpSession = request.getSession();
 		String titleHTML = "";
+		String citationHTML = "";
 		String creatorsHTML = "";
 		String abstractHTML = "";
 		String intellectualRightsHTML = "";
@@ -175,6 +176,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String digitalObjectIdentifier = "";
 		String pastaDataObjectIdentifier = "";
 		String savedDataHTML = "";
+		EmlObject emlObject = null;
 		boolean showSaved = false;
 		boolean isSaved = false;
 		boolean hasOffline = false;
@@ -259,7 +261,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 				String map = null;
 				StrTokenizer tokens = null;
 				String emlString = null;
-				EmlObject emlObject = null;
 				ArrayList<Title> titles = null;
 				ArrayList<ResponsibleParty> creators = null;
 
@@ -330,7 +331,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 						for (ResponsibleParty creator : creators) {
 							creatorsHTMLBuilder.append("<li>");
 
-							String individualName = creator.getIndividualName();
+							boolean useFullGivenName = true;
+							String individualName = creator.getIndividualName(useFullGivenName);
 							String positionName = creator.getPositionName();
 							String organizationName = creator
 									.getOrganizationName();
@@ -805,6 +807,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 																// space
 				}
 
+				citationHTML = this.citationFormatter(emlObject, uid, scope, id, revision);
+
 			}
 
 			else {
@@ -816,14 +820,10 @@ public class MapBrowseServlet extends DataPortalServlet {
 			handleDataPortalError(logger, e);
 		}
 		
-		String citationHTML = this.citationFormatter(uid, scope, id, revision);
-
-
 		request.setAttribute("dataPackageTitleHTML", titleHTML);
 		request.setAttribute("dataPackageCreatorsHTML", creatorsHTML);
 		request.setAttribute("abstractHTML", abstractHTML);
-		request.setAttribute("dataPackagePublicationDateHTML",
-				publicationDateHTML);
+		request.setAttribute("dataPackagePublicationDateHTML", publicationDateHTML);
 		request.setAttribute("spatialCoverageHTML", spatialCoverageHTML);
 		request.setAttribute("googleMapHTML", googleMapHTML);
 		request.setAttribute("dataPackageIdHTML", packageIdHTML);
@@ -831,8 +831,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("citationLinkHTML", citationLinkHTML);
 		request.setAttribute("digitalObjectIdentifier", digitalObjectIdentifier);
 		request.setAttribute("intellectualRightsHTML", intellectualRightsHTML);
-		request.setAttribute("pastaDataObjectIdentifier",
-				pastaDataObjectIdentifier);
+		request.setAttribute("pastaDataObjectIdentifier", pastaDataObjectIdentifier);
 		request.setAttribute("provenanceHTML", provenanceHTML);
 		request.setAttribute("codeGenerationHTML", codeGenerationHTML);
 		request.setAttribute("citationHTML", citationHTML);
@@ -973,15 +972,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 	 * 
 	 * @return The formatted citation as HTML
 	 */
-	private String citationFormatter(String uid, String scope, Integer identifier, String revision) {
-
+	private String citationFormatter(EmlObject emlObject, String uid, 
+			                         String scope, Integer identifier, String revision) {
 		String html = null;
-
-		String emlString = null;
-		EmlObject emlObject = null;
 		ArrayList<Title> titles = null;
 		ArrayList<ResponsibleParty> creators = null;
-
 		String titleText = "";
 		String creatorText = "";
 		String orgText = "";
@@ -989,16 +984,15 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String citationId = "";
 		String caveat = "";
 		String citationUrl = "";
+		
+		if (emlObject == null) {
+			return html;
+		}
 
 		DataPackageManagerClient dpmClient = null;
 
 		try {
-
 			dpmClient = new DataPackageManagerClient(uid);
-
-			emlString = dpmClient.readMetadata(scope, identifier, revision);
-			emlObject = new EmlObject(emlString);
-
 			titles = emlObject.getTitles();
 
 			if (titles != null) {
@@ -1024,7 +1018,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					for (ResponsibleParty creator : creators) {
 						
-						String individualName = creator.getIndividualName();
+						boolean useFullGivenName = false;
+						String individualName = creator.getIndividualName(useFullGivenName);
 
 						if (individualName != null) {
 							cnt++;
@@ -1097,10 +1092,10 @@ public class MapBrowseServlet extends DataPortalServlet {
 			
 			citationUrl = "<a href=\"" + citationId + "\">" + citationId + "</a>"; 
 
-			String pubDate = emlObject.getPubDate();
+			String pubYear = emlObject.getPubYear();
 
-			if (pubDate != null) {
-				pubDateText = " (" + pubDate + ")";
+			if (pubYear != null) {
+				pubDateText = " (" + pubYear + "):";
 			}
 			else {
 				pubDateText = "";
@@ -1113,7 +1108,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 			return html;
 		}
 
-		html = String.format("<ul class=\"no-list-style\"><li>%s%s: <cite>%s</cite> %s %s %s</li><li>%s</li></ul>", 
+		html = String.format("<ul class=\"no-list-style\"><li>%s%s <cite>%s</cite> %s %s %s</li><li>%s</li></ul>", 
 	               creatorText.trim(), pubDateText, titleText, orgText, PUBLISHER, citationUrl, caveat);
 		
 		return html;
