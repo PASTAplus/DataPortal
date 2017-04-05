@@ -996,46 +996,38 @@ public class MapBrowseServlet extends DataPortalServlet {
 			titles = emlObject.getTitles();
 
 			if (titles != null) {
-
 				for (Title title : titles) {
 					if (title.getTitleType().equals(Title.MAIN)) {
 						titleText += title.getTitle() + ".";
 					}
 				}
-
 			}
 
 			creators = emlObject.getCreators();
 
 			if (creators != null) {
-
 				Integer personCount = emlObject.getPersonCount();
 				Integer orgCount = emlObject.getOrgCount();
 				Integer cnt = 0;
 
 				// Citations should include only person names, if possible
 				if (personCount != 0) {
-
-					for (ResponsibleParty creator : creators) {
-						
+					for (ResponsibleParty creator : creators) {	
 						boolean useFullGivenName = false;
 						String individualName = creator.getIndividualName(useFullGivenName);
-
+						
 						if (individualName != null) {
 							cnt++;
 							if (cnt == personCount) {
 								creatorText += individualName + " ";
 							} else {
-								creatorText += individualName + "; ";
+								creatorText += individualName + ", ";
 							}
 						}
-
 					}
-
-				} else if (orgCount != 0) { // otherwise, use organization names
-
+				} 
+				else if (orgCount != 0) { // otherwise, use organization names
 					for (ResponsibleParty creator : creators) {
-
 						String organizationName = creator.getOrganizationName();
 
 						if (organizationName != null) {
@@ -1043,40 +1035,31 @@ public class MapBrowseServlet extends DataPortalServlet {
 							if (cnt == orgCount) {
 								creatorText += organizationName + " ";
 							} else {
-								creatorText += organizationName + "; ";
+								creatorText += organizationName + ", ";
 							}
 						}
-
 					}
-
 				}
-
 			}
 
 			creators = emlObject.getCreators();
 
 			if (creators != null) {
-
 				Integer orgCount = emlObject.getOrgCount();
 				Integer cnt = 0;
 
 				if (orgCount != 0) {
-
 					for (ResponsibleParty creator : creators) {
-
 						String organizationName = creator.getOrganizationName();
-						
+
 						if (organizationName != null) {
 							if (!orgText.contains(organizationName)) {
 								cnt++;
 									orgText += organizationName + "; ";
 							}
 						}
-
 					}
-
 				}
-
 			}
 
 			try {
@@ -1095,7 +1078,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 			String pubYear = emlObject.getPubYear();
 
 			if (pubYear != null) {
-				pubDateText = " (" + pubYear + "):";
+				pubDateText = pubYear + ".";
 			}
 			else {
 				pubDateText = "";
@@ -1109,7 +1092,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		}
 
 		html = String.format("<ul class=\"no-list-style\"><li>%s%s <cite>%s</cite> %s %s %s</li><li>%s</li></ul>", 
-	               creatorText.trim(), pubDateText, titleText, orgText, PUBLISHER, citationUrl, caveat);
+	               creatorText, pubDateText, titleText, orgText, PUBLISHER, citationUrl, caveat);
 		
 		return html;
 

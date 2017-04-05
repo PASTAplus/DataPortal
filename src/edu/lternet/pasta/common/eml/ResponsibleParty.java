@@ -192,7 +192,12 @@ public class ResponsibleParty {
     String givenName = useFullGivenName ? getGivenName() : getGivenInitials();
     
     if ((givenName != null) && (!givenName.equals(""))) {
-      individualName += ", " + givenName;
+    	if (useFullGivenName) {
+    		individualName += ", " + givenName;
+    	}
+    	else {
+    		individualName = String.format("%s %s", givenName, individualName);
+    	}
     }
     
     return individualName;
