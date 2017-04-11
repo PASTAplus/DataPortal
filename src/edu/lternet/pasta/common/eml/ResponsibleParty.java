@@ -170,7 +170,7 @@ public class ResponsibleParty {
   private String firstInitial(String name) {
 	  String firstInitial = name;
 	  
-	  if (name != null && name.length() > 1) {
+	  if (name != null && name.length() > 0) {
 		  firstInitial = String.format("%c.", name.charAt(0));
 	  }
 	  
