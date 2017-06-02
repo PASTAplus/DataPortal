@@ -70,7 +70,7 @@
 <div class="container">
 	<div class="row-fluid header_container">
 		<div class="span4">
-			<a href="http://environmentaldatainitiative.org"><img id="edi-img" class="nis-logos-img" alt="Environmental Data Initiative logo" src="images/EDI-logo-300DPI_5.png" title="EDI"></a>
+			<a href="home.jsp"><img id="edi-img" class="nis-logos-img" alt="Environmental Data Initiative logo" src="images/EDI-logo-300DPI_5.png" title="EDI"></a>
 		    <span>EDI Data Portal</span>
 	 </div>
 			<div class="span8 menu">
