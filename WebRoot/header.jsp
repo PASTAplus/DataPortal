@@ -141,6 +141,7 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					About:</p>
+                  <li><a href="https://environmentaldatainitiative.org/">About the EDI Project</a></li>
 				  <li><a href="about.jsp">About the EDI Data Portal</a></li>
 				</ul>
 				</li>
