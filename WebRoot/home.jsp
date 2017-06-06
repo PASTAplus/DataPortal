@@ -174,38 +174,26 @@
 							<span class="row-fluid separator_border"></span>
 						</div>
 						<div class="row-fluid">
-<p>Data are one of the most valuable products of the 
-<a class="searchsubcat" href="http://environmentaldatainitiative.org">Environmental Data Initiative</a>
-(EDI). Data and metadata derived from publicly funded research are made 
-available online with as few restrictions as possible, on a non-discriminatory 
-basis. In return, EDI expects data users to <em>act ethically</em> by contacting 
-the investigator prior to the use of data for publication.</p>
-							
+<p>Data are one of the most valuable products curated by the 
+<a class="searchsubcat" href="https://environmentaldatainitiative.org">Environmental Data Initiative</a>
+(EDI). Data and metadata derived from publicly funded research are made available 
+through this website with as few restrictions as possible, and on a 
+non-discriminatory basis. In return, EDI expects users of data to act ethically 
+by contacting the data provider prior to using it in any published research. 
+In accordance with professional etiquette, data accessed from this website 
+should be cited appropriately when used in a publication. A digital object 
+identifier (DOI) is provided for each dataset to facilitate citation.</p>							
+ 
 <p>The EDI Data Portal contains environmental and ecological data packages 
-contributed by a number of participating organizations. Please review the
-<a class="searchsubcat" href="http://environmentaldatainitiative.org">EDI Data Policy</a> 
-before downloading any data product. We request that you cite data sources in 
-your published and unpublished works whenever possible. Digital object 
-identifiers (DOI) are provided for each dataset to facilitate citation. </p>
-
-<!--  
-<p>Voluntary registration on this site will allow us 
-to notify you of updates to data and metadata of interest 
-and of corrections made to data. In addition, your validated 
-login will gain you access to even more data where contributors 
-have asked for additional information on use.
-<span name="New user registration for non-LTER members coming soon!" 
-class="tooltip">Register now</span>!
-</p>
--->
-
-<p>Contributing scientists make every effort to release data in a timely fashion 
-and with attention to accurate, well-designed and well-documented data. To 
-understand data fully, please read the associated metadata and contact data 
-providers if you have any questions. The Environmental Data Initiative is not 
-responsible for misinterpretation of data resulting from failure to consult 
-metadata or data providers.</p>
-
+contributed by a number of participating organizations. Data providers make 
+every effort to release data in a timely fashion and with attention to accurate, 
+well-designed and well-documented data. To understand data fully, please read 
+the associated metadata and contact data providers if you have any questions. 
+Data may be used in a manner conforming with the license information found in 
+the “Intellectual Rights” section of the data package metadata or defaults to the 
+<a class="searchsubcat" href="https://environmentaldatainitiative.org/edi-data-policy/">EDI Data Policy</a>. 
+The Environmental Data Initiative shall not be liable for any damages resulting 
+from misinterpretation or misuse of the data or metadata.</p>
 						</div>
 					</div>
 				</div>
