@@ -87,7 +87,7 @@
 								them to the <abbr title="Network Information System">NIS</abbr> by selecting <b>Evaluate</b>. Once you 
 								are satisfied that data packages are ready to be 
 								uploaded to the <abbr title="Network Information System">NIS</abbr>, you may do so by selecting 
-								<b>Upload</b>. Several alternatives for supplying the 
+								<b>Upload</b>. Two methods for supplying the 
 								EML metadata for your data packages are available below.</p>
 
 								<fieldset>
@@ -98,12 +98,12 @@
 						<div class="display-table">
 								<div class="table-row">
 									<div class="table-cell">
-												<label class="labelBold">EML Metadata File:</label>
+										<label class="labelBold">EML Metadata File:</label>
 									</div>
 								</div>
 								<div class="table-row">
 									<div class="table-cell">
-												<input accept="application/xml" name="emlfile" required="required" size="60" type="file" />
+										<input accept="application/xml" name="emlfile" required="required" size="60" type="file" />
 									</div>
 								</div>
 								<div class="table-row">
@@ -114,20 +114,12 @@
 								</div>
 								<div class="table-row">
 									<div class="table-cell">
-                    <label class="labelBold">Data Upload Options:</label>
-                  </div>
-                </div>
-								<div class="table-row">
-									<div class="table-cell">
-									    <input checked="checked" name="desktopUpload" type="radio" value="0" />
-									    Data will be accessed using the online URLs as documented in the EML 
-									</div>
-									<div class="table-cell">
-									</div>
+                                        <label class="labelBold">Data Upload Options:</label>
+                                    </div>
                                 </div>
                                 <div class="table-row">
                                     <div class="table-cell">
-                                        <input name="desktopUpload" type="radio" value="2" />
+                                        <input name="useChecksum" type="checkbox" value="useChecksum" />
                                         Allow PASTA to skip upload of a data entity if it has a matching copy
                                     </div>
                                     <div class="table-cell">
@@ -140,7 +132,7 @@
                                 </div>
 								<div class="table-row">
 									<div class="table-cell">
-								    	<input name="desktopUpload" type="radio" value="1" /> 
+								    	<input name="desktopUpload" type="checkbox" value="desktopUpload" /> 
 										I want to manually upload the data by selecting files on my local system
 									</div>
 									<div class="table-cell">
@@ -182,19 +174,44 @@
 						<div class="display-table">
 								<div class="table-row">
 									<div class="table-cell">
-												<label class="labelBold">URLs:</label>
-								  </div>
+										<label class="labelBold">URLs:</label>
+								    </div>
 								</div>
 								<div class="table-row">
 									<div class="table-cell">
-												<textarea id="urlTextArea" cols="80" name="urlTextArea" required="required" rows="8"></textarea>
-								  </div>
+										<textarea id="urlTextArea" cols="80" name="urlTextArea" required="required" rows="8"></textarea>
+								    </div>
 								</div>
-								<div class="table-row">
+                                <div class="table-row">
+                                    <div class="table-cell">
+                                        <label class="labelBold">Data Upload Options:</label>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell">
+                                        <input name="useChecksum" type="checkbox" value="useChecksum" />
+                                        Allow PASTA to skip upload of a data entity if it has a matching copy&nbsp;&nbsp;
+                                    <span name='<%= Tooltip.USE_CHECKSUM %>'
+                                          class="tooltip">
+                                        <img src="images/hand.png" />
+                                        <dfn>Please note</dfn>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell"></div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell"></div>
+                                </div>
+                                <div class="table-row">
+                                    <div class="table-cell"></div>
+                                </div>
+                                <div class="table-row">
 									<div class="table-cell">
-												<input class="btn btn-info btn-default" name="submit" type="submit" value="Evaluate" />
-												<input class="btn btn-info btn-default" name="submit" type="submit" value="Upload" />
-												<input class="btn btn-info btn-default" name="reset" type="reset" value="Clear" />
+										<input class="btn btn-info btn-default" name="submit" type="submit" value="Evaluate" />
+										<input class="btn btn-info btn-default" name="submit" type="submit" value="Upload" />
+										<input class="btn btn-info btn-default" name="reset" type="reset" value="Clear" />
 									</div>
 								</div>
 								<div class="table-row">
@@ -207,8 +224,7 @@
 									</form>
 								</fieldset>
 								
-								<!-- More Options for Upload -->
-								<!-- <div class="spacer"></div> -->
+								<!-- More Options for Upload
 								<div id="accordion1" class="accordion">
 									<div class="accordion-group">
 										<div class="accordion-heading ">
@@ -217,7 +233,7 @@
 										<div id="Accordion_1" class="accordion-body  collapse">
 											<div class="accordion-inner ">
 											
-												<!-- Content -->
+												<!-- Content 
 												
 												<fieldset>
 												<legend>Copy EML Metadata Text</legend>
@@ -268,12 +284,12 @@
 												</div>
 												</fieldset>
 												
-												<!-- /Content -->
+												<!-- /Content
 											</div>
 										</div>
 									</div>
 								</div>
-								<!-- /More Options for Upload -->
+								/More Options for Upload -->
 							</div>
 							<!-- /Content -->
 						</div>
