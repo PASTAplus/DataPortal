@@ -106,7 +106,7 @@
 										<input accept="application/xml" name="emlfile" required="required" size="60" type="file" />
 									</div>
 								</div>
-								<div class="table-row">
+                                <div class="table-row">
 									<div class="table-cell">
                                         <label class="labelBold">Data Upload Options:</label>
                                     </div>
