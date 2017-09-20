@@ -122,7 +122,7 @@
                             <c:set var="showWasDeleted" value="<%= showWasDeleted %>"/>
                             <c:choose>
                                 <c:when test="${showWasDeleted}">
-                                <span class="nis-banner-msg"><%= wasDeletedHTML %></span>
+                                <span class="nis-banner-msg">&nbsp;&nbsp;<%= wasDeletedHTML %>&nbsp;&nbsp;</span>
                                 </c:when>
                             </c:choose>
 

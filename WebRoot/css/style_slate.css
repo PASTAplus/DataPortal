@@ -2961,11 +2961,11 @@ code.nis {
 }
 
 .nis-banner-msg {
-    color: white;
+    padding: 7px;
+	color: white;
     background-color: #5990bd;
-    font-family: monospace;
-	font-weight: bold;
-    font-size: 1.3em;
+    font-size: 1.1em;
+    text-align: center;
 }
 
 .nis-error {
