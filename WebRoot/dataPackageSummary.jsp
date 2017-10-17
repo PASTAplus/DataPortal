@@ -8,6 +8,7 @@
 
   String wasDeletedHTML = (String) request.getAttribute("wasDeletedHTML");
   String titleHTML = (String) request.getAttribute("dataPackageTitleHTML");
+  String viewFullMetadataHTML = (String) request.getAttribute("viewFullMetadataHTML");
   String creatorsHTML = (String) request.getAttribute("dataPackageCreatorsHTML");
   String abstractHTML = (String) request.getAttribute("abstractHTML");
   String intellectualRightsHTML = (String) request.getAttribute("intellectualRightsHTML");
@@ -126,12 +127,12 @@
                                 </c:when>
                             </c:choose>
 
-                            <span class="row-fluid separator_border"></span>
- 
                             <div class="recent_title">
-                                <h2>Data Package Summary</h2>
+                                <h2>Data Package Summary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small><%= viewFullMetadataHTML %></small></h2>
                             </div>      
 
+                            <span class="row-fluid separator_border"></span>
+ 
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
