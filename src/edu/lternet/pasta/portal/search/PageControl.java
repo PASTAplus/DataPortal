@@ -16,9 +16,9 @@ public class PageControl {
 	 */
 	
 	private final String SPACER = "&nbsp;&nbsp;&nbsp;";
-	private final String ASCENDING = "  <big>&#42779;</big>";  // up arrow character
-	private final String DESCENDING = "  <big><big><big><sub>&#42780;</sub></big></big></big>"; // down arrow character
-	private final String UNSORTED = "  &#8597;";    // updown arrow character
+	private final String ASCENDING = "  <big><big>&#8679;</big></big>";  // up arrow character
+	private final String DESCENDING = "  <big><big>&#8681;</big></big>"; // down arrow character
+	private final String UNSORTED = "  <big><big>&#8691;</big></big>";    // updown arrow character
 	
 	
 	/*
