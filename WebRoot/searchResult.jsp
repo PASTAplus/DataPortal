@@ -12,6 +12,12 @@
   String termsListHTML = (String) session.getAttribute("termsListHTML");
   if (termsListHTML == null)
     termsListHTML = "";
+  
+  String queryTextHTML = "";  
+  String queryText = (String) session.getAttribute("queryText");
+  if (!queryText.isEmpty()) {
+    queryTextHTML = String.format("Query: %ssimpleSearch?%s<br/><br/>", basePath, queryText);
+  }
 
   String mapButtonHTML = (String) request.getAttribute("mapButtonHTML");
   if (mapButtonHTML == null)
@@ -97,6 +103,8 @@
 	</table>
 			    
 			    <%=termsListHTML%>
+			    
+			    <%=queryTextHTML%>
 			          
 			    <%=searchResult%>
 			    

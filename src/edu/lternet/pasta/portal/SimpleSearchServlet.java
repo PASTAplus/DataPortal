@@ -127,9 +127,24 @@ public class SimpleSearchServlet extends DataPortalServlet {
 		if (uid == null || uid.isEmpty()) uid = "public";
 		
 		String userInput = (String) request.getParameter("terms");
-		String start = (String) request.getParameter("start");
-		String rows = (String) request.getParameter("rows");
+		String startParam = (String) request.getParameter("start");
+		String rowsParam = (String) request.getParameter("rows");
 		String sort = (String) request.getParameter("sort");
+		int start, rows;
+		
+		if (startParam == null || startParam.equals("")) {
+			start = Search.DEFAULT_START;
+		}
+		else {
+			start = Integer.parseInt(startParam);
+		}
+		
+		if (rowsParam == null || rowsParam.equals("")) {
+			rows = Search.DEFAULT_ROWS;
+		}
+		else {
+			rows = Integer.parseInt(rowsParam);
+		}
 		
 		if (sort == null || sort.equals("")) {
 			sort = Search.DEFAULT_SORT;
@@ -145,11 +160,11 @@ public class SimpleSearchServlet extends DataPortalServlet {
 				termsListHTML = (String) httpSession.getAttribute("termsListHTML");
 			}
 			else {
-				queryText = q;
+				queryText = String.format("q=%s", q);
 			}
 			
 			if (queryText != null) {
-				queryText = String.format("%s&start=%s&rows=%s&sort=%s", queryText, start, rows, sort);
+				queryText = String.format("%s&start=%d&rows=%d&sort=%s", queryText, start, rows, sort);
 				resultSetUtility = executeQuery(uid, queryText, sort);
 				if (resultSetUtility != null) {
 					mapButtonHTML = resultSetUtility.getMapButtonHTML();
