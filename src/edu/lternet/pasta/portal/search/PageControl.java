@@ -16,10 +16,10 @@ public class PageControl {
 	 */
 	
 	private final String SPACER = "&nbsp;&nbsp;&nbsp;";
-	private final String ASCENDING = "  <big><big>&#8679;</big></big>";  // up arrow character
-	private final String DESCENDING = "  <big><big>&#8681;</big></big>"; // down arrow character
-	private final String UNSORTED = "  <big><big>&#8691;</big></big>";    // updown arrow character
-	
+	private final String ASCENDING =  "  &#x25B2;";             // up character
+	private final String DESCENDING = "  &#x25BC;";             // down character
+	private final String UNSORTED =   "  &#x25B4;/&#x25BE;";    // up/down characters
+
 	
 	/*
 	 * Instance variables
