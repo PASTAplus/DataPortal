@@ -94,12 +94,51 @@ public class SimpleSearchServlet extends DataPortalServlet {
    * @throws IOException
    *           if an error occurred
    */
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-	  doPost(request, response);
-  }
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession httpSession = request.getSession();
+		ResultSetUtility resultSetUtility = null;
+		String termsListHTML = "";
+		String htmlTable = "";
+		String mapButtonHTML = "";
+		String relevanceHTML = "";
+		String queryText = request.getQueryString();
+		String sort = Search.DEFAULT_SORT;
 
+		String q = (String) request.getParameter("q");
+
+		if (q == null || q.equals("")) {
+			doPost(request, response);
+		} 
+		else {
+			String uid = (String) httpSession.getAttribute("uid");
+			if (uid == null || uid.isEmpty())
+				uid = "public";
+
+			resultSetUtility = executeQuery(uid, queryText, sort);
+			if (resultSetUtility != null) {
+				mapButtonHTML = resultSetUtility.getMapButtonHTML();
+				relevanceHTML = resultSetUtility.getRelevanceHTML();
+				htmlTable = resultSetUtility.getHTMLTable();
+			}
+			
+			httpSession.setAttribute("termsListHTML", termsListHTML);
+			httpSession.setAttribute("queryText", queryText);
+			dispatchRequest(request, response, mapButtonHTML, relevanceHTML, htmlTable);
+		}
+	}
+	
+	
+	private void dispatchRequest(HttpServletRequest request, HttpServletResponse response,
+			String mapButtonHTML, String relevanceHTML, String htmlTable)
+					throws ServletException, IOException  {
+		request.setAttribute("mapButtonHTML", mapButtonHTML);
+		request.setAttribute("relevanceHTML", relevanceHTML);
+		request.setAttribute("searchresult", htmlTable);
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
+		requestDispatcher.forward(request, response);
+	}
   
+	
   /**
    * The doPost method of the servlet. <br>
    * 
@@ -126,7 +165,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
 		String uid = (String) httpSession.getAttribute("uid");
 		if (uid == null || uid.isEmpty()) uid = "public";
 		
-		String userInput = (String) request.getParameter("terms");
+		String termsParam = (String) request.getParameter("terms");
 		String startParam = (String) request.getParameter("start");
 		String rowsParam = (String) request.getParameter("rows");
 		String sort = (String) request.getParameter("sort");
@@ -150,7 +189,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
 			sort = Search.DEFAULT_SORT;
 		}
 		
-		if (userInput == null || userInput.equals("")) {
+		if (termsParam == null || termsParam.equals("")) {
 			String queryText = null;
 			String q = (String) request.getParameter("q");
 			
@@ -158,9 +197,6 @@ public class SimpleSearchServlet extends DataPortalServlet {
 				// if no q param was passed, look for query stored in the session
 				queryText = (String) httpSession.getAttribute("queryText");
 				termsListHTML = (String) httpSession.getAttribute("termsListHTML");
-			}
-			else {
-				queryText = String.format("q=%s", q);
 			}
 			
 			if (queryText != null) {
@@ -175,7 +211,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
 		}
 		else {
 			SimpleSearch simpleSearch = new SimpleSearch();
-			String queryText = simpleSearch.buildSolrQuery(userInput, false);
+			String queryText = simpleSearch.buildSolrQuery(termsParam, false);
 			TermsList termsList = simpleSearch.getTermsList();
 			termsListHTML = termsList.toHTML();
 			httpSession.setAttribute("termsListHTML", termsListHTML);
@@ -189,11 +225,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
 			}
 		}
 
-		request.setAttribute("mapButtonHTML", mapButtonHTML);
-		request.setAttribute("relevanceHTML", relevanceHTML);
-		request.setAttribute("searchresult", htmlTable);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
-		requestDispatcher.forward(request, response);
+		dispatchRequest(request, response, mapButtonHTML, relevanceHTML, htmlTable);
 	}
 	
 	

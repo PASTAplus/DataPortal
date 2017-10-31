@@ -16,7 +16,7 @@
   String queryTextHTML = "";  
   String queryText = (String) session.getAttribute("queryText");
   if (!queryText.isEmpty()) {
-    queryTextHTML = String.format("Query: %ssimpleSearch?%s<br/><br/>", basePath, queryText);
+    queryTextHTML = String.format("<p><a class='searchsubcat' href='%ssimpleSearch?%s'>Query URL</a></p>", basePath, queryText);
   }
 
   String mapButtonHTML = (String) request.getAttribute("mapButtonHTML");
@@ -95,18 +95,15 @@
 			<td>			
 				<%=mapButtonHTML%>
 			</td>
-			<td>&nbsp;</td>
 			<td>
 				<%=relevanceHTML%>
 			</td>
 		</tr>
 	</table>
-			    
-			    <%=termsListHTML%>
-			    
+
 			    <%=queryTextHTML%>
-			          
-			    <%=searchResult%>
+                <%=termsListHTML%>
+				<%=searchResult%>
 			    
 						  </div>
 		 		    </div>
