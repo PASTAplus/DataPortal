@@ -18,7 +18,7 @@ public class PageControl {
 	private final String SPACER = "&nbsp;&nbsp;&nbsp;";
 	private final String ASCENDING =  "  &#x25B2;";             // up character
 	private final String DESCENDING = "  &#x25BC;";             // down character
-	private final String UNSORTED =   "  &#x25B4;/&#x25BE;";    // up/down characters
+	private final String UNSORTED =   "  &#x25B5;&#x25BF;";    // up/down characters
 
 	
 	/*
