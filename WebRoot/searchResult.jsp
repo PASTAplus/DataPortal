@@ -13,12 +13,10 @@
   if (termsListHTML == null)
     termsListHTML = "";
   
-  String queryTextHTML = "";  
   String queryText = (String) session.getAttribute("queryText");
   String queryURL = "";
   if (!queryText.isEmpty()) {
     queryURL = String.format("%ssimpleSearch?%s", basePath, queryText);
-    queryTextHTML = String.format("<p><a class='searchsubcat' href='%ssimpleSearch?%s'>Query URL</a></p>", basePath, queryText);
   }
 
   String mapButtonHTML = (String) request.getAttribute("mapButtonHTML");
