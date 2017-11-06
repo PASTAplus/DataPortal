@@ -81,7 +81,7 @@
 									  <label class="labelBold text-align-right">User Name:</label>
 									</div>
 									<div class="table-cell">
-									   <input type="text" name="uid" size="25px" required="required" autocomplete="on" autofocus />
+									   <input type="text" name="uid" required="required" autocomplete="on" autofocus />
 									</div>
 								</div>
                                 <div class="table-row">
@@ -89,7 +89,7 @@
                                       <label class="labelBold text-align-right">Affiliation:</label>
                                     </div>
                                     <div class="table-cell">
-                                        <select class="select-width-fixed" name="affiliation">
+                                        <select id="login-select" class="select-width-auto" name="affiliation">
                                             <option value="EDI">EDI</option>
                                             <option value="LTER" selected="selected">LTER</option>
                                         </select>
@@ -100,7 +100,7 @@
 									  <label class="labelBold text-align-right">Password:</label>
 									</div>
 									<div class="table-cell">
-									  <input type="password" name="password" size="25px" required="required" />
+									  <input type="password" name="password" required="required" />
 									</div>
 							  </div>
 								<div class="table-row">

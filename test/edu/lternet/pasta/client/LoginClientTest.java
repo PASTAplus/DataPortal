@@ -120,7 +120,7 @@ public class LoginClientTest {
 	public void testLoginClientGoodUser() {
 
 		try {
-			this.loginClient = new LoginClient(uid, password);
+			this.loginClient = new LoginClient(uid, "LTER", password);
 		} catch (PastaAuthenticationException e) {
 			fail("Good user '" + uid + "' failed to authenticate.");
 		}
@@ -135,7 +135,7 @@ public class LoginClientTest {
 		password = "badpassword";
 
 		try {
-			this.loginClient = new LoginClient(uid, password);
+			this.loginClient = new LoginClient(uid, "LTER", password);
 		} catch (PastaAuthenticationException e) {
 			// This exception should be caught in this test.
 			logger.error("PastaAuthenticationException with call to LoginService: "

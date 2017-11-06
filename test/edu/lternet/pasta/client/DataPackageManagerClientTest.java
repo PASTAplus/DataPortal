@@ -153,7 +153,7 @@ public class DataPackageManagerClientTest {
      * Authenticate the test user
      */
     try {
-      LoginClient loginClient = new LoginClient(testUser, password);
+      LoginClient loginClient = new LoginClient(testUser, "LTER", password);
       System.err.println("User '" + testUser + "' authenticated.");
     } 
     catch (PastaAuthenticationException e) {
