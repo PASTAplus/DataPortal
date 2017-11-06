@@ -84,6 +84,14 @@
 									   <input type="text" name="uid" required="required" autocomplete="on" autofocus />
 									</div>
 								</div>
+								<div class="table-row">
+									<div class="table-cell">
+									  <label class="labelBold text-align-right">Password:</label>
+									</div>
+									<div class="table-cell">
+									  <input type="password" name="password" required="required" />
+									</div>
+							    </div>
                                 <div class="table-row">
                                     <div class="table-cell">
                                       <label class="labelBold text-align-right">Affiliation:</label>
@@ -95,14 +103,6 @@
                                         </select>
                                     </div>
                                 </div>
-								<div class="table-row">
-									<div class="table-cell">
-									  <label class="labelBold text-align-right">Password:</label>
-									</div>
-									<div class="table-cell">
-									  <input type="password" name="password" required="required" />
-									</div>
-							  </div>
 								<div class="table-row">
 									<div class="table-cell">
 									</div>
