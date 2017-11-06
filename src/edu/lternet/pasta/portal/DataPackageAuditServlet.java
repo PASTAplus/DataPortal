@@ -209,7 +209,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     if (userIdParam != null && !userIdParam.isEmpty()) {
       String userParam = "public";
       if (!userIdParam.equalsIgnoreCase(userParam)) {
-        userParam = PastaClient.composeDistinguishedName(userIdParam);
+        userParam = PastaClient.composeDistinguishedName(userIdParam, "LTER");
       }
       filter.append("user=" + userParam + "&");
     }

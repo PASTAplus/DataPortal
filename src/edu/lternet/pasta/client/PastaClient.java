@@ -149,13 +149,20 @@ public class PastaClient {
    * @return     The distinguished name, 
    *               e.g. "uid=ucarroll,o=LTER,dc=ecoinformatics,dc=org"
    */
-	public static String composeDistinguishedName(String uid) {
+	public static String composeDistinguishedName(String uid, String affiliation) {
 		String uidTrimmed = "";
+		String distinguishedTail = "o=LTER,dc=ecoinformatics,dc=org";
+		
+		if (affiliation != null && affiliation.equalsIgnoreCase("EDI")) {
+			distinguishedTail = "o=EDI,dc=edirespository,dc=org";
+		}
 		
 		if (uid != null) {
 			uidTrimmed = uid.trim();
 		}
-		String distinguishedName = "uid=" + uidTrimmed + ",o=LTER,dc=ecoinformatics,dc=org";
+		
+		String distinguishedName = String.format("uid=%s,%s", 
+				                                 uidTrimmed, distinguishedTail);
 
 		return distinguishedName;
 	}  

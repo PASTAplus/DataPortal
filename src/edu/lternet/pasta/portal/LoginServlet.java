@@ -120,6 +120,7 @@ public class LoginServlet extends DataPortalServlet {
     String from = (String) httpSession.getAttribute("from");
 
     String uid = request.getParameter("uid");
+    String affiliation = request.getParameter("affiliation");
     
 	if (uid != null) {
 		uid = uid.trim();
@@ -130,7 +131,7 @@ public class LoginServlet extends DataPortalServlet {
 
     try {
 
-      new LoginClient(uid, password);
+      new LoginClient(uid, affiliation, password);
       httpSession.setAttribute("uid", uid);
 
       if (from == null || from.isEmpty()) {

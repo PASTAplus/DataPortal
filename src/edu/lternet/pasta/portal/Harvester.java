@@ -163,7 +163,7 @@ public class Harvester implements Runnable {
        * Authenticate the test user
        */
       try {
-        LoginClient loginClient = new LoginClient(uid, password);
+        LoginClient loginClient = new LoginClient(uid, "LTER", password);
       } 
       catch (PastaAuthenticationException e) {
         logger.error("User '" + uid + "' failed to authenticate.");

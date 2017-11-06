@@ -84,6 +84,17 @@
 									   <input type="text" name="uid" size="25px" required="required" autocomplete="on" autofocus />
 									</div>
 								</div>
+                                <div class="table-row">
+                                    <div class="table-cell">
+                                      <label class="labelBold text-align-right">Affiliation:</label>
+                                    </div>
+                                    <div class="table-cell">
+                                        <select class="select-width-fixed" name="affiliation">
+                                            <option value="EDI">EDI</option>
+                                            <option value="LTER" selected="selected">LTER</option>
+                                        </select>
+                                    </div>
+                                </div>
 								<div class="table-row">
 									<div class="table-cell">
 									  <label class="labelBold text-align-right">Password:</label>

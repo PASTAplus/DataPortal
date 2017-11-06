@@ -96,7 +96,7 @@ public class LoginClient {
    * 
    * @throws PastaAuthenticationException
    */
-  public LoginClient(String uid, String password)
+  public LoginClient(String uid, String affiliation, String password)
       throws PastaAuthenticationException {
 
     Configuration options = ConfigurationListener.getOptions();
@@ -108,7 +108,7 @@ public class LoginClient {
     String pastaUrl = PastaClient.composePastaUrl(this.pastaProtocol, this.pastaHost, this.pastaPort);
     this.LOGIN_URL = pastaUrl + "/package/";
 
-    String token = this.login(uid, password);
+    String token = this.login(uid, affiliation, password);
 
     if (token == null) {
       String gripe = "User '" + uid + "' did not successfully authenticate.";
@@ -166,10 +166,10 @@ public class LoginClient {
    * @return The authentication token as a String object if the login is
    *         successful.
    */
-  private String login(String uid, String password) {
+  private String login(String uid, String affiliation, String password) {
 
     String token = null;
-    String username = PastaClient.composeDistinguishedName(uid);
+    String username = PastaClient.composeDistinguishedName(uid, affiliation);
 
     /*
      * The following set of code sets up Preemptive Authentication for the HTTP

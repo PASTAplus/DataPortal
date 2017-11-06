@@ -197,7 +197,7 @@ public class AuditReportServlet extends DataPortalServlet {
     if (userIdParam != null && !userIdParam.isEmpty()) {
       String userParam = "public";
       if (!userIdParam.equalsIgnoreCase(userParam)) {
-        userParam = PastaClient.composeDistinguishedName(userIdParam);
+        userParam = PastaClient.composeDistinguishedName(userIdParam, "LTER");
       }
     	if (filter.length() == 0) {
     		filter.append("user=" + userParam);
