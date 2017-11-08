@@ -154,7 +154,7 @@ public class PastaClient {
 		String distinguishedTail = "o=LTER,dc=ecoinformatics,dc=org";
 		
 		if (affiliation != null && affiliation.equalsIgnoreCase("EDI")) {
-			distinguishedTail = "o=EDI,dc=edirespository,dc=org";
+			distinguishedTail = "o=EDI,dc=edirepository,dc=org";
 		}
 		
 		if (uid != null) {
