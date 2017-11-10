@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.LoginClient;
 import edu.lternet.pasta.client.PastaAuthenticationException;
+import edu.lternet.pasta.client.PastaClient;
 import edu.lternet.pasta.token.TokenManager;
 
 /**
@@ -133,6 +134,8 @@ public class LoginServlet extends DataPortalServlet {
 
       new LoginClient(uid, affiliation, password);
       httpSession.setAttribute("uid", uid);
+      String distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
+      httpSession.setAttribute("distinguishedName", distinguishedName);
 
       if (from == null || from.isEmpty()) {
         forward = "./home.jsp";

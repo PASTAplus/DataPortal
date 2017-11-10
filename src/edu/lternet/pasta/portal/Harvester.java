@@ -66,11 +66,14 @@ public class Harvester implements Runnable {
   
   
   /*
+   * Class methods
+   */
+  
+  /*
    * Instance variables
    */
   
   private int dummyPackageIdCounter = 1;
-  private String harvesterPath = null;
   private String harvestReportId = null;
   private String harvestDirPath = null;
   private boolean evaluate;
@@ -87,16 +90,16 @@ public class Harvester implements Runnable {
   /**
    * Constructs a Harvester object with the specified values.
    * 
-   * @param harvesterPath  the directory under which harvest results are stored
+   * @param harvesterPathSubdir  the directory under which harvest results are stored for this uid
+   *           e.g. "/home/pasta/local/harvester/LTER-ecoinformatics-org"
    * @param harvestReportId  the harvest report identifier
    * @param uid  the user identifier, e.g. "ucarroll"
    * @param isEvaluate  true if evaluate, false if upload
    */
-  public Harvester(String harvesterPath, String harvestReportId, String uid, 
+  public Harvester(String harvesterPathSubdir, String harvestReportId, String uid, 
 		           boolean isEvaluate, boolean useChecksum) {
-    this.harvesterPath = harvesterPath;
     this.harvestReportId = harvestReportId;	
-	this.harvestDirPath = String.format("%s/%s", harvesterPath, harvestReportId);
+	this.harvestDirPath = String.format("%s/%s", harvesterPathSubdir, harvestReportId);
     this.uid = uid;
     this.evaluate = isEvaluate;
     this.useChecksum = useChecksum;
@@ -143,6 +146,7 @@ public class Harvester implements Runnable {
     }
     else {
       String harvesterPath = options.getString("harvester.path");
+      String harvesterPathSubdir = String.format("%s/LTER-ecoinformatics-org", harvesterPath);
       uid = options.getString("eventservice.uid");
       if (uid == null) {
         logger.error("No value found for property: 'eventservice.uid'");
@@ -153,7 +157,7 @@ public class Harvester implements Runnable {
       boolean isEvaluate = true;
       boolean useChecksum = true;
       String harvestReportId = uid + "-evaluate";
-      Harvester harvester = new Harvester(harvesterPath, harvestReportId, uid, isEvaluate, useChecksum);
+      Harvester harvester = new Harvester(harvesterPathSubdir, harvestReportId, uid, isEvaluate, useChecksum);
       password = options.getString("eventservice.password");
       if (password == null) {
         logger.error("No value found for property: 'eventservice.password'");
@@ -290,16 +294,6 @@ public class Harvester implements Runnable {
     return sb.toString();
   }
   
-  
-  /**
-   * Accesses the harvesterPath value.
-   * 
-   * @return  harvesterPath
-   */
-  public String getHarvesterPath() {
-	  return harvesterPath;
-  }
-
   
   /**
    * Accesses the harvestReportId value.

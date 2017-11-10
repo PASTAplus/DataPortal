@@ -26,6 +26,7 @@ package edu.lternet.pasta.portal;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +71,19 @@ public class HarvestReportManager implements Runnable {
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
-		cleanExpiredReports(harvestReportPath, ttl);
+		File file = new File(harvestReportPath);
+
+		File[] directories = file.listFiles(new FilenameFilter() {
+		  @Override
+		  public boolean accept(File current, String name) {
+		    return new File(current, name).isDirectory();
+		  }
+		});
+		
+		for (File directory : directories) {
+			String dataPath = directory.getPath();
+			cleanExpiredReports(dataPath, ttl);
+		}
 	}
 	
 

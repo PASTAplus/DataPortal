@@ -10,6 +10,7 @@
   String basePath = request.getScheme() + "://" + request.getServerName()
       + ":" + request.getServerPort() + path + "/";
 
+  String distinguishedName = (String) session.getAttribute("distinguishedName");
   String uid = (String) session.getAttribute("uid");
   
   if (uid == null || uid.isEmpty()) {
@@ -27,15 +28,15 @@
   }
 
   HarvestReport harvestReport = new HarvestReport();
-  String newestReportID = harvestReport.newestHarvestReport(uid);
+  String newestReportID = harvestReport.newestHarvestReport(distinguishedName, uid);
   String harvestReportHTML = null;
   String harvestReportID = (String) session.getAttribute("harvestReportID");
   
   if (harvestReportID != null && harvestReportID.length() > 0) {
-    harvestReportHTML = harvestReport.harvestReportHTML(harvestReportID);
+    harvestReportHTML = harvestReport.harvestReportHTML(distinguishedName, harvestReportID);
   } 
   else if (newestReportID != null && newestReportID.length() > 0) {
-    harvestReportHTML = harvestReport.harvestReportHTML(newestReportID);
+    harvestReportHTML = harvestReport.harvestReportHTML(distinguishedName, newestReportID);
     harvestReportID = newestReportID;
   }
   
@@ -43,7 +44,7 @@
     harvestReportHTML = "";
   }
 
-  String harvestReportList = harvestReport.composeHarvestReports(uid, harvestReportID);
+  String harvestReportList = harvestReport.composeHarvestReports(distinguishedName, uid, harvestReportID);
   long daysToLive = HarvestReportServlet.harvesterReportDaysToLive;
 %>
 

@@ -158,6 +158,7 @@ public class HarvesterServlet extends DataPortalServlet {
 		boolean isDesktopUpload = false;
 		boolean isEvaluate = false;
 		String uid = (String) httpSession.getAttribute("uid");
+		String distinguishedName = (String) httpSession.getAttribute("distinguishedName");
 		String urlTextArea = null;
 		String warningMessage = "";
 		boolean useChecksum = false;
@@ -167,6 +168,14 @@ public class HarvesterServlet extends DataPortalServlet {
 				throw new PastaAuthenticationException(LOGIN_WARNING);
 			}
 			else {
+				
+				String harvesterPathSubdir = 
+					HarvestReport.composeHarvesterPathSubdir(harvesterPath, distinguishedName);
+				
+				// Create the sub-directory if it doesn't already exist
+			    File dirFile = new File(harvesterPathSubdir);
+			    if (dirFile != null && !dirFile.exists()) { dirFile.mkdirs(); }
+				
 				/*
 				 * The "metadataSource" request parameter can have a value of
 				 * "emlText", "emlFile", "urlList", "harvestList", or
@@ -329,7 +338,7 @@ public class HarvesterServlet extends DataPortalServlet {
 				}
 
 				if (harvester == null) {
-					harvester = new Harvester(harvesterPath,
+					harvester = new Harvester(harvesterPathSubdir,
 						harvestReportId, uid, isEvaluate, useChecksum);
 				}
 
@@ -626,5 +635,5 @@ public class HarvesterServlet extends DataPortalServlet {
     
     return fileName;
   }
-
+  
 }
