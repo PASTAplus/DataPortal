@@ -205,20 +205,20 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     	filter.append("resourceId=" + resourceId + "&");
     }
 
+    String affiliation = (String) request.getParameter("affiliation");
+    if (affiliation == null || affiliation.isEmpty()) {
+    	affiliation = "LTER";
+    }
+    
     String userIdParam = (String) request.getParameter("userId");
     if (userIdParam != null && !userIdParam.isEmpty()) {
       String userParam = "public";
       if (!userIdParam.equalsIgnoreCase(userParam)) {
-        userParam = PastaClient.composeDistinguishedName(userIdParam, "LTER");
+        userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
       }
       filter.append("user=" + userParam + "&");
     }
     
-    String groupParam = (String) request.getParameter("group");
-    if (groupParam != null && !groupParam.isEmpty()) {
-    	filter.append("group=" + groupParam + "&");
-    }
-
     if (limit != null && !limit.isEmpty()) {
     	if (filter.length() == 0) {
     		filter.append("limit=" + limit);

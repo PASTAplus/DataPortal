@@ -274,24 +274,21 @@
 												</td>
 											</tr>
 										</table>
-										<table>
-											<tr>
-												<td>
-												  <label class="labelBold">User Name:</label>
-												</td>
-												<td>
-												  <label class="labelBold">Group:</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-												  <input name="userId" size="15" type="text" />
-												</td>
-												<td>
-												  <input name="group" size="15" type="text" />
-												</td>
-											</tr>
-										</table>
+                                        <div class="display-table">
+                                            <div class="table-row">
+                                                <div class="table-cell">
+                                                  <label class="labelBold">User Name:</label>
+                                                  <input name="userId" size="15" type="text" />
+                                                </div>
+                                                <div class="table-cell">
+                                                    <label class="labelBold">Affiliation:</label>
+                                                    <select id="affiliation" class="select-width-auto" name="affiliation">
+                                                        <option value="EDI">EDI</option>
+                                                        <option value="LTER" selected="selected">LTER</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
 										<table>
 											<tr>
 												<td>
