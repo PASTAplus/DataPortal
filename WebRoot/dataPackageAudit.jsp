@@ -190,7 +190,7 @@
                                                 </div>
                                                 <div class="table-cell">
                                                     <label class="labelBold">Affiliation:</label>
-                                                    <select id="affiliation" class="select-width-auto" name="affiliation">
+                                                    <select id="affiliation-select" class="select-width-auto" name="affiliation">
                                                         <option value="EDI">EDI</option>
                                                         <option value="LTER" selected="selected">LTER</option>
                                                     </select>
