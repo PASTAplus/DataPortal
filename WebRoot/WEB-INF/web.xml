@@ -212,6 +212,12 @@
     <servlet-class>edu.lternet.pasta.portal.SavedDataServlet</servlet-class>
   </servlet>
   <servlet>
+    <description>User Browse Servlet</description>
+    <display-name>UserBrowseServlet</display-name>
+    <servlet-name>UserBrowseServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.UserBrowseServlet</servlet-class>
+  </servlet>
+  <servlet>
     <description>Map Search Servlet</description>
     <display-name>MapSearchServlet</display-name>
     <servlet-name>MapSearchServlet</servlet-name>
@@ -350,6 +356,10 @@
   <servlet-mapping>
     <servlet-name>SavedDataServlet</servlet-name>
     <url-pattern>/savedDataServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UserBrowseServlet</servlet-name>
+    <url-pattern>/userBrowseServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>MapSearchServlet</servlet-name>
