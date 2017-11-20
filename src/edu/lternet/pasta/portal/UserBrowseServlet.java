@@ -35,9 +35,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.apache.log4j.Logger;
 
-import edu.lternet.pasta.client.AuditManagerClient;
 import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.ReportUtility;
 import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
 
@@ -149,7 +147,7 @@ public class UserBrowseServlet extends DataPortalServlet {
 				request.setAttribute("html", html);
 				request.setAttribute("count", count.toString());
 				if (count < 1) {
-					browseMessage = String.format("No data packages have been uploaded by user '%s'",
+					browseMessage = String.format("No data packages have been uploaded by user '%s'.",
 							                      distinguishedName);
 				}
 				request.setAttribute("browsemessage", browseMessage);
