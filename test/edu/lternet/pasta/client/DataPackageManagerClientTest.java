@@ -98,9 +98,9 @@ public class DataPackageManagerClientTest {
       fail("Failed to load the DataPortal properties file: 'dataportal.properties'");
     }
     else {
-      testUser = options.getString("eventservice.uid");
+      testUser = options.getString("eventservice.username");
       if (testUser == null) {
-        fail("No value found for property: 'eventservice.uid'");
+        fail("No value found for property: 'eventservice.username'");
       }
       password = options.getString("eventservice.password");
       if (password == null) {
@@ -153,7 +153,7 @@ public class DataPackageManagerClientTest {
      * Authenticate the test user
      */
     try {
-      LoginClient loginClient = new LoginClient(testUser, "LTER", password);
+      LoginClient loginClient = new LoginClient(testUser, password);
       System.err.println("User '" + testUser + "' authenticated.");
     } 
     catch (PastaAuthenticationException e) {

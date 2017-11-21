@@ -89,14 +89,14 @@ public class LoginClient {
    * user's authentication is successful, place the user's authentication token
    * into the "tokenstore" for future use.
    * 
-   * @param uid
-   *          The user identifier.
+   * @param distinguishedName
+   *          The user distinguished name, e.g. "uid=EDI,o=EDI,dc=edirepository,dc=org"
    * @param password
    *          The user password.
    * 
    * @throws PastaAuthenticationException
    */
-  public LoginClient(String uid, String affiliation, String password)
+  public LoginClient(String distinguishedName, String password)
       throws PastaAuthenticationException {
 
     Configuration options = ConfigurationListener.getOptions();
@@ -108,15 +108,15 @@ public class LoginClient {
     String pastaUrl = PastaClient.composePastaUrl(this.pastaProtocol, this.pastaHost, this.pastaPort);
     this.LOGIN_URL = pastaUrl + "/package/";
 
-    String token = this.login(uid, affiliation, password);
+    String token = this.login(distinguishedName, password);
 
     if (token == null) {
-      String gripe = "User '" + uid + "' did not successfully authenticate.";
+      String gripe = "User '" + distinguishedName + "' did not successfully authenticate.";
       throw new PastaAuthenticationException(gripe);
     } else {
       TokenManager tokenManager = new TokenManager();
       try {
-        tokenManager.setToken(uid, token);
+        tokenManager.setToken(distinguishedName, token);
       } catch (SQLException e) {
         logger.error(e);
         e.printStackTrace();
@@ -158,18 +158,17 @@ public class LoginClient {
    * authentication (this step should be replaced with a formal PASTA
    * "login service method").
    * 
-   * @param uid
-   *          The user identifier.
+   * @param username
+   *          The user distinguished name, e.g. "uid=EDI,o=EDI,dc=edirepository,dc=org"
    * @param password
    *          The user password.
    * 
    * @return The authentication token as a String object if the login is
    *         successful.
    */
-  private String login(String uid, String affiliation, String password) {
+  private String login(String username, String password) {
 
     String token = null;
-    String username = PastaClient.composeDistinguishedName(uid, affiliation);
 
     /*
      * The following set of code sets up Preemptive Authentication for the HTTP

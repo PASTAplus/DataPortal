@@ -58,7 +58,7 @@ public class ProvenanceFactoryClientTest {
 	private static final Logger logger = Logger
 	    .getLogger(edu.lternet.pasta.client.ProvenanceFactoryClientTest.class);
 
-	private static String uid = null;
+	private static String username = null;
 	private static String password = null;
 	private static String pid = null;
 	private static LoginClient loginClient = null;
@@ -81,9 +81,9 @@ public class ProvenanceFactoryClientTest {
 		if (options == null) {
 			fail("Failed to load the DataPortal properties file: 'dataportal.properties'");
 		} else {
-			uid = options.getString("loginservice.uid");
-			if (uid == null) {
-				fail("No value found for LoginService property: 'loginservice.uid'");
+			username = options.getString("loginservice.username");
+			if (username == null) {
+				fail("No value found for LoginService property: 'loginservice.username'");
 			}
 			password = options.getString("loginservice.password");
 			if (password == null) {
@@ -97,9 +97,9 @@ public class ProvenanceFactoryClientTest {
 		
 		// Authenticate test user
 		try {
-			loginClient = new LoginClient(uid, "LTER", password);
+			loginClient = new LoginClient(username, password);
 		} catch (PastaAuthenticationException e) {
-			fail("User '" + uid + "' failed to authenticate.");
+			fail("User '" + username + "' failed to authenticate.");
 		}
 
 	}
@@ -115,13 +115,13 @@ public class ProvenanceFactoryClientTest {
 
 		// Clean up "tokenstore" database and remove user.
 		try {
-			tokenManager.deleteToken(uid);
+			tokenManager.deleteToken(username);
 		}
 		catch (ClassNotFoundException | SQLException e) {
 			// no-op since we don't want test to fail if token is not found
 		}
 
-		uid = null;
+		username = null;
 		password = null;
 
 	}
@@ -133,7 +133,7 @@ public class ProvenanceFactoryClientTest {
 	@Before
 	public void setUp() throws Exception {
 		try {
-			provenanceFactoryClient = new ProvenanceFactoryClient(uid);
+			provenanceFactoryClient = new ProvenanceFactoryClient(username);
 		}
 		catch (PastaAuthenticationException e) {
 			e.printStackTrace();

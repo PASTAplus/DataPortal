@@ -93,12 +93,12 @@ public class TokenManager {
                        "8vRbmJ3CFRslvB5WfUqEI2OIhD2h3VyYXq8V7f8X4IZDSHWMWNX" +
                        "YMuxC3eQ+A==";
 
-        String uid = "ucarroll";
+        String username = "uid=ucarroll,o=LTER,dc=ecoinformatics,dc=org";
 
         TokenManager tokenManager = new TokenManager();
 
         try {
-            tokenManager.setToken(uid, token);
+            tokenManager.setToken(username, token);
         }
         catch (SQLException e) {
             logger.error(e);
@@ -110,7 +110,7 @@ public class TokenManager {
         }
 
         try {
-            System.out.println(tokenManager.getToken(uid));
+            System.out.println(tokenManager.getToken(username));
         }
         catch (SQLException e) {
             logger.error(e);
