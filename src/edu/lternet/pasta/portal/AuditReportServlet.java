@@ -193,11 +193,16 @@ public class AuditReportServlet extends DataPortalServlet {
     	}
     }
 
+    String affiliation = (String) request.getParameter("affiliation");
+    if (affiliation == null || affiliation.isEmpty()) {
+    	affiliation = "LTER";
+    }
+    
     String userIdParam = (String) request.getParameter("userId");
     if (userIdParam != null && !userIdParam.isEmpty()) {
       String userParam = "public";
       if (!userIdParam.equalsIgnoreCase(userParam)) {
-        userParam = PastaClient.composeDistinguishedName(userIdParam, "LTER");
+        userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
       }
     	if (filter.length() == 0) {
     		filter.append("user=" + userParam);
@@ -206,15 +211,6 @@ public class AuditReportServlet extends DataPortalServlet {
     	}
     }
 
-    String group = (String) request.getParameter("group");
-    if (group != null && !group.isEmpty()) {
-    	if (filter.length() == 0) {
-    		filter.append("group=" + group);
-    	} else {
-    		filter.append("&group=" + group);
-    	}
-    }
-    
     String code = (String) request.getParameter("code");
     if (code != null && !code.isEmpty() && !code.equalsIgnoreCase("all")) {
     	if (filter.length() == 0) {

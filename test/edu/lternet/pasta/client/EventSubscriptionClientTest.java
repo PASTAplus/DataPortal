@@ -53,7 +53,7 @@ public class EventSubscriptionClientTest {
   private static final Logger logger = Logger
       .getLogger(edu.lternet.pasta.client.EventSubscriptionClientTest.class);
 
-  private static String uid = null;
+  private static String username = null;
   private static String password = null;
   private static String token = null;
 
@@ -76,9 +76,9 @@ public class EventSubscriptionClientTest {
     if (options == null) {
       fail("Failed to load the DataPortal properties file: 'dataportal.properties'");
     } else {
-      uid = options.getString("eventservice.uid");
-      if (uid == null) {
-        fail("No value found for EventService property: 'eventservice.uid'");
+      username = options.getString("eventservice.username");
+      if (username == null) {
+        fail("No value found for EventService property: 'eventservice.username'");
       }
       password = options.getString("eventservice.password");
       if (password == null) {
@@ -107,7 +107,7 @@ public class EventSubscriptionClientTest {
   public void setUp() throws Exception {
 
     this.tokenManager = new TokenManager();
-    this.tokenManager.setToken(uid, token);
+    this.tokenManager.setToken(username, token);
 
   }
 
@@ -117,7 +117,7 @@ public class EventSubscriptionClientTest {
   @After
   public void tearDown() throws Exception {
 
-    this.tokenManager.deleteToken(uid);
+    this.tokenManager.deleteToken(username);
 
   }
 
@@ -125,9 +125,9 @@ public class EventSubscriptionClientTest {
   public void testEventServiceConstructor() {
 
     try {
-      this.eventService = new EventSubscriptionClient(uid);
+      this.eventService = new EventSubscriptionClient(username);
     } catch (PastaAuthenticationException e) {
-      fail("Token does not exist for user '" + uid + "'");
+      fail("Token does not exist for user '" + username + "'");
     } catch (PastaConfigurationException e) {
       fail("EventSubscriptionClient construction failed to perform configuration.");
     }

@@ -135,7 +135,7 @@ public class Harvester implements Runnable {
   public static void main(String[] args) {
     String testURL = "http://trachyte.lternet.edu:8080/testData/NoneSuchBugCountDuplicateEntity.xml";
     //String testMetacatHarvestURL = "http://trachyte.lternet.edu:8080/testData/trachyteHarvestList.xml";
-    String uid = null;
+    String username = null;
     String password = null;
     
     ConfigurationListener.configure();
@@ -147,17 +147,17 @@ public class Harvester implements Runnable {
     else {
       String harvesterPath = options.getString("harvester.path");
       String harvesterPathSubdir = String.format("%s/LTER-ecoinformatics-org", harvesterPath);
-      uid = options.getString("eventservice.uid");
-      if (uid == null) {
-        logger.error("No value found for property: 'eventservice.uid'");
+      username = options.getString("eventservice.username");
+      if (username == null) {
+        logger.error("No value found for property: 'eventservice.username'");
       }
       else {
-        uid = "ucarroll";
+        username = "ucarroll";
       }
       boolean isEvaluate = true;
       boolean useChecksum = true;
-      String harvestReportId = uid + "-evaluate";
-      Harvester harvester = new Harvester(harvesterPathSubdir, harvestReportId, uid, isEvaluate, useChecksum);
+      String harvestReportId = username + "-evaluate";
+      Harvester harvester = new Harvester(harvesterPathSubdir, harvestReportId, username, isEvaluate, useChecksum);
       password = options.getString("eventservice.password");
       if (password == null) {
         logger.error("No value found for property: 'eventservice.password'");
@@ -167,10 +167,10 @@ public class Harvester implements Runnable {
        * Authenticate the test user
        */
       try {
-        LoginClient loginClient = new LoginClient(uid, "LTER", password);
+        LoginClient loginClient = new LoginClient(username, password);
       } 
       catch (PastaAuthenticationException e) {
-        logger.error("User '" + uid + "' failed to authenticate.");
+        logger.error("User '" + username + "' failed to authenticate.");
       }
 
       harvester.documentURLs = new ArrayList<String>();

@@ -53,7 +53,7 @@ public class TokenManagerTest {
 	
 	private static final Logger logger = Logger.getLogger(edu.lternet.pasta.token.TokenManagerTest.class);
 	
-	private static String uid = null;
+	private static String username = null;
 	private static String token = null;
 	private static final String testToken = "dWlkPXVjYXJyb2xsLG89TFRFUixkYz1lY29pbmZvcm1hdGljcyxkYz1vcmcqaHR0cHM6Ly9wYXN0YS5sdGVybmV0LmVkdS9hdXRoZW50aWNhdGlvbioxMzcxMTg5Nzk4NDY5KmF1dGhlbnRpY2F0ZWQ=-DoU9U2H16wEO090IbLXenrGZdR48i+gQo3iJFTSLq3WYZ9VrGJ4dcctmI7AhR1o3VWWG01ezu/uNrkz0b/GpIQWlW2S1oh/qlMveMS9bLX0Azzn/U5JOpiBA4FCG4V/6s7JKp2WD1QWquv1KUk4pUMS7JT+xoBvlEMpLhrUIpj7k+u41YuEFhu4lTP4nLrl1yWQkYIzBULYuqx+B0bXeLCYAXJgpljs7QgCQAMaOGE6iBZSsCeVo8fclN9JiTzS6S52fDeTPnbdgl9iK75UQ1DEHJOggo7IT76gipxVnGhS09cC962RneFie4KnIwB8cRSq/oS0zHCmtUmr6vsZe2w==";
     private static final String testClearTextToken = "uid=ucarroll,o=LTER,dc=ecoinformatics,dc=org*https://pasta.lternet.edu/authentication*1371189798469*authenticated";
@@ -81,9 +81,9 @@ public class TokenManagerTest {
 		if (options == null) {
 			fail("Failed to load the DataPortal properties file: 'dataportal.properties'");
 		} else {
-			uid = options.getString("tokenmanager.uid");
-			if (uid == null) {
-				fail("No value found for DataPortal property: 'tokenmanager.uid'");
+			username = options.getString("tokenmanager.username");
+			if (username == null) {
+				fail("No value found for DataPortal property: 'tokenmanager.username'");
 			}
 			token = options.getString("tokenmanager.token");
 			if (token == null) {
@@ -102,7 +102,7 @@ public class TokenManagerTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		
-		uid = null;
+		username = null;
 		token = null;
 		
 	}
@@ -116,7 +116,7 @@ public class TokenManagerTest {
 		this.tokenManager = new TokenManager();
 
         try {
-            this.tokenManager.setToken(uid, token);
+            this.tokenManager.setToken(username, token);
         } catch (SQLException e) {
             fail("SQL exception with call to setToken: " + e);
         } catch (ClassNotFoundException e) {
@@ -132,7 +132,7 @@ public class TokenManagerTest {
 	public void tearDown() throws Exception {
 
         try {
-            this.tokenManager.deleteToken(uid);
+            this.tokenManager.deleteToken(username);
         } catch (SQLException e) {
             fail("SQL exception with call to deleteToken: " + e);
         } catch (ClassNotFoundException e) {
@@ -147,7 +147,7 @@ public class TokenManagerTest {
 	public void testSetToken() {
 		
 		try {
-			this.tokenManager.setToken(uid, token);		
+			this.tokenManager.setToken(username, token);		
 		} catch (SQLException e) {
 			fail("SQL exception with call to setToken: " + e);
 		} catch (ClassNotFoundException e) {
@@ -162,7 +162,7 @@ public class TokenManagerTest {
 		token = null; 
 		
 		try {
-			token = this.tokenManager.getToken(uid);		
+			token = this.tokenManager.getToken(username);		
 		} catch (SQLException e) {
 			fail("SQL exception with call to getToken: " + e);
 		} catch (ClassNotFoundException e) {
@@ -182,7 +182,7 @@ public class TokenManagerTest {
         String clearTextToken = null;
 
         try {
-            clearTextToken = this.tokenManager.getCleartextToken(uid);
+            clearTextToken = this.tokenManager.getCleartextToken(username);
         }
         catch (SQLException e) {
             fail("SQL exception with call to getToken: " + e);
@@ -202,7 +202,7 @@ public class TokenManagerTest {
         String dn = null;
 
         try {
-            dn = this.tokenManager.getUserDistinguishedName(uid);
+            dn = this.tokenManager.getUserDistinguishedName(username);
         }
         catch (SQLException e) {
             fail("SQL exception with call to getToken: " + e);
@@ -222,7 +222,7 @@ public class TokenManagerTest {
         String authSystem = null;
 
         try {
-            authSystem = this.tokenManager.getTokenAuthenticationSystem(uid);
+            authSystem = this.tokenManager.getTokenAuthenticationSystem(username);
         }
         catch (SQLException e) {
             fail("SQL exception with call to getToken: " + e);
@@ -242,7 +242,7 @@ public class TokenManagerTest {
         Long ttl = null;
 
         try {
-            ttl = this.tokenManager.getTokenTimeToLive(uid);
+            ttl = this.tokenManager.getTokenTimeToLive(username);
         }
         catch (SQLException e) {
             fail("SQL exception with call to getToken: " + e);
@@ -262,7 +262,7 @@ public class TokenManagerTest {
         ArrayList<String> groups = new ArrayList<String>();
 
         try {
-            groups = this.tokenManager.getUserGroups(uid);
+            groups = this.tokenManager.getUserGroups(username);
         }
         catch (SQLException e) {
             fail("SQL exception with call to getToken: " + e);
@@ -284,7 +284,7 @@ public class TokenManagerTest {
         String signature = null;
 
         try {
-            signature = this.tokenManager.getTokenSignature(uid);
+            signature = this.tokenManager.getTokenSignature(username);
         }
         catch (SQLException e) {
             fail("SQL exception with call to getToken: " + e);
@@ -301,7 +301,7 @@ public class TokenManagerTest {
 	public void testDeleteToken() {
 		
 		try {
-			this.tokenManager.deleteToken(uid);
+			this.tokenManager.deleteToken(username);
 		} catch (SQLException e) {
 			fail("SQL exception with call to deleteToken: " + e);
 		} catch (ClassNotFoundException e) {
@@ -310,7 +310,7 @@ public class TokenManagerTest {
 		
 		// Now attempt to read the deleted token from the "tokenstore".
 		try {
-			this.tokenManager.getToken(uid);
+			this.tokenManager.getToken(username);
 		} catch (SQLException e) {
 			// This exception should be caught in this test.
 			logger.error("SQL exception with call to deleteToken: " + e);
@@ -320,7 +320,7 @@ public class TokenManagerTest {
 
         // Add token back into tokenstore
         try {
-            this.tokenManager.setToken(uid, token);
+            this.tokenManager.setToken(username, token);
         } catch (SQLException e) {
             fail("SQL exception with call to setToken: " + e);
         } catch (ClassNotFoundException e) {

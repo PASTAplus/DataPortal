@@ -54,7 +54,7 @@ public class LoginClientTest {
 	private static final Logger logger = Logger
 	    .getLogger(edu.lternet.pasta.client.LoginClientTest.class);
 
-	private static String uid = null;
+	private static String username = null;
 	private static String password = null;
 
 	/*
@@ -75,9 +75,9 @@ public class LoginClientTest {
 		if (options == null) {
 			fail("Failed to load the DataPortal properties file: 'dataportal.properties'");
 		} else {
-			uid = options.getString("loginservice.uid");
-			if (uid == null) {
-				fail("No value found for LoginService property: 'loginservice.uid'");
+			username = options.getString("loginservice.username");
+			if (username == null) {
+				fail("No value found for LoginService property: 'loginservice.username'");
 			}
 			password = options.getString("loginservice.password");
 			if (password == null) {
@@ -96,9 +96,9 @@ public class LoginClientTest {
 		TokenManager tokenManager = new TokenManager();
 
 		// Clean up "tokenstore" database and remove user.
-		tokenManager.deleteToken(uid);
+		tokenManager.deleteToken(username);
 
-		uid = null;
+		username = null;
 		password = null;
 	}
 
@@ -120,9 +120,9 @@ public class LoginClientTest {
 	public void testLoginClientGoodUser() {
 
 		try {
-			this.loginClient = new LoginClient(uid, "LTER", password);
+			this.loginClient = new LoginClient(username, password);
 		} catch (PastaAuthenticationException e) {
-			fail("Good user '" + uid + "' failed to authenticate.");
+			fail("Good user '" + username + "' failed to authenticate.");
 		}
 
 	}
@@ -135,7 +135,7 @@ public class LoginClientTest {
 		password = "badpassword";
 
 		try {
-			this.loginClient = new LoginClient(uid, "LTER", password);
+			this.loginClient = new LoginClient(username, password);
 		} catch (PastaAuthenticationException e) {
 			// This exception should be caught in this test.
 			logger.error("PastaAuthenticationException with call to LoginService: "

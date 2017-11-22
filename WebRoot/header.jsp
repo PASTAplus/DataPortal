@@ -41,18 +41,29 @@
   String loginClass = "";
   String toolsClass = "";
   String requestURI = request.getRequestURI();
-  String pageName = requestURI.substring(requestURI.lastIndexOf("/") + 1, 
+  String pageName = "";
+  
+  if (requestURI.contains(".")) {
+      pageName = requestURI.substring(requestURI.lastIndexOf("/") + 1, 
                                         requestURI.lastIndexOf(".")
                                        );
+  }
+  else {
+      pageName = requestURI.substring(requestURI.lastIndexOf("/") + 1);
+  }
+  
   if (pageName.equals("browse") ||
            pageName.equals("packageIdentifier") ||
            pageName.equals("advancedSearch") ||
-           pageName.equals("savedData")
+           pageName.equals("savedData") ||
+           pageName.equals("dataPackageBrowser")
           ) {
     dataClass = currentClass;
   }
   else if (pageName.equals("help") ||
-           pageName.equals("resources")
+           pageName.equals("resources") ||
+           pageName.equals("about") ||
+           pageName.equals("contact")
           ) {
     helpClass = currentClass;
   }
@@ -115,8 +126,9 @@
 					<li><a href="advancedSearch.jsp">Advanced Search</a> </li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
-					Store Data:</p>
+			        View Your Data:</p>
 					<li><a href="savedDataServlet">Your Data Shelf</a> </li>
+                    <li><a href="userBrowseServlet">Your Uploaded Data</a> </li>
 				</ul>
 				</li>
 				<li<%= toolsClass %>><a href="#">Tools</a>

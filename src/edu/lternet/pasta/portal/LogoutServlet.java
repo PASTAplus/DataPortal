@@ -99,15 +99,16 @@ public class LogoutServlet extends DataPortalServlet {
       throws ServletException, IOException {
 
 		HttpSession httpSession = request.getSession();
-		String uid = (String) httpSession.getAttribute("uid");
+		String username = (String) httpSession.getAttribute("distinguishedName");
 
-    if (uid == null) {
-      logger.error("User identifier \"uid\" is null\n");
+    if (username == null) {
+      logger.error("User distinguished name is null\n");
       httpSession.invalidate();
-    } else {
+    } 
+    else {
       TokenManager tokenManager = new TokenManager();
       try {
-        tokenManager.deleteToken(uid);
+        tokenManager.deleteToken(username);
       }
       catch (Exception e) {
         handleDataPortalError(logger, e);

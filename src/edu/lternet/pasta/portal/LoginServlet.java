@@ -132,9 +132,9 @@ public class LoginServlet extends DataPortalServlet {
 
     try {
 
-      new LoginClient(uid, affiliation, password);
-      httpSession.setAttribute("uid", uid);
       String distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
+      new LoginClient(distinguishedName, password);
+      httpSession.setAttribute("uid", uid);
       httpSession.setAttribute("distinguishedName", distinguishedName);
 
       if (from == null || from.isEmpty()) {
