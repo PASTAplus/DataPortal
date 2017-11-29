@@ -59,6 +59,37 @@ public class LoginServlet extends DataPortalServlet {
       .getLogger(edu.lternet.pasta.portal.LoginServlet.class);
   private static final long serialVersionUID = 1L;
 
+  
+  /**
+   * Class methods
+   */
+  
+  /**
+   * Utility method to derive the uid value from a full distringuished name value.
+   * 
+   * @param dn    
+   *          the full distinguished name, e.g. "uid=jsmith,o=LTER,dc=ecoinformatics,dc=org"
+   *            
+   * @return  the uid value, e.g. "jsmith"
+   */
+  public static String uidFromDistinguishedName(String dn) {
+      String uid = null;
+      
+      if (dn != null && dn.startsWith("uid=")) {
+          String[] dnTokens = dn.split(",");
+          if (dnTokens != null && dnTokens.length > 0) {
+              String uidComponent = dnTokens[0];
+              String[] uidTokens = uidComponent.split("=");
+              if (uidTokens != null && uidTokens.length == 2) {
+                  uid = uidTokens[1];
+              }
+          }
+      }
+      
+      return uid;
+  }
+
+  
   /**
    * Constructor of the object.
    */
@@ -134,8 +165,7 @@ public class LoginServlet extends DataPortalServlet {
 
       String distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
       new LoginClient(distinguishedName, password);
-      httpSession.setAttribute("uid", uid);
-      httpSession.setAttribute("distinguishedName", distinguishedName);
+      httpSession.setAttribute("uid", distinguishedName);
 
       if (from == null || from.isEmpty()) {
         forward = "./home.jsp";

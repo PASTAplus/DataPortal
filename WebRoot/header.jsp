@@ -1,3 +1,4 @@
+<%@ page import="edu.lternet.pasta.portal.LoginServlet" %>
 <%@ page import="edu.lternet.pasta.portal.Tooltip" %>
 <%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
 
@@ -18,7 +19,7 @@
 	} 
 	else {
         identity = "<a id=\"login\" href=\"./logout\">Log Out</a>";
-		uname = uid;
+		uname = LoginServlet.uidFromDistinguishedName(uid);
 		welcomeBack = "Welcome Back";
 	}
 	

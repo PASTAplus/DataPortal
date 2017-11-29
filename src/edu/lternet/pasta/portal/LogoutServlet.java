@@ -99,7 +99,7 @@ public class LogoutServlet extends DataPortalServlet {
       throws ServletException, IOException {
 
 		HttpSession httpSession = request.getSession();
-		String username = (String) httpSession.getAttribute("distinguishedName");
+		String username = (String) httpSession.getAttribute("uid");
 
     if (username == null) {
       logger.error("User distinguished name is null\n");
@@ -122,6 +122,7 @@ public class LogoutServlet extends DataPortalServlet {
     requestDispatcher.forward(request, response);
 
   }
+
 
 	/**
 	 * Initialization of the servlet. <br>

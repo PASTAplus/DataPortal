@@ -157,14 +157,14 @@ public class HarvesterServlet extends DataPortalServlet {
 		String harvestReportId = null;
 		boolean isDesktopUpload = false;
 		boolean isEvaluate = false;
-		String uid = (String) httpSession.getAttribute("uid");
-		String distinguishedName = (String) httpSession.getAttribute("distinguishedName");
+		String distinguishedName = (String) httpSession.getAttribute("uid");
+		String uid = LoginServlet.uidFromDistinguishedName(distinguishedName);
 		String urlTextArea = null;
 		String warningMessage = "";
 		boolean useChecksum = false;
 
 		try {
-			if (uid == null) {
+			if (distinguishedName == null) {
 				throw new PastaAuthenticationException(LOGIN_WARNING);
 			}
 			else {
@@ -339,7 +339,7 @@ public class HarvesterServlet extends DataPortalServlet {
 
 				if (harvester == null) {
 					harvester = new Harvester(harvesterPathSubdir,
-						harvestReportId, uid, isEvaluate, useChecksum);
+						harvestReportId, distinguishedName, isEvaluate, useChecksum);
 				}
 
 				if (emlTextArea != null) {

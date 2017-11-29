@@ -2,6 +2,7 @@
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet"%>
 <%@ page import="edu.lternet.pasta.portal.HarvestReport"%>
 <%@ page import="edu.lternet.pasta.portal.HarvestReportServlet"%>
+<%@ page import="edu.lternet.pasta.portal.LoginServlet" %>
 
 <%
   final String pageTitle = "View Evaluate/Upload Results";
@@ -10,10 +11,10 @@
   String basePath = request.getScheme() + "://" + request.getServerName()
       + ":" + request.getServerPort() + path + "/";
 
-  String distinguishedName = (String) session.getAttribute("distinguishedName");
-  String uid = (String) session.getAttribute("uid");
+  String distinguishedName = (String) session.getAttribute("uid");
+  String uid = LoginServlet.uidFromDistinguishedName(distinguishedName);
   
-  if (uid == null || uid.isEmpty()) {
+  if (distinguishedName == null || distinguishedName.isEmpty()) {
     request.setAttribute("from", "./harvestReport.jsp");
     String loginWarning = DataPortalServlet.getLoginWarning();
     request.setAttribute("message", loginWarning);

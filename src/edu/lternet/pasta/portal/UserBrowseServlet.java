@@ -86,7 +86,7 @@ public class UserBrowseServlet extends DataPortalServlet {
     doPost(request, response);
 
   }
-
+  
   
   /**
    * The doPost method of the servlet. <br>
@@ -105,7 +105,7 @@ public class UserBrowseServlet extends DataPortalServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession httpSession = request.getSession();
 		String uid = (String) httpSession.getAttribute("uid");
-		String distinguishedName = (String) httpSession.getAttribute("distinguishedName");
+		String distinguishedName = (String) httpSession.getAttribute("uid");
 		String forward = null;
 		String browseMessage = "View a data package you have uploaded.";
 
