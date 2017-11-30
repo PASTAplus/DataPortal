@@ -52,17 +52,19 @@ public class CodeGenerationServlet extends DataPortalServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String forward = "./codeGeneration.jsp";
 	
-	private static final String rInstructions =
-		"Download the R program and open it in R to run. Alternatively, you can " +
-	    "copy and paste the program code into the R console.<br/><br/>For datasets that " +
-		"require authenticated access to data tables, you may need to download the " +
-	    "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
-		"is stored on your computer.<br/>&nbsp;";
-	
-    private static final String rtidyInstructions =
+    private static final String rInstructions =
         "Download the R program and open it in R to run. Alternatively, you can " +
         "copy and paste the program code into the R console.<br/><br/>For datasets that " +
         "require authenticated access to data tables, you may need to download the " +
+        "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
+        "is stored on your computer.<br/>&nbsp;";
+        
+    private static final String rtidyInstructions =
+        "Download the R program and open it in R to run. Alternatively, you can " +
+        "copy and paste the program code into the R console. " +
+        "Unless it is already installed, the program will install the R Tidyverse package, " +
+        "which in turn installs a number of dependencies.<br/><br/>" +
+        "For datasets that require authenticated access to data tables, you may need to download the " +
         "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
         "is stored on your computer.<br/>&nbsp;";
         
