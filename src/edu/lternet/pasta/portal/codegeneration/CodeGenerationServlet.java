@@ -59,6 +59,13 @@ public class CodeGenerationServlet extends DataPortalServlet {
 	    "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
 		"is stored on your computer.<br/>&nbsp;";
 	
+    private static final String rtidyInstructions =
+        "Download the R program and open it in R to run. Alternatively, you can " +
+        "copy and paste the program code into the R console.<br/><br/>For datasets that " +
+        "require authenticated access to data tables, you may need to download the " +
+        "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
+        "is stored on your computer.<br/>&nbsp;";
+        
 	private static final String sasInstructions =
 		"Download the .sas program and open it in SAS to run. Alternatively the " +
 		"code may be cut and pasted into the SAS program editor.<br/><br/>For datasets " +
@@ -115,11 +122,13 @@ public class CodeGenerationServlet extends DataPortalServlet {
 		
 		String mLink = String.format("<a class='searchsubcat' href='./codeGeneration?packageId=%s&statisticalFileType=m'>Matlab</a>", packageId);
 		String rLink = String.format("<a class='searchsubcat' href='./codeGeneration?packageId=%s&statisticalFileType=r'>R</a>", packageId);
+        String rtidyLink = String.format("<a class='searchsubcat' href='./codeGeneration?packageId=%s&statisticalFileType=rtidy'>tidyr</a>", packageId);
 		String sasLink = String.format("<a class='searchsubcat' href='./codeGeneration?packageId=%s&statisticalFileType=sas'>SAS</a>", packageId);
 		String spssLink = String.format("<a class='searchsubcat' href='./codeGeneration?packageId=%s&statisticalFileType=spss'>SPSS</a>", packageId);
 		
 		programLinks.add(mLink);
 		programLinks.add(rLink);
+        programLinks.add(rtidyLink);
 		programLinks.add(sasLink);
 		programLinks.add(spssLink);
 		
@@ -198,6 +207,10 @@ public class CodeGenerationServlet extends DataPortalServlet {
 				statisticalFileType = StatisticalFileType.r;
 				instructions = CodeGenerationServlet.rInstructions;
 				break;
+            case "rtidy":
+                statisticalFileType = StatisticalFileType.rtidy;
+                instructions = CodeGenerationServlet.rtidyInstructions;
+                break;
 			case "sas":
 				statisticalFileType = StatisticalFileType.sas;
 				instructions = CodeGenerationServlet.sasInstructions;
