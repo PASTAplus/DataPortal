@@ -98,8 +98,8 @@
                                     </div>
                                     <div class="table-cell">
                                         <select id="affiliation-select" class="select-width-auto" name="affiliation">
-                                            <option value="EDI">EDI</option>
-                                            <option value="LTER" selected="selected">LTER</option>
+                                            <option value="EDI" selected="selected">EDI</option>
+                                            <option value="LTER">LTER</option>
                                         </select>
                                     </div>
                                 </div>
