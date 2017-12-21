@@ -37,6 +37,7 @@ public class JournalCitation {
     int journalCitationId;
     String articleTitle;
     String articleDoi;
+    String articleUrl;
     String principalOwner;
     LocalDateTime dateCreated;
     String packageId;
@@ -93,6 +94,7 @@ public class JournalCitation {
                         String packageId = null;
                         String articleTitle = null;
                         String articleDoi = null;
+                        String articleUrl = null;
                         String journalTitle = null;
                         String principalOwner = null;
                         Node journalCitationNode = journalCitationNodes.item(i);
@@ -107,6 +109,12 @@ public class JournalCitation {
                         if (articleDoiNode != null) {
                             articleDoi = articleDoiNode.getTextContent();
                             journalCitation.setArticleDoi(articleDoi);
+                        }
+
+                        Node articleUrlNode = xpathapi.selectSingleNode(journalCitationNode, "articleUrl");
+                        if (articleUrlNode != null) {
+                            articleUrl = articleUrlNode.getTextContent();
+                            journalCitation.setArticleUrl(articleUrl);
                         }
 
                         Node articleTitleNode = xpathapi.selectSingleNode(journalCitationNode, "articleTitle");
@@ -209,6 +217,12 @@ public class JournalCitation {
               setArticleDoi(articleDoi);
             }
 
+            Node articleUrlNode = xpathapi.selectSingleNode(document, "//articleUrl");
+            if (articleUrlNode != null) {
+              String articleUrl = articleUrlNode.getTextContent();
+              setArticleUrl(articleUrl);
+            }
+
             Node articleTitleNode = xpathapi.selectSingleNode(document, "//articleTitle");
             if (articleTitleNode != null) {
               String articleTitle = articleTitleNode.getTextContent();
@@ -263,11 +277,16 @@ public class JournalCitation {
         sb.append(String.format("    <packageId>%s</packageId>\n", this.packageId)); 
         sb.append(String.format("    <principalOwner>%s</principalOwner>\n", this.principalOwner)); 
         sb.append(String.format("    <dateCreated>%s</dateCreated>\n", getDateCreatedStr())); 
-        sb.append(String.format("    <articleDoi>%s</articleDoi>\n", this.articleDoi));
+        
+        if (this.articleDoi != null)
+            { sb.append(String.format("    <articleDoi>%s</articleDoi>\n", this.articleDoi)); }
         
         if (this.articleTitle != null)
             { sb.append(String.format("    <articleTitle>%s</articleTitle>\n", this.articleTitle)); } 
         
+        if (this.articleUrl != null)
+            { sb.append(String.format("    <articleUrl>%s</articleUrl>\n", this.articleUrl)); } 
+    
         if (this.journalTitle != null)
             { sb.append(String.format("    <journalTitle>%s</journalTitle>\n", this.journalTitle)); } 
         
@@ -281,21 +300,29 @@ public class JournalCitation {
     public String toHTML() {
         String html = null;
         StringBuffer sb = new StringBuffer("");
-        String articleDoiURL = null;
+        String articleDoiUrl = null;
         String articleTitle = getArticleTitle();
         String journalTitle = getJournalTitle();
         
         String articleDoi = getArticleDoi();
         if (articleDoi != null && !articleDoi.isEmpty()) {
-            articleDoiURL = String.format("http://dx.doi.org/%s", articleDoi);
+            articleDoiUrl = String.format("http://dx.doi.org/%s", articleDoi);
         }
         
-        if (articleDoiURL != null) {
+        if (articleUrl != null) {
             if (articleTitle != null && !articleTitle.isEmpty()) {
-                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleDoiURL, articleTitle));
+                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleUrl, articleTitle));
             }
             else {
-                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleDoiURL, articleDoiURL));
+                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleUrl, articleUrl));
+            }
+        }
+        else if (articleDoiUrl != null) {
+            if (articleTitle != null && !articleTitle.isEmpty()) {
+                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleDoiUrl, articleTitle));
+            }
+            else {
+                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleDoiUrl, articleDoiUrl));
             }
         }
         else {
@@ -339,6 +366,14 @@ public class JournalCitation {
 
     public void setArticleDoi(String articleDoi) {
         this.articleDoi = articleDoi;
+    }
+    
+    public String getArticleUrl() {
+        return articleUrl;
+    }
+
+    public void setArticleUrl(String articleUrl) {
+        this.articleUrl = articleUrl;
     }
     
     public int getJournalCitationId() {
