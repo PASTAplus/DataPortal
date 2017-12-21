@@ -20,6 +20,7 @@
   String digitalObjectIdentifier = (String) request.getAttribute("digitalObjectIdentifier");
   String pastaDataObjectIdentifier = (String) request.getAttribute("pastaDataObjectIdentifier");
   String provenanceHTML = (String) request.getAttribute("provenanceHTML");
+  String journalCitationsHTML = (String) request.getAttribute("journalCitationsHTML");
   String codeGenerationHTML = (String) request.getAttribute("codeGenerationHTML");
   String spatialCoverageHTML = (String) request.getAttribute("spatialCoverageHTML");
   String googleMapHTML = (String) request.getAttribute("googleMapHTML");
@@ -38,6 +39,7 @@
   boolean showSpatial = !(spatialCoverageHTML == null || spatialCoverageHTML.isEmpty());
   boolean showCodeGeneration = !(codeGenerationHTML == null || codeGenerationHTML.isEmpty());
   boolean showSavedData = !(savedDataHTML == null || savedDataHTML.isEmpty());
+  boolean showJournalCitations = !(journalCitationsHTML == null || journalCitationsHTML.isEmpty());
   String showCoordinates = "true";
   if ((expandCoordinates != null) && !expandCoordinates) { 
   	showCoordinates = "false";
@@ -325,6 +327,22 @@
 											</ul>
 										</div>											
 									</div>
+
+<c:set var="showJournalCitations" value="<%= showJournalCitations %>"/>
+<c:choose>
+    <c:when test="${showJournalCitations}">
+                                    <div class="table-row">                                     
+                                        <div class="table-cell text-align-right">
+                                            <label class="labelBold">Journal Citations:</label>
+                                        </div>
+                                        <div class="table-cell">
+                                            <ul class="no-list-style">
+                                                <li><%= journalCitationsHTML %></li>
+                                            </ul>
+                                        </div>                                          
+                                    </div>
+    </c:when>
+</c:choose>
 
 							<c:set var="showCodeGeneration" value="<%= showCodeGeneration %>"/>
 							<c:if test="${showCodeGeneration}">

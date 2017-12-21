@@ -925,6 +925,44 @@ public class DataPackageManagerClient extends PastaClient {
 	}
 
 	
+    /**
+     * Executes the 'listPrincipalOwnerCitations' web service method.
+     * 
+     * @param principalOwner  the distinguished name of the user who is listed in the
+     *          'principal_owner' field of the journal citations table
+     * @return an XML string containing a list of <journalCitation> elements encapsulated within a
+     *         <journalCitations> element.
+     * @see <a target="top"
+     *      href="http://package.lternet.edu/package/docs/api">Data Package
+     *      Manager web service API</a>
+     */
+    public String listPrincipalOwnerCitations(String principalOwner) throws Exception {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String url = BASE_URL + "/citations/eml/" + principalOwner;
+        HttpGet httpGet = new HttpGet(url);
+        String entityString = null;
+
+        // Set header content
+        if (this.token != null) {
+            httpGet.setHeader("Cookie", "auth-token=" + this.token);
+        }
+
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            HttpEntity httpEntity = httpResponse.getEntity();
+            entityString = EntityUtils.toString(httpEntity);
+            if (statusCode != HttpStatus.SC_OK) {
+                handleStatusCode(statusCode, entityString);
+            }
+        } finally {
+            closeHttpClient(httpClient);
+        }
+
+        return entityString;
+    }
+
+    
 	/**
 	 * Executes the 'listRecentUploads' web service method.
 	 * 

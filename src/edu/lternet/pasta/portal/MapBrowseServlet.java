@@ -52,8 +52,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
+import edu.lternet.pasta.client.JournalCitationsClient;
 import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
+import edu.lternet.pasta.common.JournalCitation;
 import edu.lternet.pasta.common.ScaledNumberFormat;
 import edu.lternet.pasta.common.UserErrorException;
 import edu.lternet.pasta.common.eml.DataPackage;
@@ -186,6 +188,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String resourcesHTML = "";
 		String citationLinkHTML = "";
 		String provenanceHTML = "";
+        String journalCitationsHTML = "";
 		String codeGenerationHTML = "";
 		String digitalObjectIdentifier = "";
 		String pastaDataObjectIdentifier = "";
@@ -256,6 +259,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				StringBuilder provenanceHTMLBuilder = new StringBuilder();
 				StringBuilder codeGenerationHTMLBuilder = new StringBuilder();
 				StringBuilder savedDataHTMLBuilder = new StringBuilder();
+                StringBuilder journalCitationsHTMLBuilder = new StringBuilder();
 
 				String packageId = null;
 
@@ -281,11 +285,13 @@ public class MapBrowseServlet extends DataPortalServlet {
 				ArrayList<ResponsibleParty> creators = null;
 
 				DataPackageManagerClient dpmClient = null;
+                JournalCitationsClient jcClient = null;
 				RevisionUtility revUtil = null;
 
 				try {
 
 					dpmClient = new DataPackageManagerClient(uid);
+                    jcClient = new JournalCitationsClient(uid);
 					
 					String deletionList = dpmClient.listDeletedDataPackages();
 					wasDeleted = isDeletedDataPackage(deletionList, scope, identifier);
@@ -763,6 +769,22 @@ public class MapBrowseServlet extends DataPortalServlet {
 					}
 				}
 				
+                String journalCitationsXML = jcClient.listDataPackageCitations(scope, id, revision);
+                
+                if ((journalCitationsXML != null) && (journalCitationsXML.length() > 0)) {
+                    ArrayList<JournalCitation> journalCitations = JournalCitation.xmlToJournalCitations(journalCitationsXML);
+                    if ((journalCitations != null) && (journalCitations.size() > 0)) {
+                        journalCitationsHTMLBuilder.append("This data package has been cited in the following journal articles:<br/>");
+                        journalCitationsHTMLBuilder.append("<ol>\n");
+                        for (JournalCitation journalCitation: journalCitations) {
+                            journalCitationsHTMLBuilder.append(String.format("<li>%s</li>", journalCitation.toHTML()));
+                        }
+                        journalCitationsHTMLBuilder.append("</ol>\n");
+                        journalCitationsHTMLBuilder.append("<br/>");
+                        journalCitationsHTML = journalCitationsHTMLBuilder.toString();
+                    }
+                }
+                
 				/*
 				 * Provenance metadata generator
 				 */
@@ -826,6 +848,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("provenanceHTML", provenanceHTML);
 		request.setAttribute("codeGenerationHTML", codeGenerationHTML);
 		request.setAttribute("citationHTML", citationHTML);
+        request.setAttribute("journalCitationsHTML", journalCitationsHTML);
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
 		requestDispatcher.forward(request, response);
