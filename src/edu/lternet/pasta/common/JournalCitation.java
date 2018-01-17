@@ -17,9 +17,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.lternet.pasta.common.eml.DataPackage;
-import edu.lternet.pasta.common.eml.DataPackage.DataSource;
-
 
 public class JournalCitation {
     
@@ -217,16 +214,16 @@ public class JournalCitation {
               setArticleDoi(articleDoi);
             }
 
-            Node articleUrlNode = xpathapi.selectSingleNode(document, "//articleUrl");
-            if (articleUrlNode != null) {
-              String articleUrl = articleUrlNode.getTextContent();
-              setArticleUrl(articleUrl);
-            }
-
             Node articleTitleNode = xpathapi.selectSingleNode(document, "//articleTitle");
             if (articleTitleNode != null) {
               String articleTitle = articleTitleNode.getTextContent();
               setArticleTitle(articleTitle);
+            }
+
+            Node articleUrlNode = xpathapi.selectSingleNode(document, "//articleUrl");
+            if (articleUrlNode != null) {
+              String articleUrl = articleUrlNode.getTextContent();
+              setArticleUrl(articleUrl);
             }
 
             Node journalTitleNode = xpathapi.selectSingleNode(document, "//journalTitle");
@@ -369,7 +366,26 @@ public class JournalCitation {
     }
     
     public String getArticleUrl() {
-        return articleUrl;
+        String url = null;
+        
+        if (this.articleUrl != null) {
+            url = articleUrl;
+        }
+        else {
+            url = deriveUrlFromDoi();
+        }
+        
+        return url;
+    }
+    
+    private String deriveUrlFromDoi() {
+        String url = null;
+        
+        if (this.articleDoi != null) {
+            url = String.format("https://dx.doi.org/%s", this.articleDoi);
+        }
+            
+        return url;
     }
 
     public void setArticleUrl(String articleUrl) {
