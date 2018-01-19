@@ -36,6 +36,18 @@
     <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet>
+    <description>Journal Citation Add Servlet</description>
+    <display-name>Journal Citation Add Servlet</display-name>
+    <servlet-name>JournalCitationAddServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.JournalCitationAddServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>Journal Citation Delete Servlet</description>
+    <display-name>Journal Citation Delete Servlet</display-name>
+    <servlet-name>JournalCitationDeleteServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.JournalCitationDeleteServlet</servlet-class>
+  </servlet>
+  <servlet>
     <description>Event Subscribe Servlet</description>
     <display-name>EventSubscribeServlet</display-name>
     <servlet-name>EventSubscribeServlet</servlet-name>
@@ -240,6 +252,14 @@
   <servlet-mapping>
     <servlet-name>ReserveIdentifierServlet</servlet-name>
     <url-pattern>/reserveidentifier</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JournalCitationAddServlet</servlet-name>
+    <url-pattern>/journalcitationadd</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JournalCitationDeleteServlet</servlet-name>
+    <url-pattern>/journalcitationdelete</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>EventSubscribeServlet</servlet-name>

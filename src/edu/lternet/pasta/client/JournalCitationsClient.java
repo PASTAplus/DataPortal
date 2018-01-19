@@ -390,7 +390,7 @@ public class JournalCitationsClient extends PastaClient {
   }
 
   
-    public String subscriptionTableHTML() throws Exception {
+    public String citationsTableHTML() throws Exception {
         String html = "";
 
         if (this.uid != null && !this.uid.equals("public")) {
@@ -403,43 +403,67 @@ public class JournalCitationsClient extends PastaClient {
                 InputStream inputStream = IOUtils.toInputStream(xmlString, "UTF-8");
                 Document document = documentBuilder.parse(inputStream);
                 Element documentElement = document.getDocumentElement();
-                NodeList subscriptionList = documentElement.getElementsByTagName("subscription");
-                int nSubscriptions = subscriptionList.getLength();
+                NodeList citationsNodeList = documentElement.getElementsByTagName("journalCitation");
+                int nJournalCitations = citationsNodeList.getLength();
 
-                for (int i = 0; i < nSubscriptions; i++) {
-                    Node subscriptionNode = subscriptionList.item(i);
-                    NodeList subscriptionChildren = subscriptionNode.getChildNodes();
-                    String subscriptionId = "";
+                for (int i = 0; i < nJournalCitations; i++) {
+                    Node journalCitationNode = citationsNodeList.item(i);
+                    NodeList journalCitationChildren = journalCitationNode.getChildNodes();
+                    String journalCitationId = "";
                     String packageId = "";
-                    String url = "";
-                    for (int j = 0; j < subscriptionChildren.getLength(); j++) {
-                        Node childNode = subscriptionChildren.item(j);
+                    String articleDoi = "";
+                    String articleUrl = "";
+                    String articleTitle = "";
+                    String journalName = "";
+                    
+                    for (int j = 0; j < journalCitationChildren.getLength(); j++) {
+                        Node childNode = journalCitationChildren.item(j);
                         if (childNode instanceof Element) {
                             Element subscriptionElement = (Element) childNode;
 
-                            if (subscriptionElement.getTagName().equals("id")) {
+                            if (subscriptionElement.getTagName().equals("journalCitationId")) {
                                 Text text = (Text) subscriptionElement.getFirstChild();
                                 if (text != null) {
-                                    subscriptionId = text.getData().trim();
+                                    journalCitationId = text.getData().trim();
                                 }
-                            } else if (subscriptionElement.getTagName().equals("packageId")) {
+                            } 
+                            else if (subscriptionElement.getTagName().equals("packageId")) {
                                 Text text = (Text) subscriptionElement.getFirstChild();
                                 if (text != null) {
                                     packageId = text.getData().trim();
                                 }
-                            } else if (subscriptionElement.getTagName().equals("url")) {
+                            } 
+                            else if (subscriptionElement.getTagName().equals("articleDoi")) {
                                 Text text = (Text) subscriptionElement.getFirstChild();
                                 if (text != null) {
-                                    url = text.getData().trim();
+                                    articleDoi = text.getData().trim();
                                 }
-                            }
+                            } 
+                            else if (subscriptionElement.getTagName().equals("articleUrl")) {
+                                Text text = (Text) subscriptionElement.getFirstChild();
+                                if (text != null) {
+                                    articleUrl = text.getData().trim();
+                                }
+                           }
+                            else if (subscriptionElement.getTagName().equals("articleTitle")) {
+                                Text text = (Text) subscriptionElement.getFirstChild();
+                                if (text != null) {
+                                    articleTitle = text.getData().trim();
+                                }
+                           }
+                            else if (subscriptionElement.getTagName().equals("journalName")) {
+                                Text text = (Text) subscriptionElement.getFirstChild();
+                                if (text != null) {
+                                    journalName = text.getData().trim();
+                                }
+                           }
                         }
                     }
 
                     sb.append("<tr>\n");
 
                     sb.append("<td class='nis' align='center'>");
-                    sb.append(subscriptionId);
+                    sb.append(journalCitationId);
                     sb.append("</td>\n");
 
                     sb.append("<td class='nis' align='center'>");
@@ -447,7 +471,19 @@ public class JournalCitationsClient extends PastaClient {
                     sb.append("</td>\n");
 
                     sb.append("<td class='nis'>");
-                    sb.append(url);
+                    sb.append(articleDoi);
+                    sb.append("</td>\n");
+
+                    sb.append("<td class='nis'>");
+                    sb.append(articleUrl);
+                    sb.append("</td>\n");
+
+                    sb.append("<td class='nis'>");
+                    sb.append(articleTitle);
+                    sb.append("</td>\n");
+
+                    sb.append("<td class='nis'>");
+                    sb.append(journalName);
                     sb.append("</td>\n");
 
                     sb.append("</tr>\n");
@@ -465,7 +501,7 @@ public class JournalCitationsClient extends PastaClient {
     }
 
     
-    public String subscriptionOptionsHTML() throws Exception {
+    public String citationsOptionsHTML() throws Exception {
         String html = "";
 
         if (this.uid != null && !this.uid.equals("public")) {
@@ -478,27 +514,27 @@ public class JournalCitationsClient extends PastaClient {
                 InputStream inputStream = IOUtils.toInputStream(xmlString, "UTF-8");
                 Document document = documentBuilder.parse(inputStream);
                 Element documentElement = document.getDocumentElement();
-                NodeList subscriptionList = documentElement.getElementsByTagName("subscription");
-                int nSubscriptions = subscriptionList.getLength();
+                NodeList citationsList = documentElement.getElementsByTagName("journalCitation");
+                int nCitations = citationsList.getLength();
 
-                for (int i = 0; i < nSubscriptions; i++) {
-                    Node subscriptionNode = subscriptionList.item(i);
-                    NodeList subscriptionChildren = subscriptionNode.getChildNodes();
-                    String subscriptionId = "";
-                    for (int j = 0; j < subscriptionChildren.getLength(); j++) {
-                        Node childNode = subscriptionChildren.item(j);
+                for (int i = 0; i < nCitations; i++) {
+                    Node journalCitationNode = citationsList.item(i);
+                    NodeList journalCitationChildren = journalCitationNode.getChildNodes();
+                    String journalCitationId = "";
+                    for (int j = 0; j < journalCitationChildren.getLength(); j++) {
+                        Node childNode = journalCitationChildren.item(j);
                         if (childNode instanceof Element) {
-                            Element subscriptionElement = (Element) childNode;
-                            if (subscriptionElement.getTagName().equals("id")) {
-                                Text text = (Text) subscriptionElement.getFirstChild();
+                            Element journalCitationElement = (Element) childNode;
+                            if (journalCitationElement.getTagName().equals("journalCitationId")) {
+                                Text text = (Text) journalCitationElement.getFirstChild();
                                 if (text != null) {
-                                    subscriptionId = text.getData().trim();
+                                    journalCitationId = text.getData().trim();
                                 }
                             }
                         }
                     }
 
-                    sb.append(String.format("<option value='%s'>%s</option>\n", subscriptionId, subscriptionId));
+                    sb.append(String.format("<option value='%s'>%s</option>\n", journalCitationId, journalCitationId));
                 }
 
                 html = sb.toString();

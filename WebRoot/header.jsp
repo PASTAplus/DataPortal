@@ -78,6 +78,7 @@
            pageName.equals("eventSubscribe") ||
            pageName.equals("reservations") ||
            pageName.equals("provenanceGenerator") ||
+           pageName.equals("journalCitations") ||
            pageName.equals("dataPackageAudit") ||
            pageName.equals("auditReport")
           ) {
@@ -143,15 +144,16 @@
 					<li><a href="harvestReport.jsp">View Evaluate/Upload Results</a></li>
 					<!--  <li><a href="dataPackageDelete.jsp">Delete Data Packages</a></li> -->
 					
+                    <p class="smallmenu pull-left nis-navigation-submenu">
+                    <img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
+                    Citations and Provenance:</p>
+                    <li><a href="journalCitations.jsp">Journal Citations</a></li>
+                    <li><a href="provenanceGenerator.jsp">Provenance Generator</a></li>
+                    
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Events:</p>
 					<li><a href="eventSubscribe.jsp">Event Subscriptions</a></li>
-					
-					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
-					Provenance:</p>
-					<li><a href="provenanceGenerator.jsp">Provenance Generator</a></li>
 					
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
