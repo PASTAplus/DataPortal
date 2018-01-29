@@ -47,7 +47,7 @@
                 </dataFormat>
                 <distribution>
                     <online>
-                        <url function="download">http://svn.lternet.edu/svn/NIS/trunk/DataPackageManager/test/data/NoneSuchBugCount.txt</url>
+                        <url function="download">https://raw.githubusercontent.com/PASTAplus/PASTA/development/DataPackageManager/test/data/NoneSuchBugCount.txt</url>
                     </online>
                     <access authSystem="knb" order="allowFirst">
                         <allow>
