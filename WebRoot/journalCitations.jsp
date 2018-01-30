@@ -3,7 +3,7 @@
 <%@ page import="edu.lternet.pasta.client.JournalCitationsClient"%>
 
 <%
-    final String pageTitle = "Journal Citations";
+  final String pageTitle = "Journal Citations";
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
   String path = request.getContextPath();
   String basePath = request.getScheme() + "://" + request.getServerName()
@@ -15,7 +15,7 @@
   String displayDivClose = "</div>";
   String journalCitationsHTML = "";
   String journalCitationOptionsHTML = "";
-  String subscribeMessage = (String) request.getAttribute("subscribemessage");
+  String createMessage = (String) request.getAttribute("createmessage");
   String deleteMessage = (String) request.getAttribute("deletemessage");
   String testMessage = (String) request.getAttribute("testmessage");
   String type = (String) request.getAttribute("type");
@@ -26,8 +26,8 @@
     request.setAttribute("from", "./journalCitations.jsp");
     String loginWarning = DataPortalServlet.getLoginWarning();
     request.setAttribute("message", loginWarning);
-    RequestDispatcher requestDispatcher = request
-        .getRequestDispatcher("./login.jsp");
+    RequestDispatcher requestDispatcher = 
+        request.getRequestDispatcher("./login.jsp");
     requestDispatcher.forward(request, response);
   }
   else {
@@ -42,11 +42,12 @@
     	type = "class=\"" + type + "\"";
   	}
   
-  	if (subscribeMessage  == null) { subscribeMessage = ""; }
-  	if (testMessage  == null) { testMessage = ""; }
-  	if (deleteMessage  == null) { deleteMessage = ""; }
+  	if (createMessage == null) { createMessage = ""; }
+  	if (testMessage == null) { testMessage = ""; }
+  	if (deleteMessage == null) { deleteMessage = ""; }
   }
 %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -150,7 +151,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                  <label class="labelBold" for="journalname">Journal Name</label>
+                                                  <label class="labelBold" for="journaltitle">Journal Title</label>
                                                 </td>
                                                 <td>&nbsp;</td>
                                                 <td>
@@ -158,7 +159,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                <input name="journalname" size="50" type="text" />
+                                                <input name="journaltitle" size="50" type="text" />
                                                 </td>
                                                 <td>&nbsp;</td>
                                                 <td>
@@ -173,7 +174,7 @@
 										</table>
 									</form>
 								</div>
-					<%= subscribeMessage %>
+					<%= createMessage %>
 				        <hr/>
 
      <%= displayDivOpen %>

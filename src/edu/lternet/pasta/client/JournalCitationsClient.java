@@ -115,90 +115,99 @@ public class JournalCitationsClient extends PastaClient {
    * 
    * @throws PastaEventException
    */
-  public String create(String journalCitationXML) throws PastaEventException {
+    public Integer create(String journalCitationXML) throws PastaEventException {
+        Integer journalCitationId = null;
+        Integer statusCode = null;
+        Header[] headers = null;
+        HttpEntity responseEntity = null;
+        String statusMessage = null;
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpResponse response = null;
+        HttpPost httpPost = new HttpPost(BASE_URL_ONE_CITATION);
 
-    String journalCitationId = null;
-    Integer statusCode = null;
-    Header[] headers = null;
-    HttpEntity responseEntity = null;
-    String statusMessage = null;
-
-    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-    HttpResponse response = null;
-    HttpPost httpPost = new HttpPost(BASE_URL_ONE_CITATION);
-
-    // Set header content
-    if (this.token != null) {
-      httpPost.setHeader("Cookie", "auth-token=" + this.token);
-    }
-    httpPost.setHeader("Content-Type", "application/xml");
-
-    // Set subscription into the request entity
-    StringEntity requestEntity = null;
-
-    try {
-      requestEntity = new StringEntity(journalCitationXML);
-    } 
-    catch (UnsupportedEncodingException e1) {
-      logger.error(e1.getMessage());
-      e1.printStackTrace();
-    }
-
-    httpPost.setEntity(requestEntity);
-
-    try {
-      response = httpClient.execute(httpPost);
-      statusCode = (Integer) response.getStatusLine().getStatusCode();
-      headers = response.getAllHeaders();
-      responseEntity = response.getEntity();
-
-      if (responseEntity != null) {
-        statusMessage = EntityUtils.toString(responseEntity);
-      }
-
-    } 
-    catch (ClientProtocolException e) {
-      logger.error(e);
-      e.printStackTrace();
-    } 
-    catch (IOException e) {
-      logger.error(e);
-      e.printStackTrace();
-    } 
-    finally {
-        closeHttpClient(httpClient);
-    }
-
-    if (statusCode == HttpStatus.SC_CREATED) {
-
-      String headerName = null;
-      String headerValue = null;
-
-      // Loop through all headers looking for the "Location" header.
-      for (int i = 0; i < headers.length; i++) {
-        headerName = headers[i].getName();
-
-        if (headerName.equals("Location")) {
-
-          headerValue = headers[i].getValue();
-          String[] path = headerValue.split("/");
-          journalCitationId = path[path.length - 1]; // the subscription identifier is in the
-                                       // last field of the path array
-          break;
-
+        // Set header content
+        if (this.token != null) {
+            httpPost.setHeader("Cookie", "auth-token=" + this.token);
         }
-      }
-    } 
-    else { // Something went wrong; return message from the response entity
-      String gripe = "PASTA responded with response code '"
-          + statusCode.toString() + "' and message '" + statusMessage + "'\n";
-      throw new PastaEventException(gripe);
+        
+        httpPost.setHeader("Content-Type", "application/xml");
+
+        // Set subscription into the request entity
+        StringEntity requestEntity = null;
+
+        try {
+            requestEntity = new StringEntity(journalCitationXML);
+        } 
+        catch (UnsupportedEncodingException e1) {
+            logger.error(e1.getMessage());
+            e1.printStackTrace();
+        }
+
+        httpPost.setEntity(requestEntity);
+
+        try {
+            response = httpClient.execute(httpPost);
+            statusCode = (Integer) response.getStatusLine().getStatusCode();
+            headers = response.getAllHeaders();
+            responseEntity = response.getEntity();
+
+            if (responseEntity != null) {
+                statusMessage = EntityUtils.toString(responseEntity);
+            }
+        } 
+        catch (ClientProtocolException e) {
+            logger.error(e);
+            e.printStackTrace();
+        } 
+        catch (IOException e) {
+            logger.error(e);
+            e.printStackTrace();
+        } 
+        finally {
+            closeHttpClient(httpClient);
+        }
+
+        if (statusCode == HttpStatus.SC_CREATED) {
+            String headerName = null;
+            String headerValue = null;
+
+            // Loop through all headers looking for the "Location" header.
+            for (int i = 0; i < headers.length; i++) {
+                headerName = headers[i].getName();
+
+                if (headerName.equals("Location")) {
+                    headerValue = headers[i].getValue();
+                    String[] path = headerValue.split("/");
+                    /*
+                     * the journal citation identifier is
+                     * in the last field of the path array
+                     */
+                    String journalCitationStr = path[path.length - 1];
+                    try {
+                        journalCitationId = Integer.parseInt(journalCitationStr);
+                    }
+                    catch (NumberFormatException e) {
+                        String gripe = String.format(
+                                "PASTA responded with response code '%d' and message '%s'.\n",
+                                statusCode, statusMessage);
+                        throw new PastaEventException(gripe);
+                    }
+                    break;         
+                }
+            }
+        } 
+        else { // Something went wrong; return message from the response
+                 // entity
+            String gripe = String.format(
+                    "PASTA responded with response code '%d' and message '%s'.\n",
+                    statusCode, statusMessage);
+            throw new PastaEventException(gripe);
+        }
+
+        return journalCitationId;
     }
 
-    return journalCitationId;
-  }
-
-
+    
   /**
    * Executes the 'listDataPackageCitations' web service method.
    * 
@@ -414,7 +423,7 @@ public class JournalCitationsClient extends PastaClient {
                     String articleDoi = "";
                     String articleUrl = "";
                     String articleTitle = "";
-                    String journalName = "";
+                    String journalTitle = "";
                     
                     for (int j = 0; j < journalCitationChildren.getLength(); j++) {
                         Node childNode = journalCitationChildren.item(j);
@@ -451,10 +460,10 @@ public class JournalCitationsClient extends PastaClient {
                                     articleTitle = text.getData().trim();
                                 }
                            }
-                            else if (subscriptionElement.getTagName().equals("journalName")) {
+                            else if (subscriptionElement.getTagName().equals("journalTitle")) {
                                 Text text = (Text) subscriptionElement.getFirstChild();
                                 if (text != null) {
-                                    journalName = text.getData().trim();
+                                    journalTitle = text.getData().trim();
                                 }
                            }
                         }
@@ -483,7 +492,7 @@ public class JournalCitationsClient extends PastaClient {
                     sb.append("</td>\n");
 
                     sb.append("<td class='nis'>");
-                    sb.append(journalName);
+                    sb.append(journalTitle);
                     sb.append("</td>\n");
 
                     sb.append("</tr>\n");
