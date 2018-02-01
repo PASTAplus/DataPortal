@@ -297,14 +297,10 @@ public class JournalCitation {
     public String toHTML() {
         String html = null;
         StringBuffer sb = new StringBuffer("");
-        String articleDoiUrl = null;
+        String articleUrl = getArticleUrl();
         String articleTitle = getArticleTitle();
-        String journalTitle = getJournalTitle();
-        
+        String journalTitle = getJournalTitle();        
         String articleDoi = getArticleDoi();
-        if (articleDoi != null && !articleDoi.isEmpty()) {
-            articleDoiUrl = String.format("http://dx.doi.org/%s", articleDoi);
-        }
         
         if (articleUrl != null) {
             if (articleTitle != null && !articleTitle.isEmpty()) {
@@ -314,18 +310,14 @@ public class JournalCitation {
                 sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleUrl, articleUrl));
             }
         }
-        else if (articleDoiUrl != null) {
-            if (articleTitle != null && !articleTitle.isEmpty()) {
-                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleDoiUrl, articleTitle));
-            }
-            else {
-                sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleDoiUrl, articleDoiUrl));
-            }
-        }
         else {
             sb.append(articleTitle);
         }
         
+        if (articleDoi != null && !articleDoi.isEmpty()) {
+            sb.append(String.format(" (%s)", articleDoi));
+        }
+
         if (journalTitle != null && !journalTitle.isEmpty()) {
             sb.append(String.format(", %s", journalTitle));
         }

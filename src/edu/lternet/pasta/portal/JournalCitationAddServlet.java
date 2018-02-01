@@ -127,9 +127,10 @@ public class JournalCitationAddServlet extends DataPortalServlet {
             try {
                 JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
                 Integer journalCitationId = journalCitationsClient.create(journalCitationXML);
+                String mapbrowseUrl = MapBrowseServlet.getRelativeURL(packageId);
                 String createMessage = String.format(
-                        "A journal citation entry with identifier '<b>%d</b>' was created for data package '<b>%s</b>'.\n", 
-                        journalCitationId, packageId);
+                    "A journal citation entry with identifier '<strong>%d</strong>' was created for data package %s.\n", 
+                    journalCitationId, mapbrowseUrl);
                 request.setAttribute("createmessage", createMessage);
             } 
             catch (Exception e) {

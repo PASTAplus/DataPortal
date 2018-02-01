@@ -781,10 +781,17 @@ public class MapBrowseServlet extends DataPortalServlet {
                         }
                         journalCitationsHTMLBuilder.append("</ol>\n");
                         journalCitationsHTMLBuilder.append("<br/>");
-                        journalCitationsHTML = journalCitationsHTMLBuilder.toString();
                     }
                 }
                 
+                journalCitationsHTMLBuilder.append("<div>\n");             
+                journalCitationsHTMLBuilder.append("<form id=\"journalcitations\" name=\"journalcitationsform\" method=\"post\" action=\"./journalCitations.jsp\" target=\"_top\">\n");
+                journalCitationsHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
+                journalCitationsHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"journalcitationsbutton\" value=\"Add Journal Citation\" >\n");
+                journalCitationsHTMLBuilder.append("</form>\n");
+                journalCitationsHTMLBuilder.append("</div>\n");
+                journalCitationsHTMLBuilder.append("<br/>");
+                journalCitationsHTML = journalCitationsHTMLBuilder.toString();
 				/*
 				 * Provenance metadata generator
 				 */

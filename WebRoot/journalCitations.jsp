@@ -19,6 +19,7 @@
   String deleteMessage = (String) request.getAttribute("deletemessage");
   String testMessage = (String) request.getAttribute("testmessage");
   String type = (String) request.getAttribute("type");
+  String packageId = (String) request.getParameter("packageid");
 
   String uid = (String) httpSession.getAttribute("uid");
 
@@ -42,6 +43,7 @@
     	type = "class=\"" + type + "\"";
   	}
   
+    if (packageId == null) { packageId = ""; }
   	if (createMessage == null) { createMessage = ""; }
   	if (testMessage == null) { testMessage = ""; }
   	if (deleteMessage == null) { deleteMessage = ""; }
@@ -124,7 +126,7 @@
 											</tr>
                                             <tr>
                                                 <td>
-                                                  <input name="packageid" required="required" size="50" type="text" />
+                                                  <input name="packageid" value="<%= packageId %>" required="required" size="50" type="text" />
                                                 </td>
                                                 <td>&nbsp;</td>
                                                 <td>
@@ -177,29 +179,29 @@
 					<%= createMessage %>
 				        <hr/>
 
-     <%= displayDivOpen %>
+      <%= displayDivOpen %>
       <h2>Current journal article citations recorded by <%= uid %></h2>
         <table>
           <tbody>
             <tr>
-              <th class="nis">Journal Citation Id</th>
-              <th class="nis">Package Id</th>
+              <th class="nis">Journal Citation ID</th>
+              <th class="nis">Package ID</th>
               <th class="nis">Journal Article DOI</th>
               <th class="nis">Journal Article URL</th>
               <th class="nis">Journal Article Title</th>
-              <th class="nis">Journal Name</th>
+              <th class="nis">Journal Title</th>
             </tr>
             <%= journalCitationsHTML %>
           </tbody>
         </table>
 							
 								<h2>Delete</h2>
-								<p>Delete a journal citation entry you previously entered using the journal citation id.</p>
+								<p>Delete a journal citation entry you previously entered using the journal citation ID.</p>
 									<form id="journalcitationdelete" action="journalcitationdelete" method="POST" name="journalcitationdelete">
 										<table>
 											<tr>
 												<td>
-												<label class="labelBold">Journal Citation Id</label>
+												<label class="labelBold">Journal Citation ID</label>
 												</td>
 											</tr>
 											<tr>
@@ -217,7 +219,7 @@
 										</table>
 									</form>
 									<%= deleteMessage %>
-					  <%= displayDivClose %>
+        <%= displayDivClose %>
 								<!-- /Content -->
 							</div>
 						</div>
