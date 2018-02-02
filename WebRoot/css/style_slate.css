@@ -2978,20 +2978,35 @@ code.nis {
 }
 
 .nis-error {
-    background-color: #F7F7F7;
+    color: white;
+    background-color: DarkRed;
     font-family: monospace;
-	font-weight: bold;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.nis-input-error {
+    color: white;
+	background-color: DarkOrange;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: larger;
 }
 
 .nis-warn {
-	font-style: italic;
+    color: white;
+    background-color: Gold;
+    font-family: monospace;
     font-weight: bold;
+    font-size: larger;
 }
 
 .nis-info {
-    background-color: #F7F7F7;
+    color: white;
+    background-color: Green;
     font-family: monospace;
-	font-weight: bold;
+    font-weight: bold;
+    font-size: larger;
 }
 
 .nis-title {

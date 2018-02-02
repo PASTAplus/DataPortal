@@ -105,21 +105,21 @@ public class JournalCitationDeleteServlet extends DataPortalServlet {
 
     String journalCitationId = request.getParameter("journalcitationid");
 
-    String msg = null;
-    String type = null;
+    String deleteMessage = null;
+    String messageType = null;
 
     if (uid.equals("public")) {
-      msg = LOGIN_WARNING;
-      type = "warning";
+      messageType = "warning";
+      request.setAttribute("message", LOGIN_WARNING);
     } 
     else {
         
       try {
         JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
-        //journalCitationsClient.deleteByJournalCitationId(journalCitationId);
-        msg = String.format("Journal citation entry with identifier '<b>%s</b>' has been deleted.", 
+        journalCitationsClient.deleteByJournalCitationId(journalCitationId);
+        deleteMessage = String.format("Journal citation entry with identifier '<b>%s</b>' has been deleted.", 
                                 journalCitationId);
-        type = "info";
+        messageType = "info";
       } 
       catch (Exception e) {
           handleDataPortalError(logger, e);
@@ -127,8 +127,8 @@ public class JournalCitationDeleteServlet extends DataPortalServlet {
 
     }
 
-    request.setAttribute("deletemessage", msg);
-    request.setAttribute("type", type);
+    request.setAttribute("deleteMessage", deleteMessage);
+    request.setAttribute("messageType", messageType);
 
     RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
     requestDispatcher.forward(request, response);

@@ -15,20 +15,21 @@
   String displayDivClose = "</div>";
   String journalCitationsHTML = "";
   String journalCitationOptionsHTML = "";
-  String createMessage = (String) request.getAttribute("createmessage");
-  String deleteMessage = (String) request.getAttribute("deletemessage");
-  String testMessage = (String) request.getAttribute("testmessage");
-  String type = (String) request.getAttribute("type");
+  String createMessage = (String) request.getAttribute("createMessage");
+  String deleteMessage = (String) request.getAttribute("deleteMessage");
+  String messageType = (String) request.getAttribute("messageType");
+  String messageClass = DataPortalServlet.messageClassFromMessageType(messageType);
   String packageId = (String) request.getParameter("packageid");
-
+  String createMessageHTML = "";
+  String deleteMessageHTML = "";
+  
   String uid = (String) httpSession.getAttribute("uid");
 
   if (uid == null || uid.isEmpty()) {
     request.setAttribute("from", "./journalCitations.jsp");
     String loginWarning = DataPortalServlet.getLoginWarning();
     request.setAttribute("message", loginWarning);
-    RequestDispatcher requestDispatcher = 
-        request.getRequestDispatcher("./login.jsp");
+    RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
     requestDispatcher.forward(request, response);
   }
   else {
@@ -36,18 +37,21 @@
   	journalCitationsHTML = jcc.citationsTableHTML();
   	journalCitationOptionsHTML = jcc.citationsOptionsHTML();
 
-  	if (type == null) {
-    	type = "";
-  	} 
-  	else {
-    	type = "class=\"" + type + "\"";
-  	}
-  
     if (packageId == null) { packageId = ""; }
-  	if (createMessage == null) { createMessage = ""; }
-  	if (testMessage == null) { testMessage = ""; }
-  	if (deleteMessage == null) { deleteMessage = ""; }
+
+    if (deleteMessage == null) { deleteMessage = ""; }
+    if (!deleteMessage.isEmpty()) {
+        deleteMessageHTML = String.format("<span class='%s'>%s</span>", 
+                                          messageClass, deleteMessage);
+    }
+  
+    if (createMessage == null) { createMessage = ""; }
+    if (!createMessage.isEmpty()) {
+        createMessageHTML = String.format("<span class='%s'>%s</span>", 
+                                          messageClass, createMessage);
+    }
   }
+  
 %>
 
 
@@ -167,6 +171,9 @@
                                                 <td>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                               <td><%= createMessageHTML %></td>
+                                            </tr>
 											<tr>
 												<td>
 													<input class="btn btn-info btn-default" name="add" type="submit" value="Add Journal Citation" />
@@ -176,7 +183,6 @@
 										</table>
 									</form>
 								</div>
-					<%= createMessage %>
 				        <hr/>
 
       <%= displayDivOpen %>
@@ -211,6 +217,9 @@
                                                     </select>									
 												</td>
 											</tr>
+                                            <tr>
+                                               <td><%= deleteMessageHTML %></td>
+                                            </tr>
 											<tr>
 												<td>
 												<input class="btn btn-info btn-default" name="delete" type="submit" value="Delete" />
@@ -218,7 +227,6 @@
 											</tr>
 										</table>
 									</form>
-									<%= deleteMessage %>
         <%= displayDivClose %>
 								<!-- /Content -->
 							</div>

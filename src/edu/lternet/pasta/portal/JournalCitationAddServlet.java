@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.JournalCitationsClient;
 import edu.lternet.pasta.common.JournalCitation;
+import edu.lternet.pasta.common.UserErrorException;
 
 
 public class JournalCitationAddServlet extends DataPortalServlet {
@@ -95,16 +96,26 @@ public class JournalCitationAddServlet extends DataPortalServlet {
    * @throws IOException
    *           if an error occurred
    */
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         HttpSession httpSession = request.getSession();
         String uid = (String) httpSession.getAttribute("uid");
         if (uid == null || uid.isEmpty())
             uid = "public";
+        String message = null;
+        String messageType = "info";
+        String createMessage = "";
         String packageId = request.getParameter("packageid");
         String articleDoi = request.getParameter("articledoi");
         String articleUrl = request.getParameter("articleurl");
         String articleTitle = request.getParameter("articletitle");
         String journalTitle = request.getParameter("journaltitle");
+        
+        /*
+         * Check for valid input
+         */
+        String inputMessage = 
+            validateInput(packageId, articleDoi, articleUrl, articleTitle, journalTitle);
 
         JournalCitation journalCitation = new JournalCitation();
         journalCitation.setPackageId(packageId);
@@ -115,34 +126,50 @@ public class JournalCitationAddServlet extends DataPortalServlet {
 
         boolean includeDeclaration = true;
         String journalCitationXML = journalCitation.toXML(includeDeclaration);
-        String message = null;
-        String type = "info";
 
         if (uid.equals("public")) {
             message = LOGIN_WARNING;
-            type = "warning";
+            messageType = "warning";
             request.setAttribute("message", message);
-        } 
+        }
+        else if (inputMessage != null) {
+            createMessage = inputMessage;
+            messageType = "input-error";
+        }
         else {
             try {
                 JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
                 Integer journalCitationId = journalCitationsClient.create(journalCitationXML);
                 String mapbrowseUrl = MapBrowseServlet.getRelativeURL(packageId);
-                String createMessage = String.format(
+                createMessage = String.format(
                     "A journal citation entry with identifier '<strong>%d</strong>' was created for data package %s.\n", 
                     journalCitationId, mapbrowseUrl);
-                request.setAttribute("createmessage", createMessage);
             } 
             catch (Exception e) {
                 handleDataPortalError(logger, e);
             }
         }
 
-        request.setAttribute("type", type);
+        request.setAttribute("createMessage", createMessage);
+        request.setAttribute("messageType", messageType);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
         requestDispatcher.forward(request, response);
     }
   
+    
+    /*
+     * Validate user input. A null msg value means that validation succeeded.
+     */
+    private String validateInput(String packageId, String articleDoi, String articleUrl,
+                               String articleTitle, String journalTitle) {
+        String msg = null;
+        StringBuffer msgBuffer = new StringBuffer("");
+        
+        msg = "I don't like your silly input!";
+        
+        return msg;
+    }
+    
     
   /**
    * Initialization of the servlet. <br>

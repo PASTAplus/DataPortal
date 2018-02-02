@@ -50,9 +50,8 @@ public class DataPortalServlet extends HttpServlet {
 		  //"    <link href=\"bootstrap/css/bootstrap.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\">",
 		  //"    <link href=\"bootstrap/css/bootstrap-responsive.css\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\">",
     );
-		  
-  
 
+  
   /*
    * Instance variables
    */
@@ -76,6 +75,31 @@ public class DataPortalServlet extends HttpServlet {
   }
   
   
+  /**
+   * Determine the CSS class to use based on a messageType string value.
+   * 
+   * @param messageType       One of "info", "warn", "error", "input-error"
+   * @return                  The corresponding CSS class, e.g. "nis-info"
+   */
+  public static String messageClassFromMessageType(String messageType) {
+      String messageClass = "nis-info"; // default value
+      
+      if (messageType != null) {
+          if (messageType.equals("warn") || messageType.equals("warning")) {
+            messageClass = "nis-warn";
+          }
+          else if (messageType.equals("error")) {
+            messageClass = "nis-error";
+          }
+          else if (messageType.equals("input-error")) {
+            messageClass = "nis-input-error";
+          }
+      }
+      
+      return messageClass;
+  }
+  
+
   /**
    * Composes the title text appropriate for a given page in the
    * Data Portal web application.
