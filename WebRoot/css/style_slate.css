@@ -2971,42 +2971,36 @@ code.nis {
 
 .nis-banner-msg {
     padding: 7px;
-	color: white;
+    color: white;
     background-color: #5990bd;
     font-size: 1.1em;
     text-align: center;
 }
 
-.nis-error {
-    color: white;
-    background-color: DarkRed;
+.nis-input-error {
+    color: red;
+    background-color: Azure;
     font-family: monospace;
     font-weight: bold;
-    font-size: larger;
 }
 
-.nis-input-error {
-    color: white;
-	background-color: DarkOrange;
+.nis-error {
+    color: red;
+    background-color: Azure;
     font-family: monospace;
     font-weight: bold;
-    font-size: larger;
 }
 
 .nis-warn {
-    color: white;
-    background-color: Gold;
+    background-color: Azure;
     font-family: monospace;
     font-weight: bold;
-    font-size: larger;
 }
 
 .nis-info {
-    color: white;
-    background-color: Green;
+    background-color: Azure;
     font-family: monospace;
     font-weight: bold;
-    font-size: larger;
 }
 
 .nis-title {

@@ -132,7 +132,7 @@ public class JournalCitationAddServlet extends DataPortalServlet {
             messageType = "warning";
             request.setAttribute("message", message);
         }
-        else if (inputMessage != null) {
+        else if (inputMessage != null && !inputMessage.isEmpty()) {
             createMessage = inputMessage;
             messageType = "input-error";
         }
@@ -141,9 +141,10 @@ public class JournalCitationAddServlet extends DataPortalServlet {
                 JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
                 Integer journalCitationId = journalCitationsClient.create(journalCitationXML);
                 String mapbrowseUrl = MapBrowseServlet.getRelativeURL(packageId);
+                String mapbrowseHTML = String.format("<a class='searchsubcat' href='%s'>%s</a>", mapbrowseUrl, packageId);
                 createMessage = String.format(
-                    "A journal citation entry with identifier '<strong>%d</strong>' was created for data package %s.\n", 
-                    journalCitationId, mapbrowseUrl);
+                    "A journal citation entry with identifier '<strong>%d</strong>' was created for data package %s", 
+                    journalCitationId, mapbrowseHTML);
             } 
             catch (Exception e) {
                 handleDataPortalError(logger, e);
@@ -158,15 +159,21 @@ public class JournalCitationAddServlet extends DataPortalServlet {
   
     
     /*
-     * Validate user input. A null msg value means that validation succeeded.
+     * Validate user input. An empty msg value ("") means that validation succeeded.
      */
     private String validateInput(String packageId, String articleDoi, String articleUrl,
                                String articleTitle, String journalTitle) {
         String msg = null;
         StringBuffer msgBuffer = new StringBuffer("");
         
-        msg = "I don't like your silly input!";
+        boolean hasArticleDoi = ((articleDoi != null) && !articleDoi.isEmpty());
+        boolean hasArticleUrl = ((articleUrl != null) && !articleUrl.isEmpty());
         
+        if (!(hasArticleDoi || hasArticleUrl)) {
+            msgBuffer.append("Either an article DOI or an article URL is required.");
+        }
+       
+        msg = msgBuffer.toString();
         return msg;
     }
     

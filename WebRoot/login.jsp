@@ -71,7 +71,7 @@
 							<div class="span12">
 								<!-- Content -->
 								
-				<p class="nis-warn"><%=message%></p>
+				<span class="nis-warn"><%=message%></span>
 
 					<form id="login" name="loginform" method="post" action="./login"
 						target="_top">

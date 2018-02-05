@@ -165,14 +165,10 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                <input name="journaltitle" size="50" type="text" />
+                                                  <input name="journaltitle" size="50" type="text" />
                                                 </td>
                                                 <td>&nbsp;</td>
-                                                <td>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                               <td><%= createMessageHTML %></td>
+                                                <td></td>
                                             </tr>
 											<tr>
 												<td>
@@ -181,6 +177,7 @@
 												</td>
 											</tr>
 										</table>
+                                        <%= createMessageHTML %>
 									</form>
 								</div>
 				        <hr/>
