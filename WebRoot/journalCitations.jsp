@@ -214,15 +214,13 @@
                                                     </select>									
 												</td>
 											</tr>
-                                            <tr>
-                                               <td><%= deleteMessageHTML %></td>
-                                            </tr>
 											<tr>
 												<td>
-												<input class="btn btn-info btn-default" name="delete" type="submit" value="Delete" />
+												  <input class="btn btn-info btn-default" name="delete" type="submit" value="Delete" />
 												</td>
 											</tr>
 										</table>
+										<%= deleteMessageHTML %>
 									</form>
         <%= displayDivClose %>
 								<!-- /Content -->
