@@ -121,55 +121,64 @@
 										<table>
 											<tr>
 												<td>
-												  <label class="labelBold" for="packageid">Package Id</label>
+												  <label class="labelBold" for="packageid">Package Id <span style="color:red;">*</span></label>
 												</td>
                                                 <td>&nbsp;</td>
-												<td>
-												  <label class="labelBold" for="articledoi">Article DOI</label>
-												</td>
+                                                <td>&nbsp;</td>
 											</tr>
                                             <tr>
                                                 <td>
                                                   <input name="packageid" value="<%= packageId %>" required="required" size="50" type="text" />
                                                 </td>
                                                 <td>&nbsp;</td>
-                                                <td>
-                                                  <input name="articledoi" size="50" type="text"/>
-                                                </td>
-                                            </tr>
+                                                <td>&nbsp;</td>
+                                             </tr>
                                             <tr>
                                                 <td>
-                                                  <label class="labelBold" for="articleurl">Article URL</label>
+                                                  <label class="labelBold" for="articledoi">Article DOI <span style="color:red;">**</span></label>
                                                 </td>
                                                  <td>&nbsp;</td>
                                                 <td>
-                                                  <label class="labelBold" for="articletitle">Article Title</label>
+                                                  <label class="labelBold" for="articleurl">Article URL <span style="color:red;">**</span></label>
                                                 </td>
-                                            </tr>
+                                             </tr>
                                             <tr>
+                                               <td>
+                                                  <input name="articledoi" size="50" type="text"/>
+                                                </td>
+                                                <td>&nbsp;</td>
                                                 <td>
                                                   <input name="articleurl" size="50" type="text" />
                                                 </td>
+                                             </tr>
+                                            <tr>
+                                                <td>
+                                                  <label class="labelBold" for="articletitle">Article Title <em>(Optional)</em></label>
+                                                </td>
                                                 <td>&nbsp;</td>
+                                                <td>
+                                                  <label class="labelBold" for="journaltitle">Journal Title <em>(Optional)</em></label>
+                                                </td>
+                                             </tr>
+                                            <tr>
                                                 <td>
                                                   <input name="articletitle" size="50" type="text"/>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                  <label class="labelBold" for="journaltitle">Journal Title</label>
-                                                </td>
-                                                <td>&nbsp;</td>
-                                                <td>
-                                                </td>
-                                            </tr>
-                                            <tr>
+                                                 <td>&nbsp;</td>
                                                 <td>
                                                   <input name="journaltitle" size="50" type="text" />
                                                 </td>
-                                                <td>&nbsp;</td>
-                                                <td></td>
                                             </tr>
+                                            <tr>
+                                              <td><span class="text-muted"><em><span style="color:red;">*</span> Indicates required field</em></span></td>
+                                              <td>&nbsp;</td>
+                                              <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                             <td><span class="text-muted"><em><span style="color:red;">**</span> Indicates at least one of these fields required</em></span></td>
+                                              <td>&nbsp;</td>
+                                              <td>&nbsp;</td>
+                                             </tr>
 											<tr>
 												<td>
 													<input class="btn btn-info btn-default" name="add" type="submit" value="Add Journal Citation" />
