@@ -285,6 +285,12 @@
         </xsl:call-template>
       </div> <!-- end collapsible -->
 
+      <h3 id="toggleMethods" class="toggleButton"><button>+/-</button> Project</h3>
+      <div class="collapsible">
+         <xsl:call-template name="datasetproject">
+         </xsl:call-template>
+      </div> <!-- end collapsible -->
+      
       <xsl:if test="maintenance">
       <h3 id="toggleMaintenance" class="toggleButton"><button>+/-</button> Maintenance</h3>
       <div class="collapsible">

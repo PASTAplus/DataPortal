@@ -78,6 +78,7 @@ public class SolrAdvancedSearch extends Search  {
   private boolean includeLandsat5;
   private String taxon;
   private String identifier;
+  private String funding;
   
   private boolean isBoundaryContainedChecked;
   private String boundsChangedCount;
@@ -124,6 +125,7 @@ public class SolrAdvancedSearch extends Search  {
       boolean isRelatedSpecificChecked,
       String taxon,
       String identifier,
+      String funding,
       boolean isBoundaryContainedChecked,
       String boundsChangedCount,
       String northBound,
@@ -147,6 +149,7 @@ public class SolrAdvancedSearch extends Search  {
     this.includeLandsat5 = isIncludeLandsat5Checked;
     this.taxon = taxon;
     this.identifier = identifier;
+    this.funding = funding;
     
     this.isBoundaryContainedChecked = isBoundaryContainedChecked;
     this.boundsChangedCount = boundsChangedCount;
@@ -598,6 +601,25 @@ public class SolrAdvancedSearch extends Search  {
 	}
 
 
+    /**
+     * A funding query searches the funding field, matching the
+     * field if the user-specified value is contained in the field.
+     */
+    private void buildQueryFunding(TermsList termsList)
+            throws UnsupportedEncodingException {
+        String value = this.funding;
+
+        if ((value != null) && (!(value.equals("")))) {
+            termsList.addTerm(value);
+            String parenthesizedValue = parenthesizeQueryValue(value);
+            String escapedValue = Search.escapeQueryChars(parenthesizedValue);
+            String encodedValue = URLEncoder.encode(escapedValue, "UTF-8");
+            String fundingQuery = String.format("funding:%s", encodedValue);
+            updateQString(fundingQuery);
+        }
+    }
+
+
   /**
    * Build a site filter. If the AdvancedSearch's site value is non-null, add a
    * query group that limits the results to a particular LTER site. Do this
@@ -673,6 +695,7 @@ public class SolrAdvancedSearch extends Search  {
 		buildQueryAuthor(this.termsList); 
 		buildQueryTaxon(this.termsList);
 		buildQueryIdentifier(this.termsList);
+        buildQueryFunding(this.termsList);
 		buildQueryGeographicDescription(this.locationName, this.termsList);
 		buildQueryFilterTemporal(this.dateField, this.startDate,
 		   this.endDate, this.isDatesContainedChecked, this.namedTimescale,

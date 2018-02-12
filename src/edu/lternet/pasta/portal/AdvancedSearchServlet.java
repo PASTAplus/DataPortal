@@ -161,6 +161,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     String landsat5 = request.getParameter("landsat5");
     String taxon = request.getParameter("taxon");
     String identifier = request.getParameter("identifier");
+    String funding = request.getParameter("funding");
     
     String northBound = request.getParameter("northBound");
     String southBound = request.getParameter("southBound");
@@ -193,6 +194,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
       isRelatedSpecificChecked,
       taxon,
       identifier,
+      funding,
       isBoundaryContainedChecked,
       boundsChangedCount,
       northBound,
