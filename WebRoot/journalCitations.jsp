@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet"%>
 <%@ page import="edu.lternet.pasta.client.JournalCitationsClient"%>
+<%@ page import="edu.lternet.pasta.portal.LoginServlet" %>
 
 <%
   final String pageTitle = "Journal Citations";
@@ -24,6 +25,7 @@
   String deleteMessageHTML = "";
   
   String uid = (String) httpSession.getAttribute("uid");
+  String uname = "";
 
   if (uid == null || uid.isEmpty()) {
     request.setAttribute("from", "./journalCitations.jsp");
@@ -33,6 +35,7 @@
     requestDispatcher.forward(request, response);
   }
   else {
+    uname = LoginServlet.uidFromDistinguishedName(uid);
   	JournalCitationsClient jcc = new JournalCitationsClient(uid);
   	journalCitationsHTML = jcc.citationsTableHTML();
   	journalCitationOptionsHTML = jcc.citationsOptionsHTML();
@@ -192,7 +195,7 @@
 				        <hr/>
 
       <%= displayDivOpen %>
-      <h2>Current journal article citations recorded by <%= uid %></h2>
+      <h2>Current journal article citations recorded by <%= uname %></h2>
         <table>
           <tbody>
             <tr>
