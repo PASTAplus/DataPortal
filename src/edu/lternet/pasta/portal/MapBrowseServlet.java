@@ -310,7 +310,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 						revision = newestRevisionValue;
 					
 					if (!newestRevisionValue.equals(revision)) {
-		                String displayText = "View Newest Revision";
+		                String displayText = "(View Newest Revision)";
 		                String href = String.format("mapbrowse?scope=%s&identifier=%s&revision=%s", scope, identifier, newestRevisionValue);
 		                String url = String.format("<a class=\"searchsubcat\" href=\"%s\">%s</a>", href, displayText);    
 					    moreRecentRevisionHTML = String.format("&nbsp;&nbsp;%s", url);
