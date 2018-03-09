@@ -360,7 +360,7 @@ public class JournalCitation {
     public String getArticleUrl() {
         String url = null;
         
-        if (this.articleUrl != null) {
+        if (this.articleUrl != null && !this.articleUrl.isEmpty()) {
             url = articleUrl;
         }
         else {
@@ -374,7 +374,12 @@ public class JournalCitation {
         String url = null;
         
         if (this.articleDoi != null) {
-            url = String.format("https://dx.doi.org/%s", this.articleDoi);
+            if (this.articleDoi.startsWith("http")) {
+                url = articleDoi;
+            }
+            else {
+                url = String.format("https://doi.org/%s", this.articleDoi);
+            }
         }
             
         return url;
