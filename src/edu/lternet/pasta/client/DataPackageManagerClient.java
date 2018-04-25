@@ -82,10 +82,28 @@ public class DataPackageManagerClient extends PastaClient {
 
 	private final String BASE_URL;
 	String contentType = null;
+	private String robot = null;
 
 	/*
 	 * Constructors
 	 */
+
+	/**
+	 * Creates a new DataPackageManagerClient object and sets the user's
+	 * authentication token if it exists.
+	 * 
+	 * @param uid
+	 *          The user's identifier as a String object.
+	 * 
+	 * @throws PastaAuthenticationException
+	 */
+	public DataPackageManagerClient(String uid, String robot)
+		    throws PastaAuthenticationException, PastaConfigurationException {
+	  this(uid);
+	  if ((uid != null) && uid.equals("public")) {
+	      this.robot = robot;
+	  }
+	}
 
 	/**
 	 * Creates a new DataPackageManagerClient object and sets the user's
@@ -105,6 +123,7 @@ public class DataPackageManagerClient extends PastaClient {
 		this.BASE_URL = pastaUrl + "/package";
 	}
 
+	
 	/*
 	 * Class Methods
 	 */
@@ -1224,15 +1243,10 @@ public class DataPackageManagerClient extends PastaClient {
 		entityId = entityId.replace("%", "%25");
 
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		String urlTail = makeUrlTail(scope, identifier.toString(), revision,
-		    entityId);
+		String urlTail = makeUrlTail(scope, identifier.toString(), revision, entityId);
 		String url = BASE_URL + "/data/eml" + urlTail;
-		HttpGet httpGet = new HttpGet(url);
 
-		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
-		}
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
 
 		try {
 			httpResponse = httpClient.execute(httpGet);
@@ -1503,13 +1517,8 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, null);
 		String url = BASE_URL + "/eml" + urlTail;
-		HttpGet httpGet = new HttpGet(url);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
 		String entityString = null;
-
-		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
-		}
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1559,12 +1568,7 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String url = String.format("%s/archive/eml/%s/%d/%s/%s",  
 				                    BASE_URL, scope, identifier, revision, transaction);
-		HttpGet httpGet = new HttpGet(url);
-
-		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
-		}
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
 
 		try {
 			httpResponse = httpClient.execute(httpGet);
@@ -1618,13 +1622,9 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, null);
 		String url = BASE_URL + "/report/eml" + urlTail;
-		HttpGet httpGet = new HttpGet(url);
 		String entityString = null;
 
-		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
-		}
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1708,13 +1708,9 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, null);
 		String url = BASE_URL + "/metadata/eml" + urlTail;
-		HttpGet httpGet = new HttpGet(url);
 		String entityString = null;
 
-		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
-		}
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);

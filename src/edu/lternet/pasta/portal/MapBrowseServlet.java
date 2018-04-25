@@ -291,7 +291,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 				try {
 
-					dpmClient = new DataPackageManagerClient(uid);
+					String robot = request.getHeader("Robot");
+					dpmClient = new DataPackageManagerClient(uid, robot);
                     jcClient = new JournalCitationsClient(uid);
 					
 					String deletionList = dpmClient.listDeletedDataPackages();

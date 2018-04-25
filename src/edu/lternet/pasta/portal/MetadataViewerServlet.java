@@ -171,7 +171,8 @@ public class MetadataViewerServlet extends DataPortalServlet {
 
         String dataPackageDOI = null;
         String xml = null;
-        DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
+        String robot = request.getHeader("Robot");
+        DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, robot);
         xml = dpmClient.readMetadata(scope, identifier, revision);
 
         if (contentType.equals("application/xml")) {

@@ -114,8 +114,8 @@ public class DataViewerServlet extends DataPortalServlet {
 				identifier = Integer.valueOf(tokens[1]);
 				revision = tokens[2];
 
-				DataPackageManagerClient dpmClient = new DataPackageManagerClient(
-						uid);
+				String robot = request.getHeader("Robot");
+				DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, robot);
 				dpmClient.readDataEntity(scope, identifier, revision, entityId,
 						response);
 			}

@@ -143,10 +143,9 @@ public class ReportViewerServlet extends DataPortalServlet {
 					}
 				}
 				else {
-					DataPackageManagerClient dpmClient = new DataPackageManagerClient(
-							uid);
-					xml = dpmClient.readDataPackageReport(scope, identifier,
-							revision);
+					String robot = request.getHeader("Robot");
+					DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, robot);
+					xml = dpmClient.readDataPackageReport(scope, identifier, revision);
 				}
 
 				ReportUtility qrUtility = new ReportUtility(xml);
