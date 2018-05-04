@@ -13,10 +13,15 @@
 
   HttpSession httpSession = request.getSession();
 
+  String deleteMessage = (String) request.getAttribute("deleteMessage");
+  String deleteMessageHTML = "";
   String displayDivOpen = "<div>";
   String displayDivClose = "</div>";
+  String messageType = (String) request.getAttribute("messageType");
+  String messageClass = DataPortalServlet.messageClassFromMessageType(messageType);
   String reservationsTableHTML = "";
   String reservationsOptionsHTML = "";
+  String reservationsDeleteOptionsHTML = "";
   String reservationMessage = (String) request.getAttribute("reservationMessage");
   String type = (String) request.getAttribute("type");
 
@@ -40,6 +45,7 @@
   	
   	reservationsTableHTML = reservationsManager.reservationsTableHTML();
   	reservationsOptionsHTML = reservationsManager.reservationsOptionsHTML();
+    reservationsDeleteOptionsHTML = reservationsManager.reservationsDeleteOptionsHTML();
 
   	if (type == null) {
     	type = "";
@@ -48,7 +54,13 @@
     	type = "class=\"" + type + "\"";
   	}
   
-  	if (reservationMessage  == null) { reservationMessage = ""; }
+    if (deleteMessage == null) { deleteMessage = ""; }
+    if (!deleteMessage.isEmpty()) {
+        deleteMessageHTML = String.format("<span class='%s'>%s</span>", 
+                                          messageClass, deleteMessage);
+    }
+
+    if (reservationMessage  == null) { reservationMessage = ""; }
   }
 %>
 
@@ -150,8 +162,35 @@
             <%= reservationsTableHTML %>
           </tbody>
         </table>
+        
+    <hr/>
+    
+        <h2>Delete</h2>
+        <p>Release your reservation on a data package identifier you previously reserved but no longer plan to use.</p>
+        <form id="reserveidentifierdelete" action="reserveidentifierdelete" method="POST" name="reserveidentifierdelete">
+            <table>
+                <tr>
+                    <td>
+                        <label class="labelBold">Reservation ID</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="select-width-auto" name="docid">
+                            <%= reservationsDeleteOptionsHTML %>
+                        </select>                                   
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="btn btn-info btn-default" name="delete" type="submit" value="Delete" />
+                    </td>
+                </tr>
+            </table>
+            <%= deleteMessageHTML %>
+        </form>
 	 <%= displayDivClose %>
-									
+
 						<!-- /Content -->
 						</div>
 					  </div>

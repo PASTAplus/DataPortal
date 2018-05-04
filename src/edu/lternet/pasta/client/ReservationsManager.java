@@ -143,7 +143,6 @@ public class ReservationsManager extends PastaClient {
      */
 	public int numberOfReservations() throws Exception {
 		int numberOfReservations = 0;
-		final String principalTest = String.format("uid=%s,", this.uid);
 
 		if (this.uid != null && !this.uid.equals("public")) {
 			String xmlString = listActiveReservations();
@@ -171,7 +170,7 @@ public class ReservationsManager extends PastaClient {
 								Text text = (Text) reservationElement.getFirstChild();
 								if (text != null) {
 									principal = text.getData().trim();
-									if (principal.startsWith(principalTest)) {
+									if (principal.startsWith(this.uid)) {
 										numberOfReservations++;
 									}
 								}
@@ -204,8 +203,6 @@ public class ReservationsManager extends PastaClient {
 		String html;
 		StringBuilder sb = new StringBuilder("");
 
-		final String principalTest = String.format("uid=%s,", this.uid);
-
 		if (this.uid != null && !this.uid.equals("public")) {
 			String xmlString = listActiveReservations();
 
@@ -235,7 +232,7 @@ public class ReservationsManager extends PastaClient {
 								Text text = (Text) reservationElement.getFirstChild();
 								if (text != null) {
 									principal = text.getData().trim();
-									if (principal.startsWith(principalTest)) {
+									if (principal.startsWith(this.uid)) {
 										include = true;
 									}
 								}
@@ -300,6 +297,74 @@ public class ReservationsManager extends PastaClient {
 		
 		for (int i = 1; i <= maxNumberOfReservations; i++) {
 			sb.append(String.format("  <option value=\"%d\">%d</option>\n", i, i));
+		}
+		
+		html = sb.toString();
+		return html;
+	}
+
+	/**
+	 * Builds an options list for the number of reservations the end user is
+	 * requesting with a single button click.
+	 * 
+	 * @return the options HTML to be inserted into the <select> element
+	 * @throws PastaEventException
+	 */
+	public String reservationsDeleteOptionsHTML() 
+			throws Exception {
+		String html;
+		StringBuilder sb = new StringBuilder("");
+
+		if (this.uid != null && !this.uid.equals("public")) {
+			String xmlString = listActiveReservations();
+
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+
+			try {
+				DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+				InputStream inputStream = IOUtils.toInputStream(xmlString, "UTF-8");
+				Document document = documentBuilder.parse(inputStream);
+				Element documentElement = document.getDocumentElement();
+				NodeList reservations = documentElement.getElementsByTagName("reservation");
+				int nReservations = reservations.getLength();
+
+				for (int i = 0; i < nReservations; i++) {
+					Node reservationNode = reservations.item(i);
+					NodeList reservationChildren = reservationNode.getChildNodes();
+					String docid = "";
+					String principal = "";
+					boolean include = false;
+					for (int j = 0; j < reservationChildren.getLength(); j++) {
+						Node childNode = reservationChildren.item(j);
+						if (childNode instanceof Element) {
+							Element reservationElement = (Element) childNode;
+							if (reservationElement.getTagName().equals("principal")) {
+								Text text = (Text) reservationElement.getFirstChild();
+								if (text != null) {
+									principal = text.getData().trim();
+									if (principal.startsWith(this.uid)) {
+										include = true;
+									}
+								}
+							}
+							else if (reservationElement.getTagName().equals("docid")) {
+								Text text = (Text) reservationElement.getFirstChild();
+								if (text != null) {
+									docid = text.getData().trim();
+								}
+							}
+						}
+					}
+					if (include) {
+                        sb.append(String.format("  <option value=\"%s\">%s</option>\n", docid, docid));
+					}
+				}
+			}
+			catch (Exception e) {
+				logger.error("Exception:\n" + e.getMessage());
+				e.printStackTrace();
+				throw new PastaEventException(e.getMessage());
+			}
 		}
 		
 		html = sb.toString();

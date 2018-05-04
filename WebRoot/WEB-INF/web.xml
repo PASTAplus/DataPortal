@@ -36,6 +36,13 @@
     <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet>
+    <description>Reserve Identifier Delete Servlet</description>
+    <display-name>ReserveIdentifierDeleteServlet</display-name>
+    <servlet-name>ReserveIdentifierDeleteServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.ReserveIdentifierDeleteServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet>
     <description>Journal Citation Add Servlet</description>
     <display-name>Journal Citation Add Servlet</display-name>
     <servlet-name>JournalCitationAddServlet</servlet-name>
@@ -252,6 +259,10 @@
   <servlet-mapping>
     <servlet-name>ReserveIdentifierServlet</servlet-name>
     <url-pattern>/reserveidentifier</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReserveIdentifierDeleteServlet</servlet-name>
+    <url-pattern>/reserveidentifierdelete</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>JournalCitationAddServlet</servlet-name>

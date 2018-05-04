@@ -456,6 +456,46 @@ public class DataPackageManagerClient extends PastaClient {
 	}
 
 	/**
+	 * Executes the 'deleteReservation' web service method.
+	 * 
+	 * @param scope
+	 *          the scope value, e.g. "knb-lter-lno"
+	 * @param identifier
+	 *          the identifier value, e.g. 10
+	 * @return an empty string if the data package was successfully deleted
+	 * @see <a target="top"
+	 *      href="http://package.lternet.edu/package/docs/api">Data Package
+	 *      Manager web service API</a>
+	 */
+	public String deleteReservation(String scope, Integer identifier)
+	    throws Exception {
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String urlTail = makeUrlTail(scope, identifier.toString(), null, null);
+		String fullUrl = BASE_URL + "/reservations/eml" + urlTail;
+		HttpDelete httpDelete = new HttpDelete(fullUrl);
+		String entityString = null;
+
+		// Set header content
+		if (this.token != null) {
+			httpDelete.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpDelete);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			HttpEntity httpEntity = httpResponse.getEntity();
+			entityString = EntityUtils.toString(httpEntity);
+			if (statusCode != HttpStatus.SC_OK) {
+				handleStatusCode(statusCode, entityString);
+			}
+		} finally {
+			closeHttpClient(httpClient);
+		}
+
+		return entityString;
+	}
+
+	/**
 	 * Executes the 'evaluateDataPackage' web service method.
 	 * 
 	 * @param emlFile
