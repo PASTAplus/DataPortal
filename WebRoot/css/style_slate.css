@@ -3076,8 +3076,8 @@ div.qualityreport table {
 }
 
 div.qualityreport table pre {
-    font-size: 0.9em;
-	  font-family: Arial, Geneva, Verdana, Helvetica, sans-serif;
+    font-size: 1.0em;
+    font-family: Arial, Geneva, Verdana, Helvetica, sans-serif;
 }
 
 div.qualityreport td.header {
@@ -3094,6 +3094,10 @@ div.qualityreport td.data {
     border: solid;
     border-width: 1px;
     padding: 5px;
+}
+
+div.qualityreport table.inner {
+    border: none;
 }
 
 div.valid {
