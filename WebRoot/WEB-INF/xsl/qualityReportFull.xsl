@@ -229,12 +229,10 @@
 
     <xsl:template match="qr:found">
         <td class="data" align="left" valign="top" title="found">
+            <xsl:variable name="modalId" select="../qr:identifier"/>
             <xsl:variable name="found" select="."/>
-            <xsl:if test="string-length($found) &lt;= 200">
-                <xsl:value-of select="$found"/>
-            </xsl:if>
-            <xsl:if test="string-length($found) &gt; 200">
-                <xsl:variable name="modalId" select="../qr:identifier"/>
+            <xsl:choose>
+            <xsl:when test="$modalId = 'headerRowAttributeNames' or string-length($found) &gt; 200">
                 <!-- Trigger the modal with a button -->
                 <button type="button" 
                         class="btn btn-info btn-lg" 
@@ -263,7 +261,11 @@
                         </div>
                     </div>
                 </div>
-            </xsl:if>
+            </xsl:when>
+            <xsl:when test="string-length($found) &lt;= 200">
+                <xsl:value-of select="$found"/>
+            </xsl:when>
+            </xsl:choose>
         </td>
     </xsl:template>
 
