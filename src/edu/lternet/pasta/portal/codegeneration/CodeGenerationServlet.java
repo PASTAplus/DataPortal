@@ -26,6 +26,7 @@ package edu.lternet.pasta.portal.codegeneration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.owasp.esapi.codecs.XMLEntityCodec;
 
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationClient;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationClient.StatisticalFileType;
@@ -135,6 +135,25 @@ public class CodeGenerationServlet extends DataPortalServlet {
 		programLinks.add(spssLink);
 		
 		return programLinks;
+	}
+	
+	
+	public static TreeMap<String, String> getProgramDict(String packageId) {
+		TreeMap<String, String> programDict = new TreeMap<String, String>();
+		
+		String mLink = String.format("./codeGeneration?packageId=%s&statisticalFileType=m", packageId);
+		String rLink = String.format("./codeGeneration?packageId=%s&statisticalFileType=r", packageId);
+        String tidyrLink = String.format("./codeGeneration?packageId=%s&statisticalFileType=tidyr", packageId);
+		String sasLink = String.format("./codeGeneration?packageId=%s&statisticalFileType=sas", packageId);
+		String spssLink = String.format("./codeGeneration?packageId=%s&statisticalFileType=spss", packageId);
+		
+		programDict.put("MatLab", mLink);
+		programDict.put("R", rLink);
+		programDict.put("tidyr", tidyrLink);
+		programDict.put("SAS", sasLink);
+		programDict.put("SPSS", spssLink);
+		
+		return programDict;
 	}
 	
 	

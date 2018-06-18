@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,7 +60,6 @@ import edu.lternet.pasta.common.JournalCitation;
 import edu.lternet.pasta.common.ScaledNumberFormat;
 import edu.lternet.pasta.common.UserErrorException;
 import edu.lternet.pasta.common.eml.DataPackage;
-import edu.lternet.pasta.common.eml.DataPackage.DataSource;
 import edu.lternet.pasta.common.eml.EmlObject;
 import edu.lternet.pasta.common.eml.Entity;
 import edu.lternet.pasta.common.eml.ResponsibleParty;
@@ -822,17 +822,18 @@ public class MapBrowseServlet extends DataPortalServlet {
 				if (hasDataTableEntity) {
 					ArrayList<String> programLinks = CodeGenerationServlet
 							.getProgramLinks(packageId);
-					codeGenerationHTMLBuilder
-							.append("Analyze this data package using ");
-					for (String programLink : programLinks) {
-						codeGenerationHTMLBuilder.append(String.format("%s, ",
-								programLink));
+					TreeMap<String, String> programDict = CodeGenerationServlet.getProgramDict(packageId);
+					codeGenerationHTMLBuilder.append("Analyze this data package using:&nbsp;");
+					for (String program : programDict.keySet()) {
+						codeGenerationHTMLBuilder.append(
+							String.format(
+                                "<input class=\"btn btn-info btn-default\" type=\"button\" onclick=\"location.href='%s';\" value=\"%s\" />",
+                                programDict.get(program), program));
+						codeGenerationHTMLBuilder.append("&nbsp;&nbsp;");
 					}
 					codeGenerationHTML = codeGenerationHTMLBuilder.toString();
 					codeGenerationHTML = codeGenerationHTML.substring(0,
-							codeGenerationHTML.length() - 2); // trim the last
-																// comma and
-																// space
+							codeGenerationHTML.length() - 12); // trim the last two character entities
 				}
 
 				citationHTML = this.citationFormatter(emlObject, uid, scope, id, revision);

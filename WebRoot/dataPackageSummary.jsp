@@ -320,6 +320,20 @@
 									</div>
 -->
 
+                            <c:set var="showCodeGeneration" value="<%= showCodeGeneration %>"/>
+                            <c:if test="${showCodeGeneration}">
+                                    <div class="table-row">                                     
+                                        <div class="table-cell text-align-right">
+                                            <label class="labelBold">Code Generation:</label>
+                                        </div>
+                                        <div class="table-cell">
+                                            <ul class="no-list-style">
+                                                <li><%= codeGenerationHTML %></li>
+                                            </ul>
+                                        </div>                                          
+                                    </div>
+                            </c:if>
+
 									<div class="table-row">										
 										<div class="table-cell text-align-right">
 											<label class="labelBold">Provenance:</label>
@@ -347,19 +361,6 @@
     </c:when>
 </c:choose>
 
-							<c:set var="showCodeGeneration" value="<%= showCodeGeneration %>"/>
-							<c:if test="${showCodeGeneration}">
-									<div class="table-row">										
-										<div class="table-cell text-align-right">
-											<label class="labelBold">Code Generation:</label>
-										</div>
-										<div class="table-cell">
-											<ul class="no-list-style">
-												<li><%= codeGenerationHTML %></li>
-											</ul>
-										</div>											
-									</div>
-							</c:if>
 									
 								</div> <!-- end display table -->
 							</div>
