@@ -56,6 +56,7 @@
   if (pageName.equals("browse") ||
            pageName.equals("packageIdentifier") ||
            pageName.equals("advancedSearch") ||
+           pageName.equals("previewMetadata") ||
            pageName.equals("savedData") ||
            pageName.equals("dataPackageBrowser")
           ) {
@@ -129,6 +130,7 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
 			        View Your Data:</p>
+                    <li><a href="metadataPreviewer.jsp">Preview Your Metadata</a> </li>
 					<li><a href="savedDataServlet">Your Data Shelf</a> </li>
                     <li><a href="userBrowseServlet">Your Uploaded Data</a> </li>
 				</ul>
