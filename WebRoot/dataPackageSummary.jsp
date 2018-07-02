@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener"%>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
+<%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
@@ -51,6 +52,32 @@
   if ((wasDeletedHTML == null) || (wasDeletedHTML.equals(""))) { 
     showWasDeleted = "false";
   }
+
+    HttpSession httpSession = request.getSession();
+    if ((uid == null) || (uid.equals(""))) {
+        uid = "public";
+    } 
+    String tier = null;
+    String testHTML = "";
+    String showTestHTML = "false";
+    DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
+    String pastaHost = dpmc.getPastaHost();
+
+    if (pastaHost.startsWith("pasta-d") || 
+        pastaHost.startsWith("localhost")
+       ) {
+       tier = "development";
+    }
+    else if (pastaHost.startsWith("pasta-s")) {
+       tier = "staging";
+    }
+    
+    if (tier != null) {
+        showTestHTML = "true";
+        testHTML = String.format("<font color='darkorange'>This test data package was submitted to a %s environment. It is not considered production ready.</font>", 
+                                 tier);
+    }
+
 %>
 
 <!DOCTYPE html>
@@ -125,6 +152,17 @@
 				<div class="box_shadow box_layout">
 					<div class="row-fluid">
 						<div class="span12">
+
+
+                            <c:set var="showTestHTML" value="<%= showTestHTML %>"/>
+                            <c:choose>
+                                <c:when test="${showTestHTML}">
+                                    <div>
+                                        <h2><%= testHTML %></h2>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+
                             <c:set var="showWasDeleted" value="<%= showWasDeleted %>"/>
                             <c:choose>
                                 <c:when test="${showWasDeleted}">
