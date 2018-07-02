@@ -118,6 +118,11 @@
 
 <jsp:include page="header.jsp" />
 
+<div id="watermarked-background">
+  <p id="watermarked-background-text">Watermark Watermark Watermark</p>
+</div>
+<div id="watermarked-foreground-text">
+
 <div class="row-fluid ">
 	<div>
 		<div class="container">
@@ -145,7 +150,7 @@
 							<div class="span12">
 								<div class="display-table">
 
-									<div class="table-row">										
+ 									<div class="table-row">										
 										<div class="table-cell text-align-right">
 											<label class="labelBold">Title:</label>
 										</div>
@@ -370,6 +375,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 
 	<jsp:include page="footer.jsp" />
 		
