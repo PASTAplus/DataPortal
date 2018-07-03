@@ -59,6 +59,9 @@
     } 
     String tier = null;
     String testHTML = "";
+    String watermarkClass = "";
+    String watermarkId = "";
+    String watermarkText = "";
     String showTestHTML = "false";
     DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
     String pastaHost = dpmc.getPastaHost();
@@ -74,6 +77,9 @@
     
     if (tier != null) {
         showTestHTML = "true";
+        watermarkClass = "watermarked";
+        watermarkId = "watermarked-background-text";
+        watermarkText = "Test Data Package";
         String fontColor = "darkorange";
         testHTML = String.format("<font color='%s'>This test data package was submitted to a %s environment. It is not considered production ready.</font>", 
                                  fontColor, tier);
@@ -146,10 +152,7 @@
 
 <jsp:include page="header.jsp" />
 
-<div id="watermarked-background">
-  <p id="watermarked-background-text">Watermark Watermark Watermark</p>
-</div>
-<div id="watermarked-foreground-text">
+<div id="<%= watermarkId %>" class="<%= watermarkClass %>"><%= watermarkText %></div>
 
 <div class="row-fluid ">
 	<div>
@@ -418,7 +421,6 @@
 
 	<jsp:include page="footer.jsp" />
 		
-  </div>
   
 <!-- jqWidgets JavaScript for jqxTree widget -->
 <script type="text/javascript" src="./js/jqwidgets-ver3.2.1/jqxcore.js"></script>
