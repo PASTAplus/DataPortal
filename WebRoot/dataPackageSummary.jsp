@@ -74,8 +74,9 @@
     
     if (tier != null) {
         showTestHTML = "true";
-        testHTML = String.format("<font color='darkorange'>This test data package was submitted to a %s environment. It is not considered production ready.</font>", 
-                                 tier);
+        String fontColor = "darkorange";
+        testHTML = String.format("<font color='%s'>This test data package was submitted to a %s environment. It is not considered production ready.</font>", 
+                                 fontColor, tier);
     }
 
 %>
