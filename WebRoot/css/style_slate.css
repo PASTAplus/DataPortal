@@ -3203,10 +3203,13 @@ span.info {
 
 /* Styles to watermark test data packages */
 #watermarked-background-text {
-    color:lightgrey;
-    font-size:60px;
-    transform:rotate(320deg);
-    -webkit-transform:rotate(320deg);
+    top: 10px;
+    left: 300px;
+    color: darkorange;
+    font-size: 60px;
+    transform: rotate(320deg);
+    -webkit-transform: rotate(320deg);
+    opacity: 0.3;
 }
 
 .watermarked {
@@ -3220,10 +3223,8 @@ span.info {
   height: 100%;
   position: absolute;
   top: 0px;
-  left: 0px;
+  left: 400px;
   background-size: 100px 100px;
-  background-position: 30px 30px;
-  background-repeat: no-repeat;
-  opacity: 0.7;
 }
+
 /* End -- Styles to watermark test data packages */
