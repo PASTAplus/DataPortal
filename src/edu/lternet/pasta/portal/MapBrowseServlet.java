@@ -525,7 +525,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 				String packageIdListItem = null;
 				String metadata = null;
-				String viewFullMetadata = null;
 				String report = null;
 				String data = "";
 				String doiId = null;
@@ -565,7 +564,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									try {
 										long l = Long.parseLong(entitySize);
 										String s = scaledNumberFormat.format(l);
-										entitySizeStr = String.format("&nbsp;&nbsp;<em>(%s)</em>", s);
+										entitySizeStr = String.format("&nbsp;<em>(%s)</em>&nbsp;", s);
 									}
 									catch (NumberFormatException e) {
 										entitySizeStr = String.format("&nbsp;&nbsp;<em>(%s bytes)</em>", entitySize);
@@ -592,15 +591,23 @@ public class MapBrowseServlet extends DataPortalServlet {
 								}
 
 								if (isAuthorized) {
-									data += "<li><a class=\"searchsubcat\" href=\"./dataviewer?packageid="
-											+ packageId
-											+ "&entityid="
-											+ entityId
-											+ "\" target=\"_blank\">"
-											+ entityName 
-											+ "</a>" 
-											+ entitySizeStr
-											+ "</li>\n";
+									String objectName = emlObject.getDataPackage().findObjectName(entityName);
+									String fileInfo = null;
+									if (objectName == null) { 
+									    fileInfo = String.format("%s", entitySizeStr);
+									}
+									else {
+									    fileInfo = String.format("%s %s", objectName, entitySizeStr);
+									}
+									String href = String.format("./dataviewer?packageid=%s&entityid=%s",
+											                    packageId, entityId);
+									String downloadButton = 
+											String.format(
+			                                    "<input class=\"btn btn-info btn-default\" type=\"button\" " +
+											    "onclick=\"location.href='%s';\" value=\"Download\" />",
+			                                    href);
+									data += String.format("<li><em>Entity</em>: %s<br/><em>Object</em>: %s %s</li>\n",
+                                                          entityName, fileInfo, downloadButton); 
 								}
 								else {
 									entityName = "Data object";
