@@ -537,7 +537,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					if (resource.contains(metadataUri)) {
 						metadata = "<li><a class=\"searchsubcat\" href=\"./metadataviewer?packageid="
-								+ packageId + "\">Metadata</a></li>\n";	
+								+ packageId + "\">View Full Metadata</a></li>\n";	
 						viewFullMetadataHTML = String.format(
 	                               "<a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata</a>",
 	                               packageId);
@@ -547,7 +547,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 							report = "<li><a class=\"searchsubcat\" href=\"./reportviewer?packageid="
 									+ packageId
-									+ "\" target=\"_blank\">Report</a></li>\n";
+									+ "\" target=\"_blank\">View Data Package Report</a></li>\n";
 
 						}
 						else if (resource.contains(dataUri)) {
@@ -606,7 +606,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 			                                    "<input class=\"btn btn-info btn-default\" type=\"button\" " +
 											    "onclick=\"location.href='%s';\" value=\"Download\" />",
 			                                    href);
-									data += String.format("<li><em>Entity</em>: %s<br/><em>Object</em>: %s %s</li>\n",
+									data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n",
                                                           entityName, fileInfo, downloadButton); 
 								}
 								else {
