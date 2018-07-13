@@ -56,7 +56,6 @@
   if (pageName.equals("browse") ||
            pageName.equals("packageIdentifier") ||
            pageName.equals("advancedSearch") ||
-           pageName.equals("previewMetadata") ||
            pageName.equals("savedData") ||
            pageName.equals("dataPackageBrowser")
           ) {
@@ -72,7 +71,9 @@
   else if (pageName.equals("home")) {
     homeClass = currentClass;
   }
-  else if (pageName.equals("dataPackageEvaluate") ||
+  else if (
+           pageName.equals("previewMetadata") ||
+           pageName.equals("dataPackageEvaluate") ||
            pageName.equals("harvester") ||
            pageName.equals("harvestReport") ||
            //pageName.equals("dataPackageDelete") ||
@@ -130,7 +131,6 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					  <img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
 			        View Your Data:</p>
-                    <li><a href="metadataPreviewer.jsp">Preview Your Metadata</a> </li>
 					<li><a href="savedDataServlet">Your Data Shelf</a> </li>
                     <li><a href="userBrowseServlet">Your Uploaded Data</a> </li>
 				</ul>
@@ -141,6 +141,7 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Data Packages:</p>
+                    <li><a href="metadataPreviewer.jsp">Preview Your Metadata</a> </li>
 					<!-- <li><a href="dataPackageEvaluate.jsp">Evaluate Data Packages</a></li> -->
 					<li><a href="harvester.jsp">Evaluate/Upload Data Packages</a></li>
 					<li><a href="harvestReport.jsp">View Evaluate/Upload Results</a></li>
