@@ -523,6 +523,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 				URLCodec urlCodec = new URLCodec();
 
+				boolean downloadableData = false;
 				String packageIdListItem = null;
 				String metadata = null;
 				String report = null;
@@ -591,23 +592,16 @@ public class MapBrowseServlet extends DataPortalServlet {
 								}
 
 								if (isAuthorized) {
+									downloadableData = true;
 									String objectName = emlObject.getDataPackage().findObjectName(entityName);
-									String fileInfo = null;
-									if (objectName == null) { 
-									    fileInfo = String.format("%s", entitySizeStr);
-									}
-									else {
-									    fileInfo = String.format("%s %s", objectName, entitySizeStr);
-									}
+									String fileInfo = (objectName == null) ? entityName : objectName;
 									String href = String.format("./dataviewer?packageid=%s&entityid=%s",
 											                    packageId, entityId);
-									String downloadButton = 
-											String.format(
-			                                    "<input class=\"btn btn-info btn-default\" type=\"button\" " +
-											    "onclick=\"location.href='%s';\" value=\"Download\" />",
-			                                    href);
+									String downloadLink = 
+											String.format("<a class='searchsubcat' href='%s' />%s</a>",
+			                                              href, fileInfo);
 									data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n",
-                                                          entityName, fileInfo, downloadButton); 
+                                                          entityName, downloadLink, entitySizeStr); 
 								}
 								else {
 									entityName = "Data object";
@@ -706,7 +700,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 				}
 
 				String listOrder = "ol";
-				resourcesHTMLBuilder.append("<li>Data\n");
+				String downloadStr = downloadableData ? "Download Data" : "Data";
+				resourcesHTMLBuilder.append(String.format("<li>%s\n", downloadStr));
 				resourcesHTMLBuilder.append(String.format("<%s>\n", listOrder));
 				resourcesHTMLBuilder.append(data);
 				resourcesHTMLBuilder.append(String.format("</%s>\n", listOrder));
