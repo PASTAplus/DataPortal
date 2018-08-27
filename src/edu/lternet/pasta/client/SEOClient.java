@@ -97,13 +97,14 @@ public class SEOClient extends PastaClient {
      * @return A JSON string to be inserted into the head element of
      *         the landing page HTML.
      */
-    public String fetchJSON(String packageId) {
+    public String fetchJSON(String packageId) 
+            throws Exception {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String jsonString = null;
+        String serviceURL = String.format("%s?pid=%s&env=%s", BASE_SERVICE_URL, packageId, this.tier);
 
         try {
-            String serviceURL = String.format("%s?pid=%s&env=%s", BASE_SERVICE_URL, packageId, this.tier);
             httpGet = new HttpGet(serviceURL);
             HttpResponse httpResponse = httpClient.execute(httpGet);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
@@ -111,8 +112,14 @@ public class SEOClient extends PastaClient {
                 HttpEntity httpEntity = httpResponse.getEntity();
                 jsonString = EntityUtils.toString(httpEntity).trim();
             }
+            else {
+                String msg = String.format("SEO server URL '%s' returned status code %d",
+                                           serviceURL, statusCode);
+                throw new SEOClientException(msg);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(String.format("Error fetching JSON: %s", e.getMessage()));
+            throw(e);
         } finally {
             closeHttpClient(httpClient);
         }
@@ -135,7 +142,7 @@ public class SEOClient extends PastaClient {
            e.printStackTrace();
         }
         
-        System.out.println(String.format("JSON:\n%s", jsonString));
+        System.out.println(jsonString);
     }
 
 }
