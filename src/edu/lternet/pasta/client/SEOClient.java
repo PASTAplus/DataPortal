@@ -78,14 +78,14 @@ public class SEOClient extends PastaClient {
     public SEOClient(String uid)
             throws PastaAuthenticationException, PastaConfigurationException {
         super(uid);
-        if (this.pastaHost.equals("pasta")) {
+        if (this.pastaHost.startsWith("pasta.")) {
             tier = "p";
         }
-        else if (this.pastaHost.equals("pasta-d") ||
-                 this.pastaHost.equals("localhost")) {
+        else if (this.pastaHost.startsWith("pasta-d.") ||
+                 this.pastaHost.startsWith("localhost")) {
             tier = "d";
         }
-        else if (this.pastaHost.equals("pasta-s")) {
+        else if (this.pastaHost.startsWith("pasta-s.")) {
             tier = "s";
         }
         else {
