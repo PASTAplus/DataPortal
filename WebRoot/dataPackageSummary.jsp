@@ -29,6 +29,7 @@
   String spatialCoverageHTML = (String) request.getAttribute("spatialCoverageHTML");
   String googleMapHTML = (String) request.getAttribute("googleMapHTML");
   String savedDataHTML = (String) request.getAttribute("savedDataHTML");
+  String seoHTML = (String) request.getAttribute("seoHTML");
   String jsonCoordinates = (String) request.getAttribute("jsonCoordinates");
   Boolean expandCoordinates = (Boolean) request.getAttribute("expandCoordinates");
   Double northCoord = (Double) request.getAttribute("northCoord");
@@ -44,6 +45,7 @@
   boolean showCodeGeneration = !(codeGenerationHTML == null || codeGenerationHTML.isEmpty());
   boolean showSavedData = !(savedDataHTML == null || savedDataHTML.isEmpty());
   boolean showJournalCitations = !(journalCitationsHTML == null || journalCitationsHTML.isEmpty());
+  boolean showSEO = !(seoHTML == null || seoHTML.isEmpty());
   String showCoordinates = "true";
   if ((expandCoordinates != null) && !expandCoordinates) { 
   	showCoordinates = "false";
@@ -144,6 +146,13 @@
 			};
 		</script>
 	</c:when>
+</c:choose>
+
+<c:set var="showSEO" value="<%= showSEO %>"/>
+<c:choose>
+    <c:when test="${showSEO}">
+<%= seoHTML %>
+    </c:when>
 </c:choose>
 
 </head>

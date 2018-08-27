@@ -54,6 +54,7 @@ import org.w3c.dom.NodeList;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.JournalCitationsClient;
+import edu.lternet.pasta.client.SEOClient;
 import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
 import edu.lternet.pasta.common.JournalCitation;
@@ -195,6 +196,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String pastaDataObjectIdentifier = "";
 		String savedDataHTML = "";
 		String wasDeletedHTML = "";
+		String seoHTML = "";
 		EmlObject emlObject = null;
 		boolean showSaved = false;
 		boolean isSaved = false;
@@ -325,6 +327,16 @@ public class MapBrowseServlet extends DataPortalServlet {
 					emlString = dpmClient.readMetadata(scope, id, revision);
 					emlObject = new EmlObject(emlString);
 					titles = emlObject.getTitles();
+					
+					
+			        try {
+			            SEOClient seoClient = new SEOClient(uid);
+			            seoHTML = seoClient.fetchJSON(packageId);
+			        }
+			        catch (Exception e) {
+			            logger.error("Error fetching JSON from SEO server for packageId: " + packageId);
+			            e.printStackTrace();
+			        }
 					
 					if (showSaved) {
 						SavedData savedData = new SavedData(uid);
@@ -870,6 +882,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("codeGenerationHTML", codeGenerationHTML);
 		request.setAttribute("citationHTML", citationHTML);
         request.setAttribute("journalCitationsHTML", journalCitationsHTML);
+        request.setAttribute("seoHTML", seoHTML);
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
 		requestDispatcher.forward(request, response);
