@@ -87,7 +87,12 @@ public class SEOClient extends PastaClient {
         }
         else if (this.pastaHost.equals("pasta-s")) {
             tier = "s";
-        }   
+        }
+        else {
+            String msg = String.format("Unknown PASTA host: %s",
+                                       this.pastaHost);
+            throw new PastaConfigurationException(msg);
+        }
     }
 
 
