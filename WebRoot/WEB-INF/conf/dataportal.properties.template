@@ -15,7 +15,10 @@ db.pkg.Name=pasta
 db.pkg.User=pasta
 db.pkg.Password=HIDEPASSWORD
 
-# Junit properties
+# Data Portal properties
+dataportal.downtime.dayOfWeek=Wednesday
+
+# Junit test properties
 dataportal.test.emlFileName=NoneSuchBugCount.xml
 dataportal.test.path=test/data
 dataportal.test.scope=knb-lter-nwk
