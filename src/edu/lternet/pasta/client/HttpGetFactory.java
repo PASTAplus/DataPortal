@@ -21,6 +21,8 @@
 package edu.lternet.pasta.client;
 
 import org.apache.http.client.methods.HttpGet;
+import org.apache.commons.codec.binary.Base64;
+
 
 /**
  * 
@@ -52,7 +54,8 @@ public class HttpGetFactory {
             httpGet.setHeader("Cookie", "auth-token=" + token);
         }
         if (robot != null) {
-            httpGet.setHeader("Cookie", "robot=" + robot);
+            String b64Robot = new String(Base64.encodeBase64(robot.getBytes()));
+            httpGet.setHeader("Cookie", "robot=" + b64Robot);
         }
         
         return httpGet;
