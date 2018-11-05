@@ -238,8 +238,8 @@ public class AuditReportServlet extends DataPortalServlet {
 
         logger.info(filter.toString());
         
-        AuditManagerClient auditClient = new AuditManagerClient(uid);
-        xml = auditClient.reportByFilter(filter.toString());
+        AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
+        xml = auditManagerClient.reportByFilter(filter.toString());
 
         ReportUtility reportUtility = new ReportUtility(xml);
         message = reportUtility.xmlToHtmlTable(cwd + xslpath);

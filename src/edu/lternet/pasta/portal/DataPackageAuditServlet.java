@@ -115,7 +115,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 
 	String forward = "./auditReportTable.jsp";
 
-	AuditManagerClient auditClient = null;
+	AuditManagerClient auditManagerClient = null;
     HttpSession httpSession = request.getSession();
     String xml = null;
     StringBuffer filter = new StringBuffer();
@@ -128,8 +128,8 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     }
     
     try {
-      auditClient = new AuditManagerClient(uid);
-      pastaUriHead = auditClient.getPastaUriHead();
+      auditManagerClient = new AuditManagerClient(uid);
+      pastaUriHead = auditManagerClient.getPastaUriHead();
     
     /*
      * Request and process filter parameters
@@ -231,9 +231,9 @@ public class DataPackageAuditServlet extends DataPortalServlet {
         message = LOGIN_WARNING;
         forward = "./login.jsp";
     } 
-    else if (auditClient != null) {
+    else if (auditManagerClient != null) {
       	String filterStr = filter.toString();
-        xml = auditClient.reportByFilter(filterStr);
+        xml = auditManagerClient.reportByFilter(filterStr);
         ReportUtility reportUtility = new ReportUtility(xml);
         message = reportUtility.xmlToHtmlTable(cwd + xslpath);
     }

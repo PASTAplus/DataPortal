@@ -573,4 +573,98 @@ public class AuditManagerClient extends PastaClient {
 
   }
 
+  /**
+   * Returns an audit report based on the provided query parameter filter.
+   * 
+   * @param scope   the data package scope value
+   * @param identifier the data package identifier value
+   * @return The XML document of the docId reads report.
+   * @throws PastaEventException
+   */
+  public String getDocIdReads(String scope, String identifier) 
+		  throws PastaEventException {
+	  String serviceUrl = String.format("%s/reads/%s/%s",
+	    		                          BASE_URL, scope, identifier);
+	  String readsXML = getReadsXML(serviceUrl);
+	  return readsXML;
+  }
+
+  
+  /**
+   * Returns an audit report based on the provided query parameter filter.
+   * 
+   * @param scope   the data package scope value
+   * @param identifier the data package identifier value
+   * @param revision the data package revision value
+   * @return The XML document of the packageId reads report.
+   * @throws PastaEventException
+   */
+  public String getPackageIdReads(String scope, 
+		                          String identifier, 
+		                          String revision) 
+		  throws PastaEventException {
+	  String serviceUrl = String.format("%s/reads/%s/%s/%s",
+	    		                          BASE_URL, scope, identifier, revision);
+	  String readsXML = getReadsXML(serviceUrl);
+	  return readsXML;
+  }
+
+  
+  /**
+   * Returns an audit report based on the provided query parameter filter.
+   * 
+   * @param serviceUrl   the audit service URL for the resource reads service
+   * @return The XML document of the docId or packageId reads report.
+   * @throws PastaEventException
+   */
+	private String getReadsXML(String serviceUrl) throws PastaEventException {
+
+		String entity = null;
+		Integer statusCode = null;
+		HttpEntity responseEntity = null;
+
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		HttpResponse response = null;
+		HttpGet httpGet = new HttpGet(serviceUrl);
+
+		// Set header content
+		if (this.token != null) {
+			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+
+			response = httpClient.execute(httpGet);
+			statusCode = (Integer) response.getStatusLine().getStatusCode();
+			responseEntity = response.getEntity();
+
+			if (responseEntity != null) {
+				entity = EntityUtils.toString(responseEntity);
+			}
+
+		} catch (ClientProtocolException e) {
+			logger.error(e);
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.error(e);
+			e.printStackTrace();
+		} finally {
+			closeHttpClient(httpClient);
+		}
+
+		if (statusCode != HttpStatus.SC_OK) {
+
+			// Something went wrong; return message from the response entity
+			String gripe = "The AuditManager responded with response code '" + 
+			               statusCode.toString() + 
+			               "' and message '" + 
+			               entity + 
+			               "'\n";
+			throw new PastaEventException(gripe);
+
+		}
+
+		return entity;
+	}
+
 }

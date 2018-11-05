@@ -29,7 +29,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +55,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.lternet.pasta.client.AuditManagerClient;
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.JournalCitationsClient;
 import edu.lternet.pasta.client.SEOClient;
@@ -67,6 +71,7 @@ import edu.lternet.pasta.common.eml.ResponsibleParty;
 import edu.lternet.pasta.common.eml.Title;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet;
 import edu.lternet.pasta.portal.user.SavedData;
+import eml.ecoinformatics_org.literature_2_1.Map;
 
 
 /**
@@ -157,6 +162,126 @@ public class MapBrowseServlet extends DataPortalServlet {
 		doPost(request, response);
 
 	}
+	
+
+	/**
+	 * Sample xml document:
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceReads>
+    <resource>
+        <resourceId>https://pasta-d.lternet.edu/package/archive/eml/knb-lter-nin/1/1</resourceId>
+        <resourceType>archive</resourceType>
+        <scope>knb-lter-nin</scope>
+        <identifier>1</identifier>
+        <revision>1</revision>
+        <totalReads>2</totalReads>
+        <nonRobotReads>2</nonRobotReads>
+    </resource>
+    <resource>
+        <resourceId>https://pasta-d.lternet.edu/package/data/eml/knb-lter-nin/1/1/67e99349d1666e6f4955e9dda42c3cc2</resourceId>
+        <resourceType>data</resourceType>
+        <scope>knb-lter-nin</scope>
+        <identifier>1</identifier>
+        <revision>1</revision>
+        <totalReads>145</totalReads>
+        <nonRobotReads>93</nonRobotReads>
+    </resource>
+    <resource>
+        <resourceId>https://pasta-d.lternet.edu/package/eml/knb-lter-nin/1/1</resourceId>
+        <resourceType>dataPackage</resourceType>
+        <scope>knb-lter-nin</scope>
+        <identifier>1</identifier>
+        <revision>1</revision>
+        <totalReads>638</totalReads>
+        <nonRobotReads>307</nonRobotReads>
+    </resource>
+    <resource>
+        <resourceId>https://pasta-d.lternet.edu/package/metadata/eml/knb-lter-nin/1/1</resourceId>
+        <resourceType>metadata</resourceType>
+        <scope>knb-lter-nin</scope>
+        <identifier>1</identifier>
+        <revision>1</revision>
+        <totalReads>265</totalReads>
+        <nonRobotReads>137</nonRobotReads>
+    </resource>
+    <resource>
+        <resourceId>https://pasta-d.lternet.edu/package/report/eml/knb-lter-nin/1/1</resourceId>
+        <resourceType>report</resourceType>
+        <scope>knb-lter-nin</scope>
+        <identifier>1</identifier>
+        <revision>1</revision>
+        <totalReads>139</totalReads>
+        <nonRobotReads>69</nonRobotReads>
+    </resource>
+</resourceReads>
+	 * @param xml
+	 * @return
+	 */
+	private HashMap<String, Integer> generateResourceReadsMap(String xml) {
+		HashMap<String, Integer> resourceReadsMap = new HashMap<String, Integer>();
+		
+  		if (xml != null) {
+  			InputStream inputStream = null;
+  			try {
+  				inputStream = IOUtils.toInputStream(xml, "UTF-8");
+  				DocumentBuilder documentBuilder = 
+  	              DocumentBuilderFactory.newInstance().newDocumentBuilder();
+  				CachedXPathAPI xpathapi = new CachedXPathAPI();
+
+  				Document document = null;
+  				document = documentBuilder.parse(inputStream);
+  	      
+  				if (document != null) { 	        
+  					NodeList resources = xpathapi.selectNodeList(document, "//resource");
+  					if (resources != null) {
+  						for (int i = 0; i < resources.getLength(); i++) {
+  							Node resourceNode = resources.item(i);
+  							
+  							String resourceId = null;
+  							String nonRobotReadsStr = null;
+  							Integer nonRobotReads = null;
+
+  							Node resourceIdNode = xpathapi.selectSingleNode(resourceNode, "resourceId");
+  							if (resourceIdNode != null) {
+  								resourceId = resourceIdNode.getTextContent();
+  							}
+
+  							Node nonRobotReadsNode = xpathapi.selectSingleNode(resourceNode, "nonRobotReads");
+  							if (nonRobotReadsNode != null) {
+  								nonRobotReadsStr = nonRobotReadsNode.getTextContent();
+  								try {
+  									nonRobotReads = Integer.parseInt(nonRobotReadsStr);
+  								}
+  								catch (NumberFormatException e) {
+  									;
+  								}
+  							}
+  							
+  							if (resourceId != null && nonRobotReads != null) {
+  								resourceReadsMap.put(resourceId, nonRobotReads);
+  							}
+  						}
+  			        }
+  				}
+  			}
+  			catch (Exception e) {
+  		        logger.error("Error parsing search result set: " + e.getMessage());
+  			}
+  			finally {
+  				if (inputStream != null) {
+  					try {
+  						inputStream.close();
+  					}
+  					catch (IOException e) {
+  						;
+  					}
+  				}
+  			}
+  		}
+  		
+		return resourceReadsMap;
+	}
+	
 
 	/**
 	 * The doPost method of the servlet. <br>
@@ -251,6 +376,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 				}
 
 			if (isPackageId) {
+				String resourceReadsXML = "";
+				HashMap<String, Integer> resourceReadsMap = null;
+				
 				StringBuilder titleHTMLBuilder = new StringBuilder();
 				StringBuilder creatorsHTMLBuilder = new StringBuilder();
 				StringBuilder publicationDateHTMLBuilder = new StringBuilder();
@@ -312,6 +440,10 @@ public class MapBrowseServlet extends DataPortalServlet {
 					if (revision.equals("newest"))
 						revision = newestRevisionValue;
 					
+					AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
+					resourceReadsXML = auditManagerClient.getPackageIdReads(scope, identifier, revision);
+					resourceReadsMap = generateResourceReadsMap(resourceReadsXML);
+
 					if (!newestRevisionValue.equals(revision)) {
 		                String displayText = "(View Newest Revision)";
 		                String href = String.format("mapbrowse?scope=%s&identifier=%s&revision=%s", scope, identifier, newestRevisionValue);
@@ -549,12 +681,23 @@ public class MapBrowseServlet extends DataPortalServlet {
 				
 				while (tokens.hasNext()) {
 					resource = tokens.nextToken();
+					Integer nonRobotReads = null;
+					
+					if (resourceReadsMap != null) {
+						nonRobotReads = resourceReadsMap.get(resource);
+						if (nonRobotReads == null) {
+							nonRobotReads = new Integer(0);
+						}
+					}
 
 					if (resource.contains(metadataUri)) {
-						metadata = "<li><a class=\"searchsubcat\" href=\"./metadataviewer?packageid="
-								+ packageId + "\">View Full Metadata</a></li>\n";	
+						String viewsWord = nonRobotReads.equals(1) ? "view" : "views";
+						String viewStr = String.format("<em>%d %s</em>", nonRobotReads, viewsWord);
+						metadata = String.format(
+						"<li><a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata (%s)</a></li>\n", 
+						           packageId, viewStr);
 						viewFullMetadataHTML = String.format(
-	                               "<a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata</a>",
+	                    "<a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata</a>",
 	                               packageId);
 					}
 					else
@@ -571,18 +714,25 @@ public class MapBrowseServlet extends DataPortalServlet {
 								String entityName = null;
 								String entitySize = null;
 								String entitySizeStr = "";
+								String resourceReadsStr = "";
 
 								entityName = findEntityName(entityNames, entityId);
 								entitySize = findEntitySize(entitySizes, entityId);
 								
 								if (entitySize != null) {
 									try {
+										String downloadsStr = nonRobotReads.equals(1) ? "download" : "downloads";
+										resourceReadsStr = 
+											String.format("; %d %s", 
+													      nonRobotReads, downloadsStr);
 										long l = Long.parseLong(entitySize);
 										String s = scaledNumberFormat.format(l);
-										entitySizeStr = String.format("&nbsp;<em>(%s)</em>&nbsp;", s);
+										entitySizeStr = String.format("&nbsp;<em>(%s%s)</em>&nbsp;", 
+												                      s, resourceReadsStr);
 									}
 									catch (NumberFormatException e) {
-										entitySizeStr = String.format("&nbsp;&nbsp;<em>(%s bytes)</em>", entitySize);
+										entitySizeStr = String.format("&nbsp;&nbsp;<em>(%s bytes%s)</em>", 
+												entitySize, resourceReadsStr);
 									}
 								}
 
