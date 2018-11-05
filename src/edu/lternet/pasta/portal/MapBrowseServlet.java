@@ -694,7 +694,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 						String viewsWord = nonRobotReads.equals(1) ? "view" : "views";
 						String viewStr = String.format("<em>%d %s</em>", nonRobotReads, viewsWord);
 						metadata = String.format(
-						"<li><a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata (%s)</a></li>\n", 
+						"<li><a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata</a> (%s)</li>\n", 
 						           packageId, viewStr);
 						viewFullMetadataHTML = String.format(
 	                    "<a class=\"searchsubcat\" href=\"./metadataviewer?packageid=%s\">View Full Metadata</a>",
