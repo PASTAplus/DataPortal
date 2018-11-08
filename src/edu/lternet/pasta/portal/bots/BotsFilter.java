@@ -107,19 +107,7 @@ public final class BotsFilter implements Filter
         Cookie internalCookie = null;
         PastaRequestWrapper pastaRequestWrapper = new PastaRequestWrapper(httpServletRequest, internalCookie);
 
-        String robot = BotMatcher.findRobot(httpServletRequest);
-        
-        if (robot == null) {
-            /*
-             * This value is interpreted by PASTA's Gatekeeper filter to mean
-             * that the Data Portal has already checked for robots and didn't
-             * find any. When the Gatekeeper sees a "No robot" value, it knows
-             * that it can skip its own checking for robots.
-             */
-            robot = "No robot";
-        }
-        
-        pastaRequestWrapper.putHeader("Robot", robot);      
+        // TODO: This filter is no long necessary and should be removed
 
         filterChain.doFilter(pastaRequestWrapper, response);
     }
