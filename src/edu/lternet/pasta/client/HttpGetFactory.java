@@ -45,17 +45,16 @@ public class HttpGetFactory {
 	 * 
 	 * @param url       The URL of the request
 	 * @param token     Auth-token string, possibly null
-	 * @param robot     Robot string, possibly null
+	 * @param userAgent Originating user agent string, possibly null
 	 * @return          An Httpget object
 	 */
-    public static HttpGet makeHttpGet(String url, String token, String robot) {
+    public static HttpGet makeHttpGet(String url, String token, String userAgent) {
         HttpGet httpGet = new HttpGet(url);
         if (token != null) {
             httpGet.setHeader("Cookie", "auth-token=" + token);
         }
-        if (robot != null) {
-            String b64Robot = new String(Base64.encodeBase64(robot.getBytes()));
-            httpGet.setHeader("Cookie", "robot=" + b64Robot);
+        if (userAgent != null) {
+            httpGet.setHeader("User-Agent", userAgent);
         }
         
         return httpGet;
