@@ -421,8 +421,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 				try {
 
-					String robot = request.getHeader("Robot");
-					dpmClient = new DataPackageManagerClient(uid, robot);
+					String userAgent = request.getHeader("User-Agent");
+					dpmClient = new DataPackageManagerClient(uid, userAgent);
                     jcClient = new JournalCitationsClient(uid);
 					
 					String deletionList = dpmClient.listDeletedDataPackages();
@@ -1298,7 +1298,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 	 * 
 	 * @param scope
 	 *          The data package scope (namespace) value
-	 * @param id
+	 * @param identifier
 	 *          The data package identifier (accession number) value
 	 * @param revision
 	 *          The data package revision value

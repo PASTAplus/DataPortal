@@ -143,8 +143,8 @@ public class ReportViewerServlet extends DataPortalServlet {
 					}
 				}
 				else {
-					String robot = request.getHeader("Robot");
-					DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, robot);
+					String userAgent = request.getHeader("User-Agent");
+					DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, userAgent);
 					xml = dpmClient.readDataPackageReport(scope, identifier, revision);
 				}
 

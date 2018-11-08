@@ -117,8 +117,8 @@ public class ArchiveDownloadServlet extends DataPortalServlet {
 			scope = tokens[0];
 			identifier = Integer.valueOf(tokens[1]);
 			revision = tokens[2];
-			String robot = request.getHeader("Robot");
-			DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, robot);
+			String userAgent = request.getHeader("User-Agent");
+			DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, userAgent);
 			dpmClient.getDataPackageArchive(scope, identifier, revision, response);
 		}
 		else {
