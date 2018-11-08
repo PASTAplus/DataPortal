@@ -82,7 +82,7 @@ public class DataPackageManagerClient extends PastaClient {
 
 	private final String BASE_URL;
 	String contentType = null;
-	private String robot = null;
+	private String userAgent = null;
 
 	/*
 	 * Constructors
@@ -97,12 +97,10 @@ public class DataPackageManagerClient extends PastaClient {
 	 * 
 	 * @throws PastaAuthenticationException
 	 */
-	public DataPackageManagerClient(String uid, String robot)
+	public DataPackageManagerClient(String uid, String userAgent)
 		    throws PastaAuthenticationException, PastaConfigurationException {
 	  this(uid);
-	  if ((uid != null) && uid.equals("public")) {
-	      this.robot = robot;
-	  }
+	  this.userAgent = userAgent;
 	}
 
 	/**
@@ -340,10 +338,14 @@ public class DataPackageManagerClient extends PastaClient {
 	}
 
 	/**
-	 * Executes the 'createDataPackage' web service method.
-	 * 
-	 * @param emlFile
-	 *          the Level-0 EML document describing the data package
+	 * Executes the 'getDataPackageArchive' web service method.
+	 *
+     * @param scope
+     *          the scope value, e.g. "knb-lter-lno"
+     * @param identifier
+     *          the identifier value, e.g. 10
+     * @param revision
+     *          the revision value, e.g. "1"
 	 * @return a string representation of the resource map for the newly created
 	 *         data package
 	 * @see <a target="top"
@@ -1286,7 +1288,7 @@ public class DataPackageManagerClient extends PastaClient {
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, entityId);
 		String url = BASE_URL + "/data/eml" + urlTail;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
 
 		try {
 			httpResponse = httpClient.execute(httpGet);
@@ -1557,7 +1559,7 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, null);
 		String url = BASE_URL + "/eml" + urlTail;
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
 		String entityString = null;
 
 		try {
@@ -1608,7 +1610,7 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String url = String.format("%s/archive/eml/%s/%d/%s/%s",  
 				                    BASE_URL, scope, identifier, revision, transaction);
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
 
 		try {
 			httpResponse = httpClient.execute(httpGet);
@@ -1664,7 +1666,7 @@ public class DataPackageManagerClient extends PastaClient {
 		String url = BASE_URL + "/report/eml" + urlTail;
 		String entityString = null;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1750,7 +1752,7 @@ public class DataPackageManagerClient extends PastaClient {
 		String url = BASE_URL + "/metadata/eml" + urlTail;
 		String entityString = null;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.robot);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1810,12 +1812,6 @@ public class DataPackageManagerClient extends PastaClient {
 	/**
 	 * Executes the "readDataPackageError" websevice method.
 	 * 
-	 * @param scope
-	 *          The package scope value
-	 * @param identifier
-	 *          The package identifier value
-	 * @param revision
-	 *          The package revision value
 	 * @param transaction
 	 *          The data package transaction
 	 * @return The error message
