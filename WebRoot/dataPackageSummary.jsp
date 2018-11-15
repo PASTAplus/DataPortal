@@ -214,9 +214,13 @@
 										<div class="table-cell text-align-right">
 											<label class="labelBold">Creators:</label>
 										</div>
-										<div class="table-cell">
-											<%= creatorsHTML %>
-										</div>											
+                                        <div class="table-cell">
+                                            <ul class="no-list-style">
+                                                <li>
+                                                    <div class="more"><%= creatorsHTML %></div>
+                                                </li>
+                                            </ul>
+                                        </div>
 									</div>
 
 							<c:set var="showDate" value="<%= showPubDate %>"/>

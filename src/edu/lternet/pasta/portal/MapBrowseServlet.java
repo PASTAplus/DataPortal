@@ -508,13 +508,10 @@ public class MapBrowseServlet extends DataPortalServlet {
 					creators = emlObject.getCreators();
 
 					if (creators != null) {
-
-						creatorsHTMLBuilder
-								.append("<ul class=\"no-list-style\">\n");
-
+                        boolean firstCreator = true;
 						for (ResponsibleParty creator : creators) {
-							creatorsHTMLBuilder.append("<li>");
-
+							if (!firstCreator) creatorsHTMLBuilder.append("<br/>\n");
+							firstCreator = false;
 							boolean useFullGivenName = true;
 							boolean lastNameFirst = true;
 							String individualName = creator.getIndividualName(useFullGivenName, lastNameFirst);
@@ -547,11 +544,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 											.append(organizationName);
 								}
 							}
-
-							creatorsHTMLBuilder.append("</li>\n");
 						}
 
-						creatorsHTMLBuilder.append("</ul>\n");
 						creatorsHTML = creatorsHTMLBuilder.toString();
 					}
 					
