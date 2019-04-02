@@ -129,12 +129,13 @@
       ]);
         
       var options = {
-        'title':'EDI Data Package Growth',
-        'width' :  400,
+        'title':'EDI Data Package Growth\n\n',
+        'width' :  450,
         'height' : 350,
-        hAxis: {
-          title: 'Date'
-        },
+        'legend': { position: 'top' },
+        //hAxis: {
+        //  title: 'Date'
+        //},
         vAxis: {
           title: 'Data Packages (Cumulative)'
         },
