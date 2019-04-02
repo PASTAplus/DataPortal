@@ -196,7 +196,7 @@ from misinterpretation or misuse of the data or metadata.</p>
 					<div class="row-fluid">
 						<div class="row-fluid">
 								    <div id="chart_div"></div>
-<p id="nis-growth">Site contributed data packages: <b><%= numDataPackagesSites %></b><br />
+<p id="nis-growth">Site-contributed data packages: <b><%= numDataPackagesSites %></b><br />
 Total data packages: <b><%= numDataPackages %></b></p>
 
 						</div>
