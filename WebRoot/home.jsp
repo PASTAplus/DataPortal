@@ -17,6 +17,7 @@
   -->
 
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
 <%@ page import="edu.lternet.pasta.common.CalendarUtility" %>
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
@@ -96,13 +97,49 @@
             downtimeHTML = String.format("<em>Please Note: </em>%s",
                                          sb.toString());
         }
-    }   
+    }
+    
+    DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
+    String pastaHost = dpmc.getPastaHost();
+    String tier = null;
+
+    if (pastaHost.startsWith("pasta-d") || 
+        pastaHost.startsWith("localhost")
+       ) {
+       tier = "development";
+    }
+    else if (pastaHost.startsWith("pasta-s")) {
+       tier = "staging";
+    }
+    
+    StringBuffer googleAnalyticsScriptBuffer = new StringBuffer("");
+    
+    //tier = "localtest";  // Uncomment this for local testing when not on production
+    
+    // We want the Google Analytics script on the production tier only
+    if (tier == null || tier.equals("localtest")) { 
+        googleAnalyticsScriptBuffer.append("<!-- Global site tag (gtag.js) - Google Analytics -->\n");
+        googleAnalyticsScriptBuffer.append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-130591981-1\"></script>\n");
+        googleAnalyticsScriptBuffer.append("<script>\n");
+        googleAnalyticsScriptBuffer.append("window.dataLayer = window.dataLayer || [];\n");
+        googleAnalyticsScriptBuffer.append("function gtag(){dataLayer.push(arguments);}\n");
+        googleAnalyticsScriptBuffer.append("gtag('js', new Date());\n");
+        googleAnalyticsScriptBuffer.append("gtag('config', 'UA-130591981-1');\n");
+        googleAnalyticsScriptBuffer.append("</script>\n");
+    }
+    
+    String googleAnalyticsScript = googleAnalyticsScriptBuffer.toString();
+     
 %>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
+<%= googleAnalyticsScript %>
+
+
 <title><%= titleText %></title>
 
 <meta charset="UTF-8" />
