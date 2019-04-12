@@ -251,7 +251,7 @@ from misinterpretation or misuse of the data or metadata.</p>
 <p id="nis-growth">
 <b>Contributed Data Packages</b><br/>Unique:&nbsp;<b><%= numDataPackagesSites %></b>;&nbsp;All Revisions:&nbsp;<b><%= numDataPackagesSitesAll %></b><br/>
 <br/>
-<b>Total Data Packages</b><br/>Unique:&nbsp;<b><%= numDataPackages %></b>;&nbsp;All Revisions:&nbsp;<b><%= numDataPackagesAll %></b>
+<b>Total Data Packages</b> (including EcoTrends and Landsat)<br/>Unique:&nbsp;<b><%= numDataPackages %></b>;&nbsp;All Revisions:&nbsp;<b><%= numDataPackagesAll %></b>
 </p>
 
 						</div>
