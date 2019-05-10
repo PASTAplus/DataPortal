@@ -71,7 +71,6 @@ import edu.lternet.pasta.common.eml.ResponsibleParty;
 import edu.lternet.pasta.common.eml.Title;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet;
 import edu.lternet.pasta.portal.user.SavedData;
-import eml.ecoinformatics_org.literature_2_1.Map;
 
 
 /**
