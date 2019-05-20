@@ -167,6 +167,7 @@ public class LoginServlet extends DataPortalServlet {
       new LoginClient(distinguishedName, password);
       httpSession.setAttribute("uid", distinguishedName);
 
+      /* Allows redirect back to page that forced a login action */
       if (from == null || from.isEmpty()) {
         forward = "./home.jsp";
       } else {
