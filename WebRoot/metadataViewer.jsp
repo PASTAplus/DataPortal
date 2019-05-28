@@ -26,7 +26,7 @@
 <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
 
 <!-- Google Fonts CSS -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300italic" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300i&display=swap&subset=latin-ext" rel="stylesheet" type="text/css">
 
 <!-- Page Layout CSS MUST LOAD BEFORE bootstap.css -->
 <link href="css/style_slate.css" media="all" rel="stylesheet" type="text/css">
