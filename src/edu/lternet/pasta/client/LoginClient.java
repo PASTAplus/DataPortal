@@ -232,15 +232,10 @@ public class LoginClient {
       String headerName = null;
       String headerValue = null;
 
-      // Loop through all headers looking for the "Set-Cookie" header.
-      for (int i = 0; i < headers.length; i++) {
-        headerName = headers[i].getName();
-
-        if (headerName.equals("Set-Cookie")) {
-          headerValue = headers[i].getValue();
-          token = this.getAuthToken(headerValue);
-        }
-
+      Header cookie = response.getFirstHeader("Set-Cookie");
+      if (cookie != null) {
+        headerValue = cookie.getValue();
+        token = this.getAuthToken(headerValue);
       }
 
     }
