@@ -1,38 +1,38 @@
 em {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	/* font-size: 12px; */
 	/* color: #666666; */
 }
 textarea {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 12px;
 	color: #666666;
 }
 select {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 12px;
 	color: #666666;
 }
 /*
 span {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 12px;
 	color: #666666;
 }
 */
 body {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 12px;
 	background-color: #ffffff;
 	color: #666666;
 }
 input {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	color: #666666;
 }
@@ -2252,7 +2252,7 @@ h2.loggedin {
 }
 
 p.smallmenu {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 14px;
 	font-weight: 600;
@@ -2292,14 +2292,14 @@ h3 {
 }
 
 p {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 22px;
 	font-size: 14px;
 	/* color: #666666; */
 }
 
 p.smallmenu {
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 14px;
 	font-weight: 600;
@@ -2480,7 +2480,7 @@ select.select-menu {
 .tooltip {
 	display: inline;
 	position: relative;
-	font-family: 'Open Sans, sans-serif';
+	font-family: 'Open Sans';
 	line-height: 20px;
 	font-size: 14px;
 	color: #5990bd;
