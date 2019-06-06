@@ -129,6 +129,8 @@
             howManySelected(form.siteValues) == 0 &&
             trim(form.startDate.value) == "" &&
             trim(form.endDate.value) == "" &&
+            trim(form.yearsMin.value) == "" &&
+            trim(form.yearsMax.value) == "" &&
             trim(form.namedTimescale.value) ==""
            )
         {              
@@ -549,6 +551,17 @@
 															  </td>
 															    -->
 														  </tr>
+                                                          <tr>
+                                                              <td>
+                                                                <label class="labelBold" for="userId">Minimum Years:</label>
+                                                                <input name="yearsMin" size="8" placeholder="" type="text" />
+                                                              </td>
+                                                              <td class="spacerwd"></td>
+                                                              <td>
+                                                                <label class="labelBold" for="group">Maximum Years:</label>
+                                                                <input name="yearsMax" size="8" placeholder="" type="text" />
+                                                              </td>
+                                                          </tr>
 														  <tr>
 															  <td>
 															    <label class="labelBold">Named Time-scale:</label>
@@ -790,6 +803,8 @@
       this.a1 = new Array("eastBound", "East Boundary must be a number.", new Function ("varName", "this.min='-180.0'; this.max='180.0';  return this[varName];"));
       this.a2 = new Array("northBound", "North Boundary must be a number.", new Function ("varName", "this.min='-90.0'; this.max='90.0';  return this[varName];"));
       this.a3 = new Array("southBound", "South Boundary must be a number.", new Function ("varName", "this.min='-90.0'; this.max='90.0';  return this[varName];"));
+      this.a4 = new Array("yearsMin", "Minimum Years must be a number.", new Function ("varName", "this.min='0.0'; this.max='10000.0';  return this[varName];"));
+      this.a5 = new Array("yearsMax", "Maximum Years must be a number.", new Function ("varName", "this.min='0.0'; this.max='10000.0';  return this[varName];"));
     } 
 
     function advancedSearchForm_DateValidations () { 

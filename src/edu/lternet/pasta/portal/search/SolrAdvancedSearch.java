@@ -68,6 +68,8 @@ public class SolrAdvancedSearch extends Search  {
   private final String dateField;
   private final String startDate;
   private final String endDate;
+  private final String yearsMin;
+  private final String yearsMax;
   private boolean isDatesContainedChecked;
   private String namedTimescale;
   private String namedTimescaleQueryType;
@@ -113,6 +115,8 @@ public class SolrAdvancedSearch extends Search  {
       String dateField,
       String startDate,
       String endDate,
+      String yearsMin,
+      String yearsMax,
       String namedTimescale,
       String[] siteValues,
       String subjectField,
@@ -140,6 +144,8 @@ public class SolrAdvancedSearch extends Search  {
     this.dateField = dateField;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.yearsMin = yearsMin;
+    this.yearsMax = yearsMax;
     this.isDatesContainedChecked = isDatesContainedChecked;
     this.namedTimescale = namedTimescale;
     this.siteValues = siteValues;
@@ -444,13 +450,19 @@ public class SolrAdvancedSearch extends Search  {
                                           String startDate,
                                           String endDate,
                                           boolean isDatesContainedChecked,
+                                          String yearsMin,
+                                          String yearsMax,
                                           String namedTimescale, 
                                           String namedTimescaleQueryType,
                                           TermsList termsList
                                          ) 
   		throws UnsupportedEncodingException {
+  	  String LEFT_BRACKET = "%5B";
+  	  String RIGHT_BRACKET = "%5D";
 	  boolean endDateSpecified = false;
 	  boolean startDateSpecified = false;
+	  boolean yearsMinSpecified = false;
+	  boolean yearsMaxSpecified = false;
 	  
     /* If the user specified a named time-scale query, search for it
      * in the "timescale" field.
@@ -488,8 +500,6 @@ public class SolrAdvancedSearch extends Search  {
     	String temporalFilter = null;
     	String collectionFilter = null;
     	String pubDateFilter = null;
-    	String LEFT_BRACKET = "%5B";
-    	String RIGHT_BRACKET = "%5D";
 
       if (dateField.equals("ALL") || dateField.equals("COLLECTION")) {
     	  String singleDateQuery = String.format("singledate:%s%s+TO+%s%s", LEFT_BRACKET, startDate, endDate, RIGHT_BRACKET);
@@ -513,6 +523,26 @@ public class SolrAdvancedSearch extends Search  {
       }
       
       updateFQString(temporalFilter);   
+    }
+    
+    if ((yearsMin == null) || (yearsMin.equals(""))) {
+    	yearsMin = "*";
+    }
+    else {
+    	yearsMinSpecified = true;
+    }
+    
+    if ((yearsMax == null) || (yearsMax.equals(""))) {
+    	yearsMax = "*";
+    }
+    else {
+    	yearsMaxSpecified = true;
+    }
+
+    if (yearsMinSpecified || yearsMaxSpecified) {
+    	String timespanFilter = null;
+        timespanFilter = String.format("timespan:%s%s+TO+%s%s", LEFT_BRACKET, yearsMin, yearsMax, RIGHT_BRACKET);
+        updateFQString(timespanFilter);       	
     }
 
   }
@@ -736,8 +766,9 @@ public class SolrAdvancedSearch extends Search  {
         buildQueryFunding(this.termsList);
 		buildQueryGeographicDescription(this.locationName, this.termsList);
 		buildQueryFilterTemporal(this.dateField, this.startDate,
-		   this.endDate, this.isDatesContainedChecked, this.namedTimescale,
-		   this.namedTimescaleQueryType, this.termsList);
+		   this.endDate, this.isDatesContainedChecked, 
+		   this.yearsMin, this.yearsMax, 
+		   this.namedTimescale, this.namedTimescaleQueryType, this.termsList);
 		buildQueryFilterSite(this.termsList);
 		buildQueryFilterSpatial(this.northBound, this.southBound, this.eastBound,
 				 this.westBound, this.isBoundaryContainedChecked);

@@ -147,6 +147,8 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     String startDate = request.getParameter("startDate");
     String endDate = request.getParameter("endDate");
     String datesContained = request.getParameter("datesContained");
+    String yearsMin = request.getParameter("yearsMin");
+    String yearsMax = request.getParameter("yearsMax");
     String creatorOrganization = request.getParameter("creatorOrganization");
     String creatorName = request.getParameter("creatorName");
     String locationName = request.getParameter("locationName");
@@ -182,6 +184,8 @@ public class AdvancedSearchServlet extends DataPortalServlet {
       dateField,
       startDate,
       endDate,
+      yearsMin,
+      yearsMax,
       namedTimescale,
       siteValues,
       subjectField,
