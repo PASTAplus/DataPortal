@@ -540,9 +540,9 @@ public class SolrAdvancedSearch extends Search  {
     }
 
     if (yearsMinSpecified || yearsMaxSpecified) {
-    	String timespanFilter = null;
-        timespanFilter = String.format("timespan:%s%s+TO+%s%s", LEFT_BRACKET, yearsMin, yearsMax, RIGHT_BRACKET);
-        updateFQString(timespanFilter);       	
+    	String durationFilter = null;
+        durationFilter = String.format("duration:%s%s+TO+%s%s", LEFT_BRACKET, yearsMin, yearsMax, RIGHT_BRACKET);
+        updateFQString(durationFilter);       	
     }
 
   }
