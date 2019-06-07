@@ -553,13 +553,13 @@
 														  </tr>
                                                           <tr>
                                                               <td>
-                                                                <label class="labelBold" for="userId">Minimum Years:</label>
-                                                                <input name="yearsMin" size="8" placeholder="" type="text" />
+                                                                <label class="labelBold" for="userId">Min Duration (years):</label>
+                                                                <input name="yearsMin" size="11" placeholder="" type="text" />
                                                               </td>
                                                               <td class="spacerwd"></td>
                                                               <td>
-                                                                <label class="labelBold" for="group">Maximum Years:</label>
-                                                                <input name="yearsMax" size="8" placeholder="" type="text" />
+                                                                <label class="labelBold" for="group">Max Duration (years):</label>
+                                                                <input name="yearsMax" size="11" placeholder="" type="text" />
                                                               </td>
                                                           </tr>
 														  <tr>
