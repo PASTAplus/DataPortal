@@ -125,6 +125,7 @@
             trim(form.locationName.value) == "" &&
             trim(form.taxon.value) == "" &&
             trim(form.identifier.value) == "" &&
+            trim(form.projectTitle.value) == "" &&
             trim(form.funding.value) == "" &&
             howManySelected(form.siteValues) == 0 &&
             trim(form.startDate.value) == "" &&
@@ -627,9 +628,13 @@
                                                    <div>
                                                         <table>
                                                             <tr>
+                                                                <td><label class="labelBold">Project Title:</label></td>
+                                                                <td class="spacerwd"></td>
                                                                 <td><label class="labelBold">Funding:</label></td>
                                                             </tr>
                                                             <tr>
+                                                                <td><input name="projectTitle" type="text" /></td>
+                                                                <td class="spacerwd"></td>
                                                                 <td><input name="funding" type="text" /></td>
                                                             </tr>
                                                         </table>

@@ -80,6 +80,7 @@ public class SolrAdvancedSearch extends Search  {
   private boolean includeLandsat5;
   private String taxon;
   private String identifier;
+  private String projectTitle;
   private String funding;
   
   private boolean isBoundaryContainedChecked;
@@ -129,6 +130,7 @@ public class SolrAdvancedSearch extends Search  {
       boolean isRelatedSpecificChecked,
       String taxon,
       String identifier,
+      String projectTitle,
       String funding,
       boolean isBoundaryContainedChecked,
       String boundsChangedCount,
@@ -155,6 +157,7 @@ public class SolrAdvancedSearch extends Search  {
     this.includeLandsat5 = isIncludeLandsat5Checked;
     this.taxon = taxon;
     this.identifier = identifier;
+    this.projectTitle = projectTitle;
     this.funding = funding;
     
     this.isBoundaryContainedChecked = isBoundaryContainedChecked;
@@ -673,13 +676,43 @@ public class SolrAdvancedSearch extends Search  {
      * A funding query searches the funding field, matching the
      * field if the user-specified value is contained in the field.
      */
-    private void buildQueryFunding(TermsList termsList)
+    private void buildQueryProject(TermsList termsList)
             throws UnsupportedEncodingException {
-        String value = this.funding;
+    	String projectTitleValue = this.projectTitle;
+        String fundingValue = this.funding;
 
-        if ((value != null) && (!(value.equals("")))) {
-            termsList.addTerm(value);
-            String parenthesizedValue = parenthesizeQueryValue(value);
+		if ((projectTitleValue != null) && (!(projectTitleValue.equals("")))) {
+			List<String> terms = parseTerms(this.projectTitle);
+
+			TreeSet<String> derivedTerms = new TreeSet<String>();
+		
+			for (String term : terms) {
+				derivedTerms.add(term);
+			}
+
+			String projectTitleQuery = "";
+			boolean firstTerm = true;
+			for (String derivedTerm : derivedTerms) {
+				termsList.addTerm(derivedTerm);
+				if (!firstTerm) {
+					projectTitleQuery += "%20OR%20";
+				}
+				else {
+					firstTerm = false;
+				}
+				String parenthesizedValue = parenthesizeQueryValue(derivedTerm);
+				String escapedTerms = Search.escapeQueryChars(parenthesizedValue);
+				String encodedTerms = URLEncoder.encode(escapedTerms, "UTF-8");
+				final String field = "projectTitle";
+				projectTitleQuery += String.format("%s:%s", field, encodedTerms);
+			}
+
+			updateQString(projectTitleQuery);
+		}
+
+		if ((fundingValue != null) && (!(fundingValue.equals("")))) {
+            termsList.addTerm(fundingValue);
+            String parenthesizedValue = parenthesizeQueryValue(fundingValue);
             String escapedValue = Search.escapeQueryChars(parenthesizedValue);
             String encodedValue = URLEncoder.encode(escapedValue, "UTF-8");
             String fundingQuery = String.format("funding:%s", encodedValue);
@@ -763,7 +796,7 @@ public class SolrAdvancedSearch extends Search  {
 		buildQueryAuthor(this.termsList); 
 		buildQueryTaxon(this.termsList);
 		buildQueryIdentifier(this.termsList);
-        buildQueryFunding(this.termsList);
+        buildQueryProject(this.termsList);
 		buildQueryGeographicDescription(this.locationName, this.termsList);
 		buildQueryFilterTemporal(this.dateField, this.startDate,
 		   this.endDate, this.isDatesContainedChecked, 
