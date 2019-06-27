@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import edu.lternet.pasta.common.eml.Entity.EntityType;
 
 
@@ -44,7 +46,10 @@ public class DataPackage {
    * Class fields
    */
 
-  
+	private static final Logger logger = Logger
+		    .getLogger(edu.lternet.pasta.common.eml.DataPackage.class);
+
+	
   /*
    * Instance fields
    */
@@ -421,8 +426,40 @@ public class DataPackage {
 	
 	
 	public void addBoundingCoordinates(String north, String south, String east, String west) {
-		BoundingCoordinates boundingCoordinates = new BoundingCoordinates(north, south, east, west);
-		coordinatesList.add(boundingCoordinates);
+		boolean validated = validateCoordinates(north, south, east, west);
+		
+		if (validated) {
+			BoundingCoordinates boundingCoordinates = 
+					new BoundingCoordinates(north, south, east, west);
+			coordinatesList.add(boundingCoordinates);
+		}
+	}
+	
+	
+	private boolean validateCoordinates(String north, String south, String east, String west) {
+		boolean validated = true;
+		
+		try {
+			Float fNorth = Float.parseFloat(north);
+			Float fSouth = Float.parseFloat(south);
+			Float fEast = Float.parseFloat(east);
+			Float fWest = Float.parseFloat(west);
+			
+			if (fNorth < fSouth) {
+				validated = false;
+				logger.error(
+					String.format(
+							"North coord (%s) is less than South coord (%s)",
+							north, south));
+			}
+		}
+		catch (NumberFormatException e) {
+			String msg = String.format("Error parsing coordinate value: %s",
+					                   e.getMessage());
+			logger.error(msg);
+		}
+		
+		return validated;
 	}
 	
 	
