@@ -76,6 +76,8 @@ public class PastaClient {
   protected String uid = null;
   protected String token = null;
   
+  protected String portalUrlHead = null;
+  
   /*
    * Constructors
    */
@@ -99,6 +101,17 @@ public class PastaClient {
     this.maxIdleTime = options.getInt("pastaclient.maxidletime");
     this.idleSleepTime = options.getInt("pastaclient.idlesleeptime");
     this.initialSleepTime = options.getInt("pastaclient.initialsleeptime");
+    
+    /*
+     *  Deriving portalUrlHead from desktopUrlHead is a bit of a kludge, 
+     *  but it avoids needing to add a new property to the properties file
+     */
+    String desktopUrlHead = options.getString("dataportal.desktopUrlHead");
+    if (desktopUrlHead != null && !desktopUrlHead.equals("")) {
+    	int strLength = desktopUrlHead.length();
+    	// Trim off the last five characters, "/data"
+    	this.portalUrlHead = desktopUrlHead.substring(0, (strLength - 5));	
+    }
 
     if (this.uid == null) {
 

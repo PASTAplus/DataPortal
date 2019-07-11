@@ -117,6 +117,7 @@ public class ReportViewerServlet extends DataPortalServlet {
 
 		String packageId = request.getParameter("packageid");
 		String encodedPath = request.getParameter("localPath");
+		String transactionId = request.getParameter("transactionId");
 		String scope = null;
 		Integer identifier = null;
 		String revision = null;
@@ -124,17 +125,25 @@ public class ReportViewerServlet extends DataPortalServlet {
 		String html = null;
 
 		try {
+			
 			String[] tokens = packageId.split("\\.");
 
 			if (tokens.length == 3) {
 				scope = tokens[0];
 				identifier = Integer.valueOf(tokens[1]);
 				revision = tokens[2];
+			
 				/*
 				 * The quality report XML could be read either from a local file
 				 * or from PASTA via the DataPackageManagerClient.
 				 */
-				if (encodedPath != null && encodedPath.length() > 0) {
+				if (transactionId != null && transactionId.length() > 0) {
+					String userAgent = request.getHeader("User-Agent");
+					DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, userAgent);
+					xml = dpmClient.readEvaluateReport(scope, identifier, revision, transactionId);
+					
+				}				
+				else if (encodedPath != null && encodedPath.length() > 0) {
 					URLCodec urlCodec = new URLCodec();
 					String localPath = urlCodec.decode(encodedPath);
 					File xmlFile = new File(localPath);

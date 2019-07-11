@@ -609,7 +609,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String verb = "";
 		String advice = "";
 		String archiveAdvice = "";
-		String evaluateURL = String.format("%s/evaluate/report/eml/%s", this.BASE_URL, transactionId);
+		String evaluateURL = String.format("%s/reportviewer?packageid=%s&transactionId=%s", 
+				                           this.portalUrlHead, packageId, transactionId);
 		String evaluateAdvice = 
 				String.format("You may check the availability of an evaluate report at a later time using the following URL: %s",
 						     evaluateURL);
@@ -2143,7 +2144,18 @@ public class DataPackageManagerClient extends PastaClient {
 
 		return resourceMap;
 	}
+	
+	
+	/**
+	 * Returns the BASE_URL instance variable.
+	 * 
+	 * @return The value of BASE_URL
+	 */
+	public String getBaseUrl() {
+		return this.BASE_URL;
+	}
 
+	
 	/**
 	 * Returns the content type of the last operation that sets it.
 	 * 
