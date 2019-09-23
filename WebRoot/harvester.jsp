@@ -23,15 +23,14 @@
         }
     }
     
-    String uid = (String) httpSession.getAttribute("uid");
     String warningMessage = (String) request.getAttribute("message");
+	Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
 
-    if (uid == null || uid.isEmpty()) {
+    if (vetted == null || !vetted) {
 		request.setAttribute("from", "./harvester.jsp");
 		String loginWarning = DataPortalServlet.getLoginWarning();
 		request.setAttribute("message", loginWarning);
-		RequestDispatcher requestDispatcher = request
-		    .getRequestDispatcher("./login.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
 		requestDispatcher.forward(request, response);
 	}
 	else if (warningMessage == null) {

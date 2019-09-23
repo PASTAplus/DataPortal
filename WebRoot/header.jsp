@@ -7,6 +7,7 @@
 
 	HttpSession httpSession = request.getSession();
 	String uid = (String) httpSession.getAttribute("uid");
+	String cname = (String) httpSession.getAttribute("cname");
 	String identity = null;
 	String uname = null;
 	String welcomeBack = null;
@@ -19,7 +20,7 @@
 	} 
 	else {
         identity = "<a id=\"login\" href=\"./logout\">Log Out</a>";
-		uname = LoginServlet.uidFromDistinguishedName(uid);
+		uname = cname;
 		welcomeBack = "Welcome Back";
 	}
 	

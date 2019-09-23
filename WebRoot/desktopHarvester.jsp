@@ -7,13 +7,13 @@
 
 <%
 	HttpSession httpSession = request.getSession();
-	String uid = (String) httpSession.getAttribute("uid");
-	if (uid == null || uid.isEmpty()) {
+	Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
+
+	if (vetted == null || !vetted) {
 		request.setAttribute("from", "./desktopHarvester.jsp");
 		String loginWarning = DataPortalServlet.getLoginWarning();
 		request.setAttribute("message", loginWarning);
-		RequestDispatcher requestDispatcher = request
-		    .getRequestDispatcher("./login.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
 		requestDispatcher.forward(request, response);
 	}
 	

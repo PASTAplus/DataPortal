@@ -113,7 +113,8 @@
 							  </div>
 						</div>
 					</form>
-									
+
+								<p>Login with <a href="https://auth.edirepository.org/auth/login/google?target=portal-d.edirepository.org">Google</a></p>
 								<!-- /Content -->
 							</div>
 						</div>

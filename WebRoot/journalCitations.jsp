@@ -23,11 +23,12 @@
   String packageId = (String) request.getParameter("packageid");
   String createMessageHTML = "";
   String deleteMessageHTML = "";
-  
-  String uid = (String) httpSession.getAttribute("uid");
-  String uname = "";
 
-  if (uid == null || uid.isEmpty()) {
+  String uname = "";
+  String uid = (String) httpSession.getAttribute("uid");
+  Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
+
+  if (vetted == null || !vetted) {
     request.setAttribute("from", "./journalCitations.jsp");
     String loginWarning = DataPortalServlet.getLoginWarning();
     request.setAttribute("message", loginWarning);

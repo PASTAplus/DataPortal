@@ -8,15 +8,15 @@
   String basePath = request.getScheme() + "://" + request.getServerName()
       + ":" + request.getServerPort() + path + "/";
 
-	String uid = (String) session.getAttribute("uid");
+  Boolean vetted = (Boolean) session.getAttribute("vetted");
 
-	if (uid == null || uid.isEmpty()) {
-		request.setAttribute("from", "./savedData.jsp");
-		String loginWarning = DataPortalServlet.getLoginWarning();
-		request.setAttribute("message", loginWarning);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
-		requestDispatcher.forward(request, response);
-	}
+  if (vetted == null || !vetted) {
+	request.setAttribute("from", "./savedData.jsp");
+	String loginWarning = DataPortalServlet.getLoginWarning();
+	request.setAttribute("message", loginWarning);
+	RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
+	requestDispatcher.forward(request, response);
+  }
 
   String searchResult = (String) request.getAttribute("searchresult");
 

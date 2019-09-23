@@ -9,15 +9,13 @@
 	    + ":" + request.getServerPort() + path + "/";
 
 	HttpSession httpSession = request.getSession();
+	Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
 
-	String uid = (String) httpSession.getAttribute("uid");
-
-	if (uid == null || uid.isEmpty()) {
+	if (vetted == null || !vetted) {
 		request.setAttribute("from", "./dataPackageAudit.jsp");
 		String loginWarning = DataPortalServlet.getLoginWarning();
 		request.setAttribute("message", loginWarning);
-		RequestDispatcher requestDispatcher = request
-		    .getRequestDispatcher("./login.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
 		requestDispatcher.forward(request, response);
 	}
 
