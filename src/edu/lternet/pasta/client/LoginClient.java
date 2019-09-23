@@ -76,9 +76,10 @@ public class LoginClient {
    */
 
   private final String LOGIN_URL;
-  private String pastaHost = null; // PASTA web hostname
-  private String pastaProtocol = null; // PASTA web protocol
-  private int pastaPort; // PASTA web port
+  private String authHost = null; // PASTA web hostname
+  private String authProtocol = null; // PASTA web protocol
+  private int authPort; // PASTA web port
+  private String authUri = null;
 
   /*
    * Constructors
@@ -101,12 +102,13 @@ public class LoginClient {
 
     Configuration options = ConfigurationListener.getOptions();
 
-    this.pastaHost = options.getString("pasta.hostname");
-    this.pastaProtocol = options.getString("pasta.protocol");
-    this.pastaPort = options.getInt("pasta.port");
-    
-    String pastaUrl = PastaClient.composePastaUrl(this.pastaProtocol, this.pastaHost, this.pastaPort);
-    this.LOGIN_URL = pastaUrl + "/package/";
+    this.authHost = options.getString("auth.hostname");
+    this.authProtocol = options.getString("auth.protocol");
+    this.authPort = options.getInt("auth.port");
+    this.authUri = options.getString("auth.uriTail");
+
+    String pastaUrl = PastaClient.composePastaUrl(this.authProtocol, this.authHost, this.authPort);
+    this.LOGIN_URL = pastaUrl + this.authUri;
 
     String token = this.login(distinguishedName, password);
 
@@ -114,9 +116,9 @@ public class LoginClient {
       String gripe = "User '" + distinguishedName + "' did not successfully authenticate.";
       throw new PastaAuthenticationException(gripe);
     } else {
-      TokenManager tokenManager = new TokenManager();
+      TokenManager tokenManager = new TokenManager(token);
       try {
-        tokenManager.setToken(distinguishedName, token);
+        tokenManager.storeToken();
       } catch (SQLException e) {
         logger.error(e);
         e.printStackTrace();
@@ -179,7 +181,7 @@ public class LoginClient {
      */
 
     // Define host parameters
-    HttpHost httpHost = new HttpHost(this.pastaHost, this.pastaPort, this.pastaProtocol);
+    HttpHost httpHost = new HttpHost(this.authHost, this.authPort, this.authProtocol);
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
     // Define user authentication credentials that will be used with the host
