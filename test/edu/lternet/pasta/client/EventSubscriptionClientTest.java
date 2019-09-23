@@ -34,8 +34,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.lternet.pasta.client.EventSubscriptionClient;
-import edu.lternet.pasta.client.PastaAuthenticationException;
 import edu.lternet.pasta.portal.ConfigurationListener;
 import edu.lternet.pasta.token.TokenManager;
 
@@ -106,8 +104,8 @@ public class EventSubscriptionClientTest {
   @Before
   public void setUp() throws Exception {
 
-    this.tokenManager = new TokenManager();
-    this.tokenManager.setToken(username, token);
+    this.tokenManager = new TokenManager(token);
+    this.tokenManager.storeToken();
 
   }
 
@@ -117,7 +115,7 @@ public class EventSubscriptionClientTest {
   @After
   public void tearDown() throws Exception {
 
-    this.tokenManager.deleteToken(username);
+    TokenManager.deleteToken(username);
 
   }
 

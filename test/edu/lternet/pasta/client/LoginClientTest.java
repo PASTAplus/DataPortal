@@ -93,10 +93,8 @@ public class LoginClientTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 
-		TokenManager tokenManager = new TokenManager();
-
 		// Clean up "tokenstore" database and remove user.
-		tokenManager.deleteToken(username);
+		TokenManager.deleteToken(username);
 
 		username = null;
 		password = null;
