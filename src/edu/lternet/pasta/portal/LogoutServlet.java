@@ -106,9 +106,8 @@ public class LogoutServlet extends DataPortalServlet {
       httpSession.invalidate();
     } 
     else {
-      TokenManager tokenManager = new TokenManager();
       try {
-        tokenManager.deleteToken(username);
+        TokenManager.deleteToken(username);
       }
       catch (Exception e) {
         handleDataPortalError(logger, e);
