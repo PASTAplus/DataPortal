@@ -122,11 +122,9 @@ public class PastaClient {
 
       if (!this.uid.equals("public")) {  // Get authentication token for uid
 
-        TokenManager tokenManager = new TokenManager();
-
         try {
 
-          this.token = tokenManager.getToken(uid);
+          this.token = TokenManager.getExtToken(uid);
 
           // Throw exception if user not "public"
           // and token not in store
