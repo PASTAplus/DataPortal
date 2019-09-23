@@ -25,6 +25,7 @@
 package edu.lternet.pasta.portal;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.saxon.functions.True;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
@@ -147,63 +149,100 @@ public class LoginServlet extends DataPortalServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    HttpSession httpSession = request.getSession();
+    String uid = null;
+    String distinguishedName = null;
+    String forward = null;
+    TokenManager tokenManager = null;
 
+    HttpSession httpSession = request.getSession();
     String from = (String) httpSession.getAttribute("from");
 
-    String uid = request.getParameter("uid");
-    String affiliation = request.getParameter("affiliation");
-    
-	if (uid != null) {
-		uid = uid.trim();
-	}
-	
-    String password = request.getParameter("password");
-    String forward = null;
+    String extToken = request.getParameter("token");
+    String cname = request.getParameter("cname");
 
-    try {
+    if (extToken != null && cname != null) { // Other 3rd party login
+        tokenManager = new TokenManager(extToken);
+        try {
+            tokenManager.storeToken();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        distinguishedName = tokenManager.getUid();
 
-      String distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
-      new LoginClient(distinguishedName, password);
-      httpSession.setAttribute("uid", distinguishedName);
+    } else { // PASTA login
 
-      /* Allows redirect back to page that forced a login action */
-      if (from == null || from.isEmpty()) {
+        uid = request.getParameter("uid");
+        String affiliation = request.getParameter("affiliation");
+
+        if (uid != null) {
+            uid = uid.trim();
+            cname = uid;
+        }
+
+        String password = request.getParameter("password");
+
+        try {
+
+          distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
+          new LoginClient(distinguishedName, password);
+          extToken = TokenManager.getExtToken(distinguishedName);
+          tokenManager = new TokenManager(extToken);
+
+        } catch (PastaAuthenticationException e) {
+          String message = "<strong><em>Login failed</em></strong> for user <kbd class=\"nis\">" + uid + "</kbd>.";
+          forward = "./login.jsp";
+          request.setAttribute("message", message);
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    boolean vetted = false;
+    if (tokenManager != null) {
+        ArrayList<String> groups = tokenManager.getGroups();
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).equals("vetted")) {
+                vetted = true;
+            }
+        }
+    }
+
+    httpSession.setAttribute("vetted", vetted);
+    httpSession.setAttribute("uid", distinguishedName);
+    httpSession.setAttribute("cname", cname);
+
+    /* Allows redirect back to page that forced a login action */
+    if (from == null || from.isEmpty()) {
         forward = "./home.jsp";
-      } else {
+    } else {
         forward = from;
         httpSession.removeAttribute("from");
-      }
-      
-    } catch (PastaAuthenticationException e) {
-      String message = "<strong><em>Login failed</em></strong> for user <kbd class=\"nis\">" + uid + "</kbd>.";
-      forward = "./login.jsp";
-      request.setAttribute("message", message);
     }
 
     try {
-        TokenManager tm = new TokenManager();
-        logger.info(tm.getCleartextToken(uid));
-        logger.info(tm.getUserDistinguishedName(uid));
-        logger.info(tm.getTokenAuthenticationSystem(uid));
-        logger.info(tm.getTokenTimeToLive(uid));
+        extToken = TokenManager.getExtToken(uid);
+        TokenManager tm = new TokenManager(extToken);
+        logger.info(tm.getToken());
+        logger.info(tm.getUid());
+        logger.info(tm.getAuthSystem());
+        logger.info(tm.getTtl());
 
-        ArrayList<String> groups = tm.getUserGroups(uid);
+        ArrayList<String> groups = tm.getGroups();
 
         for (String group : groups) {
             logger.info(group);
         }
 
-        logger.info(tm.getTokenSignature(uid));
-
-        // Let's try to alter the token
-        /*
-        String token = tm.getToken(uid);
-        token = Escalator.addGroup(token, "super");
-        tm.setToken(uid, token);
-
-        logger.info(tm.getCleartextToken(uid));
-        */
+        logger.info(tm.getSignature());
 
     }
     catch (ClassNotFoundException e) {
@@ -213,7 +252,7 @@ public class LoginServlet extends DataPortalServlet {
         e.printStackTrace();
     }
 
-      RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
+    RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
     requestDispatcher.forward(request, response);
 
   }
