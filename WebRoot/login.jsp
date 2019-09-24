@@ -71,9 +71,7 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<!-- Content -->
-								
-				<span class="nis-warn"><%=message%></span>
-
+								<p><span class="nis-error"><%=message%></span></p>
 					<form id="login" name="loginform" method="post" action="./login" target="_top">
 						<div class="display-table">
 								<div class="table-row">
