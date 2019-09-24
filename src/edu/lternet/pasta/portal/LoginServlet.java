@@ -151,11 +151,13 @@ public class LoginServlet extends DataPortalServlet {
 
     String uid = null;
     String distinguishedName = null;
-    String forward = null;
     TokenManager tokenManager = null;
 
     HttpSession httpSession = request.getSession();
-    String from = (String) httpSession.getAttribute("from");
+
+    // Set return to originating page, if set
+    String forward = (String) httpSession.getAttribute("from");
+    httpSession.removeAttribute("from");
 
     String extToken = request.getParameter("token");
     String cname = request.getParameter("cname");
@@ -193,7 +195,7 @@ public class LoginServlet extends DataPortalServlet {
           tokenManager = new TokenManager(extToken);
 
         } catch (PastaAuthenticationException e) {
-          String message = "<strong><em>Login failed</em></strong> for user <kbd class=\"nis\">" + uid + "</kbd>.";
+          String message = "<em>Login failed for user</em> " + uid;
           forward = "./login.jsp";
           request.setAttribute("message", message);
         } catch (SQLException e) {
@@ -214,22 +216,18 @@ public class LoginServlet extends DataPortalServlet {
                 vetted = true;
             }
         }
+        httpSession.setAttribute("vetted", vetted);
+        httpSession.setAttribute("uid", distinguishedName);
+        httpSession.setAttribute("cname", cname);
     }
 
-    httpSession.setAttribute("vetted", vetted);
-    httpSession.setAttribute("uid", distinguishedName);
-    httpSession.setAttribute("cname", cname);
-
     /* Allows redirect back to page that forced a login action */
-    if (from == null || from.isEmpty()) {
+    if (forward == null || forward.isEmpty()) {
         forward = "./home.jsp";
-    } else {
-        forward = from;
-        httpSession.removeAttribute("from");
     }
 
     try {
-        extToken = TokenManager.getExtToken(uid);
+        extToken = TokenManager.getExtToken(distinguishedName);
         TokenManager tm = new TokenManager(extToken);
         logger.info(tm.getToken());
         logger.info(tm.getUid());
@@ -245,14 +243,11 @@ public class LoginServlet extends DataPortalServlet {
         logger.info(tm.getSignature());
 
     }
-    catch (ClassNotFoundException e) {
-        e.printStackTrace();
-    }
-    catch (java.sql.SQLException e) {
+    catch (ClassNotFoundException | SQLException e) {
         e.printStackTrace();
     }
 
-    RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
     requestDispatcher.forward(request, response);
 
   }
