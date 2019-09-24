@@ -66,6 +66,7 @@
 								<h2>Login</h2>
 							</div>
 							<span class="row-fluid separator_border"></span>
+							<h3>Use your EDI or LTER account:</h3>
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
@@ -73,8 +74,7 @@
 								
 				<span class="nis-warn"><%=message%></span>
 
-					<form id="login" name="loginform" method="post" action="./login"
-						target="_top">
+					<form id="login" name="loginform" method="post" action="./login" target="_top">
 						<div class="display-table">
 								<div class="table-row">
 									<div class="table-cell">
@@ -113,8 +113,8 @@
 							  </div>
 						</div>
 					</form>
-
-								<p>Login with <a href="https://auth.edirepository.org/auth/login/google?target=portal-d.edirepository.org">Google</a></p>
+								<h3>Or use an alternate provider:</h3>
+								<p><a href="https://auth.edirepository.org/auth/login/google?target=portal-d.edirepository.org"><img src="./images/btn_google_signin_light_normal_web.png"/></a></p>
 								<!-- /Content -->
 							</div>
 						</div>
