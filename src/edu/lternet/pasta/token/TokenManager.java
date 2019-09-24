@@ -76,13 +76,6 @@ public class TokenManager {
 
     public TokenManager(String extToken) {
 
-        Configuration options = ConfigurationListener.getOptions();
-
-        TokenManager.dbDriver = options.getString("db.Driver");
-        TokenManager.dbURL = options.getString("db.URL");
-        TokenManager.dbUser = options.getString("db.User");
-        TokenManager.dbPassword = options.getString("db.Password");
-
         if (extToken != null) {
             this.extToken = extToken;
             this.b64Token = extToken.split("-")[0];
@@ -139,6 +132,13 @@ public class TokenManager {
      * @return The database Connection object.
      */
     private static Connection getConnection() throws ClassNotFoundException {
+
+        Configuration options = ConfigurationListener.getOptions();
+
+        TokenManager.dbDriver = options.getString("db.Driver");
+        TokenManager.dbURL = options.getString("db.URL");
+        TokenManager.dbUser = options.getString("db.User");
+        TokenManager.dbPassword = options.getString("db.Password");
 
         Connection conn = null;
 
@@ -262,7 +262,7 @@ public class TokenManager {
         Connection dbConn = null; // database connection object
 
         try {
-            dbConn = getConnection();
+            dbConn = TokenManager.getConnection();
             try {
                 Statement stmt = dbConn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
