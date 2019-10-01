@@ -112,8 +112,9 @@
 						</div>
 					</form>
 								<h3>Or use an alternate provider:</h3>
-								<p><a href="https://auth.edirepository.org/auth/login/google?target=portal-d.edirepository.org"><img src="./images/btn_google_signin_light_normal_web.png"/></a></p>
-								<p><a href="https://auth.edirepository.org/auth/login/github?target=portal-d.edirepository.org"><img src="./images/btn_github_signin_light_normal_web.png"/></a></p>
+								<p><a href="https://auth.edirepository.org/auth/login/google?target=portal-d.edirepository.org"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://auth.edirepository.org/auth/login/github?target=portal-d.edirepository.org"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://auth.edirepository.org/auth/login/orcid?target=portal-d.edirepository.org"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
 								<!-- /Content -->
 							</div>
 						</div>
