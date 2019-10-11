@@ -16,6 +16,7 @@
   ~ language governing permissions and limitations under the License.
   -->
 
+<%@ page import="java.time.LocalDate" %>
 <%@ page import="edu.lternet.pasta.portal.DataPackageSurvey" pageEncoding="UTF-8" %>
 
 <%
@@ -92,6 +93,9 @@ if (recentScope4 != null && !recentScope4.equals("")) {
   date4 = recentDate4;
 }
 
+LocalDate ld = LocalDate.now();
+int year = ld.getYear();
+
 %>
 
 	<!-- Divider -->
@@ -151,14 +155,17 @@ if (recentScope4 != null && !recentScope4.equals("")) {
 					</span>
 					<div class="row-fluid">
 						<div class="span12 ">
-							Copyright 2017 <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>. 
+							Copyright <%= year %> <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>.
 							This material is based upon work supported by the National Science Foundation under grants 
 							#1565103 and #1629233. Any opinions, findings, conclusions, or recommendations 
 							expressed in the material are those of the author(s) and do not necessarily reflect the views of 
 							the National Science Foundation. Please
 							<a href="mailto:info@environmentaldatainitiative.org">contact us</a> 
 							with questions, comments, or for technical assistance regarding this web site or the 
-							Environmental Data Initiative.<br/><br/>
+							Environmental Data Initiative. Please read our
+							<a href="https://environmentaldatainitiative.org/environmental-data-initiative-privacy-policy">privacy policy</a>
+							to know what information we collect about you and to understand your privacy rights.
+							<br/><br/>
 						</div>
 					</div>
 				</div>
