@@ -326,6 +326,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 		boolean isSaved = false;
 		boolean hasOffline = false;
 		boolean wasDeleted = false;
+		String pastaHost = null;
+		Boolean productionTier = true;
 
 		String uid = (String) httpSession.getAttribute("uid");
 
@@ -423,7 +425,14 @@ public class MapBrowseServlet extends DataPortalServlet {
 					String userAgent = request.getHeader("User-Agent");
 					dpmClient = new DataPackageManagerClient(uid, userAgent);
                     jcClient = new JournalCitationsClient(uid);
-					
+
+					pastaHost = dpmClient.getPastaHost();
+					if (pastaHost.startsWith("pasta-d") ||
+							pastaHost.startsWith("pasta-s") ||
+							pastaHost.startsWith("localhost")) {
+						productionTier = false;
+					}
+
 					String deletionList = dpmClient.listDeletedDataPackages();
 					wasDeleted = isDeletedDataPackage(deletionList, scope, identifier);
 					if (wasDeleted) {
@@ -781,6 +790,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 								try {
 									doiId = dpmClient.readDataPackageDoi(scope,
 											id, revision);
+									if (!productionTier) {
+										doiId = "DOI_place_holder";
+									}
 								}
 								catch (Exception e) {
 									logger.error(e.getMessage());
@@ -1319,6 +1331,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String citationId = "";
 		String caveat = "";
 		String citationUrl = "";
+		String pastaHost = null;
+		Boolean productionTier = true;
 		
 		if (emlObject == null) {
 			return html;
@@ -1328,6 +1342,12 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 		try {
 			dpmClient = new DataPackageManagerClient(uid);
+			pastaHost = dpmClient.getPastaHost();
+			if (pastaHost.startsWith("pasta-d") ||
+				pastaHost.startsWith("pasta-s") ||
+				pastaHost.startsWith("localhost")) {
+					productionTier = false;
+			}
 			titles = emlObject.getTitles();
 
 			if (titles != null) {
@@ -1387,6 +1407,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 			try {
 				citationId = dpmClient.readDataPackageDoi(scope, identifier, revision);
 				citationId = citationId.replace("doi:", DoiOrg);
+				if (!productionTier) {
+					citationId = "https://doi.org/DOI_place_holder";
+				}
 			} 
 			catch (Exception e) {
 				logger.error(e.getMessage());
