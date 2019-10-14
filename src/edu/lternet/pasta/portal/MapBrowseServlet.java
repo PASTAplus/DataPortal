@@ -791,7 +791,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									doiId = dpmClient.readDataPackageDoi(scope,
 											id, revision);
 									if (!productionTier) {
-										doiId = "DOI_place_holder";
+										doiId = "DOI PLACE HOLDER";
 									}
 								}
 								catch (Exception e) {
@@ -1408,7 +1408,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				citationId = dpmClient.readDataPackageDoi(scope, identifier, revision);
 				citationId = citationId.replace("doi:", DoiOrg);
 				if (!productionTier) {
-					citationId = "https://doi.org/DOI_place_holder";
+					citationId = "https://doi.org/DOI_PLACE_HOLDER";
 				}
 			} 
 			catch (Exception e) {
