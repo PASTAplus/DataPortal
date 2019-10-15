@@ -36,11 +36,11 @@
     }
 
     if (pastaHost != null) {
-        if (pastaHost.equals("localhost")) {
+        if (pastaHost.startsWith("localhost")) {
             target = "portal-d.edirepository.org";
-        } else if (pastaHost.equals("pasta-d")) {
+        } else if (pastaHost.startsWith("pasta-d")) {
             target = "portal-d.edirepository.org";
-        } else if (pastaHost.equals("pasta-s")) {
+        } else if (pastaHost.startsWith("pasta-s")) {
             target = "portal-s.edirepository.org";
         } else {
             target = "portal.edirepository.org";
