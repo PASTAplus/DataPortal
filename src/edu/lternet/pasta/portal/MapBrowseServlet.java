@@ -327,7 +327,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		boolean hasOffline = false;
 		boolean wasDeleted = false;
 		String pastaHost = null;
-		Boolean productionTier = true;
+		boolean productionTier = true;
 
 		String uid = (String) httpSession.getAttribute("uid");
 
@@ -1332,7 +1332,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String caveat = "";
 		String citationUrl = "";
 		String pastaHost = null;
-		Boolean productionTier = true;
+		boolean productionTier = true;
 		
 		if (emlObject == null) {
 			return html;
