@@ -1,4 +1,7 @@
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
+<%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
+<%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
+<%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
 
 <%
   final String pageTitle = "Login";
@@ -15,6 +18,26 @@
   if (message == null) {
     message = "";
   }
+
+  String uid = (String) session.getAttribute("uid");
+  if (uid == null || uid.isEmpty()) {
+  	uid = "public";
+  }
+
+  DataPackageManagerClient dpmc = null;
+  String pastaHost = null;
+
+	try {
+		dpmc = new DataPackageManagerClient(uid);
+		pastaHost = dpmc.getPastaHost();
+	} catch (PastaAuthenticationException | PastaConfigurationException e) {
+		e.printStackTrace();
+	}
+
+	if (pastaHost != null && pastaHost.equals("localhost")) {
+		pastaHost = "portal-d";
+	}
+
 %>
 
 <!DOCTYPE html>
@@ -112,9 +135,9 @@
 						</div>
 					</form>
 								<h3>Or use an alternate identity provider:</h3>
-								<p><a href="https://auth.edirepository.org/auth/login/google?target=portal-d.edirepository.org"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
-								   <a href="https://auth.edirepository.org/auth/login/github?target=portal-d.edirepository.org"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
-								   <a href="https://auth.edirepository.org/auth/login/orcid?target=portal-d.edirepository.org"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
+								<p><a href="https://auth.edirepository.org/auth/login/google?target=<%=pastaHost%>.edirepository.org"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://auth.edirepository.org/auth/login/github?target=<%=pastaHost%>.edirepository.org"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://auth.edirepository.org/auth/login/orcid?target=<%=pastaHost%>.edirepository.org"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
 								<br/><br/><br/>
 								<p>Please read our
 									<a class="searchsubcat" href="https://environmentaldatainitiative.org/environmental-data-initiative-privacy-policy">privacy policy</a>
