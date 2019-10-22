@@ -127,6 +127,10 @@
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: /</xsl:text></xsl:message></xsl:if>
     <!-- HTML5 DOCTYPE declaration -->
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
+    
+    <!-- place holder. mob, add your html head here. -->
+  
+        
         <!-- begin the content area -->
         <xsl:element name="div">
           <xsl:apply-templates select="*[local-name()='eml']"/>              
@@ -138,7 +142,15 @@
         <!-- end the content area -->
         <xsl:text>&#x0A;</xsl:text> 
         <xsl:text>&#x0A;</xsl:text>
+        
+  
+    <!-- place holder. mob, close your html, body tags here.  -->
+    
   </xsl:template>
+  
+
+  
+  
   
   <xsl:template match="error">
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: error</xsl:text></xsl:message></xsl:if>
@@ -221,6 +233,28 @@
         </table>
       </div> <!-- end collapsible -->
       </xsl:if>
+
+<xsl:if test="annotation">
+  <h3 id="toggleDatasetAnnotations" class="toggleButton"><button>+/-</button> External Annotations</h3>
+  <div class="collapsible">
+    <!-- the annotations table, with rows as an rdf-style sentence. -->
+    <table class="{$tabledefaultStyle}"> 
+      <tr>
+        <th colspan="2">With link(s) out to external vocabularies</th>
+      </tr>
+      <xsl:for-each select="annotation">
+        <tr>
+          <td class="{$secondColStyle}">
+                <xsl:text>Dataset </xsl:text>
+            <xsl:call-template name="annotationMinimum" />
+          </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </div>
+</xsl:if>
+
+
 
       <xsl:if test="keywordSet">
       <h3 id="toggleKeywords" class="toggleButton"><button>+/-</button> Keywords</h3>
@@ -4033,6 +4067,40 @@
         </xsl:choose>
       </xsl:for-each>
     </tr>
+    
+    <!-- Third row, part 2 is for attribute annotation.
+      Added 2019, by mob -->
+    <xsl:if test="attribute/annotation">
+    <tr>
+      <td class="rowodd">External Measurement Definition, Link:</td>
+             
+    <xsl:for-each select="attribute">
+      <xsl:variable name="stripes">
+        <xsl:choose>
+          <xsl:when test="position() mod 2 = 1">
+            <xsl:value-of select="$coloddStyle"/>
+          </xsl:when>
+          <xsl:when test="position() mod 2 = 0">
+            <xsl:value-of select="$colevenStyle"/>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:variable>
+       
+        <td colspan="1" align="center" class="{$stripes}"> 
+          <xsl:if test="annotation">
+            <xsl:for-each select="annotation">
+             <xsl:call-template name="annotationMinimum"/>  
+             <xsl:if test="position() != last()">
+               <xsl:text>,</xsl:text>
+               <br/>
+             </xsl:if>
+            </xsl:for-each>
+          </xsl:if>
+        </td>
+    </xsl:for-each>
+    </tr>
+    </xsl:if>
+    
     <!-- The fourth row for attribute storage type-->
     <tr>
       <td class="rowodd">Storage Type:</td>
@@ -9059,7 +9127,7 @@
       </xsl:for-each>
     </xsl:if>
   </xsl:template>
-
+  
   <xsl:template name="resourceadditionalInfo">
     <xsl:param name="ressubHeaderStyle"/>
     <xsl:param name="resfirstColStyle"/>
@@ -11052,5 +11120,38 @@
       </td>
     </tr>
   </xsl:template>
+  
+  
+  <!-- templates added for EML 2.2. mob 2019-october -->
+     
+    <!-- minimal template for an annotation. 
+      other content from calling template. concept is linked out 
+      if URI contains a purl, property is not (usually a default) -->
+    <xsl:template name="annotationMinimum">
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="propertyURI/@label"/>
+      <xsl:text> </xsl:text>
+      <xsl:choose>
+        <xsl:when test="contains(valueURI, 'purl')">
+          <xsl:element name="a">
+            <xsl:attribute name="href">     
+              <xsl:value-of select="valueURI"/> 
+            </xsl:attribute>
+            <xsl:attribute name="target">
+              <xsl:text>_blank</xsl:text>
+            </xsl:attribute>
+            <xsl:value-of select="valueURI/@label"/>
+          </xsl:element>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="valueURI/@label"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    
+    
+ 
+    
+  </xsl:template>
+  
 
 </xsl:stylesheet>
