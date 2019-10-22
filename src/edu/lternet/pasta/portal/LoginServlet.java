@@ -70,6 +70,7 @@ public class LoginServlet extends DataPortalServlet {
 
   // Instance variables
   private final String authServer;
+  private final String authTarget;
 
 
     /**
@@ -109,7 +110,7 @@ public class LoginServlet extends DataPortalServlet {
       String authHost = options.getString("auth.hostname");
       String authProtocol = options.getString("auth.protocol");
       int authPort = options.getInt("auth.port");
-
+      this.authTarget = options.getString("auth.target");
       this.authServer = PastaClient.composePastaUrl(authProtocol, authHost, authPort);
 
   }
@@ -225,7 +226,7 @@ public class LoginServlet extends DataPortalServlet {
         }
 
         if (isTeapot) {
-            String acceptUrl = this.authServer + "/auth/accept?uid=" + distinguishedName;
+            String acceptUrl = this.authServer + "/auth/accept?uid=" + distinguishedName + "&target=" + this.authTarget;
             response.sendRedirect(acceptUrl);
             return;
         }
