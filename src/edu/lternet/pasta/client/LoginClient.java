@@ -71,14 +71,16 @@ public class LoginClient {
   private static final Logger logger = Logger
       .getLogger(edu.lternet.pasta.client.LoginClient.class);
 
+  private static final int TEAPOT = 418;
+
   /*
    * Instance variables
    */
 
   private final String LOGIN_URL;
-  private String authHost = null; // PASTA web hostname
-  private String authProtocol = null; // PASTA web protocol
-  private int authPort; // PASTA web port
+  private String authHost = null; // EDI authentication server
+  private String authProtocol = null; // EDI authentication web protocol
+  private int authPort; // EDI authentication web port
   private String authUri = null;
 
   /*
@@ -98,7 +100,7 @@ public class LoginClient {
    * @throws PastaAuthenticationException
    */
   public LoginClient(String distinguishedName, String password)
-      throws PastaAuthenticationException {
+          throws PastaAuthenticationException, PastaImATeapotException {
 
     Configuration options = ConfigurationListener.getOptions();
 
@@ -115,6 +117,9 @@ public class LoginClient {
     if (token == null) {
       String gripe = "User '" + distinguishedName + "' did not successfully authenticate.";
       throw new PastaAuthenticationException(gripe);
+    } else if (token.equals(String.valueOf(TEAPOT))){
+      String gripe = "I'm a teapot, coffee is ready!";
+      throw new PastaImATeapotException(gripe);
     } else {
       TokenManager tokenManager = new TokenManager(token);
       try {
@@ -240,6 +245,8 @@ public class LoginClient {
         token = this.getAuthToken(headerValue);
       }
 
+    } else if (statusCode == TEAPOT) {
+      token = String.valueOf(TEAPOT);
     }
 
     return token;

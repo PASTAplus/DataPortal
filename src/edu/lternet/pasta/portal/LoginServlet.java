@@ -34,7 +34,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.saxon.functions.True;
+import edu.lternet.pasta.client.PastaImATeapotException;
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
@@ -65,8 +66,13 @@ public class LoginServlet extends DataPortalServlet {
   /**
    * Class methods
    */
-  
-  /**
+
+
+  // Instance variables
+  private final String authServer;
+
+
+    /**
    * Utility method to derive the uid value from a full distringuished name value.
    * 
    * @param dn    
@@ -97,6 +103,15 @@ public class LoginServlet extends DataPortalServlet {
    */
   public LoginServlet() {
     super();
+
+      Configuration options = ConfigurationListener.getOptions();
+
+      String authHost = options.getString("auth.hostname");
+      String authProtocol = options.getString("auth.protocol");
+      int authPort = options.getInt("auth.port");
+
+      this.authServer = PastaClient.composePastaUrl(authProtocol, authHost, authPort);
+
   }
 
   /**
@@ -152,6 +167,7 @@ public class LoginServlet extends DataPortalServlet {
     String uid = null;
     String distinguishedName = null;
     TokenManager tokenManager = null;
+    boolean isTeapot = false;
 
     HttpSession httpSession = request.getSession();
 
@@ -195,15 +211,23 @@ public class LoginServlet extends DataPortalServlet {
           tokenManager = new TokenManager(extToken);
 
         } catch (PastaAuthenticationException e) {
-          String message = "<em>Login failed for user</em> " + uid;
-          forward = "./login.jsp";
-          request.setAttribute("message", message);
-        } catch (SQLException e) {
+            String message = "<em>Login failed for user</em> " + uid;
+            forward = "./login.jsp";
+            request.setAttribute("message", message);
+        } catch (PastaImATeapotException e) {
+            logger.error(e);
+            String gripe = "I'm a teapot for " + distinguishedName;
+            logger.error(gripe);
+            isTeapot = true;
+        } catch (SQLException | ClassNotFoundException e) {
             logger.error(e.getMessage());
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
+        }
+
+        if (isTeapot) {
+            String acceptUrl = this.authServer + "/auth/accept?uid=" + distinguishedName;
+            response.sendRedirect(acceptUrl);
+            return;
         }
 
     }
