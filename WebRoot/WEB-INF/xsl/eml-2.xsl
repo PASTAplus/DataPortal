@@ -129,7 +129,13 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
-  
+    
+    <!-- TO DO: remove before commit.  added for testing only.  -->
+    <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="../git_clones/DataPortal/WebRoot/css/style_slate.css"/>
+        <!-- TO DO: end head here -->
+        
         
         <!-- begin the content area -->
         <xsl:element name="div">
@@ -145,6 +151,10 @@
         
   
     <!-- place holder. mob, close your html, body tags here.  -->
+        <!-- TO DO: remove before commit.  added for testing only.  -->
+      </head>
+    </html>
+    <!-- TO DO: remove before commit.  added for testing only.  -->
     
   </xsl:template>
   
@@ -8400,6 +8410,8 @@
   </xsl:template>
 
   <!-- eml-project-2.0.0.xsl -->
+  
+   
   <xsl:template name="project">
     <xsl:param name="projectfirstColStyle"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: project</xsl:text></xsl:message></xsl:if>
@@ -8442,6 +8454,11 @@
       <xsl:with-param name="projectfirstColStyle" select="$projectfirstColStyle"/>
     </xsl:call-template>
     <xsl:call-template name="projectdesigndescription">
+      <xsl:with-param name="projectfirstColStyle" select="$projectfirstColStyle"/>
+    </xsl:call-template>
+    
+    
+    <xsl:call-template name="projectaward">
       <xsl:with-param name="projectfirstColStyle" select="$projectfirstColStyle"/>
     </xsl:call-template>
     <xsl:call-template name="projectrelatedproject">
@@ -8617,6 +8634,9 @@
       </xsl:for-each>
     </xsl:for-each>
   </xsl:template>
+  
+  
+  
 
   <xsl:template name="projectrelatedproject">
     <xsl:param name="projectfirstColStyle"/>
@@ -8633,6 +8653,70 @@
        </tr>
     </xsl:for-each>
   </xsl:template>
+
+
+  <!-- award info added for EML 2.2 -->
+   
+  <xsl:template name="projectaward">
+    <xsl:param name="projectfirstColStyle"/>
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: projectdesigndescription</xsl:text></xsl:message></xsl:if>
+    <xsl:for-each select="award">
+      <tr><td class="{$projectfirstColStyle}">
+        Additional Award Information:
+      </td>
+        <td>
+          <table>
+            <tr>
+              <td class="{$projectfirstColStyle}">Funder:</td>
+              <td class="{$secondColStyle}"><xsl:value-of select="funderName"/>
+              <xsl:if test="funderIdentifier">             
+                <table>                
+                    <xsl:for-each select="funderIdentifier">                           
+                      <tr>
+                        <td class="{$projectfirstColStyle}">Funder ID:</td>
+                        <!-- TO DO: add logic. if ID is a doi or ror, turn into a URL. -->
+                        <td class="{$secondColStyle}"><xsl:value-of select="."/></td>
+                      </tr>
+                    </xsl:for-each>                 
+                </table>
+              </xsl:if>
+              </td>            
+            </tr>           
+            <xsl:if test="awardNumber">
+              <tr>
+                <td class="{$projectfirstColStyle}">Number:</td>
+                <td class="{$secondColStyle}"><xsl:value-of select="awardNumber"/></td>
+              </tr>
+            </xsl:if>
+            <tr>
+              <td class="{$projectfirstColStyle}">Title:</td>
+              <td class="{$secondColStyle}"><xsl:value-of select="title"/></td>
+            </tr>
+            <xsl:if test="awardUrl">
+              <tr>
+                <td class="{$projectfirstColStyle}">URL:</td>
+                <td class="{$secondColStyle}">
+                  <xsl:element name="a">
+                    <xsl:attribute name="class">dataseteml</xsl:attribute>
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="awardUrl"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="target">
+                      <xsl:text>_blank</xsl:text>
+                    </xsl:attribute>
+                    <xsl:value-of select="awardUrl"/>
+                  </xsl:element>
+                </td>
+              </tr>
+            </xsl:if>
+          </table>
+        </td>
+      </tr>
+   
+    </xsl:for-each>
+  </xsl:template>
+
+
 
   <!-- eml-protocol-2.0.0.xsl -->
   <!-- 
@@ -11134,6 +11218,7 @@
       <xsl:choose>
         <xsl:when test="contains(valueURI, 'purl')">
           <xsl:element name="a">
+            <xsl:attribute name="class">dataseteml</xsl:attribute>
             <xsl:attribute name="href">     
               <xsl:value-of select="valueURI"/> 
             </xsl:attribute>
