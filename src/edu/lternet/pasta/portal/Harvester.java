@@ -35,14 +35,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 
+import edu.lternet.pasta.client.*;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.LoginClient;
-import edu.lternet.pasta.client.PastaAuthenticationException;
-import edu.lternet.pasta.client.PastaIdleTimeException;
 import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
 import edu.lternet.pasta.common.EmlUtility;
@@ -169,7 +166,7 @@ public class Harvester implements Runnable {
       try {
         LoginClient loginClient = new LoginClient(username, password);
       } 
-      catch (PastaAuthenticationException e) {
+      catch (PastaAuthenticationException | PastaImATeapotException e) {
         logger.error("User '" + username + "' failed to authenticate.");
       }
 

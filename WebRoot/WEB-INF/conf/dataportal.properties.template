@@ -51,6 +51,7 @@ auth.hostname=auth.edirepository.org
 auth.protocal=https
 auth.port=443
 auth.uriTail=/auth/login/pasta
+auth.target=portal.edirepository.org
 
 # Data Package Management properties
 dataportal.desktopUrlHead=https://portal.edirepository.org/nis/data
