@@ -129,14 +129,7 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
-    
-    <!-- TO DO: remove before commit.  added for testing only.  -->
-    <html>
-      <head>
-        <link rel="stylesheet" type="text/css" href="../git_clones/DataPortal/WebRoot/css/style_slate.css"/>
-        <!-- TO DO: end head here -->
-        
-        
+       
         <!-- begin the content area -->
         <xsl:element name="div">
           <xsl:apply-templates select="*[local-name()='eml']"/>              
@@ -151,10 +144,6 @@
         
   
     <!-- place holder. mob, close your html, body tags here.  -->
-        <!-- TO DO: remove before commit.  added for testing only.  -->
-      </head>
-    </html>
-    <!-- TO DO: remove before commit.  added for testing only.  -->
     
   </xsl:template>
   
