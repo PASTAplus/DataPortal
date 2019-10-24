@@ -3393,6 +3393,97 @@
       <td class="{$secondColStyle}"><xsl:value-of select="."/></td>
     </tr>
   </xsl:template>
+  
+  <xsl:template match="taxonId" mode="nest">
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: taxonId</xsl:text></xsl:message></xsl:if>
+    <tr>
+      <td class="{$firstColStyle}"><xsl:text>Identifer:</xsl:text></td>
+      
+      <!-- to do: logic to name id provider, create a URL if you can. -->
+      <xsl:variable name="provider-label">
+        <xsl:choose>
+          <xsl:when test="@provider = 'https://eol.org'">
+            <xsl:text>Encyclopedia of Life (EOL)</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://itis.gov'">
+            <xsl:text>Integrated Taxonomic Information Service (ITIS)</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://www.ncbi.nlm.nih.gov/taxonomy'">
+            <xsl:text>National Center for Biotechnology Information - Taxonomy (NCBI)</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'http://plantsoftheworldonline.org'">
+            <xsl:text>Plants of the World</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://tropicos.org'">
+            <xsl:text>Tropicos</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'http://marinespecies.org'">
+            <xsl:text>World Register of Marine Species (WoRMS)</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://fishbase.se'">
+            <xsl:text>FishBase</xsl:text>
+          </xsl:when>
+          <xsl:otherwise><xsl:value-of select="@provider"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>          
+      <td class="{$secondColStyle}">
+        <xsl:element name="a">
+          <xsl:attribute name="class">dataseteml</xsl:attribute>
+          <xsl:attribute name="target">_blank</xsl:attribute>
+          <xsl:attribute name="href">
+            <xsl:value-of select="@provider"/>
+          </xsl:attribute>
+          <xsl:value-of select="$provider-label"/>
+        </xsl:element>
+     </td>
+      <xsl:variable name="taxon-page-url-head">
+        <xsl:choose>
+          <xsl:when test="@provider = 'https://eol.org'">
+            <xsl:text>https://www.eol.org/pages/</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://itis.gov'">
+            <xsl:text>https://itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&amp;search_value=</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://www.ncbi.nlm.nih.gov/taxonomy'">
+            <xsl:text>https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'http://plantsoftheworldonline.org'">
+            <xsl:text>http://www.plantsoftheworldonline.org/taxon/</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://tropicos.org'">
+            <xsl:text>https://www.tropicos.org/Name/</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'http://marinespecies.org'">
+            <xsl:text>http://marinespecies.org/aphia.php?p=taxdetails&amp;id=</xsl:text>
+          </xsl:when>
+          <xsl:when test="@provider = 'https://fishbase.se'">
+            <xsl:text>https://www.fishbase.se/summary/</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>no_url</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <td class="{$secondColStyle}">
+        <xsl:choose>
+          <xsl:when test="$taxon-page-url-head != 'no_url'">
+            <xsl:element name="a">
+              <xsl:attribute name="class">dataseteml</xsl:attribute>
+              <xsl:attribute name="target">_blank</xsl:attribute>
+              <xsl:attribute name="href">
+                <xsl:value-of select="$taxon-page-url-head"/><xsl:value-of select="."/>
+              </xsl:attribute>
+              <xsl:value-of select="."/>
+            </xsl:element>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="."/> 
+        </xsl:otherwise>
+        </xsl:choose>
+      </td>
+       
+    </tr>
+  </xsl:template>
 
   <xsl:template match="taxonomicClassification" mode="nest">
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: taxonomicClassification</xsl:text></xsl:message></xsl:if>
