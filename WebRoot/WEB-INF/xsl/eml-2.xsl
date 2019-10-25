@@ -129,7 +129,14 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
-       
+    <!-- TO DO: remove before commit.  added for testing only.  -->
+    <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="../git_clones/DataPortal/WebRoot/css/style_slate.css"/>
+      </head>
+      <body>
+        <!-- TO DO: end head here -->
+        
         <!-- begin the content area -->
         <xsl:element name="div">
           <xsl:apply-templates select="*[local-name()='eml']"/>              
@@ -144,6 +151,8 @@
         
   
     <!-- place holder. mob, close your html, body tags here.  -->
+    </body>
+    </html>
     
   </xsl:template>
   
@@ -2004,7 +2013,11 @@
                       <tr>
                         <td class="{$firstColStyle}"><xsl:text>Visit: </xsl:text></td>
                         <td class="{$secondColStyle}">
-                          <a><xsl:attribute name="href"><xsl:value-of select="online/url"/></xsl:attribute><xsl:value-of select="online/url"/></a>
+                          <a>
+                            <xsl:attribute name="class">dataseteml</xsl:attribute>
+                            <xsl:attribute name="href"><xsl:value-of select="online/url"/>
+                            </xsl:attribute><xsl:value-of select="online/url"/>
+                          </a>
                         </td>
                       </tr>
                     </xsl:for-each>
@@ -2088,7 +2101,9 @@
             </xsl:choose>
             <xsl:text>&#160;</xsl:text>
             <xsl:if test="electronicMailAddress">[&#160;
-              <a><xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="electronicMailAddress"/></xsl:attribute>email</a>&#160;]
+              <a>
+                <xsl:attribute name="class">dataseteml</xsl:attribute>
+                <xsl:attribute name="href"><xsl:text>mailto:</xsl:text><xsl:value-of select="electronicMailAddress"/></xsl:attribute>email</a>&#160;]
             </xsl:if>
           </td>
         </tr>
@@ -2688,6 +2703,7 @@
             <tr>
               <td class="{$secondColStyle}">
                 <a>
+                  <xsl:attribute name="class">dataseteml</xsl:attribute>
                   <xsl:attribute name="href">mailto:<xsl:value-of select="."/></xsl:attribute>
                   <xsl:value-of select="./entityName"/>
                   <xsl:value-of select="."/>
@@ -2711,6 +2727,7 @@
             <tr>
               <td class="{$secondColStyle}">
                 <a>
+                  <xsl:attribute name="class">dataseteml</xsl:attribute>
                   <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:value-of select="./entityName"/>
                   <xsl:value-of select="."/>
@@ -2745,6 +2762,7 @@
                 <xsl:attribute name="href">
                   <xsl:value-of select="$useridDirectoryApp1_URI"/><xsl:value-of select="."/>
                 </xsl:attribute>
+                <xsl:attribute name="class">dataseteml</xsl:attribute>
                 <xsl:value-of select="$useridDirectoryLabel1"/>
                 <xsl:text> Profile for </xsl:text>
                 <xsl:value-of select="../individualName/surName"/>
@@ -5717,7 +5735,10 @@
         <tr>
           <td class="{$nondomainfirstColStyle}">URL</td>
           <td class="{$secondColStyle}">
-            <a><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a>
+            <a>
+              <xsl:attribute name="class">dataseteml</xsl:attribute>
+              <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/>
+            </a>
           </td>
         </tr>
       </xsl:for-each>
@@ -6179,6 +6200,7 @@
           <td class="{$firstColStyle}">Data:</td>
           <td class="{$secondColStyle}">
             <a>
+              <xsl:attribute name="class">dataseteml</xsl:attribute>
               <xsl:attribute name="href">/nis/dataviewer?packageid=<xsl:value-of select="$packageID" />&amp;entityid=<xsl:value-of select="$entity_identifier_encd" /></xsl:attribute>
               <xsl:attribute name="target">_blank</xsl:attribute>
               <xsl:value-of select="."/>
@@ -6191,6 +6213,7 @@
           <td class="{$firstColStyle}">Url:</td>
           <td class="{$secondColStyle}">
             <a>
+              <xsl:attribute name="class">dataseteml</xsl:attribute>
               <xsl:attribute name="href"><xsl:value-of select="$URL" /></xsl:attribute>
               <xsl:attribute name="target">_blank</xsl:attribute>
               <xsl:value-of select="."/>
@@ -6207,6 +6230,7 @@
             <xsl:attribute name="href">
               <xsl:text>http://maps.google.com/?q=</xsl:text><xsl:value-of select="$URL"/>
             </xsl:attribute>
+            <xsl:attribute name="class">dataseteml</xsl:attribute>
             CLICK HERE FOR MAP
           </xsl:element>
         </td>
@@ -11071,6 +11095,7 @@
   <xsl:template match="ulink">
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: ulink</xsl:text></xsl:message></xsl:if>
     <xsl:element name="a">
+      <xsl:attribute name="class">dataseteml</xsl:attribute>
       <xsl:attribute name="href">
         <xsl:value-of select="@url"/>
       </xsl:attribute>
