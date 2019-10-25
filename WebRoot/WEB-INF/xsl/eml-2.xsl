@@ -8778,8 +8778,39 @@
                     <xsl:for-each select="funderIdentifier">                           
                       <tr>
                         <td class="{$projectfirstColStyle}">Funder ID:</td>
-                        <!-- TO DO: add logic. if ID is a doi or ror, turn into a URL. -->
-                        <td class="{$secondColStyle}"><xsl:value-of select="."/></td>
+                        <!-- logic to create URL suports DOIs or RORs. others could be added, per discussion. -->
+                        <td class="{$secondColStyle}">
+                        <xsl:choose>
+                          <xsl:when test="contains(., 'https://doi.org')">
+                            <xsl:element name="a">
+                              <xsl:attribute name="class">dataseteml</xsl:attribute>
+                              <xsl:attribute name="href">     
+                                <xsl:value-of select="."/> 
+                              </xsl:attribute>
+                              <xsl:attribute name="target">
+                                <xsl:text>_blank</xsl:text>
+                              </xsl:attribute>
+                              <xsl:value-of select="."/>
+                            </xsl:element>
+                          </xsl:when>
+                          <xsl:when test="contains(., 'https://ror.org')">
+                            <xsl:element name="a">
+                              <xsl:attribute name="class">dataseteml</xsl:attribute>
+                              <xsl:attribute name="href">     
+                                <xsl:value-of select="."/> 
+                              </xsl:attribute>
+                              <xsl:attribute name="target">
+                                <xsl:text>_blank</xsl:text>
+                              </xsl:attribute>
+                              <xsl:value-of select="."/>
+                            </xsl:element>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <!-- any other type of ID -->
+                            <xsl:value-of select="."/>
+                          </xsl:otherwise>
+                        </xsl:choose>
+                        </td>
                       </tr>
                     </xsl:for-each>                 
                 </table>
