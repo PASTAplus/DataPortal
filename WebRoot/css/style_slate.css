@@ -2748,7 +2748,7 @@ th, .tablehead {
 .rowodd {
 	  border-bottom:              white solid 2px;
 	  border-top:                 white solid 2px;
-	  background-color:           #b2cce0;
+	  background-color:           #C4DCEE;
 	  padding:                    0.25em;
 	  margin:                     0;
 }
@@ -2761,7 +2761,7 @@ th, .tablehead {
 .coleven {
     border-left:                1px;
     border-right:               1px;
-    background-color:           #b2cce0;
+    background-color:           #C4DCEE;
     padding-left:               2px;
     padding-right:              2px;
     text-align:                 left;
@@ -2783,7 +2783,7 @@ th, .tablehead {
 
 .innercoleven {
     border:                     solid 1px;
-    background-color:           #b2cce0;
+    background-color:           #C4DCEE;
     font-size:                  .75em;
     padding-left:               2px;
     padding-right:              2px;
@@ -2794,6 +2794,25 @@ th, .tablehead {
     min-width:                  100px;
     /*width:                      100%;*/
 }
+
+/*  added by mob, other options are no styling, or a.searchsubcat (used on mapbrowse) which would be low contrast
+ */
+
+a.dataseteml {
+       /* color:#003366 */ ;
+       color: #2E4A61;
+       font-weight: 700;
+       text-decoration: none;
+}
+
+a.dataseteml hover {
+        color: #003366;
+        font-weight: 700;
+        text-decoration: underline;
+}
+
+
+
 
 /* End -- Added from sbclter.css. */
 
