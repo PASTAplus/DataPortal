@@ -272,8 +272,11 @@ public class LoginServlet extends DataPortalServlet {
         e.printStackTrace();
     }
 
-      RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
-    requestDispatcher.forward(request, response);
+//  TODO: remove following lines once confirmed their removal does not cause unwanted side-effects
+//  RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
+//  requestDispatcher.forward(request, response);
+
+    response.sendRedirect(forward);
 
   }
 
