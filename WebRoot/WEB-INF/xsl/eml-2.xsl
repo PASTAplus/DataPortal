@@ -121,6 +121,7 @@
   <xsl:param name="secondColIndent" select="'10%'"/>
   <!-- the first column width of attribute table-->
   <xsl:param name="attributefirstColWidth" select="'15%'"/>
+  <xsl:param name="subgroupBorder" select="subgroupBorder" />
   
   <xsl:template match="/">
     <xsl:param name="docid" select="$docid"></xsl:param>
@@ -129,7 +130,9 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
- 
+    <!-- TO DO: remove before commit.  added for testing only.  -->
+   
+        
         
         <!-- begin the content area -->
         <xsl:element name="div">
@@ -143,7 +146,6 @@
         <xsl:text>&#x0A;</xsl:text> 
         <xsl:text>&#x0A;</xsl:text>
         
-  
     <!-- place holder. mob, close your html, body tags here.  -->
     
   </xsl:template>
@@ -7485,13 +7487,14 @@
   <xsl:template name="method">
     <xsl:param name="methodfirstColStyle"/>
     <xsl:param name="methodsubHeaderStyle"/>
+    <xsl:param name="subgroupBorder"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: method</xsl:text></xsl:message></xsl:if>
     <!-- <table class="{$tabledefaultStyle}">  use this class to unbox the table  -->
-    <table class="subGroup onehundred_percent">
+    <table class="subGroup onehundred_percent" >
       <tr>
 	      <!-- changed table title. usually protocol refs, sometimes procedural steps -->
         <!-- Step by Step Procedures  -->
-        <th colspan="2">Protocols and/or Procedures</th>
+        <th colspan="2">Methods and protocols used in the collection of this data package</th>
       </tr>
       <xsl:for-each select="methodStep">
 		    <!-- methodStep (defined below) calls step (defined in protocol.xsl).  -->
@@ -7503,6 +7506,7 @@
 				    <xsl:call-template name="methodStep">
 				      <xsl:with-param name="methodfirstColStyle" select="$methodfirstColStyle"/>
 				      <xsl:with-param name="methodsubHeaderStyle" select="$methodsubHeaderStyle"/>
+				      <xsl:with-param name="subgroupBorder" select="$subgroupBorder"/>
 			      </xsl:call-template>
 			    </td>
 		    </tr>
@@ -7511,7 +7515,7 @@
       <xsl:if test="sampling">   
 		    <xsl:for-each select="sampling">
 		      <!-- <table class="{$tabledefaultStyle}">  use this class to unbox the table  -->
-			    <table class="subGroup onehundred_percent">
+		      <table class="subGroup onehundred_percent" >
             <tr>
 				      <th colspan="2">Sampling Area and Study Extent</th>
 				    </tr>
@@ -7554,10 +7558,12 @@
   <xsl:template name="methodStep">
     <xsl:param name="methodfirstColStyle"/>
     <xsl:param name="methodsubHeaderStyle"/>
+    <xsl:param name="subgroupBorder"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: methodStep</xsl:text></xsl:message></xsl:if>
     <xsl:call-template name="step">
       <xsl:with-param name="protocolfirstColStyle" select="$methodfirstColStyle"/>
       <xsl:with-param name="protocolsubHeaderStyle" select="$methodsubHeaderStyle"/>
+      <xsl:with-param name="subgroupBorder" select="$subgroupBorder"/>
     </xsl:call-template>
     <xsl:for-each select="dataSource">
       <tr>
@@ -8390,6 +8396,8 @@
     </tr>
   </xsl:template>
 
+<!-- might be a duplicate. that calls itself? -->
+<!-- 
   <xsl:template match="citation">
     <xsl:param name="physicalfirstColStyle"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: citation (match)</xsl:text></xsl:message></xsl:if>
@@ -8402,8 +8410,10 @@
         </xsl:call-template>
       </td>
     </tr>
-  </xsl:template>
-
+  </xsl:template-->
+  
+  
+  
   <!-- binaryRasterFormat templates -->
   <xsl:template name="physicalbinaryRasterFormat">
     <xsl:param name="physicalfirstColStyle"/>
@@ -8892,6 +8902,7 @@
       <xsl:call-template name="step">
         <xsl:with-param name="protocolfirstColStyle" select="$protocolfirstColStyle"/>
         <xsl:with-param name="protocolsubHeaderStyle" select="$protocolsubHeaderStyle"/>
+        <xsl:with-param name="subgroupBorder" select="$subgroupBorder"/>
       </xsl:call-template>
     </xsl:for-each>
     <xsl:call-template name="protocolAccess">
@@ -8935,36 +8946,23 @@
   <!-- 'step' refers to ProcedureStepType, i.e., methodStep (w/o optional dataSource)
 	     (called from method.xsl, and here, from nested subStep)
 	     mob added the table element to box each step -->
+   
+  
+  
   <xsl:template name="step">
     <xsl:param name="protocolfirstColStyle"/>
     <xsl:param name="protocolsubHeaderStyle"/>
+    <xsl:param name="subgroupBorder"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: step</xsl:text></xsl:message></xsl:if>
-    <table class="{$tabledefaultStyle}">
-      <xsl:for-each select="description">
-        <xsl:variable name="title" select="../dataSource/title"/>
+    <table class="{$tabledefaultStyle} {$subgroupBorder}">
+      <xsl:for-each select="description">  
         <tr>
           <td class="{$protocolfirstColStyle}">Description:</td>
-          <td>
-          <xsl:if test="($title) and normalize-space($title[1]) != ''">
-            <h4>Provenance Metadata - The following data source was used in the creation of this product:</h4>
-          </xsl:if>
-          <xsl:variable name="url" select="../dataSource/distribution/online/url"/>
-          <xsl:choose>
-            <xsl:when test="(./para/literalLayout[1] = $prov-stmt) or (./para[1] = $prov-stmt)">
-               <p class="eml"><xsl:value-of select="../dataSource/title"/> (<a href="./metadataviewer?url={$url}" target="_blank">Click here to view metadata</a>)</p>
-            </xsl:when>
-            <xsl:when test="($url) and normalize-space($url[1]) != ''">
-               <p class="eml"><xsl:value-of select="../dataSource/title"/> (<a href="{$url}" target="_blank">Click here to view data source</a>)</p>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="text">
-                <xsl:with-param name="textfirstColStyle" select="$protocolfirstColStyle"/>
-              </xsl:call-template>
-            </xsl:otherwise>
-          </xsl:choose>
+          <td class="{$secondColStyle}">
+            <xsl:value-of select="."/>
           </td>
         </tr>
-      </xsl:for-each>
+      </xsl:for-each>   
       <xsl:for-each select="citation">
         <tr>
           <td class="{$protocolfirstColStyle}">Citation:</td>
@@ -8980,13 +8978,13 @@
         <tr>
           <td class="{$protocolfirstColStyle}">Protocol:</td>
           <td class="{$secondColStyle}">    
-					<!-- mob nested this table in col2, instead of new row. -->
-	          <xsl:call-template name="protocol">
+            <!-- mob nested this table in col2, instead of new row. -->
+            <xsl:call-template name="protocol">
               <xsl:with-param name="protocolfirstColStyle" select="$protocolfirstColStyle"/>
               <xsl:with-param name="protocolsubHeaderStyle" select="$protocolsubHeaderStyle"/>
             </xsl:call-template>
           </td>
-	      </tr>  
+        </tr>  
       </xsl:for-each>
       <xsl:for-each select="instrumentation">
         <tr>
@@ -9006,18 +9004,62 @@
       </xsl:for-each>
       <xsl:for-each select="subStep">
         <tr>
-          <td class="{$protocolfirstColStyle}">Substep<xsl:text> </xsl:text><xsl:value-of select="position()"/></td>
-          <td class="{$secondColStyle}">&#160;</td>
-					<td>  <!-- correct? was outside of table -->
-            <xsl:call-template name="step">
-						  <xsl:with-param name="protocolfirstColStyle" select="$protocolfirstColStyle"/>
-						  <xsl:with-param name="protocolsubHeaderStyle" select="$protocolsubHeaderStyle"/>
-						</xsl:call-template>
-					</td>
-		    </tr>						
+          <td><xsl:text> </xsl:text></td>
+          <td><table>
+            <tr>
+              <td class="{$protocolfirstColStyle}">Substep<xsl:text> </xsl:text><xsl:value-of select="position()"/></td>
+              <td class="{$secondColStyle}">&#160;</td>
+              <td>  <!-- correct? was outside of table -->
+                <xsl:call-template name="step">
+                  <xsl:with-param name="protocolfirstColStyle" select="$protocolfirstColStyle"/>
+                  <xsl:with-param name="protocolsubHeaderStyle" select="$protocolsubHeaderStyle"/>
+                </xsl:call-template>
+              </td>
+            </tr>
+          </table>
+          </td>
+        </tr>						
       </xsl:for-each>
-		</table>
-  </xsl:template> 
+      <xsl:for-each select="dataSource">
+        <tr>
+          <td class="{$protocolfirstColStyle}">Data Source</td>
+        <td colspan="2">
+          <xsl:call-template name="datasource">
+            <xsl:with-param name="datasourcefirstColStyle" select="$protocolfirstColStyle"/>
+            <xsl:with-param name="datasourcesubHeaderStyle" select="$protocolsubHeaderStyle"/>
+          </xsl:call-template>
+        </td>
+        </tr>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+  
+  
+  <xsl:template name="datasource">
+    <xsl:param name="datasourcefirstColStyle"/>
+    <xsl:param name="datasourcesubHeaderStyle"/>
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: datasource</xsl:text></xsl:message></xsl:if>
+    <xsl:variable name="url" select="distribution/online/url"/>
+    <table class="{$tabledefaultStyle}">
+      <tr>
+        <td  class="datasourcefirstColStyle">
+          <xsl:element name="a">
+            <xsl:attribute name="target">_blank</xsl:attribute>
+            <xsl:attribute name="class">dataseteml</xsl:attribute>
+            <xsl:attribute name="href">
+              <xsl:text>./metadataviewer?url=</xsl:text><xsl:value-of select="$url"/>
+            </xsl:attribute>
+          <xsl:value-of select="title"/>
+          </xsl:element>
+        </td>
+
+      </tr>
+    </table>
+    
+    
+  </xsl:template>
+  
+  
   
 	<!-- ? needed? no access elements here. -->
   <xsl:template name="protocolAccess">
