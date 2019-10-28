@@ -2740,6 +2740,12 @@ ul, ol {
     -moz-border-radius:         10px; /* end ie5win hack */
 }
  
+
+/*  resurrected this class, 2019 mob */
+.subGroup_border {
+    border: #666666 solid 1px;
+    }
+ 
 th, .tablehead {
     text-align:                 left;
     font-weight:                700;
@@ -2761,6 +2767,8 @@ th, .tablehead {
 .coleven {
     border-left:                1px;
     border-right:               1px;
+    border-bottom:              white solid 2px;
+	border-top:                 white solid 2px;
     background-color:           #C4DCEE;
     padding-left:               2px;
     padding-right:              2px;
