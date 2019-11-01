@@ -156,7 +156,8 @@
 								<div class="table-row">
 									<div class="table-cell">
 												<input class="btn btn-info btn-default" name="submit" type="submit" value="Evaluate" />
-												<input class="btn btn-info btn-default" name="submit" type="submit" value="Upload" />
+												<input class="btn btn-info btn-default" name="submit" type="submit" value="Upload"
+													   onclick="return confirm('Confirm upload to EDI data repository')" />
 												<input class="btn btn-info btn-default" name="reset" type="reset" value="Clear" />
 								  </div>
 								</div>
@@ -205,7 +206,8 @@
                                 <div class="table-row">
 									<div class="table-cell">
 										<input class="btn btn-info btn-default" name="submit" type="submit" value="Evaluate" />
-										<input class="btn btn-info btn-default" name="submit" type="submit" value="Upload" />
+										<input class="btn btn-info btn-default" name="submit" type="submit" value="Upload"
+											   onclick="return confirm('Confirm upload to EDI data repository')" />
 										<input class="btn btn-info btn-default" name="reset" type="reset" value="Clear" />
 									</div>
 								</div>
@@ -286,7 +288,8 @@
                                             <div class="table-row">
 											    <div class="table-cell">
 													 <input class="btn btn-info btn-default" name="submit" type="submit" value="Evaluate" />
-													 <input class="btn btn-info btn-default" name="submit" type="submit" value="Upload" />
+													 <input class="btn btn-info btn-default" name="submit" type="submit" value="Upload"
+															onclick="return confirm('Confirm upload to EDI data repository')" />
 													 <input class="btn btn-info btn-default" name="reset" type="reset" value="Clear" />
 											    </div>
 										    </div>
