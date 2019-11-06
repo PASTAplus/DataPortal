@@ -214,7 +214,7 @@ public class LoginServlet extends DataPortalServlet {
         } catch (PastaAuthenticationException e) {
             String message = "<em>Login failed for user</em> " + uid;
             forward = "./login.jsp";
-            request.setAttribute("message", message);
+            httpSession.setAttribute("message", message);
         } catch (PastaImATeapotException e) {
             logger.error(e);
             String gripe = "I'm a teapot for " + distinguishedName;
