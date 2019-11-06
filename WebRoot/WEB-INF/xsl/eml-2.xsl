@@ -130,10 +130,9 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
-    <!-- TO DO: remove before commit.  added for testing only.  -->
-   
-        
-        
+    
+         <!-- TO DO: remove before commit.  added for testing only.  -->
+         
         <!-- begin the content area -->
         <xsl:element name="div">
           <xsl:apply-templates select="*[local-name()='eml']"/>              
@@ -147,6 +146,8 @@
         <xsl:text>&#x0A;</xsl:text>
         
     <!-- place holder. mob, close your html, body tags here.  -->
+    
+    <!-- end of place holder -->
     
   </xsl:template>
   
@@ -3467,6 +3468,7 @@
       </xsl:variable>
       <td class="{$secondColStyle}">
         <xsl:choose>
+          <!-- build a URL for the taxon if there is a url-head  -->
           <xsl:when test="$taxon-page-url-head != 'no_url'">
             <xsl:element name="a">
               <xsl:attribute name="class">dataseteml</xsl:attribute>
@@ -3474,10 +3476,15 @@
               <xsl:attribute name="href">
                 <xsl:value-of select="$taxon-page-url-head"/><xsl:value-of select="."/>
               </xsl:attribute>
+              <!-- create a label for the anchor tag -->
+              <xsl:text>Info for ID: </xsl:text>
               <xsl:value-of select="."/>
+              <xsl:text> (</xsl:text><xsl:value-of select="../taxonRankValue"/><xsl:text>) </xsl:text>
             </xsl:element>
           </xsl:when>
           <xsl:otherwise>
+            <!-- no_url is true -->
+            <xsl:text>ID: </xsl:text>
             <xsl:value-of select="."/> 
         </xsl:otherwise>
         </xsl:choose>
