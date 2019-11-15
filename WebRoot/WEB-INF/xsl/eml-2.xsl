@@ -130,7 +130,8 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
-    
+  
+        
          <!-- TO DO: remove before commit.  added for testing only.  -->
          
         <!-- begin the content area -->
@@ -8966,7 +8967,12 @@
         <tr>
           <td class="{$protocolfirstColStyle}">Description:</td>
           <td class="{$secondColStyle}">
-            <xsl:value-of select="."/>
+            <!-- 
+            <xsl:value-of select="."/> -->
+            <xsl:call-template name="steptext">
+              <xsl:with-param name="textfirstColStyle" select="$firstColStyle"/>
+              <xsl:with-param name="textsecondColStyle" select="$secondColStyle"/>
+            </xsl:call-template>
           </td>
         </tr>
       </xsl:for-each>   
@@ -9041,6 +9047,22 @@
     </table>
   </xsl:template>
   
+  
+  
+  <xsl:template name="steptext">
+    <xsl:param name="textfirstColStyle" />
+    <xsl:param name="textsecondColStyle" />
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: steptext</xsl:text></xsl:message></xsl:if>
+    <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
+      <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
+      <div>
+        <xsl:apply-templates mode="text">
+          <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
+          <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
+        </xsl:apply-templates>
+      </div>  
+    </xsl:if>
+  </xsl:template>
   
   <xsl:template name="datasource">
     <xsl:param name="datasourcefirstColStyle"/>
