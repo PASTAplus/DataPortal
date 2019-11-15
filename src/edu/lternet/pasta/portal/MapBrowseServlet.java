@@ -866,7 +866,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 				ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
 				for (Entity entity : entityList) {
 					String offlineText = entity.getOfflineText();
-					if (offlineText != null) {
+					String url = entity.getUrl();
+					if (offlineText != null && url == null) {
 						hasOffline = true;
 						break;
 					}

@@ -159,10 +159,11 @@ public class DataPackage {
 
 		for (Entity entity : getEntityList()) {
 			String name = entity.getName();
-			if ((name != null) && 
-				(entityName != null) && 
-				(name.trim().equals(entityName.trim()))
-			) {
+			name = name.substring(0, Math.min(name.length(), 256));
+			int l = entityName.length();
+			int n = name.length();
+			if ((name != null) && (entityName != null) && (name.trim().equals(entityName.trim())))
+			{
 				objectName = entity.getObjectName();
 			}
 		}
