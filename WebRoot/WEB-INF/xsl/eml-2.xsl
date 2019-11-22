@@ -43,7 +43,10 @@
   <xsl:variable name="resourcetitle" select="*/dataset/title"/>
   <!-- global variables to store id node set in case to be referenced -->
   <xsl:variable name="ids" select="//*[@id != '']"/>
-  <xsl:variable name="prov-stmt" select="'This method step describes provenance-based metadata as specified in the LTER EML Best Practices.'"/>
+  <!-- not safe to use this string 
+  <xsl:variable name="prov-stmt" select="'This method step describes provenance-based metadata as specified in the LTER EML Best Practices.'"/> -->
+  <!-- uniq string that identifies a pasta id; used to detect homies. TO DO: determine if you can use wildcards here, eg, pasta*metadata -->
+  <xsl:variable name="pasta-id-string" select="'pasta.*metadata'"/>
   
   <!-- *** Parameters ***
        Note that the default values specified below may be overridden by passing parameters to
@@ -130,7 +133,12 @@
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
     
     <!-- place holder. mob, add your html head here. -->
-  
+    <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="../git_clones/DataPortal/WebRoot/css/style_slate.css"/>
+      </head>
+      <body>
+        
         
          <!-- TO DO: remove before commit.  added for testing only.  -->
          
@@ -147,7 +155,8 @@
         <xsl:text>&#x0A;</xsl:text>
         
     <!-- place holder. mob, close your html, body tags here.  -->
-    
+      </body>
+    </html>
     <!-- end of place holder -->
     
   </xsl:template>
@@ -9069,6 +9078,20 @@
     <xsl:param name="datasourcesubHeaderStyle"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: datasource</xsl:text></xsl:message></xsl:if>
     <xsl:variable name="url" select="distribution/online/url"/>
+    <!-- look at the URL to determine if it points to a homie -->
+    <xsl:variable name="datasource-url">
+      <xsl:choose>
+        <xsl:when test='matches($url, $pasta-id-string)'>
+          <!-- URL is a pasta ID. construct a URL to the landing page -->
+          <xsl:text>./metadataviewer?url=</xsl:text><xsl:value-of select="$url"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- an external URL, pass it straight through -->
+          <xsl:value-of select="$url"/>
+        </xsl:otherwise>
+    </xsl:choose>
+    </xsl:variable>
+    
     <table class="{$tabledefaultStyle}">
       <tr>
         <td  class="datasourcefirstColStyle">
@@ -9076,7 +9099,7 @@
             <xsl:attribute name="target">_blank</xsl:attribute>
             <xsl:attribute name="class">dataseteml</xsl:attribute>
             <xsl:attribute name="href">
-              <xsl:text>./metadataviewer?url=</xsl:text><xsl:value-of select="$url"/>
+              <xsl:value-of select="$datasource-url"/>
             </xsl:attribute>
           <xsl:value-of select="title"/>
           </xsl:element>
