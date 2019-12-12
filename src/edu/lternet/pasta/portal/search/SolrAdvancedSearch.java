@@ -365,9 +365,9 @@ public class SolrAdvancedSearch extends Search  {
 			if (crosses) {
 				// Not sure yet how to manage international date-line queries in Solr
 			}
-			
-			String spatialFilter = String.format("coordinates:\"%s(%s %s %s %s)\"", 
-					                             shapeOperation, westValue, southValue, eastValue, northValue);
+
+            String spatialFilter = String.format("coordinates:\"%s(ENVELOPE(%s, %s, %s, %s))\"",
+                    shapeOperation, westValue, eastValue, northValue, southValue);
 			String encodedSpatialFilter = URLEncoder.encode(spatialFilter, "UTF-8");
 			updateFQString(encodedSpatialFilter);
 		}
