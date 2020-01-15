@@ -317,6 +317,7 @@ public class MapBrowseServlet extends DataPortalServlet {
         String journalCitationsHTML = "";
 		String codeGenerationHTML = "";
 		String digitalObjectIdentifier = "";
+		String dataCiteDOI = "";
 		String pastaDataObjectIdentifier = "";
 		String savedDataHTML = "";
 		String wasDeletedHTML = "";
@@ -790,7 +791,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 								try {
 									doiId = dpmClient.readDataPackageDoi(scope,
 											id, revision);
+									dataCiteDOI = doiId.replace("doi:", "");
 									if (!productionTier) {
+										dataCiteDOI = "DOI PLACE HOLDER";
 										doiId = "DOI PLACE HOLDER";
 									}
 								}
@@ -1043,6 +1046,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("dataPackageResourcesHTML", resourcesHTML);
 		request.setAttribute("citationLinkHTML", citationLinkHTML);
 		request.setAttribute("digitalObjectIdentifier", digitalObjectIdentifier);
+		request.setAttribute("dataCiteDOI", dataCiteDOI);
 		request.setAttribute("intellectualRightsHTML", intellectualRightsHTML);
 		request.setAttribute("pastaDataObjectIdentifier", pastaDataObjectIdentifier);
 		request.setAttribute("provenanceHTML", provenanceHTML);
