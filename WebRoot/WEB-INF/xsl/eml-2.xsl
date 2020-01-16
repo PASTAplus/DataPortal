@@ -131,17 +131,7 @@
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: /</xsl:text></xsl:message></xsl:if>
     <!-- HTML5 DOCTYPE declaration -->
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
-    
-    <!-- place holder. mob, add your html head here. -->
-    <html>
-      <head>
-        <link rel="stylesheet" type="text/css" href="../git_clones/DataPortal/WebRoot/css/style_slate.css"/>
-      </head>
-      <body>
-        
-        
-         <!-- TO DO: remove before commit.  added for testing only.  -->
-         
+
         <!-- begin the content area -->
         <xsl:element name="div">
           <xsl:apply-templates select="*[local-name()='eml']"/>              
@@ -154,16 +144,7 @@
         <xsl:text>&#x0A;</xsl:text> 
         <xsl:text>&#x0A;</xsl:text>
         
-    <!-- place holder. mob, close your html, body tags here.  -->
-      </body>
-    </html>
-    <!-- end of place holder -->
-    
   </xsl:template>
-  
-
-  
-  
   
   <xsl:template match="error">
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: error</xsl:text></xsl:message></xsl:if>
