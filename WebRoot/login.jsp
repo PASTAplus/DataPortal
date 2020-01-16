@@ -1,11 +1,15 @@
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
+<%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
+<%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
+<%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
 
 <%
   final String pageTitle = "Login";
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
   HttpSession httpSession = request.getSession();
   
-  String message = (String) request.getAttribute("message");
+  String message = (String) httpSession.getAttribute("message");
+  httpSession.removeAttribute("message");
   String from = (String) request.getAttribute("from");
   
   if (from != null && !from.isEmpty()) {
@@ -15,6 +19,39 @@
   if (message == null) {
     message = "";
   }
+
+  String uid = (String) session.getAttribute("uid");
+  if (uid == null || uid.isEmpty()) {
+  	uid = "public";
+  }
+
+  DataPackageManagerClient dpmc = null;
+  String pastaHost = null;
+  String target = "portal-d.edirepository.org";
+  String auth = "auth-d";
+
+    try {
+        dpmc = new DataPackageManagerClient(uid);
+        pastaHost = dpmc.getPastaHost();
+    } catch (PastaAuthenticationException | PastaConfigurationException e) {
+        e.printStackTrace();
+    }
+
+    if (pastaHost != null) {
+ 		if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
+            target = "portal-d.edirepository.org";
+            auth = "auth-d";
+        } else if (pastaHost.startsWith("pasta-s")){
+            target = "portal-s.edirepository.org";
+            auth = "auth"; // uses production auth service
+        } else {
+			target = "portal.edirepository.org";
+			auth = "auth";
+		}
+    }
+
+
+
 %>
 
 <!DOCTYPE html>
@@ -66,15 +103,13 @@
 								<h2>Login</h2>
 							</div>
 							<span class="row-fluid separator_border"></span>
+							<h3>Use your EDI or LTER account:</h3>
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
 								<!-- Content -->
-								
-				<span class="nis-warn"><%=message%></span>
-
-					<form id="login" name="loginform" method="post" action="./login"
-						target="_top">
+								<p><span class="nis-error"><%=message%></span></p>
+					<form id="login" name="loginform" method="post" action="./login" target="_top">
 						<div class="display-table">
 								<div class="table-row">
 									<div class="table-cell">
@@ -113,7 +148,14 @@
 							  </div>
 						</div>
 					</form>
-									
+								<h3>Or use an alternate identity provider:</h3>
+								<p><a href="https://<%=auth%>.edirepository.org/auth/login/google?target=<%=target%>"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://<%=auth%>.edirepository.org/auth/login/github?target=<%=target%>"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://<%=auth%>.edirepository.org/auth/login/orcid?target=<%=target%>"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
+								<br/><br/><br/>
+								<p>Please read our
+									<a class="searchsubcat" href="https://environmentaldatainitiative.org/environmental-data-initiative-privacy-policy">privacy policy</a>
+									to know what information we collect about you and to understand your privacy rights.</p>
 								<!-- /Content -->
 							</div>
 						</div>

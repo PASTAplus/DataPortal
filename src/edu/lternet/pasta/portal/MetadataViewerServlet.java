@@ -171,8 +171,19 @@ public class MetadataViewerServlet extends DataPortalServlet {
 
         String dataPackageDOI = null;
         String xml = null;
+        String pastaHost = null;
+        boolean productionTier = true;
+
         String userAgent = request.getHeader("User-Agent");
         DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, userAgent);
+
+        pastaHost = dpmClient.getPastaHost();
+        if (pastaHost.startsWith("pasta-d") ||
+                pastaHost.startsWith("pasta-s") ||
+                pastaHost.startsWith("localhost")) {
+          productionTier = false;
+        }
+
         xml = dpmClient.readMetadata(scope, identifier, revision);
 
         if (contentType.equals("application/xml")) {
@@ -204,7 +215,11 @@ public class MetadataViewerServlet extends DataPortalServlet {
             // No DOI was read. Just continue on.
           }
           metadataStr = emlUtility.xmlToHtmlSaxon(cwd + xslpath, parameterMap);
-          
+
+          if (!productionTier && dataPackageDOI != null) {
+            metadataStr = metadataStr.replaceAll(dataPackageDOI, "DOI PLACE HOLDER");
+          }
+
           request.setAttribute("metadataHtml", metadataStr);
           request.setAttribute("packageId", packageId);
           RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);

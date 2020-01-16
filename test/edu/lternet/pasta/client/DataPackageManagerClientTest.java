@@ -156,7 +156,7 @@ public class DataPackageManagerClientTest {
       LoginClient loginClient = new LoginClient(testUser, password);
       System.err.println("User '" + testUser + "' authenticated.");
     } 
-    catch (PastaAuthenticationException e) {
+    catch (PastaAuthenticationException | PastaImATeapotException e) {
       fail("User '" + testUser + "' failed to authenticate.");
     }
 

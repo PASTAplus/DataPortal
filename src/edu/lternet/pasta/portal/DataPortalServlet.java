@@ -39,7 +39,7 @@ public class DataPortalServlet extends HttpServlet {
    * Class variables
    */
   
-  protected static final String LOGIN_WARNING = "You must login before using this tool.";
+  protected static final String LOGIN_WARNING = "You must login with an EDI or LTER account to use this tool.";
   private static final long serialVersionUID = 1L;
   
   protected static final String CSS_LINK_ELEMENTS = 

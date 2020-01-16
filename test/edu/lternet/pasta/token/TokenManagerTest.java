@@ -113,10 +113,10 @@ public class TokenManagerTest {
 	@Before
 	public void setUp() throws Exception {
 		
-		this.tokenManager = new TokenManager();
+		this.tokenManager = new TokenManager(token);
 
         try {
-            this.tokenManager.setToken(username, token);
+            this.tokenManager.storeToken();
         } catch (SQLException e) {
             fail("SQL exception with call to setToken: " + e);
         } catch (ClassNotFoundException e) {
@@ -147,7 +147,7 @@ public class TokenManagerTest {
 	public void testSetToken() {
 		
 		try {
-			this.tokenManager.setToken(username, token);		
+			this.tokenManager.storeToken();
 		} catch (SQLException e) {
 			fail("SQL exception with call to setToken: " + e);
 		} catch (ClassNotFoundException e) {
@@ -159,17 +159,10 @@ public class TokenManagerTest {
 	@Test
 	public void testGetToken() {
 		
-		token = null; 
-		
-		try {
-			token = this.tokenManager.getToken(username);		
-		} catch (SQLException e) {
-			fail("SQL exception with call to getToken: " + e);
-		} catch (ClassNotFoundException e) {
-			fail("ClassNotFoundException exception with call to getToken: " + e);
-		}
- 
-		boolean isTokenEqual = testToken.equals(token);
+		String extToken = null;
+        this.tokenManager = new TokenManager(testToken);
+		extToken = this.tokenManager.getExtToken();
+		boolean isTokenEqual = testToken.equals(extToken);
 		// Test whether the token returned from the database is equal to the test token.
 		assertTrue(isTokenEqual);
 		
@@ -180,17 +173,7 @@ public class TokenManagerTest {
 
 
         String clearTextToken = null;
-
-        try {
-            clearTextToken = this.tokenManager.getCleartextToken(username);
-        }
-        catch (SQLException e) {
-            fail("SQL exception with call to getToken: " + e);
-        }
-        catch (ClassNotFoundException e) {
-            fail("ClassNotFoundException exception with call to getToken: " + e);
-        }
-
+        clearTextToken = this.tokenManager.getToken();
         assertTrue(testClearTextToken.equals(clearTextToken));
 
     }
@@ -198,19 +181,8 @@ public class TokenManagerTest {
     @Test
     public void testGetUserDistinguishedName() {
 
-
         String dn = null;
-
-        try {
-            dn = this.tokenManager.getUserDistinguishedName(username);
-        }
-        catch (SQLException e) {
-            fail("SQL exception with call to getToken: " + e);
-        }
-        catch (ClassNotFoundException e) {
-            fail("ClassNotFoundException exception with call to getToken: " + e);
-        }
-
+        dn = this.tokenManager.getUid();
         assertTrue(testDn.equals(dn));
 
     }
@@ -218,19 +190,8 @@ public class TokenManagerTest {
     @Test
     public void testGetTokenAuthenticationSystem() {
 
-
         String authSystem = null;
-
-        try {
-            authSystem = this.tokenManager.getTokenAuthenticationSystem(username);
-        }
-        catch (SQLException e) {
-            fail("SQL exception with call to getToken: " + e);
-        }
-        catch (ClassNotFoundException e) {
-            fail("ClassNotFoundException exception with call to getToken: " + e);
-        }
-
+        authSystem = this.tokenManager.getAuthSystem();
         assertTrue(testAuthSystem.equals(authSystem));
 
     }
@@ -238,19 +199,9 @@ public class TokenManagerTest {
     @Test
     public void testGetTimeToLive() {
 
-
         Long ttl = null;
 
-        try {
-            ttl = this.tokenManager.getTokenTimeToLive(username);
-        }
-        catch (SQLException e) {
-            fail("SQL exception with call to getToken: " + e);
-        }
-        catch (ClassNotFoundException e) {
-            fail("ClassNotFoundException exception with call to getToken: " + e);
-        }
-
+        ttl = this.tokenManager.getTtl();
         assertEquals(testTimeToLive, ttl);
 
     }
@@ -258,41 +209,19 @@ public class TokenManagerTest {
     @Test
     public void testGetUserGroups() {
 
-
         ArrayList<String> groups = new ArrayList<String>();
-
-        try {
-            groups = this.tokenManager.getUserGroups(username);
-        }
-        catch (SQLException e) {
-            fail("SQL exception with call to getToken: " + e);
-        }
-        catch (ClassNotFoundException e) {
-            fail("ClassNotFoundException exception with call to getToken: " + e);
-        }
+        groups = this.tokenManager.getGroups();
 
         for(String group: groups) {
             assertTrue(group.equals(testGroup));
         }
-
     }
 
     @Test
     public void testGetTokenSignature() {
 
-
         String signature = null;
-
-        try {
-            signature = this.tokenManager.getTokenSignature(username);
-        }
-        catch (SQLException e) {
-            fail("SQL exception with call to getToken: " + e);
-        }
-        catch (ClassNotFoundException e) {
-            fail("ClassNotFoundException exception with call to getToken: " + e);
-        }
-
+        signature = this.tokenManager.getSignature();
         assertTrue(testSignature.equals(signature));
 
     }
@@ -301,7 +230,7 @@ public class TokenManagerTest {
 	public void testDeleteToken() {
 		
 		try {
-			this.tokenManager.deleteToken(username);
+			TokenManager.deleteToken(username);
 		} catch (SQLException e) {
 			fail("SQL exception with call to deleteToken: " + e);
 		} catch (ClassNotFoundException e) {
@@ -310,7 +239,7 @@ public class TokenManagerTest {
 		
 		// Now attempt to read the deleted token from the "tokenstore".
 		try {
-			this.tokenManager.getToken(username);
+			TokenManager.getExtToken(username);
 		} catch (SQLException e) {
 			// This exception should be caught in this test.
 			logger.error("SQL exception with call to deleteToken: " + e);
@@ -320,7 +249,7 @@ public class TokenManagerTest {
 
         // Add token back into tokenstore
         try {
-            this.tokenManager.setToken(username, token);
+            this.tokenManager.storeToken();
         } catch (SQLException e) {
             fail("SQL exception with call to setToken: " + e);
         } catch (ClassNotFoundException e) {

@@ -8,13 +8,13 @@ textarea {
 	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 12px;
-	color: #666666;
+	color: #3D3D3D;
 }
 select {
 	font-family: 'Open Sans';
 	line-height: 18px;
 	font-size: 12px;
-	color: #666666;
+	color: #3D3D3D;
 }
 /*
 span {
@@ -29,12 +29,12 @@ body {
 	line-height: 18px;
 	font-size: 12px;
 	background-color: #ffffff;
-	color: #666666;
+	color: #3D3D3D;
 }
 input {
 	font-family: 'Open Sans';
 	line-height: 18px;
-	color: #666666;
+	color: #3D3D3D;
 }
 #affiliation-select {
 	height: 58px;
@@ -1443,7 +1443,7 @@ h2.internal_title {
 }
 .recent_content .recent_box {
 	font-size: 12px;
-	color: #666666;
+	color: #3D3D3D;
 }
 .read_more_link {
 	text-decoration: none;
@@ -2740,6 +2740,12 @@ ul, ol {
     -moz-border-radius:         10px; /* end ie5win hack */
 }
  
+
+/*  resurrected this class, 2019 mob */
+.subGroup_border {
+    border: #666666 solid 1px;
+    }
+ 
 th, .tablehead {
     text-align:                 left;
     font-weight:                700;
@@ -2748,7 +2754,7 @@ th, .tablehead {
 .rowodd {
 	  border-bottom:              white solid 2px;
 	  border-top:                 white solid 2px;
-	  background-color:           #b2cce0;
+	  background-color:           #C4DCEE;
 	  padding:                    0.25em;
 	  margin:                     0;
 }
@@ -2761,7 +2767,9 @@ th, .tablehead {
 .coleven {
     border-left:                1px;
     border-right:               1px;
-    background-color:           #b2cce0;
+    border-bottom:              white solid 2px;
+	border-top:                 white solid 2px;
+    background-color:           #C4DCEE;
     padding-left:               2px;
     padding-right:              2px;
     text-align:                 left;
@@ -2783,7 +2791,7 @@ th, .tablehead {
 
 .innercoleven {
     border:                     solid 1px;
-    background-color:           #b2cce0;
+    background-color:           #C4DCEE;
     font-size:                  .75em;
     padding-left:               2px;
     padding-right:              2px;
@@ -2794,6 +2802,25 @@ th, .tablehead {
     min-width:                  100px;
     /*width:                      100%;*/
 }
+
+/*  added by mob, other options are no styling, or a.searchsubcat (used on mapbrowse) which would be low contrast
+ */
+
+a.dataseteml {
+       /* color:#003366 */ ;
+       color: #2E4A61;
+       font-weight: 700;
+       text-decoration: none;
+}
+
+a.dataseteml hover {
+        color: #003366;
+        font-weight: 700;
+        text-decoration: underline;
+}
+
+
+
 
 /* End -- Added from sbclter.css. */
 

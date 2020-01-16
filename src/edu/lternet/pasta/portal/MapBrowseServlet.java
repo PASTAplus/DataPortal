@@ -317,6 +317,7 @@ public class MapBrowseServlet extends DataPortalServlet {
         String journalCitationsHTML = "";
 		String codeGenerationHTML = "";
 		String digitalObjectIdentifier = "";
+		String dataCiteDOI = "";
 		String pastaDataObjectIdentifier = "";
 		String savedDataHTML = "";
 		String wasDeletedHTML = "";
@@ -326,6 +327,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 		boolean isSaved = false;
 		boolean hasOffline = false;
 		boolean wasDeleted = false;
+		String pastaHost = null;
+		boolean productionTier = true;
 
 		String uid = (String) httpSession.getAttribute("uid");
 
@@ -423,7 +426,14 @@ public class MapBrowseServlet extends DataPortalServlet {
 					String userAgent = request.getHeader("User-Agent");
 					dpmClient = new DataPackageManagerClient(uid, userAgent);
                     jcClient = new JournalCitationsClient(uid);
-					
+
+					pastaHost = dpmClient.getPastaHost();
+					if (pastaHost.startsWith("pasta-d") ||
+							pastaHost.startsWith("pasta-s") ||
+							pastaHost.startsWith("localhost")) {
+						productionTier = false;
+					}
+
 					String deletionList = dpmClient.listDeletedDataPackages();
 					wasDeleted = isDeletedDataPackage(deletionList, scope, identifier);
 					if (wasDeleted) {
@@ -781,6 +791,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 								try {
 									doiId = dpmClient.readDataPackageDoi(scope,
 											id, revision);
+									dataCiteDOI = doiId.replace("doi:", "");
+									if (!productionTier) {
+										dataCiteDOI = "DOI PLACE HOLDER";
+										doiId = "DOI PLACE HOLDER";
+									}
 								}
 								catch (Exception e) {
 									logger.error(e.getMessage());
@@ -854,7 +869,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 				ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
 				for (Entity entity : entityList) {
 					String offlineText = entity.getOfflineText();
-					if (offlineText != null) {
+					String url = entity.getUrl();
+					if (offlineText != null && url == null) {
 						hasOffline = true;
 						break;
 					}
@@ -1030,6 +1046,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("dataPackageResourcesHTML", resourcesHTML);
 		request.setAttribute("citationLinkHTML", citationLinkHTML);
 		request.setAttribute("digitalObjectIdentifier", digitalObjectIdentifier);
+		request.setAttribute("dataCiteDOI", dataCiteDOI);
 		request.setAttribute("intellectualRightsHTML", intellectualRightsHTML);
 		request.setAttribute("pastaDataObjectIdentifier", pastaDataObjectIdentifier);
 		request.setAttribute("provenanceHTML", provenanceHTML);
@@ -1319,6 +1336,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String citationId = "";
 		String caveat = "";
 		String citationUrl = "";
+		String pastaHost = null;
+		boolean productionTier = true;
 		
 		if (emlObject == null) {
 			return html;
@@ -1328,6 +1347,12 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 		try {
 			dpmClient = new DataPackageManagerClient(uid);
+			pastaHost = dpmClient.getPastaHost();
+			if (pastaHost.startsWith("pasta-d") ||
+				pastaHost.startsWith("pasta-s") ||
+				pastaHost.startsWith("localhost")) {
+					productionTier = false;
+			}
 			titles = emlObject.getTitles();
 
 			if (titles != null) {
@@ -1387,6 +1412,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 			try {
 				citationId = dpmClient.readDataPackageDoi(scope, identifier, revision);
 				citationId = citationId.replace("doi:", DoiOrg);
+				if (!productionTier) {
+					citationId = "https://doi.org/DOI_PLACE_HOLDER";
+				}
 			} 
 			catch (Exception e) {
 				logger.error(e.getMessage());

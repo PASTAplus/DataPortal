@@ -71,14 +71,17 @@ public class LoginClient {
   private static final Logger logger = Logger
       .getLogger(edu.lternet.pasta.client.LoginClient.class);
 
+  private static final int TEAPOT = 418;
+
   /*
    * Instance variables
    */
 
   private final String LOGIN_URL;
-  private String pastaHost = null; // PASTA web hostname
-  private String pastaProtocol = null; // PASTA web protocol
-  private int pastaPort; // PASTA web port
+  private String authHost = null; // EDI authentication server
+  private String authProtocol = null; // EDI authentication web protocol
+  private int authPort; // EDI authentication web port
+  private String authUri = null;
 
   /*
    * Constructors
@@ -97,26 +100,30 @@ public class LoginClient {
    * @throws PastaAuthenticationException
    */
   public LoginClient(String distinguishedName, String password)
-      throws PastaAuthenticationException {
+          throws PastaAuthenticationException, PastaImATeapotException {
 
     Configuration options = ConfigurationListener.getOptions();
 
-    this.pastaHost = options.getString("pasta.hostname");
-    this.pastaProtocol = options.getString("pasta.protocol");
-    this.pastaPort = options.getInt("pasta.port");
-    
-    String pastaUrl = PastaClient.composePastaUrl(this.pastaProtocol, this.pastaHost, this.pastaPort);
-    this.LOGIN_URL = pastaUrl + "/package/";
+    this.authHost = options.getString("auth.hostname");
+    this.authProtocol = options.getString("auth.protocol");
+    this.authPort = options.getInt("auth.port");
+    this.authUri = options.getString("auth.uriTail");
+
+    String pastaUrl = PastaClient.composePastaUrl(this.authProtocol, this.authHost, this.authPort);
+    this.LOGIN_URL = pastaUrl + this.authUri;
 
     String token = this.login(distinguishedName, password);
 
     if (token == null) {
       String gripe = "User '" + distinguishedName + "' did not successfully authenticate.";
       throw new PastaAuthenticationException(gripe);
+    } else if (token.equals(String.valueOf(TEAPOT))){
+      String gripe = "I'm a teapot, coffee is ready!";
+      throw new PastaImATeapotException(gripe);
     } else {
-      TokenManager tokenManager = new TokenManager();
+      TokenManager tokenManager = new TokenManager(token);
       try {
-        tokenManager.setToken(distinguishedName, token);
+        tokenManager.storeToken();
       } catch (SQLException e) {
         logger.error(e);
         e.printStackTrace();
@@ -179,7 +186,7 @@ public class LoginClient {
      */
 
     // Define host parameters
-    HttpHost httpHost = new HttpHost(this.pastaHost, this.pastaPort, this.pastaProtocol);
+    HttpHost httpHost = new HttpHost(this.authHost, this.authPort, this.authProtocol);
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
     // Define user authentication credentials that will be used with the host
@@ -238,6 +245,8 @@ public class LoginClient {
         token = this.getAuthToken(headerValue);
       }
 
+    } else if (statusCode == TEAPOT) {
+      token = String.valueOf(TEAPOT);
     }
 
     return token;

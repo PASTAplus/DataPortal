@@ -111,11 +111,9 @@ public class ProvenanceFactoryClientTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 
-		TokenManager tokenManager = new TokenManager();
-
 		// Clean up "tokenstore" database and remove user.
 		try {
-			tokenManager.deleteToken(username);
+			TokenManager.deleteToken(username);
 		}
 		catch (ClassNotFoundException | SQLException e) {
 			// no-op since we don't want test to fail if token is not found

@@ -13,13 +13,13 @@
 
   String distinguishedName = (String) session.getAttribute("uid");
   String uid = LoginServlet.uidFromDistinguishedName(distinguishedName);
-  
-  if (distinguishedName == null || distinguishedName.isEmpty()) {
+  Boolean vetted = (Boolean) session.getAttribute("vetted");
+
+  if (vetted == null || !vetted) {
     request.setAttribute("from", "./harvestReport.jsp");
     String loginWarning = DataPortalServlet.getLoginWarning();
     request.setAttribute("message", loginWarning);
-    RequestDispatcher requestDispatcher = request
-        .getRequestDispatcher("./login.jsp");
+    RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
     requestDispatcher.forward(request, response);
   }
   
