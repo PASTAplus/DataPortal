@@ -445,10 +445,10 @@
 
 									
 								</div> <!-- end display table -->
-                                <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
-                                <script src="https://unpkg.com/browse/@webcomponents/webcomponentsjs@2.0.0/webcomponents-loader.js"></script>
-                                <script src="https://unpkg.com/data-metrics-badge/dist/data-metrics-badge.min.js"></script>
-                                <data-metrics-badge doi="<%= dataCiteDOI %>" display="small"></data-metrics-badge>
+<%--                                <script src="https://unpkg.com/vue/dist/vue.min.js"></script>--%>
+<%--                                <script src="https://unpkg.com/browse/@webcomponents/webcomponentsjs@2.0.0/webcomponents-loader.js"></script>--%>
+<%--                                <script src="https://unpkg.com/data-metrics-badge/dist/data-metrics-badge.min.js"></script>--%>
+<%--                                <data-metrics-badge doi="<%= dataCiteDOI %>" display="small"></data-metrics-badge>--%>
 
                             </div>
 						</div>
