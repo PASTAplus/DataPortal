@@ -21,6 +21,7 @@
 package edu.lternet.pasta.client;
 
 import edu.lternet.pasta.portal.ConfigurationListener;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -104,6 +105,7 @@ public class CiteClient extends PastaClient {
 
         try {
             httpGet = new HttpGet(serviceURL);
+            httpGet.setHeader(HttpHeaders.ACCEPT, "text/html");
             HttpResponse httpResponse = httpClient.execute(httpGet);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode == HttpStatus.SC_OK) {
