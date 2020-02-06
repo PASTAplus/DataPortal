@@ -485,7 +485,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 					try {
 						CiteClient citeClient = new CiteClient(uid);
 						String citation = citeClient.fetchCitation(packageId);
-						citationHTML = String.format("<ul class=\"no-list-style\"><li>%s</li><li></li></ul>", citation);
+						citationHTML = String.format("<ul class=\"no-list-style\"><li><div id=\"citation\">%s</div></li><li></li></ul>", citation);
 					}
 					catch (Exception e) {
 						String msg = String.format("Error fetching citation from Cite server for %s: %s",
@@ -1438,7 +1438,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				    + " that are \"publicly\" accessible.";
 			}
 			
-			citationUrl = "<a href=\"" + citationId + "\">" + citationId + "</a>."; 
+			citationUrl = citationId;
 
 			String pubYear = emlObject.getPubYear();
 
@@ -1458,9 +1458,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 		
 		String datasetAccessed=datasetAccessed();
 
-		html = String.format("<ul class=\"no-list-style\"><li>%s%s <cite>%s</cite> %s %s %s %s</li><li>%s</li></ul>", 
-	               creatorText, pubDateText, titleText, orgText, PUBLISHER, citationUrl, datasetAccessed, caveat);
-		
+		html = String.format("<ul class=\"no-list-style\"><li><div id=\"citation\">%s%s %s %s %s %s %s</div></li><li>%s</li></ul>",
+				creatorText, pubDateText, titleText, orgText, PUBLISHER, citationUrl, datasetAccessed, caveat);
+
 		return html;
 
 	}

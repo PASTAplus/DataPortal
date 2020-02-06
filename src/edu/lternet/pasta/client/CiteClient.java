@@ -105,7 +105,7 @@ public class CiteClient extends PastaClient {
 
         try {
             httpGet = new HttpGet(serviceURL);
-            httpGet.setHeader(HttpHeaders.ACCEPT, "text/html");
+            httpGet.setHeader(HttpHeaders.ACCEPT, "text/plain");
             HttpResponse httpResponse = httpClient.execute(httpGet);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode == HttpStatus.SC_OK) {

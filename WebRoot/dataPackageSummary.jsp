@@ -265,6 +265,9 @@
                                         </div>
                                         <div class="table-cell">
                                             <%= citationHTML %>
+                                            <ul class="no-list-style">
+                                                <li><button class="btn btn-info btn-default" onclick="copyCitation()">Copy Citation</button></li>
+                                            </ul>
                                         </div>                                          
                                     </div>
 
@@ -477,6 +480,20 @@
 <!-- End jqWidgets JavaScript for jqxTree widget -->
 
 <script src="./js/more_less.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    function copyCitation() {
+        /* Get the text field */
+        var copyText = document.getElementById("citation");
+
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(copyText);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("Copy");
+    }
+</script>
 
 </body>
 
