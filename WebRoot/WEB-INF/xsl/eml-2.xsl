@@ -9064,11 +9064,11 @@
       <xsl:choose>
         <xsl:when test='matches($url, $pasta-id-string)'>
           <!-- URL is a pasta ID. construct a URL to the landing page -->
-          <xsl:text>./metadataviewer?url=</xsl:text><xsl:value-of select="$url"/>
+          <xsl:text>./metadataviewer?url=</xsl:text><xsl:value-of select="normalize-space($url)"/>
         </xsl:when>
         <xsl:otherwise>
           <!-- an external URL, pass it straight through -->
-          <xsl:value-of select="$url"/>
+          <xsl:value-of select="normalize-space($url)"/>
         </xsl:otherwise>
     </xsl:choose>
     </xsl:variable>
