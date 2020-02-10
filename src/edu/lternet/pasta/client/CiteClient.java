@@ -101,7 +101,7 @@ public class CiteClient extends PastaClient {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String citeString = null;
-        String serviceURL = String.format("%s/%s?style=ESIP&env=%s", BASE_SERVICE_URL, packageId, this.tier);
+        String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access", BASE_SERVICE_URL, packageId, this.tier);
 
         try {
             httpGet = new HttpGet(serviceURL);
