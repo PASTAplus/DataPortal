@@ -56,6 +56,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.lternet.pasta.client.AuditManagerClient;
+import edu.lternet.pasta.client.CiteClient;
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.JournalCitationsClient;
 import edu.lternet.pasta.client.SEOClient;
@@ -480,7 +481,19 @@ public class MapBrowseServlet extends DataPortalServlet {
 			            logger.error(msg);
 			            e.printStackTrace();
 			        }
-					
+
+					try {
+						CiteClient citeClient = new CiteClient(uid);
+						String citation = citeClient.fetchCitation(packageId);
+						citationHTML = String.format("<ul class=\"no-list-style\"><li><div id=\"citation\">%s</div></li><li></li></ul>", citation);
+					}
+					catch (Exception e) {
+						String msg = String.format("Error fetching citation from Cite server for %s: %s",
+								packageId, e.getMessage());
+						logger.error(msg);
+						e.printStackTrace();
+					}
+
 					if (showSaved) {
 						SavedData savedData = new SavedData(uid);
 						Integer identifierInt = new Integer(identifier);
@@ -1020,8 +1033,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 							codeGenerationHTML.length() - 12); // trim the last two character entities
 				}
 
-				citationHTML = this.citationFormatter(emlObject, uid, scope, id, revision);
-
+				if ((citationHTML == "")) {
+					citationHTML = this.citationFormatter(emlObject, uid, scope, id, revision);
+				}
 			}
 
 			else {
@@ -1424,7 +1438,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				    + " that are \"publicly\" accessible.";
 			}
 			
-			citationUrl = "<a href=\"" + citationId + "\">" + citationId + "</a>."; 
+			citationUrl = citationId;
 
 			String pubYear = emlObject.getPubYear();
 
@@ -1444,9 +1458,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 		
 		String datasetAccessed=datasetAccessed();
 
-		html = String.format("<ul class=\"no-list-style\"><li>%s%s <cite>%s</cite> %s %s %s %s</li><li>%s</li></ul>", 
-	               creatorText, pubDateText, titleText, orgText, PUBLISHER, citationUrl, datasetAccessed, caveat);
-		
+		html = String.format("<ul class=\"no-list-style\"><li><div id=\"citation\">%s%s %s %s %s %s %s</div></li><li>%s</li></ul>",
+				creatorText, pubDateText, titleText, orgText, PUBLISHER, citationUrl, datasetAccessed, caveat);
+
 		return html;
 
 	}
