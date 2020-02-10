@@ -110,7 +110,7 @@ public class CiteClient extends PastaClient {
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode == HttpStatus.SC_OK) {
                 HttpEntity httpEntity = httpResponse.getEntity();
-                citeString = EntityUtils.toString(httpEntity).trim();
+                citeString = EntityUtils.toString(httpEntity, "UTF-8").trim();
             }
             else {
                 String msg = String.format("Cite server URL '%s' returned status code %d",
