@@ -981,7 +981,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                 if ((journalCitationsXML != null) && (journalCitationsXML.length() > 0)) {
                     ArrayList<JournalCitation> journalCitations = JournalCitation.xmlToJournalCitations(journalCitationsXML);
                     if ((journalCitations != null) && (journalCitations.size() > 0)) {
-                        journalCitationsHTMLBuilder.append("This data package has been cited in, or used as a data source for, the following journal articles:<br/>");
+                        journalCitationsHTMLBuilder.append("A data package in this series has been cited, or used as the source data, in the following journal articles:<br/>");
                         journalCitationsHTMLBuilder.append("<ol>\n");
                         for (JournalCitation journalCitation: journalCitations) {
                             journalCitationsHTMLBuilder.append(String.format("<li>%s</li>", journalCitation.toHTML()));
