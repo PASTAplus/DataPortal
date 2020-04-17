@@ -301,6 +301,7 @@ public class JournalCitation {
         String articleTitle = getArticleTitle();
         String journalTitle = getJournalTitle();        
         String articleDoi = getArticleDoi();
+        String packageId = getPackageId();
         
         if (articleUrl != null) {
             if (articleTitle != null && !articleTitle.isEmpty()) {
@@ -321,6 +322,8 @@ public class JournalCitation {
         if (journalTitle != null && !journalTitle.isEmpty()) {
             sb.append(String.format(", %s", journalTitle));
         }
+
+        sb.append(String.format(" <em>(%s)</em>", packageId));
         
         html = sb.toString();
         return html;
