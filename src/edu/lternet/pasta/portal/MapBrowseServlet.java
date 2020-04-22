@@ -784,7 +784,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									if (fileInfo.contains(".csv")) {
 										String dataUrl = String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId);
 										String dexUrl = "https://dex.edirepository.org";
-										dex = String.format("<em>(<a href=\"%s/%s\" target=\"_blank\">Data Explorer - beta</a>)</em>", dexUrl, dataUrl);
+										dex = String.format("<em>(<a href=\"%s/%s\" target=\"_blank\">Data Explorer - experimental</a>)</em>", dexUrl, dataUrl);
 									}
 
 									data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s %s</li>\n",
