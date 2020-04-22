@@ -780,8 +780,15 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String downloadLink = 
 											String.format("<a class='searchsubcat' href='%s' />%s</a>",
 			                                              href, fileInfo);
-									data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n",
-                                                          entityName, downloadLink, entitySizeStr); 
+									String dex = "";
+									if (fileInfo.contains(".csv")) {
+										String dataUrl = String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId);
+										String dexUrl = "https://dex.edirepository.org";
+										dex = String.format("<em>(<a href=\"%s/%s\" target=\"_blank\">Data Explorer - beta</a>)</em>", dexUrl, dataUrl);
+									}
+
+									data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s %s</li>\n",
+                                                          entityName, downloadLink, entitySizeStr, dex);
 								}
 								else {
 									entityName = "Data object";
