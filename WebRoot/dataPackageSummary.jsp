@@ -23,7 +23,6 @@
   String citationLinkHTML = (String) request.getAttribute("citationLinkHTML");
   String digitalObjectIdentifier = (String) request.getAttribute("digitalObjectIdentifier");
   String dataCiteDOI = (String) request.getAttribute("dataCiteDOI");
-//  String dataCiteDOI = "10.6073/pasta/5a17c5689767d95056ec63842b981998";
   String pastaDataObjectIdentifier = (String) request.getAttribute("pastaDataObjectIdentifier");
   String provenanceHTML = (String) request.getAttribute("provenanceHTML");
   String journalCitationsHTML = (String) request.getAttribute("journalCitationsHTML");
@@ -449,9 +448,9 @@
 
 									
 								</div> <!-- end display table -->
-<%--                                <script src="https://unpkg.com/vue"></script>--%>
-<%--                                <script src="https://cdn.jsdelivr.net/npm/data-metrics-badge/dist/data-metrics-badge.min.js"></script>--%>
-<%--                                <data-metrics-badge doi="<%= dataCiteDOI %>"></data-metrics-badge>--%>
+                                <script src="https://unpkg.com/vue"></script>
+                                <script src="https://cdn.jsdelivr.net/npm/data-metrics-badge/dist/data-metrics-badge.min.js"></script>
+                                <data-metrics-badge doi="<%= dataCiteDOI %>"></data-metrics-badge>
                             </div>
 						</div>
 					</div>
