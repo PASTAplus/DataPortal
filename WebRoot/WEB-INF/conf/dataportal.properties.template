@@ -17,6 +17,7 @@ db.pkg.Password=HIDEPASSWORD
 
 # Data Portal properties
 dataportal.downtime.dayOfWeek=Wednesday
+dataportal.experimental=false
 
 # Junit test properties
 dataportal.test.emlFileName=NoneSuchBugCount.xml

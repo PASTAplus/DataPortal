@@ -91,6 +91,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static String pastaUriHead;
+	private static Boolean experimental;
 	private static final String forward = "./dataPackageSummary.jsp";
 	private static final String PUBLISHER = "Environmental Data Initiative. ";
 	private static final String DoiOrg = "https://doi.org/";
@@ -780,8 +781,20 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String downloadLink = 
 											String.format("<a class='searchsubcat' href='%s' />%s</a>",
 			                                              href, fileInfo);
-									data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n",
-                                                          entityName, downloadLink, entitySizeStr); 
+									if (experimental) {
+										String dex = "";
+										if (fileInfo.contains(".csv")) {
+											String dataUrl = String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId);
+											String dexUrl = "https://dex.edirepository.org";
+											dex = String.format("<em>(<a href=\"%s/%s\" target=\"_blank\">Data Explorer - experimental</a>)</em>", dexUrl, dataUrl);
+										}
+
+										data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s %s</li>\n",
+												entityName, downloadLink, entitySizeStr, dex);
+									} else {
+										data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n",
+												entityName, downloadLink, entitySizeStr);
+									}
 								}
 								else {
 									entityName = "Data object";
@@ -1318,11 +1331,18 @@ public class MapBrowseServlet extends DataPortalServlet {
 	public void init() throws ServletException {
 		PropertiesConfiguration options = ConfigurationListener.getOptions();
 		pastaUriHead = options.getString("pasta.uriHead");
+		experimental = options.getBoolean("dataportal.experimental");
 
 		if ((pastaUriHead == null) || (pastaUriHead.equals(""))) {
 			throw new ServletException(
 			    "No value defined for 'pasta.uriHead' property.");
 		}
+
+		if (experimental == null) {
+			throw new ServletException(
+			    "No value defined for 'dataportal.experimental' property.");
+		}
+
 	}
 
 	
