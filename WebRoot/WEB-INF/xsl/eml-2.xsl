@@ -6791,7 +6791,10 @@
     <xsl:if test="normalize-space(.)">
       <tr>
         <td class="{$firstColStyle}">Local&#160;Identifier:</td>
-        <td class="{$secondColStyle}"><xsl:value-of select="$packageID"/>
+        <td class="{$secondColStyle}">
+          <a class="dataseteml" target="_blank" href="./mapbrowse?packageid={$packageID}">
+            <xsl:value-of select="$packageID"/>
+          </a>
           <!-- 
           <xsl:if test="normalize-space(../@system) != ''">
             <xsl:text> (in the </xsl:text><em><xsl:value-of select="$system"/></em><xsl:text> catalog system)</xsl:text>
