@@ -212,7 +212,11 @@
                             </c:choose>
 
                             <div class="recent_title">
-                                <h2>Data Package Summary&nbsp;&nbsp;&nbsp;<small><small><%= viewFullMetadataHTML %> <%= moreRecentRevisionHTML %></small></small></h2>
+                                <h1>Data Package Summary&nbsp;&nbsp;&nbsp;
+                                    <small><small>
+                                        <%= viewFullMetadataHTML %> <%= moreRecentRevisionHTML %>
+                                    </small></small>
+                                </h1>
                             </div>      
                                 
 
