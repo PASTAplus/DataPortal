@@ -194,7 +194,9 @@
     </xsl:call-template>
 
     <fieldset>
-      <legend>Summary Information</legend>
+      <legend>
+        General Information
+      </legend>
       <xsl:call-template name="datasetpart">
         <xsl:with-param name="packageID" select="$packageID"></xsl:with-param>
       </xsl:call-template>
@@ -1902,7 +1904,7 @@
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: datasetmixed</xsl:text></xsl:message></xsl:if>
     <table class="subGroup onehundred_percent">
       <tr>
-        <th colspan="2">Data Package General Information:</th>
+        <th colspan="2">Data Package:</th>
       </tr>
       <!-- put in the identifier and system that the ID belongs to -->
       <xsl:if test="../@packageId">
@@ -6792,10 +6794,8 @@
       <tr>
         <td class="{$firstColStyle}">Local&#160;Identifier:</td>
         <td class="{$secondColStyle}">
-          <a class="dataseteml" target="_blank" href="./mapbrowse?packageid={$packageID}">
             <xsl:value-of select="$packageID"/>
-          </a>
-          <!-- 
+          <!--
           <xsl:if test="normalize-space(../@system) != ''">
             <xsl:text> (in the </xsl:text><em><xsl:value-of select="$system"/></em><xsl:text> catalog system)</xsl:text>
           </xsl:if> 
