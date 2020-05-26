@@ -48,7 +48,7 @@ public class CiteClient extends PastaClient {
     private static final Logger logger = Logger
         .getLogger(CiteClient.class);
 
-    // SEO base service URL
+    // Cite base service URL
     private static final String BASE_SERVICE_URL =
         "https://cite.edirepository.org/cite";
 
@@ -101,7 +101,7 @@ public class CiteClient extends PastaClient {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String citeString = null;
-        String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access", BASE_SERVICE_URL, packageId, this.tier);
+        String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access&no_dot", BASE_SERVICE_URL, packageId, this.tier);
 
         try {
             httpGet = new HttpGet(serviceURL);
