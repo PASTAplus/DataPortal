@@ -52,7 +52,13 @@
 					<div class="row-fluid">
 						<div class="row-fluid">
 							<div class="span12">
-							
+								<h1>Data Package Metadata&#160;&#160;
+									<small><small>
+										<a class="searchsubcat" href="./mapbrowse?packageid=<%= packageId %>">
+											View Summary
+										</a>
+									</small></small>
+								</h1>
 								<!-- Content -->
                   <%= metadataHtml %>																
 							  <!-- /Content -->
