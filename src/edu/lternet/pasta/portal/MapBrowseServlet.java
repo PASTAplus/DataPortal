@@ -458,8 +458,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 					if (!newestRevisionValue.equals(revision)) {
 		                String displayText = "(View Newest Revision)";
 		                String href = String.format("mapbrowse?scope=%s&identifier=%s&revision=%s", scope, identifier, newestRevisionValue);
-		                String url = String.format("<a class=\"searchsubcat\" href=\"%s\">%s</a>", href, displayText);    
-					    moreRecentRevisionHTML = String.format("&nbsp;&nbsp;%s", url);
+		                String url = String.format("<a href=\"%s\">%s</a>", href, displayText);
+//		                String url = String.format("<a class=\"searchsubcat\" href=\"%s\">%s</a>", href, displayText);
+					    moreRecentRevisionHTML = String.format("&nbsp;%s", url);
 					}
 
 					packageId = scope + "." + id.toString() + "." + revision;

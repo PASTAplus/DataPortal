@@ -47,6 +47,7 @@
   boolean showSavedData = !(savedDataHTML == null || savedDataHTML.isEmpty());
   boolean showJournalCitations = !(journalCitationsHTML == null || journalCitationsHTML.isEmpty());
   boolean showSEO = !(seoHTML == null || seoHTML.isEmpty());
+
   String showCoordinates = "true";
   if ((expandCoordinates != null) && !expandCoordinates) { 
   	showCoordinates = "false";
@@ -59,12 +60,10 @@
     HttpSession httpSession = request.getSession();
     if ((uid == null) || (uid.equals(""))) {
         uid = "public";
-    } 
+    }
+
     String tier = null;
     String testHTML = "";
-    String watermarkClass = "";
-    String watermarkId = "";
-    String watermarkText = "";
     String showTestHTML = "false";
     DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
     String pastaHost = dpmc.getPastaHost();
@@ -80,12 +79,19 @@
     
     if (tier != null) {
         showTestHTML = "true";
-        watermarkClass = "watermarked";
-        watermarkId = "watermarked-background-text";
-        watermarkText = "Test Data Package";
         String fontColor = "darkorange";
-        testHTML = String.format("<font color='%s'>This test data package was submitted to a %s environment. It is not considered production ready.</font>", 
-                                 fontColor, tier);
+        testHTML = String.format("<font color='%s'>This data package was submitted to a %s environment for testing " +
+                        "purposes only. Use of these data for anything other than testing is strongly discouraged." +
+                        "</font>", fontColor, tier);
+    }
+
+    String showNewestRevision = "false";
+    String newestRevisionHTML = "";
+    if (moreRecentRevisionHTML != "") {
+        showNewestRevision = "true";
+        String fontColor = "darkorange";
+        newestRevisionHTML = String.format("<font color='%s'>This data package is not the most recent revision " +
+                "of a series. %s</font>", fontColor, moreRecentRevisionHTML);
     }
     
     StringBuffer googleAnalyticsScriptBuffer = new StringBuffer("");
@@ -177,13 +183,19 @@
     </c:when>
 </c:choose>
 
+<% if (tier != null) { %>
+    <style>
+        .watermark {
+            background-image: url(/nis/images/watermark.png);
+        }
+    </style>
+<% } %>
+
 </head>
 
 <body>
 
 <jsp:include page="header.jsp" />
-
-<div id="<%= watermarkId %>" class="<%= watermarkClass %>"><%= watermarkText %></div>
 
 <div class="row-fluid ">
 	<div>
@@ -203,6 +215,15 @@
                                 </c:when>
                             </c:choose>
 
+                            <c:set var="showNewestRevision" value="<%= showNewestRevision %>"/>
+                            <c:choose>
+                                <c:when test="${showNewestRevision}">
+                                    <div>
+                                        <h2><%= newestRevisionHTML %></h2>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+
                             <c:set var="showWasDeleted" value="<%= showWasDeleted %>"/>
                             <c:choose>
                                 <c:when test="${showWasDeleted}">
@@ -214,7 +235,7 @@
                             <div class="recent_title">
                                 <h1>Data Package Summary&nbsp;&nbsp;&nbsp;
                                     <small><small>
-                                        <%= viewFullMetadataHTML %> <%= moreRecentRevisionHTML %>
+                                        <%= viewFullMetadataHTML %>
                                     </small></small>
                                 </h1>
                             </div>      
@@ -226,6 +247,7 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<div class="display-table">
+                                    <div class="watermark">
 
  									<div class="table-row">										
 										<div class="table-cell text-align-right">
@@ -450,7 +472,7 @@
     </c:when>
 </c:choose>
 
-									
+                                    </div>
 								</div> <!-- end display table -->
                                 <script src="https://unpkg.com/vue"></script>
                                 <script src="https://cdn.jsdelivr.net/npm/data-metrics-badge/dist/data-metrics-badge.min.js"></script>
