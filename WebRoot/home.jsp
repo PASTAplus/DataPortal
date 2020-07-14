@@ -92,13 +92,12 @@
         String today = CalendarUtility.todaysDayOfWeek();
         if (today != null && today.equalsIgnoreCase(downtime)) {
             StringBuilder sb = new StringBuilder();
-            sb.append(String.format("The Data Portal and PASTA+ services will be unavailable on %s evening from 7-9 pm Mountain Time for scheduled weekly maintenance.",
-                                    downtime));
-            downtimeHTML = String.format("<em>Please Note: </em>%s",
-                                         sb.toString());
+            sb.append(String.format("Reminder: The Data Portal and PASTA+ services will be unavailable on %s " +
+                            "evening from 7-9 pm Mountain Time for scheduled weekly maintenance.", downtime));
+            downtimeHTML = sb.toString();
         }
     }
-    
+
     DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
     String pastaHost = dpmc.getPastaHost();
     String tier = null;
@@ -214,8 +213,12 @@
 				<div class="span8 box_shadow box_layout">
 					<div class="row-fluid">
 						<div class="span12">
-                            <p class="nis-warn"><%= downtimeHTML %></p>                               
-							<div class="recent_title">
+                            <% if (downtimeHTML != "") { %>
+                                <div class="alert alert-info">
+                                    <strong><%= downtimeHTML %></strong>
+                                </div>
+                            <% } %>
+                            <div class="recent_title">
 								<h2>Welcome to the EDI Data Portal</h2>
 							</div>
 							<span class="row-fluid separator_border"></span>
