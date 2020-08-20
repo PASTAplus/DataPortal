@@ -319,7 +319,7 @@ public class MapBrowseServlet extends DataPortalServlet {
         String journalCitationsHTML = "";
 		String codeGenerationHTML = "";
 		String digitalObjectIdentifier = "";
-		String dataCiteDOI = "";
+		String dataCiteDOI = "No DOI registered";
 		String pastaDataObjectIdentifier = "";
 		String savedDataHTML = "";
 		String wasDeletedHTML = "";
