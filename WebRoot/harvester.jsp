@@ -135,7 +135,7 @@
                                 <div class="table-row">
                                     <div class="table-cell">
                                         <input name="useChecksum" type="checkbox" value="useChecksum" />
-                                        Allow PASTA to skip upload of a data entity if it has a matching copy
+                                        Allow PASTA+ to skip the upload of a data entity if it has a matching copy
                                     </div>
                                     <div class="table-cell">
                                     <span name='<%= Tooltip.USE_CHECKSUM %>'
@@ -148,7 +148,7 @@
 								<div class="table-row">
 									<div class="table-cell">
 								    	<input name="desktopUpload" type="checkbox" value="desktopUpload" /> 
-										I want to manually upload the data by selecting files on my local system
+										Manually upload data by selecting files on my local system (500MB limit)
 									</div>
 									<div class="table-cell">
 									<span name='<%= Tooltip.DESKTOP_HARVEST %>'
