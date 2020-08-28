@@ -118,7 +118,7 @@ public class ReportViewerServlet extends DataPortalServlet {
 			uid = "public";
 
 		String packageId = request.getParameter("packageid");
-		String encodedName = request.getParameter("reportName");
+		String encodedName = request.getParameter("localPath");
 		String transactionId = request.getParameter("transactionId");
 
 		String scope = null;
@@ -142,7 +142,7 @@ public class ReportViewerServlet extends DataPortalServlet {
 				else if (encodedName != null && encodedName.length() > 0) {
 					URLCodec urlCodec = new URLCodec();
 					String reportName = urlCodec.decode(encodedName);
-					File xmlFile = new File(REPORTJAIL + reportName);
+					File xmlFile = new File(reportName);
 					if (xmlFile.exists()) {
 						xml = FileUtils.readFileToString(xmlFile);
 					}
