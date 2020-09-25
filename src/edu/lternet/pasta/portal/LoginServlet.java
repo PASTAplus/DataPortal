@@ -195,7 +195,8 @@ public class LoginServlet extends DataPortalServlet {
     } else { // PASTA login
 
         uid = request.getParameter("uid");
-        String affiliation = request.getParameter("affiliation");
+//        String affiliation = request.getParameter("affiliation");
+        String affiliation = "EDI";
 
         if (uid != null) {
             uid = uid.trim();

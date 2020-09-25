@@ -127,17 +127,17 @@
 									  <input type="password" name="password" required="required" />
 									</div>
 							    </div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                      <label class="labelBold text-align-right">Affiliation:</label>
-                                    </div>
-                                    <div class="table-cell">
-                                        <select id="affiliation-select" class="select-width-auto" name="affiliation">
-                                            <option value="EDI" selected="selected">EDI</option>
-                                            <option value="LTER">LTER</option>
-                                        </select>
-                                    </div>
-                                </div>
+<%--                                <div class="table-row">--%>
+<%--                                    <div class="table-cell">--%>
+<%--                                      <label class="labelBold text-align-right">Affiliation:</label>--%>
+<%--                                    </div>--%>
+<%--                                    <div class="table-cell">--%>
+<%--                                        <select id="affiliation-select" class="select-width-auto" name="affiliation">--%>
+<%--                                            <option value="EDI" selected="selected">EDI</option>--%>
+<%--                                            <option value="LTER">LTER</option>--%>
+<%--                                        </select>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
 								<div class="table-row">
 									<div class="table-cell">
 									</div>
@@ -148,7 +148,7 @@
 							  </div>
 						</div>
 					</form>
-								<h3>Or use an alternate identity provider:</h3>
+								<h3>Or use an alternate identity provider (limited privileges):</h3>
 								<p><a href="https://<%=auth%>.edirepository.org/auth/login/google?target=<%=target%>"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
 								   <a href="https://<%=auth%>.edirepository.org/auth/login/github?target=<%=target%>"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
 								   <a href="https://<%=auth%>.edirepository.org/auth/login/orcid?target=<%=target%>"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
