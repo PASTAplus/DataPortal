@@ -103,7 +103,7 @@
 								<h2>Login</h2>
 							</div>
 							<span class="row-fluid separator_border"></span>
-							<h3>Use your EDI or LTER account:</h3>
+							<h3>Use your EDI account to upload data:</h3>
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
@@ -148,7 +148,7 @@
 							  </div>
 						</div>
 					</form>
-								<h3>Or use an alternate identity provider (limited privileges):</h3>
+								<h3>Or use an alternate identity provider to access data requiring user authentication:</h3>
 								<p><a href="https://<%=auth%>.edirepository.org/auth/login/google?target=<%=target%>"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
 								   <a href="https://<%=auth%>.edirepository.org/auth/login/github?target=<%=target%>"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
 								   <a href="https://<%=auth%>.edirepository.org/auth/login/orcid?target=<%=target%>"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
