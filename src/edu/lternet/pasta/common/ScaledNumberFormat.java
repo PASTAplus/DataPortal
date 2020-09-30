@@ -5,6 +5,8 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.text.StringCharacterIterator;
+import java.text.CharacterIterator;
 
 /**
  * Format numbers scaled for human comprehension.
@@ -219,42 +221,22 @@ public class ScaledNumberFormat extends Format {
 	 * Non-standard overload;
 	 * Format a given long as a Scaled Numeral. This method is the REAL
 	 * FORMATTING ENGINE.
-	 * @param number Number to format
+	 * @param bytes Number to format
 	 * @return the formatted number as a String
 	 */
-	public String format(long number) {
-		long fract = 0;
-		int unit = NONE;
-
+	public String format(long bytes) {
 		StringBuffer buf = new StringBuffer();
-
-		long abval = Math.abs(number);
-
-		for (int i = 1/* ! */; i < scale_factors.length; i++) {
-			if (abval < scale_factors[i]) {
-				unit = units[i - 1];
-				fract = i == 1 ? 0 : abval % scale_factors[i - 1];
-				number /= scale_factors[i - 1];
-				break;
-			}
+		long absB = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
+		if (absB < 1024) {
+			return bytes + " B";
 		}
-
-		if (fract < 0)
-			fract = -fract;
-
-		/* scale fraction to one digit (truncate, not round) */
-		while (fract > 9)
-			fract /= 10;
-
-		if (number == 0)
-			return "0B";
-		else if (unit == NONE || number >= 100 || number <= -100) {
-			buf.append(df.format(number)).append(scale_chars[unit]);
-		} else {
-			buf.append(df.format(number)).append('.').append(fract).append(
-					scale_chars[unit]);
+		long value = absB;
+		CharacterIterator ci = new StringCharacterIterator("KMGTPE");
+		for (int i = 40; i >= 0 && absB > 0xfffccccccccccccL >> i; i -= 10) {
+			value >>= 10;
+			ci.next();
 		}
-
-		return buf.toString();
+		value *= Long.signum(bytes);
+		return String.format("%.1f %ciB", value / 1024.0, ci.current());
 	}
 }
