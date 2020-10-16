@@ -121,7 +121,11 @@
 				<li<%= dataClass %>><a href="#">Data</a>
 				<ul class="sub-menu">
 					<p class="smallmenu pull-left nis-navigation-submenu">
-					<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI"> 
+						<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI">
+						EDI Data Policy:</p>
+					<li><a href="https://environmentaldatainitiative.org/edi-data-policy-2/">Data Policy</a> </li>
+					<p class="smallmenu pull-left nis-navigation-submenu">
+					<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI">
 					Browse Data By:</p>
 					<li><a href="browse.jsp">Keyword or Research Site</a> </li>
 					<li><a href="scopebrowse">Package Identifier</a> </li>
@@ -169,6 +173,11 @@
                     <img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
                     Reservations:</p>
                     <li><a href="reservations.jsp">Data Package Identifier Reservations</a></li>
+                    <p class="smallmenu pull-left nis-navigation-submenu">
+                    <img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI">
+                    Metadata:</p>
+                    <li><a href="https://github.com/EDIorg/EMLassemblyline">EMLassemblyline</a></li>
+                    <li><a href="https://ezeml.edirepository.org/eml/">ezEML</a></li>
 				  </ul>
 				</li>
 				<li<%= helpClass %>><a href="#">Help</a>
