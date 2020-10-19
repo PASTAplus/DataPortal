@@ -779,9 +779,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String fileInfo = (objectName == null) ? entityName : objectName;
 									String href = String.format("./dataviewer?packageid=%s&entityid=%s",
 											                    packageId, entityId);
+									String onClick = "onclick=\"return confirm('Use these data with confidence, " +
+											"contact the data owner for the correct fitness of use.')\"";
 									String downloadLink = 
-											String.format("<a class='searchsubcat' href='%s' />%s</a>",
-			                                              href, fileInfo);
+											String.format("<a class='searchsubcat' href='%s' %s />%s</a>",
+			                                              href, onClick, fileInfo);
 									if (experimental) {
 										String dex = "";
 										if (fileInfo.contains(".csv")) {
