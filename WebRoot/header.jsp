@@ -176,8 +176,8 @@
                     <p class="smallmenu pull-left nis-navigation-submenu">
                     <img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI">
                     Metadata:</p>
-                    <li><a href="https://github.com/EDIorg/EMLassemblyline">EMLassemblyline</a></li>
                     <li><a href="https://ezeml.edirepository.org/eml/">ezEML</a></li>
+                    <li><a href="https://github.com/EDIorg/EMLassemblyline">EMLassemblyline</a></li>
 				  </ul>
 				</li>
 				<li<%= helpClass %>><a href="#">Help</a>
