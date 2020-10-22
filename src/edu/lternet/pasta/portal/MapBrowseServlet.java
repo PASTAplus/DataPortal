@@ -779,7 +779,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String fileInfo = (objectName == null) ? entityName : objectName;
 									String href = String.format("./dataviewer?packageid=%s&entityid=%s",
 											                    packageId, entityId);
-									String onClick = "onclick=\"return confirm('Use these data with confidence, " +
+									String onClick = "onclick=\"return alert('To use these data with confidence, " +
 											"contact the data owner for the correct fitness of use.')\"";
 									String downloadLink = 
 											String.format("<a class='searchsubcat' href='%s' %s />%s</a>",
