@@ -103,7 +103,11 @@
 								<h2>Login</h2>
 							</div>
 							<span class="row-fluid separator_border"></span>
-							<h3>Use your EDI account to upload data:</h3>
+							<h3>
+								Use your EDI account to upload data (contact
+								<a href="support@environmentaldatainitiative.org">
+								support@environmentaldatainitiative.org</a></br>to create an account):
+							</h3>
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
