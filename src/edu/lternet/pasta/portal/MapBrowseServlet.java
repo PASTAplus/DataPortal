@@ -51,6 +51,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.xpath.CachedXPathAPI;
+import org.owasp.encoder.Encode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -787,7 +788,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									if (experimental) {
 										String dex = "";
 										if (fileInfo.contains(".csv")) {
-											String dataUrl = String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId);
+											String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
 											String dexUrl = "https://dex.edirepository.org";
 											dex = String.format("<em>(<a href=\"%s/%s\" target=\"_blank\">Data Explorer - experimental</a>)</em>", dexUrl, dataUrl);
 										}
