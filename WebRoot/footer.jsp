@@ -157,7 +157,7 @@ int year = ld.getYear();
 						<div class="span12 ">
 							Copyright <%= year %> <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>.
 							This material is based upon work supported by the National Science Foundation under grants 
-							#1565103 and #1629233. Any opinions, findings, conclusions, or recommendations 
+							#1931143 and #1931174. Any opinions, findings, conclusions, or recommendations
 							expressed in the material are those of the author(s) and do not necessarily reflect the views of 
 							the National Science Foundation. Please
 							<a href="mailto:info@environmentaldatainitiative.org">contact us</a> 
