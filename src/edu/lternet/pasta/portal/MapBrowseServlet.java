@@ -310,6 +310,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String creatorsHTML = "";
 		String abstractHTML = "";
 		String intellectualRightsHTML = "";
+		String licensedHTML = "";
 		String publicationDateHTML = "";
 		String spatialCoverageHTML = "";
 		String googleMapHTML = "";
@@ -585,6 +586,16 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					if (intellectualRightsText != null) {
 						intellectualRightsHTML = toSingleLine(intellectualRightsText);
+					}
+
+					String licensedText = emlObject.getLicensedText();
+
+					if (licensedText != null) {
+						licensedHTML = toSingleLine(licensedText);
+						String licenseUrlText = emlObject.getLicenseUrlText();
+						if (licenseUrlText != null){
+							licensedHTML = String.format("<a class=\"searchsubcat\" href=\"%s\">%s</a>", licenseUrlText, licensedHTML);
+						}
 					}
 
 					String pubDate = emlObject.getPubDate();
@@ -1079,6 +1090,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("digitalObjectIdentifier", digitalObjectIdentifier);
 		request.setAttribute("dataCiteDOI", dataCiteDOI);
 		request.setAttribute("intellectualRightsHTML", intellectualRightsHTML);
+		request.setAttribute("licensedHTML", licensedHTML);
 		request.setAttribute("pastaDataObjectIdentifier", pastaDataObjectIdentifier);
 		request.setAttribute("provenanceHTML", provenanceHTML);
 		request.setAttribute("codeGenerationHTML", codeGenerationHTML);

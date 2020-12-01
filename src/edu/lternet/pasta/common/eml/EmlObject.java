@@ -210,7 +210,7 @@ public class EmlObject {
 	 */
 	public String getAbstractText() {
 		String abstractText = this.dataPackage.getAbstractText();
-		
+
 		return abstractText;
 	}
 	
@@ -218,26 +218,52 @@ public class EmlObject {
 	/**
 	 * Returns the intellectualRights text string from the EML document.
 	 * 
-	 * @return abstract text
+	 * @return intellectualRights text
 	 */
 	public String getIntellectualRightsText() {
 		String intellectualRightsText = this.dataPackage.getIntellectualRightsText();
 		
 		return intellectualRightsText;
 	}
-	
-	
+
+
 	/**
-	 * Boolean to determine whether the data package has the intellectualRights 
+	 * Boolean to determine whether the data package has the intellectualRights
 	 * element present.
-	 * 
+	 *
 	 * @return true if the intellectualRights element is present, else false
 	 */
 	public boolean hasIntellectualRights() {
 		return this.dataPackage.hasIntellectualRights();
 	}
-	
-	
+
+
+	/**
+	 * Returns the licensed text string from the EML document.
+	 *
+	 * @return licensed text
+	 */
+	public String getLicensedText() {
+
+		String licensedText = this.dataPackage.getLicensedText();
+
+		return licensedText;
+	}
+
+
+	/**
+	 * Returns the licensed URL text string from the EML document.
+	 *
+	 * @return licensed text
+	 */
+	public String getLicenseUrlText() {
+
+		String licenseUrlText = this.dataPackage.getLicenseUrlText();
+
+		return licenseUrlText;
+	}
+
+
 	/*
 	 * Access methods for the bounding coordinates
 	 */

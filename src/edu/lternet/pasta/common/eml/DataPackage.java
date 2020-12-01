@@ -66,6 +66,8 @@ public class DataPackage {
   String site = null;
   String abstractText = null;
   String intellectualRightsText = null;
+  String licensedText = null;
+  String licenseUrlText = null;
   String methodsText = null;
   String fundingText = null;
   String geographicDescriptionText = null;
@@ -230,15 +232,21 @@ public class DataPackage {
     return entityList;
   }
 
-  
-	public String getFundingText() {
+
+  public String getFundingText() {
 		return fundingText;
 	}
 
 
-	public String getIntellectualRightsText() {
+  public String getIntellectualRightsText() {
 		return intellectualRightsText;
 	}
+
+
+  public String getLicensedText() { return licensedText; }
+
+
+  public String getLicenseUrlText() { return licenseUrlText; }
 
 
   public ArrayList<String> getKeywords() {
@@ -388,7 +396,13 @@ public class DataPackage {
 			this.intellectualRightsText = text;
 		}
 
-	  
+
+		public void setLicensedText(String text) { this.licensedText = text; }
+
+
+		public void setLicenseUrlText(String text) { this.licenseUrlText = text; }
+
+
 		public void setMethodsText(String methodsText) {
 			this.methodsText = methodsText;
 		}

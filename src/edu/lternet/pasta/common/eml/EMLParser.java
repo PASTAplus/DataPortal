@@ -71,6 +71,8 @@ public class EMLParser {
   public static final String TITLE_PATH = "//dataset/title";
   public static final String ABSTRACT_PATH = "//dataset/abstract";
   public static final String INTELLECTUAL_RIGHTS_PATH = "//dataset/intellectualRights";
+  public static final String LICENSED_PATH = "//dataset/licensed/licenseName";
+  public static final String LICENSE_URL_PATH = "//dataset/licensed/url";
   public static final String DATA_SOURCE_PATH = "//methods/methodStep/dataSource";
   public static final String DATA_SOURCE_URL_PATH = "distribution/online/url";
   public static final String DATA_SOURCE_TITLE_PATH = "title";
@@ -265,6 +267,20 @@ public class EMLParser {
           String intellectualRightsText = intellectualRightsNode.getTextContent().trim();
           this.dataPackage.setIntellectualRightsText(intellectualRightsText);
           this.dataPackage.setIntellectualRights(true);
+        }
+
+        // Parse the licensed to determine whether the element node is present
+        Node licensedNode = xpathapi.selectSingleNode(document, LICENSED_PATH);
+        if (licensedNode != null && licensedNode.hasChildNodes()) {
+          String licensedText = licensedNode.getTextContent().trim();
+          this.dataPackage.setLicensedText(licensedText);
+        }
+
+        // Parse the licensed URL to determine whether the element node is present
+        Node licenseUrlNode = xpathapi.selectSingleNode(document, LICENSE_URL_PATH);
+        if (licenseUrlNode != null && licenseUrlNode.hasChildNodes()) {
+          String licenseUrlText = licenseUrlNode.getTextContent().trim();
+          this.dataPackage.setLicenseUrlText(licenseUrlText);
         }
 
         // Parse the methods text

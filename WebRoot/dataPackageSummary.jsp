@@ -16,6 +16,7 @@
   String creatorsHTML = (String) request.getAttribute("dataPackageCreatorsHTML");
   String abstractHTML = (String) request.getAttribute("abstractHTML");
   String intellectualRightsHTML = (String) request.getAttribute("intellectualRightsHTML");
+  String licensedHTML = (String) request.getAttribute("licensedHTML");
   String publicationDateHTML = (String) request.getAttribute("dataPackagePublicationDateHTML");
   String packageIdHTML = (String) request.getAttribute("dataPackageIdHTML");
   String resourcesHTML = (String) request.getAttribute("dataPackageResourcesHTML");
@@ -41,6 +42,7 @@
   String uid = (String) session.getAttribute("uid");
   boolean showAbstract = !(abstractHTML == null || abstractHTML.isEmpty());
   boolean showIntellectualRights = !(intellectualRightsHTML == null || intellectualRightsHTML.isEmpty());
+  boolean showLicensed = !(licensedHTML == null || licensedHTML.isEmpty());
   boolean showPubDate = !(publicationDateHTML == null || publicationDateHTML.isEmpty());
   boolean showSpatial = !(spatialCoverageHTML == null || spatialCoverageHTML.isEmpty());
   boolean showCodeGeneration = !(codeGenerationHTML == null || codeGenerationHTML.isEmpty());
@@ -396,7 +398,25 @@
                                 </c:when>
                             </c:choose>
 
-									<div class="table-row">										
+                            <c:set var="showLicensed" value="<%= showLicensed %>"/>
+                            <c:choose>
+                                <c:when test="${showLicensed}">
+                                    <div class="table-row">
+                                        <div class="table-cell text-align-right nis-summary-label">
+                                            <label class="labelBold">Data License:</label>
+                                        </div>
+                                        <div class="table-cell">
+                                            <ul class="no-list-style">
+                                                <li>
+                                                    <div class="more"><%= licensedHTML %></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+
+									<div class="table-row">
 										<div class="table-cell text-align-right">
 											<label class="labelBold">Digital Object Identifier:</label>
 										</div>
