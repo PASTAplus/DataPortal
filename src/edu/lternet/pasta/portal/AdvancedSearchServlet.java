@@ -24,6 +24,7 @@
 package edu.lternet.pasta.portal;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -140,7 +141,11 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     String uid = (String) httpSession.getAttribute("uid");
     
     if (uid == null || uid.isEmpty()) uid = "public";
-    
+
+    if(request.getCharacterEncoding() == null) {
+          request.setCharacterEncoding("UTF-8");
+    }
+
     String boundaryContained = request.getParameter("boundaryContained");
     String boundsChangedCount = request.getParameter("boundsChangedCount");
     String dateField = request.getParameter("dateField");

@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener"%>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%@ page import="edu.lternet.pasta.portal.Tooltip" %>
@@ -468,15 +468,15 @@
 															</tr>
 															<tr>
 																<td>
-                              <select class="select-width-fixed" name="creatorName">
-                                <%= creatorOptions %>
-                              </select>
+																  <select class="select-width-fixed" name="creatorName">
+																	<%= creatorOptions %>
+																  </select>
 																</td>
 											                    <td class="spacerwd"></td>
 																<td>
-                              <select class="select-width-fixed" name="creatorOrganization">
-                                <%= organizationOptions %>
-                              </select>
+																  <select class="select-width-fixed" name="creatorOrganization">
+																	<%= organizationOptions %>
+																  </select>
 																</td>
 															</tr>
 															<tr>
