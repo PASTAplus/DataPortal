@@ -18,7 +18,7 @@ db.pkg.Password=HIDEPASSWORD
 # Data Portal properties
 dataportal.downtime.dayOfWeek=Wednesday
 dataportal.experimental=false
-dataportal.hostname=porta.edirepository.org
+dataportal.hostname=portal.edirepository.org
 dataportal.protocol=https
 dataportal.port=443
 dataportal.context=nis
