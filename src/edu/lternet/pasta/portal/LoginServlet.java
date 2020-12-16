@@ -71,6 +71,7 @@ public class LoginServlet extends DataPortalServlet {
   // Instance variables
   private final String authServer;
   private final String authTarget;
+  private final String dataportalTarget;
 
 
     /**
@@ -112,7 +113,12 @@ public class LoginServlet extends DataPortalServlet {
       int authPort = options.getInt("auth.port");
       this.authTarget = options.getString("auth.target");
       this.authServer = PastaClient.composePastaUrl(authProtocol, authHost, authPort);
-
+      String dataportalHostName = options.getString("dataportal.hostname");
+      String dataportalProtocol = options.getString("dataportal.protocol");
+      int dataportalPort = options.getInt("dataportal.port");
+      String dataportalContext = options.getString("dataportal.context");
+      String dataportalHost = PastaClient.composePastaUrl(dataportalProtocol, dataportalHostName, dataportalPort);
+      this.dataportalTarget = dataportalHost + "/" + dataportalContext;
   }
 
   /**
@@ -277,6 +283,7 @@ public class LoginServlet extends DataPortalServlet {
 //  RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
 //  requestDispatcher.forward(request, response);
 
+    forward = forward.replace("./", this.dataportalTarget + "/");
     response.sendRedirect(forward);
 
   }
