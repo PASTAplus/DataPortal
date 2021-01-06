@@ -25,6 +25,7 @@
   String reservationMessage = (String) request.getAttribute("reservationMessage");
   String type = (String) request.getAttribute("type");
 
+  String cname = (String) httpSession.getAttribute("cname");
   String uid = (String) httpSession.getAttribute("uid");
   Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
 
@@ -151,7 +152,7 @@
 				        <hr/>
 
      <%= displayDivOpen %>
-      <h2>Current data package identifier reservations for <%= uid %></h2>
+      <h2>Current data package identifier reservations for user: <%= cname %></h2>
         <table>
           <tbody>
             <tr>

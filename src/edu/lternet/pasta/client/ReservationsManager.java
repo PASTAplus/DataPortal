@@ -240,7 +240,7 @@ public class ReservationsManager extends PastaClient {
 							else if (reservationElement.getTagName().equals("docid")) {
 								Text text = (Text) reservationElement.getFirstChild();
 								if (text != null) {
-									docid = text.getData().trim();
+									docid = text.getData().trim() + ".1";
 								}
 							}
 							else if (reservationElement.getTagName().equals("dateReserved")) {
@@ -356,7 +356,7 @@ public class ReservationsManager extends PastaClient {
 						}
 					}
 					if (include) {
-                        sb.append(String.format("  <option value=\"%s\">%s</option>\n", docid, docid));
+                        sb.append(String.format("  <option value=\"%s\">%s.1</option>\n", docid, docid));
 					}
 				}
 			}

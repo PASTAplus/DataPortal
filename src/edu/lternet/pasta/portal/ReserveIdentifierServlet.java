@@ -122,7 +122,7 @@ public class ReserveIdentifierServlet extends DataPortalServlet {
 				StringBuilder sb = new StringBuilder("");
 				for (int i = 1; i <= numberOfIdentifiers; i++) {
 					String identifier = dpmc.createReservation(scope);
-					sb.append(String.format("<code>%s.%s</code>", scope, identifier));
+					sb.append(String.format("<code>%s.%s.1</code>", scope, identifier));
 					if (i < numberOfIdentifiers) { 
 						sb.append(", "); 
 						Thread.sleep(200); 
