@@ -105,8 +105,10 @@
 							<span class="row-fluid separator_border"></span>
 							<h3>
 								Use your EDI account to upload data (contact
-								<a href="support@environmentaldatainitiative.org">
-								support@environmentaldatainitiative.org</a></br>to create an account):
+								<a href="mailto:support@environmentaldatainitiative.org">
+								support@environmentaldatainitiative.org</a></br>to create an account
+								or <a href="https://dashboard.edirepository.org/dashboard/auth/reset_password_init">click
+								here</a> to reset your password):
 							</h3>
 						</div>
 						<div class="row-fluid">
