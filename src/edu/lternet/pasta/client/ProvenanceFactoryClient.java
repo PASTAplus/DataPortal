@@ -112,7 +112,7 @@ public class ProvenanceFactoryClient extends PastaClient {
 			responseEntity = response.getEntity();
 
 			if (responseEntity != null) {
-				provenanceXml = EntityUtils.toString(responseEntity);
+				provenanceXml = EntityUtils.toString(responseEntity, "UTF-8");
 			}
 		}
 		catch (ClientProtocolException e) {
