@@ -142,7 +142,7 @@ public class XSLTUtility {
 			XsltCompiler xsltCompiler = processor.newXsltCompiler();
 			XsltExecutable xsltExecutable = xsltCompiler.compile(xsltSource);
 			XdmNode xdmNode = processor.newDocumentBuilder().build(source);
-			Serializer out = new Serializer();
+			Serializer out = processor.newSerializer();
 			out.setOutputProperty(Serializer.Property.METHOD, "html");
 			out.setOutputProperty(Serializer.Property.INDENT, "yes");
 			out.setOutputProperty(Serializer.Property.ENCODING, "UTF-8");
