@@ -35,7 +35,7 @@
   -->
   
   <!-- *** Output *** -->
-  <xsl:output method="html" encoding="utf-8" indent="yes" /> 
+  <xsl:output method="html" encoding="utf-8" indent="no" /> 
   
   <!-- *** Variables *** -->
   <xsl:variable name="packageID" select="*/@packageId"/>
@@ -131,7 +131,8 @@
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: /</xsl:text></xsl:message></xsl:if>
     <!-- HTML5 DOCTYPE declaration -->
     <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html>&#x0A;</xsl:text>
-
+    
+ 
         <!-- begin the content area -->
         <xsl:element name="div">
           <xsl:apply-templates select="*[local-name()='eml']"/>              
@@ -9045,16 +9046,23 @@
   <xsl:template name="steptext">
     <xsl:param name="textfirstColStyle" />
     <xsl:param name="textsecondColStyle" />
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: steptext</xsl:text></xsl:message></xsl:if>
-    <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
-      <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
-      <div>
-        <xsl:apply-templates mode="text">
-          <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
-          <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
-        </xsl:apply-templates>
-      </div>  
+    <xsl:choose>
+      <xsl:when test="markdown">
+        <xsl:call-template name="markdown"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: steptext</xsl:text></xsl:message></xsl:if>
+      <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
+        <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
+        <div>
+          <xsl:apply-templates mode="text">
+            <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
+            <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
+          </xsl:apply-templates>
+        </div>  
     </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="datasource">
@@ -11090,28 +11098,42 @@
   <xsl:template name="text">
     <xsl:param name="textfirstColStyle" />
     <xsl:param name="textsecondColStyle" />
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: text</xsl:text></xsl:message></xsl:if>
-    <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
-      <xsl:apply-templates mode="text">
-        <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
-        <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
-      </xsl:apply-templates>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="markdown">
+        <xsl:call-template name="markdown"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: text</xsl:text></xsl:message></xsl:if>
+        <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
+          <xsl:apply-templates mode="text">
+            <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
+            <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
+          </xsl:apply-templates>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="abstracttext">
     <xsl:param name="textfirstColStyle" />
     <xsl:param name="textsecondColStyle" />
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: abstracttext</xsl:text></xsl:message></xsl:if>
-    <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
-      <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
-      <div>
-        <xsl:apply-templates mode="text">
-          <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
-          <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
-        </xsl:apply-templates>
-      </div>  
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="markdown">
+        <xsl:call-template name="markdown"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: abstracttext</xsl:text></xsl:message></xsl:if>
+        <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (. != '')">
+          <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
+          <div>
+            <xsl:apply-templates mode="text">
+              <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
+              <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
+            </xsl:apply-templates>
+          </div>  
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Template for section-->
@@ -11438,10 +11460,12 @@
           <xsl:value-of select="valueURI/@label"/>
         </xsl:otherwise>
       </xsl:choose>
-    
-    
- 
-    
+   </xsl:template>
+  
+  <xsl:template name="markdown">
+    <div id="markdown">
+      <xsl:value-of select="."/>
+    </div>
   </xsl:template>
   
 

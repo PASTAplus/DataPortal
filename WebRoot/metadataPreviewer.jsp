@@ -27,6 +27,7 @@
 <!-- JS -->
 <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
 <script src="bootstrap/js/bootstrap68b368b3.js?ver=1" type="text/javascript"></script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 <!-- Mobile Device CSS -->
 <link href="bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
@@ -34,7 +35,7 @@
 
 </head>
 
-<body>
+<body onload="convert(); reJax();">
 
 <jsp:include page="header.jsp" />
 
@@ -86,6 +87,8 @@
 		
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.0.1/showdown.min.js"></script>
+
 <script type="text/javascript">
 	jQuery("#showAll").click(function() {
 		jQuery(".collapsible").show();
@@ -102,9 +105,27 @@
 	jQuery(".collapsible").hide();
 	
 	jQuery("#toggleSummary").next(".collapsible").show();
-</script>  
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    function convert() {
+
+        var converter = new showdown.Converter();
+        const markdowns = document.querySelectorAll("[id=markdown]");
+
+        for (var i = 0; i < markdowns.length; i++) {
+            markdown = markdowns[i];
+            text = markdown.textContent;
+            html = converter.makeHtml(text);
+            markdown.innerHTML = html
+        }
+    }
+
+    function reJax() {
+        var math = MathJax.Hub.getAllJax("markdown")[0];
+        MathJax.Hub.Queue(["Text",math,"x+1"]);
+    }
+</script>
+
+
 
 </body>
 
