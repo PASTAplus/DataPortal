@@ -144,7 +144,7 @@ public class XSLTUtility {
 			XdmNode xdmNode = processor.newDocumentBuilder().build(source);
 			Serializer out = processor.newSerializer();
 			out.setOutputProperty(Serializer.Property.METHOD, "html");
-			out.setOutputProperty(Serializer.Property.INDENT, "yes");
+			out.setOutputProperty(Serializer.Property.INDENT, "no");
 			out.setOutputProperty(Serializer.Property.ENCODING, "UTF-8");
 			out.setOutputWriter(stringWriter);
 			XsltTransformer xsltTransformer = xsltExecutable.load();
