@@ -223,8 +223,8 @@
             <td>
                 <xsl:for-each select="intellectualRights">
                   <xsl:call-template name="resourceintellectualRights">
-                    <xsl:with-param name="resfirstColStyle" select="$firstColStyle"/>
-                    <xsl:with-param name="ressecondColStyle" select="$secondColStyle"/>
+                    <xsl:with-param name="textfirstColStyle" select="$firstColStyle"/>
+                    <xsl:with-param name="textsecondColStyle" select="$secondColStyle"/>
                   </xsl:call-template>
                 </xsl:for-each>
             </td>
@@ -9212,8 +9212,8 @@
       </xsl:for-each>
       <xsl:for-each select="intellectualRights">
         <xsl:call-template name="resourceintellectualRights" >
-          <xsl:with-param name="resfirstColStyle" select="$resfirstColStyle"/>
-          <xsl:with-param name="ressecondColStyle" select="$secondColStyle"/>
+          <xsl:with-param name="textfirstColStyle" select="$resfirstColStyle"/>
+          <xsl:with-param name="textsecondColStyle" select="$secondColStyle"/>
         </xsl:call-template>
       </xsl:for-each>
       <xsl:for-each select="distribution">
@@ -9438,12 +9438,22 @@
   </xsl:template>
 
   <xsl:template name="resourceintellectualRights">
-    <xsl:param name="resfirstColStyle"/>
-    <xsl:param name="ressecondColStyle"/>
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: resourceintellectualRights</xsl:text></xsl:message></xsl:if>
+    <xsl:param name="textfirstColStyle"/>
+    <xsl:param name="textsecondColStyle"/>
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: steptext</xsl:text></xsl:message></xsl:if>
+    <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (markdown and normalize-space(markdown[1]) != '') or (. != '')">
+      <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
+      <div>
+        <xsl:apply-templates mode="text">
+          <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
+          <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
+        </xsl:apply-templates>
+      </div>  
+    </xsl:if>
+<!--    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: resourceintellectualRights</xsl:text></xsl:message></xsl:if>
     <xsl:call-template name="text">
       <xsl:with-param name="textsecondColStyle" select="$ressecondColStyle"/>
-    </xsl:call-template>
+    </xsl:call-template>-->
   </xsl:template>
 
   <xsl:template name="resourcedistribution">
