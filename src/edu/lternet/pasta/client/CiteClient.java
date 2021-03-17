@@ -104,7 +104,7 @@ public class CiteClient extends PastaClient {
 
         String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access&no_dot", BASE_SERVICE_URL, packageId, this.tier);
         if (packageId.startsWith("knb-lter-and.")){
-            serviceURL = serviceURL + "&ignore=ORGANIZATION";
+            serviceURL = serviceURL + "&ignore=ORGANIZATIONS";
         }
 
         try {
