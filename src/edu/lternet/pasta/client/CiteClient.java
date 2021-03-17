@@ -92,7 +92,7 @@ public class CiteClient extends PastaClient {
 
     /**
      * Calls the Cite citation web service that returns a string
-     * 
+     *
      * @return A string to be inserted into the citation element of
      *         the landing page HTML.
      */
@@ -101,7 +101,11 @@ public class CiteClient extends PastaClient {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String citeString = null;
+
         String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access&no_dot", BASE_SERVICE_URL, packageId, this.tier);
+        if (packageId.startsWith("knb-lter-and.")){
+            serviceURL = serviceURL + "&ignore=ORGANIZATION";
+        }
 
         try {
             httpGet = new HttpGet(serviceURL);
