@@ -3433,7 +3433,8 @@
           </xsl:attribute>
           <xsl:value-of select="$provider-label"/>
         </xsl:element>
-     </td>
+     <!-- </td> --> <!-- don't end td till after the taxon id is shown -->
+        <br />
       <xsl:variable name="taxon-page-url-head">
         <xsl:choose>
           <xsl:when test="@provider = 'https://eol.org'">
@@ -3462,7 +3463,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <td class="{$secondColStyle}">
+    <!--   <td class="{$secondColStyle}"> -->  <!-- if you open a new td, you will get a cell push out to the right. with lots of nesting, this is too far. -->
         <xsl:choose>
           <!-- build a URL for the taxon if there is a url-head  -->
           <xsl:when test="$taxon-page-url-head != 'no_url'">
