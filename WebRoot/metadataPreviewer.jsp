@@ -27,8 +27,9 @@
 <!-- JS -->
 <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
 <script src="bootstrap/js/bootstrap68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 <!-- Mobile Device CSS -->
 <link href="bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
 <link href="bootstrap/css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css">
