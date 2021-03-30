@@ -2375,6 +2375,7 @@
         <td class="{$firstColStyle}">History:</td>
         <td>
           <table class="{$tabledefaultStyle}">
+            <tr><td class="{$firstColStyle}"/><td class="{$firstColStyle}"/></tr>
             <xsl:for-each select="changeHistory">
               <xsl:call-template name="historydetails"/>
             </xsl:for-each>
@@ -2404,6 +2405,7 @@
         <td class="{$secondColStyle}"><xsl:value-of select="comment"/></td>
       </tr>
     </xsl:if>
+    <tr><td class="{$firstColStyle}"/><td class="{$firstColStyle}"/></tr>
   </xsl:template>
 
   <xsl:template name="datasetcontact">
