@@ -55,8 +55,7 @@ public class SEOClient extends PastaClient {
         .getLogger(edu.lternet.pasta.client.SEOClient.class);
 
     // SEO base service URL
-    private static final String BASE_SERVICE_URL = 
-        "https://seo.edirepository.org/seo/schema/dataset"; 
+    private static final String BASE_SERVICE_URL = "https://seo.edirepository.org/seo/schema/";
     
     
     /*
@@ -97,17 +96,17 @@ public class SEOClient extends PastaClient {
 
 
     /**
-     * Calls the SEO schema.org web service that returns a JSON string
+     * Calls the SEO schema.org web service that returns a dataset JSON-LD string
      * 
      * @return A JSON string to be inserted into the head element of
      *         the landing page HTML.
      */
-    public String fetchJSON(String packageId) 
+    public String fetchDatasetJSON(String packageId)
             throws Exception {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String jsonString = null;
-        String serviceURL = String.format("%s?pid=%s&env=%s", BASE_SERVICE_URL, packageId, this.tier);
+        String serviceURL = String.format("%s?pid=%s&env=%s", BASE_SERVICE_URL + "dataset", packageId, this.tier);
 
         try {
             httpGet = new HttpGet(serviceURL);
@@ -133,6 +132,43 @@ public class SEOClient extends PastaClient {
     }
     
     
+    /**
+     * Calls the SEO schema.org web service that returns a repository JSON-LD string
+     *
+     * @return A JSON string to be inserted into the head element of
+     *         the landing page HTML.
+     */
+    public String fetchRepositoryJSON()
+            throws Exception {
+        HttpGet httpGet = null;
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String jsonString = null;
+        String serviceURL = BASE_SERVICE_URL + "repository";
+
+        try {
+            httpGet = new HttpGet(serviceURL);
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode == HttpStatus.SC_OK) {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                jsonString = EntityUtils.toString(httpEntity).trim();
+            }
+            else {
+                String msg = String.format("SEO server URL '%s' returned status code %d",
+                                           serviceURL, statusCode);
+                throw new SEOClientException(msg);
+            }
+        } catch (Exception e) {
+            logger.error(String.format("Error fetching JSON: %s", e.getMessage()));
+            throw(e);
+        } finally {
+            closeHttpClient(httpClient);
+        }
+
+        return jsonString;
+    }
+
+
     public static void main(String[] args) {
         ConfigurationListener.configure();
         String uid = "public";
@@ -141,7 +177,7 @@ public class SEOClient extends PastaClient {
         
         try {
             SEOClient seoClient = new SEOClient(uid);
-            jsonString = seoClient.fetchJSON(packageId);
+            jsonString = seoClient.fetchDatasetJSON(packageId);
         }
         catch (Exception e) {
            e.printStackTrace();

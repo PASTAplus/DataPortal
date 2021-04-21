@@ -477,7 +477,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 					
 			        try {
 			            SEOClient seoClient = new SEOClient(uid);
-			            seoHTML = seoClient.fetchJSON(packageId);
+			            seoHTML = seoClient.fetchDatasetJSON(packageId) + "\n" + seoClient.fetchRepositoryJSON();
 			        }
 			        catch (Exception e) {
 			            String msg = String.format("Error fetching JSON from SEO server for %s: %s",
