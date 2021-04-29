@@ -35,8 +35,31 @@
 <link href="bootstrap/css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css">
 
 </head>
+<style>
+#markdown {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-<body onload="convert(); reJax();">
+#markdown td, #markdown th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#markdown tr:nth-child(even){background-color: #f2f2f2;}
+
+#markdown tr:hover {background-color: #ddd;}
+
+#markdown th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #C4DCEE;
+  color: black;
+}
+</style>
+<body onload="convert();">
 
 <jsp:include page="header.jsp" />
 
@@ -110,6 +133,7 @@
     function convert() {
 
         var converter = new showdown.Converter();
+        converter.setOption("tables", true)
         const markdowns = document.querySelectorAll("[id=markdown]");
 
         for (var i = 0; i < markdowns.length; i++) {
@@ -118,11 +142,6 @@
             html = converter.makeHtml(text);
             markdown.innerHTML = html
         }
-    }
-
-    function reJax() {
-        var math = MathJax.Hub.getAllJax("markdown")[0];
-        MathJax.Hub.Queue(["Text",math,"x+1"]);
     }
 </script>
 
