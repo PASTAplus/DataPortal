@@ -98,6 +98,7 @@ public class JournalCitationAddServlet extends DataPortalServlet {
    */
     public void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         HttpSession httpSession = request.getSession();
         String uid = (String) httpSession.getAttribute("uid");
         if (uid == null || uid.isEmpty())

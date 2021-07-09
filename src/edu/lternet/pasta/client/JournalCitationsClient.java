@@ -135,13 +135,7 @@ public class JournalCitationsClient extends PastaClient {
         // Set subscription into the request entity
         StringEntity requestEntity = null;
 
-        try {
-            requestEntity = new StringEntity(journalCitationXML);
-        } 
-        catch (UnsupportedEncodingException e1) {
-            logger.error(e1.getMessage());
-            e1.printStackTrace();
-        }
+        requestEntity = new StringEntity(journalCitationXML, "utf-8");
 
         httpPost.setEntity(requestEntity);
 
@@ -240,7 +234,7 @@ public class JournalCitationsClient extends PastaClient {
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
           HttpEntity httpEntity = httpResponse.getEntity();
-          entityString = EntityUtils.toString(httpEntity);
+          entityString = EntityUtils.toString(httpEntity, "utf-8");
           if (statusCode != HttpStatus.SC_OK) {
               handleStatusCode(statusCode, entityString);
           }
@@ -278,7 +272,7 @@ public class JournalCitationsClient extends PastaClient {
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
           HttpEntity httpEntity = httpResponse.getEntity();
-          entityString = EntityUtils.toString(httpEntity);
+          entityString = EntityUtils.toString(httpEntity, "utf-8");
           if (statusCode != HttpStatus.SC_OK) {
               handleStatusCode(statusCode, entityString);
           }
