@@ -606,13 +606,32 @@ public class HarvestReport {
       Time time = new Time(epoch);
       Date date = new Date(epoch);
 
-      newId = date.toString();
+      newId = getReportPackageId(reportId) + " (" + tokens[1] + " - " + date.toString() + ")";
 
-      return newId + " (" + tokens[1] + ")";
+      return newId;
+//      return newId + " (" + tokens[1] + ")";
     }
     else {
       return "";
     }
+  }
+
+
+  private String getReportPackageId(String harvestDir) {
+    String packageId = "unknown";
+    String harvesterPath = HarvestReportServlet.getHarvesterPath();
+    String harvesterPathSubdir = harvesterPath + "/EDI-edirepository-org/" + harvestDir;
+    File dir = new File(harvesterPathSubdir);
+    String[] fileNames = dir.list( DirectoryFileFilter.INSTANCE );
+
+    if (fileNames != null) {
+      for (String fileName : fileNames) {
+        if (fileName != null && !fileName.equals("eml")) {
+          packageId = fileName;
+        }
+      }
+    }
+    return packageId;
   }
 
 }
