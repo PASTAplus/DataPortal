@@ -8,8 +8,8 @@
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
   HttpSession httpSession = request.getSession();
   
-  String message = (String) httpSession.getAttribute("message");
-  httpSession.removeAttribute("message");
+  String message = (String) request.getAttribute("message");
+  request.removeAttribute("message");
   String from = (String) request.getAttribute("from");
   
   if (from != null && !from.isEmpty()) {
