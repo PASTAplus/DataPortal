@@ -39,7 +39,7 @@ public class DataPortalServlet extends HttpServlet {
    * Class variables
    */
   
-  protected static final String LOGIN_WARNING = "You must login with an EDI authorized account to use this tool. Logins \nwith Google, GitHub, or ORCID are not permitted.";
+  protected static final String LOGIN_WARNING = "You must login with an EDI authorized account to use this tool. Logins with Google, GitHub, or ORCID are not permitted.";
   private static final long serialVersionUID = 1L;
   
   protected static final String CSS_LINK_ELEMENTS = 
