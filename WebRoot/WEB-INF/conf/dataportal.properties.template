@@ -77,3 +77,6 @@ pastaclient.maxidletime=1800000
 pastaclient.idlesleeptime=30000
 pastaclient.initialsleeptime=15000
 maps.google.key=GOOGLE_MAPS_KEY
+
+# Umbra service
+umbra.creators.urlHead=https://umbra-d.edirepository.org/creators

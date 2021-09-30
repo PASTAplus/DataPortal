@@ -28,10 +28,12 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.lternet.pasta.umbra.UmbraClientException;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
+import edu.lternet.pasta.umbra.UmbraClient;
 
 
 /**
@@ -219,9 +221,18 @@ public class AuthorSearch extends Search {
 	 * @throws Exception    
 	 */
 	private static void updateAuthors(String authorQuery) throws Exception {
-		String authorsXML = executeQuery(authorQuery);
-		String[] authorsUpdated = parseQueryResults(authorsXML, "author");
-		authors = authorsUpdated;
+
+		UmbraClient umbraClient = new UmbraClient();
+
+		try {
+			authors = umbraClient.getNames();
+		}
+		catch (UmbraClientException e) {
+			logger.error(e.getMessage());
+			String authorsXML = executeQuery(authorQuery);
+			authors = parseQueryResults(authorsXML, "author");
+		}
+
 	}
 	
 	
@@ -233,8 +244,7 @@ public class AuthorSearch extends Search {
 	 */
 	private static void updateOrganizations(String organizationQuery) throws Exception {
 		String organizationsXML = executeQuery(organizationQuery);
-		String[] organizationsUpdated = parseQueryResults(organizationsXML, "organization");
-		organizations = organizationsUpdated;
+		organizations = parseQueryResults(organizationsXML, "organization");
 	}
 	
 	
