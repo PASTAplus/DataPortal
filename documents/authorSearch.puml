@@ -1,0 +1,25 @@
+@startuml
+actor client
+participant AdvancedSearch.jsp
+participant AuthorSearch
+participant DataPackageManagerClient
+participant Umbra
+
+AdvancedSearch.jsp->AuthorSearch: updateAuthorsAndOrganizations()
+AuthorSearch->Umbra: getNames()
+Umbra->AuthorSearch: authors
+AuthorSearch->AuthorSearch: authorQuery = buildAuthorQuery()
+AuthorSearch->AuthorSearch: updateAuthors(authorQuery)
+
+group updateAuthors(authorQuery)
+    AuthorSearch->DataPackageManagerClient: executeQuery(authorQuery)
+    DataPackageManagerClient->AuthorSearch: authorsXML
+    AuthorSearch->AuthorSearch: authors = parseQueryResults(authorsXML, "author")
+end
+
+AdvancedSearch.jsp->AuthorSearch: AuthorSearch.composeAuthorNameOptions()
+AuthorSearch->AuthorSearch: build HTML author list (htmlStringBuffer)
+AuthorSearch->AdvancedSearch.jsp: htmlStringBuffer
+
+
+@enduml
