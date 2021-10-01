@@ -24,6 +24,7 @@
 
 package edu.lternet.pasta.portal.search;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -33,8 +34,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
 
+import edu.lternet.pasta.client.PastaConfigurationException;
+import edu.lternet.pasta.umbra.UmbraClientException;
 import org.apache.log4j.Logger;
 
+import edu.lternet.pasta.umbra.UmbraClient;
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.PastaClient;
 import edu.lternet.pasta.common.ISO8601Utility;
@@ -286,14 +290,41 @@ public class SolrAdvancedSearch extends Search  {
   private void buildQueryAuthor(TermsList termsList) 
           throws UnsupportedEncodingException {
 
-    if (this.creatorName != null && !this.creatorName.equals("")) {
-        termsList.addTerm(this.creatorName);
-        String searchName = this.creatorName;
-        String escapedSearchName = Search.escapeQueryChars(searchName);
-        String authorQuery = "author:(\"" + escapedSearchName + "\")";
-        String encodedValue = URLEncoder.encode(authorQuery, "UTF-8");
-        updateQString(encodedValue);
+    String[] names = null;
+
+    try {
+        UmbraClient umbraClient = new UmbraClient();
+        names = umbraClient.getNameVariants(this.creatorName);
     }
+    catch (PastaConfigurationException | UmbraClientException | IOException e) {
+        String gripe = "An error occurred when attempting to create name variants.";
+        logger.error(gripe);
+    }
+
+
+    if (names != null) {
+        StringBuilder authorQuery = new StringBuilder("");
+        for (int i = 0; i < names.length; i++) {
+            authorQuery.append("author:\"" + Search.escapeQueryChars(names[i]) + "\"");
+            if (i < (names.length - 1)) {
+                authorQuery.append(" OR ");
+            }
+        }
+        String encodedValue = URLEncoder.encode(authorQuery.toString(), "UTF-8");
+        updateQString(encodedValue);
+
+    }
+    else {
+        if (this.creatorName != null && !this.creatorName.equals("")) {
+            termsList.addTerm(this.creatorName);
+            String searchName = this.creatorName;
+            String escapedSearchName = Search.escapeQueryChars(searchName);
+            String authorQuery = "author:(\"" + escapedSearchName + "\")";
+            String encodedValue = URLEncoder.encode(authorQuery, "UTF-8");
+            updateQString(encodedValue);
+        }
+    }
+
 
     if (this.creatorOrganization != null && !this.creatorOrganization.equals("")) {
         termsList.addTerm(this.creatorOrganization);
