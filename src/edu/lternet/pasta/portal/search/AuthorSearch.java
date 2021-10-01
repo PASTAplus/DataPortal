@@ -23,6 +23,7 @@
  */
 package edu.lternet.pasta.portal.search;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -227,7 +228,7 @@ public class AuthorSearch extends Search {
 		try {
 			authors = umbraClient.getNames();
 		}
-		catch (UmbraClientException e) {
+		catch (UmbraClientException | IOException e) {
 			logger.error(e.getMessage());
 			String authorsXML = executeQuery(authorQuery);
 			authors = parseQueryResults(authorsXML, "author");
