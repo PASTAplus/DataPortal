@@ -111,12 +111,13 @@ public class JournalCitationAddServlet extends DataPortalServlet {
         String articleUrl = request.getParameter("articleurl");
         String articleTitle = request.getParameter("articletitle");
         String journalTitle = request.getParameter("journaltitle");
+        String relationType = request.getParameter("relationtype");
         
         /*
          * Check for valid input
          */
         String inputMessage = 
-            validateInput(packageId, articleDoi, articleUrl, articleTitle, journalTitle);
+            validateInput(packageId, articleDoi, articleUrl, articleTitle, journalTitle, relationType);
 
         JournalCitation journalCitation = new JournalCitation();
         journalCitation.setPackageId(packageId);
@@ -124,6 +125,7 @@ public class JournalCitationAddServlet extends DataPortalServlet {
         journalCitation.setArticleUrl(articleUrl);
         journalCitation.setArticleTitle(articleTitle);
         journalCitation.setJournalTitle(journalTitle);
+        journalCitation.setRelationType(relationType);
 
         boolean includeDeclaration = true;
         String journalCitationXML = journalCitation.toXML(includeDeclaration);
@@ -163,7 +165,7 @@ public class JournalCitationAddServlet extends DataPortalServlet {
      * Validate user input. An empty msg value ("") means that validation succeeded.
      */
     private String validateInput(String packageId, String articleDoi, String articleUrl,
-                               String articleTitle, String journalTitle) {
+                               String articleTitle, String journalTitle, String relationType) {
         String msg = null;
         StringBuffer msgBuffer = new StringBuffer("");
         

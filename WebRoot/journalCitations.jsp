@@ -128,14 +128,24 @@
 												  <label class="labelBold" for="packageid">Package Id <span style="color:red;">*</span></label>
 												</td>
                                                 <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <label class="labelBold" for="relationtype">Relation Type <span style="color:red;">*</span></label>
+                                                </td>
+
 											</tr>
                                             <tr>
                                                 <td>
                                                   <input name="packageid" value="<%= packageId %>" required="required" size="50" type="text" />
                                                 </td>
                                                 <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <select name="relationtype">
+                                                        <option value="IsCitedBy">IsCitedBy</option>
+                                                        <option value="IsDescribedBy">IsDescribedBy</option>
+                                                        <option value="IsReferencedBy">IsReferencedBy</option>
+                                                    </select>
+                                                </td>
+
                                              </tr>
                                             <tr>
                                                 <td>
@@ -202,6 +212,7 @@
             <tr>
               <th class="nis">Journal Citation ID</th>
               <th class="nis">Package ID</th>
+              <th class="nis">Relation Type</th>
               <th class="nis">Journal Article DOI</th>
               <th class="nis">Journal Article URL</th>
               <th class="nis">Journal Article Title</th>

@@ -418,7 +418,8 @@ public class JournalCitationsClient extends PastaClient {
                     String articleUrl = "";
                     String articleTitle = "";
                     String journalTitle = "";
-                    
+                    String relationType = "";
+
                     for (int j = 0; j < journalCitationChildren.getLength(); j++) {
                         Node childNode = journalCitationChildren.item(j);
                         if (childNode instanceof Element) {
@@ -460,6 +461,12 @@ public class JournalCitationsClient extends PastaClient {
                                     journalTitle = text.getData().trim();
                                 }
                            }
+                            else if (subscriptionElement.getTagName().equals("relationType")) {
+                                Text text = (Text) subscriptionElement.getFirstChild();
+                                if (text != null) {
+                                    relationType = text.getData().trim();
+                                }
+                           }
                         }
                     }
 
@@ -471,6 +478,10 @@ public class JournalCitationsClient extends PastaClient {
 
                     sb.append("<td class='nis' align='center'>");
                     sb.append(packageId);
+                    sb.append("</td>\n");
+
+                    sb.append("<td class='nis'>");
+                    sb.append(relationType);
                     sb.append("</td>\n");
 
                     sb.append("<td class='nis'>");

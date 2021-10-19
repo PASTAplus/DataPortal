@@ -41,6 +41,7 @@ public class JournalCitation {
     LocalDateTime dateCreated;
     String packageId;
     String journalTitle;
+    String relationType;
     
 
     /*
@@ -95,6 +96,7 @@ public class JournalCitation {
                         String articleDoi = null;
                         String articleUrl = null;
                         String journalTitle = null;
+                        String relationType = null;
                         String principalOwner = null;
                         Node journalCitationNode = journalCitationNodes.item(i);
  
@@ -126,6 +128,12 @@ public class JournalCitation {
                         if (journalTitleNode != null) {
                             journalTitle = journalTitleNode.getTextContent();
                             journalCitation.setJournalTitle(journalTitle);
+                        }
+
+                        Node relationTypeNode = xpathapi.selectSingleNode(document, "//relationType");
+                        if (relationTypeNode != null) {
+                          relationType = relationTypeNode.getTextContent();
+                          journalCitation.setRelationType(relationType);
                         }
 
                         Node principalOwnerNode = xpathapi.selectSingleNode(journalCitationNode, "principalOwner");
@@ -289,6 +297,9 @@ public class JournalCitation {
         if (this.journalTitle != null)
             { sb.append(String.format("    <journalTitle>%s</journalTitle>\n", Encode.forXml(this.journalTitle))); }
         
+        if (this.relationType != null)
+            { sb.append(String.format("    <relationType>%s</relationType>\n", Encode.forXml(this.relationType))); }
+
         sb.append("</journalCitation>\n");
 
         String xml = sb.toString();
@@ -432,6 +443,12 @@ public class JournalCitation {
 
     public void setJournalTitle(String journalTitle) {
         this.journalTitle = journalTitle;
+    }
+
+    public String getRelationType() { return relationType; }
+
+    public void setRelationType(String relationType) {
+        this.relationType = relationType;
     }
 
 }
