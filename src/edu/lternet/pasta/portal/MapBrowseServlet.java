@@ -917,8 +917,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 					}
 				}					
 				if (hasOffline) {
-					String offlineMsg = 
-							"Offline data: the metadata describes one or more data entities that have not been made available to this repository.";
+					String offlineMsg = "Offline data: The metadata describes one or more data entities stored offline (see Full Metadata for more information).";
 					data += String.format("<li>%s</li>\n", offlineMsg);
 				}
 
