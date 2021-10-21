@@ -2,6 +2,7 @@
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet"%>
 <%@ page import="edu.lternet.pasta.client.JournalCitationsClient"%>
 <%@ page import="edu.lternet.pasta.portal.LoginServlet" %>
+<%@ page import="edu.lternet.pasta.portal.Tooltip" %>
 
 <%
   final String pageTitle = "Journal Citations";
@@ -23,6 +24,12 @@
   String packageId = (String) request.getParameter("packageid");
   String createMessageHTML = "";
   String deleteMessageHTML = "";
+  final String RELATION_TYPE =
+			"The <b>Relation Type</b> describes the relationship between this data package and the journal manuscript: " +
+            "\"IsCitedBy\" - this data package is formally cited in the manuscript; " +
+            "\"IsDescribedBy\" - this data package is explicitly described within the manuscript; " +
+		    "\"IsReferencedBy\" - this data package is implicitly described within the manuscript.";
+
 
   String uname = "";
   String uid = (String) httpSession.getAttribute("uid");
@@ -127,9 +134,9 @@
 												<td>
 												  <label class="labelBold" for="packageid">Package Id <span style="color:red;">*</span></label>
 												</td>
-                                                <td>&nbsp;</td>
+                                                <td> </td>
                                                 <td>
-                                                    <label class="labelBold" for="relationtype">Relation Type <span style="color:red;">*</span></label>
+                                                    <label class="labelBold" for="relationtype">Relation Type (see below)</label>
                                                 </td>
 
 											</tr>
@@ -193,6 +200,9 @@
                                               <td>&nbsp;</td>
                                               <td>&nbsp;</td>
                                              </tr>
+                                            <tr>
+                                                <td colspan="3"><%= RELATION_TYPE %></td>
+                                            </tr>
 											<tr>
 												<td>
 													<input class="btn btn-info btn-default" name="add" type="submit" value="Add Journal Citation" />
