@@ -1947,15 +1947,17 @@
           </xsl:call-template>
         </xsl:for-each>
       </xsl:if>
+
       <!-- put in the purpose of the dataset-->
       <xsl:if test="./purpose">
         <xsl:for-each select="./purpose">
-          <xsl:call-template name="datasetpurpose">
+          <xsl:call-template name="purpose">
             <xsl:with-param name="resfirstColStyle" select="$firstColStyle"/>
             <xsl:with-param name="ressecondColStyle" select="$secondColStyle"/>
           </xsl:call-template>
         </xsl:for-each>
       </xsl:if>
+
       <!-- put in the short name -->
       <xsl:if test="shortName">
         <xsl:for-each select="./shortName">
@@ -2325,18 +2327,29 @@
   </xsl:template>
 
   <xsl:template name="datasetpurpose">
-    <xsl:param name="resfirstColStyle"/>
-    <xsl:param name="ressecondColStyle"/>
+<!--    <xsl:param name="resfirstColStyle"/>-->
+<!--    <xsl:param name="ressecondColStyle"/>-->
+    <xsl:param name="textfirstColStyle" />
+    <xsl:param name="textsecondColStyle" />
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: datasetpurpose</xsl:text></xsl:message></xsl:if>
-      <tr>
-        <td class="{$resfirstColStyle}"><xsl:text>Purpose:</xsl:text></td>
-        <td>
-          <xsl:call-template name="text">
-           <xsl:with-param name="textfirstColStyle" select="$resfirstColStyle"/>
-           <xsl:with-param name="textsecondColStyle" select="$ressecondColStyle"/>
-          </xsl:call-template>
-        </td>
-      </tr>
+    <xsl:if test="(section and normalize-space(section[1]) != '') or (para and normalize-space(para[1]) != '') or (markdown and normalize-space(markdown[1]) != '') or (. != '')">
+    <!-- was <xsl:apply-templates mode="text"> (mgb 7Jun2011) use mode="lowlevel" to make abstract use p for para -->
+      <div>
+        <xsl:apply-templates mode="text">
+          <xsl:with-param name="textfirstColStyle" select="$textfirstColStyle"/>
+          <xsl:with-param name="textsecondColStyle" select="$textsecondColStyle" />
+        </xsl:apply-templates>
+      </div>
+<!--      <tr>-->
+<!--        <td class="{$resfirstColStyle}"><xsl:text>Purpose:</xsl:text></td>-->
+<!--        <td>-->
+<!--          <xsl:call-template name="text">-->
+<!--           <xsl:with-param name="textfirstColStyle" select="$resfirstColStyle"/>-->
+<!--           <xsl:with-param name="textsecondColStyle" select="$ressecondColStyle"/>-->
+<!--          </xsl:call-template>-->
+<!--        </td>-->
+<!--      </tr>-->
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="datasetmaintenance">
@@ -6421,10 +6434,7 @@
         <td class="{$secondColStyle}"><xsl:value-of select="mediumNote"/></td>
       </tr>
     </xsl:if>
-    <!-- added the request-data button oct 2012 mob -->
     <xsl:variable name="email1" select="//dataset/contact[1]/electronicMailAddress"/>
-    <!-- Exclude email to the now obsolete tech-support@lternet.edu -->
-    <xsl:if test="$email1 != 'tech-support@lternet.edu'">
     <tr>
       <td class="{$disfirstColStyle}"><xsl:text>Request data:</xsl:text></td>
       <td class="{$secondColStyle}">   
@@ -6440,26 +6450,6 @@
         </form>
       </td>
     </tr>
-    </xsl:if>
-    <xsl:variable name="email2" select="//dataset/contact[2]/electronicMailAddress"/>
-    <!-- Exclude email to the now obsolete tech-support@lternet.edu -->
-    <xsl:if test="$email2 and $email2 != 'tech-support@lternet.edu'">
-    <tr>
-      <td class="{$disfirstColStyle}"><xsl:text>Request data:</xsl:text></td>
-      <td class="{$secondColStyle}">   
-        <form method="GET" >
-          <xsl:attribute name="action">mailto:<xsl:value-of select="//dataset/contact[2]/electronicMailAddress"/></xsl:attribute>          
-          <input type="hidden">
-            <xsl:attribute name="value"><xsl:value-of select="../../../entityName"/></xsl:attribute>       
-            <xsl:attribute name="name" >subject</xsl:attribute>        
-          </input>   
-          <input type="submit">
-            <xsl:attribute name="value">Request data via email to <xsl:value-of select="//dataset/contact[2]/electronicMailAddress" /></xsl:attribute>       
-          </input> 
-        </form>
-      </td>
-    </tr>
-    </xsl:if>
   </xsl:template>
 
   <!-- *******************************  Inline data  *********************** -->
@@ -9352,6 +9342,21 @@
        <td class="{$resfirstColStyle}"><xsl:text>Abstract:</xsl:text></td>
        <td>
          <xsl:call-template name="abstracttext">
+           <xsl:with-param name="textfirstColStyle" select="$resfirstColStyle"/>
+           <xsl:with-param name="textsecondColStyle" select="$ressecondColStyle"/>
+         </xsl:call-template>
+       </td>
+     </tr>
+  </xsl:template>
+
+  <xsl:template name="purpose">
+    <xsl:param name="resfirstColStyle"/>
+    <xsl:param name="ressecondColStyle"/>
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: purpose</xsl:text></xsl:message></xsl:if>
+    <tr>
+       <td class="{$resfirstColStyle}"><xsl:text>Purpose:</xsl:text></td>
+       <td>
+         <xsl:call-template name="datasetpurpose">
            <xsl:with-param name="textfirstColStyle" select="$resfirstColStyle"/>
            <xsl:with-param name="textsecondColStyle" select="$ressecondColStyle"/>
          </xsl:call-template>
