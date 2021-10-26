@@ -218,6 +218,8 @@ public class MetadataViewerServlet extends DataPortalServlet {
 
           if (!productionTier && dataPackageDOI != null) {
             metadataStr = metadataStr.replaceAll(dataPackageDOI, "DOI PLACE HOLDER");
+            String doiUrl = String.format("https://doi.org/%s", dataPackageDOI.replaceFirst("doi:", ""));
+            metadataStr = metadataStr.replaceAll(doiUrl, "DOI PLACE HOLDER");
           }
 
           request.setAttribute("metadataHtml", metadataStr);
