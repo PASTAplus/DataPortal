@@ -240,14 +240,19 @@ public class LoginServlet extends DataPortalServlet {
 
     }
 
+    boolean authenticated = false;
     boolean vetted = false;
     if (tokenManager != null) {
         ArrayList<String> groups = tokenManager.getGroups();
         for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).equals("authenticated")) {
+                authenticated = true;
+            }
             if (groups.get(i).equals("vetted")) {
                 vetted = true;
             }
         }
+        httpSession.setAttribute("authenticated", authenticated);
         httpSession.setAttribute("vetted", vetted);
         httpSession.setAttribute("uid", distinguishedName);
         httpSession.setAttribute("cname", cname);

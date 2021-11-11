@@ -21,11 +21,12 @@
   String type = (String) request.getAttribute("type");
 
   String uid = (String) httpSession.getAttribute("uid");
+  Boolean authenticated = (Boolean) httpSession.getAttribute("authenticated");
   Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
 
-  if (vetted == null || !vetted) {
+  if (authenticated == null || !authenticated) {
 	request.setAttribute("from", "./eventSubscribe.jsp");
-    String loginWarning = DataPortalServlet.getLoginWarning();
+    String loginWarning = "You must login with an EDI authorized account or Google, GitHub, or ORCID to use this tool.";
     request.setAttribute("message", loginWarning);
     RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
     requestDispatcher.forward(request, response);
