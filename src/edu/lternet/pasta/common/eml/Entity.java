@@ -26,6 +26,8 @@ package edu.lternet.pasta.common.eml;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.ArrayList;
+
 /**
  * An Entity holds metadata values about one of the entities in a data package.
  * For example, the entity name, the object name, and the data URL are stored.
@@ -58,6 +60,7 @@ public class Entity {
   String objectName = null;
   String offlineText = null;
   String url = null;
+  ArrayList<Annotation> annotations = null;
 
   
   /*
@@ -120,6 +123,8 @@ public class Entity {
   
   
   /* Getter and setter instance methods */
+
+  public ArrayList<Annotation> getAnnotations() {return annotations;}
   
   public String getEntityId() {
 	  return entityId;
@@ -150,6 +155,9 @@ public class Entity {
     return url;
   }
 
+  public void setAnnotations(ArrayList<Annotation> annotations) {
+	  this.annotations = annotations;
+  }
   
   public void setEntityType(EntityType entityType) {
 	    this.entityType = entityType;
