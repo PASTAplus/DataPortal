@@ -190,6 +190,7 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Resources:</p>
+				  <li><a href="https://environmentaldatainitiative.org/submit-your-data/">How to Submit Data</a></li>
 				  <li><a href="resources.jsp">Additional Resources</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 

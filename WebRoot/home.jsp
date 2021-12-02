@@ -224,6 +224,7 @@
 							<span class="row-fluid separator_border"></span>
 						</div>
 						<div class="row-fluid">
+<h2 style="text-align: center"><a class="searchsubcat"  href="https://environmentaldatainitiative.org/submit-your-data/">How to Submit Data</a></h2>
 <p>Data are one of the most valuable products curated by the 
 <a class="searchsubcat" href="https://environmentaldatainitiative.org">Environmental Data Initiative</a>
 (EDI). Data and metadata derived from publicly funded research are made available 
