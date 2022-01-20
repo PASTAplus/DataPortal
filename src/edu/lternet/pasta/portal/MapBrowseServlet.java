@@ -1576,10 +1576,25 @@ public class MapBrowseServlet extends DataPortalServlet {
 	private String annotationsToHTMLList(ArrayList<Annotation> annotations) {
 		StringBuilder html = new StringBuilder("<ul>\n");
 		for (Annotation annotation: annotations) {
-			String anchor = String.format("<a class='searchsubcat' href='%s'>%s</a>", annotation.getValueURI(), annotation.getValueURILabel());
-			html.append(String.format("<li>This data <b>%s</b> - %s</li>\n", annotation.getPropertyURILabel(), anchor));
+			String label = annotationPropertyURILabelMapper(annotation.getPropertyURI());
+			if (label != null) {
+				String anchor = String.format("<a class='searchsubcat' href='%s'>%s</a>", annotation.getValueURI(), annotation.getValueURILabel());
+				html.append(String.format("<li>This data entity <b>%s</b>: %s</li>\n", label, anchor));
+			}
 		}
 		html.append("</ul>\n");
 		return html.toString();
+	}
+
+	private String annotationPropertyURILabelMapper(String propertyURI) {
+		String label;
+		if (propertyURI.equals("https://schema.org/isBasedOn")) {
+			label = "is derived from";
+		} else if (propertyURI.equals("https://schema.org/sameAs")) {
+			label = "is a replica of";
+		} else {  // annotation mapping not supported
+			label = null;
+		}
+		return label;
 	}
 }
