@@ -531,7 +531,12 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					if (creators != null) {
                         boolean firstCreator = true;
+						boolean moreless = false;
 						for (ResponsibleParty creator : creators) {
+							if (creatorsHTMLBuilder.length() > 220 && !moreless) {
+								moreless = true;
+								creatorsHTMLBuilder.append("<span id=\"dots\">...</span><span id=\"more\">");
+							}
 							if (!firstCreator) creatorsHTMLBuilder.append("<br/>\n");
 							firstCreator = false;
 							boolean useFullGivenName = true;
@@ -566,6 +571,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 											.append(organizationName);
 								}
 							}
+						}
+
+						if (moreless) {
+							creatorsHTMLBuilder.append("</span><br>\n");
+							creatorsHTMLBuilder.append("<button class=\"button button_moreless\" onclick=\"moreless()\" id=\"morelessBtn\">Show more &gt;</button>\n");
 						}
 
 						creatorsHTML = creatorsHTMLBuilder.toString();

@@ -193,6 +193,18 @@
     </style>
 <% } %>
 
+<style>
+#more {display: none;}
+.button_moreless {
+    border: none;
+    background-color:white;
+    color: #5990bd;
+    text-align: left;
+    padding-left: 0;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -267,7 +279,7 @@
                                         <div class="table-cell">
                                             <ul class="no-list-style">
                                                 <li>
-                                                    <div class="more"><%= creatorsHTML %></div>
+                                                    <div><%= creatorsHTML %></div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -537,6 +549,24 @@
         selection.addRange(range);
         document.execCommand("Copy");
     }
+</script>
+
+<script>
+function moreless() {
+  var dots = document.getElementById("dots");
+  var moreText = document.getElementById("more");
+  var btnText = document.getElementById("morelessBtn");
+
+  if (dots.style.display === "none") {
+    dots.style.display = "inline";
+    btnText.innerHTML = "Show more &gt;";
+    moreText.style.display = "none";
+  } else {
+    dots.style.display = "none";
+    btnText.innerHTML = "&lt; Show less";
+    moreText.style.display = "inline";
+  }
+}
 </script>
 
 </body>
