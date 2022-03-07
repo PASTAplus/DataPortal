@@ -19,9 +19,24 @@
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
 		requestDispatcher.forward(request, response);
 	}
-	
-	String reportMessage = (String) request.getAttribute("reportMessage");
 
+	String reportMessage = (String) request.getAttribute("reportMessage");
+//	String startRowId = (String) request.getAttribute("startRowId");
+//	String filter = (String) request.getAttribute("filter");
+
+	String serviceMethod = (String) request.getAttribute("serviceMethod");
+	String debug = (String) request.getAttribute("debug");
+	String info = (String) request.getAttribute("info");
+	String warn = (String) request.getAttribute("warn");
+	String error = (String) request.getAttribute("error");
+	String code = (String) request.getAttribute("code");
+	String userId = (String) request.getAttribute("userId");
+	String affiliation = (String) request.getAttribute("affiliation");
+	String beginDate = (String) request.getAttribute("beginDate");
+	String beginTime = (String) request.getAttribute("beginTime");
+	String endDate = (String) request.getAttribute("endDate");
+	String endTime = (String) request.getAttribute("endTime");
+	String startRowId = (String) request.getAttribute("startRowId");
 %>
 
 <!DOCTYPE html>
@@ -60,7 +75,7 @@
 
 <body>
 
-<jsp:include page="header.jsp" />
+<%--<jsp:include page="header.jsp" />--%>
 
 <div class="row-fluid ">
 	<div>
@@ -77,6 +92,22 @@
 						<div class="row-fluid">
 							<div class="span12">
 								<!-- Content -->
+                                <form method="post">
+									<input type='hidden' name='serviceMethod' value='<%= serviceMethod %>'>
+									<input type='hidden' name='debug' value='<%= debug %>'>
+									<input type='hidden' name='info' value='<%= info %>'>
+									<input type='hidden' name='warn' value='<%= warn %>'>
+									<input type='hidden' name='error' value='<%= error %>'>
+									<input type='hidden' name='code' value='<%= code %>'>
+									<input type='hidden' name='userId' value='<%= userId %>'>
+									<input type='hidden' name='affiliation' value='<%= affiliation %>'>
+									<input type='hidden' name='beginDate' value='<%= beginDate %>'>
+									<input type='hidden' name='beginTime' value='<%= beginTime %>'>
+									<input type='hidden' name='endDate' value='<%= endDate %>'>
+									<input type='hidden' name='endTime' value='<%= endTime %>'>
+									<input type='hidden' name='startRowId' value='<%= startRowId %>'>
+                                    <button type="submit">Next</button>
+                                </form>
 			                    <%= reportMessage %>
 								<!-- /Content -->
 							</div>
@@ -86,9 +117,9 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<jsp:include page="footer.jsp" />
-	
+
 </div>
 
 </body>

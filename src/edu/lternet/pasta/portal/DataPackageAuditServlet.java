@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.lternet.pasta.common.MyPair;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
@@ -53,7 +54,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
   private static String cwd = null;
   private static String limit = null;
   private static String xslpath = null;
-  
+
   private static final String PACKAGE = "readDataPackage";
   private static final String METADATA = "readMetadata";
   private static final String REPORT = "readDataPackageReport";
@@ -76,9 +77,9 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 
   /**
    * The doGet method of the servlet. <br>
-   * 
+   *
    * This method is called when a form has its tag value method equals to get.
-   * 
+   *
    * @param request
    *          the request send by the client to the server
    * @param response
@@ -94,13 +95,13 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     doPost(request, response);
 
   }
-  
-  
+
+
   /**
    * The doPost method of the servlet. <br>
-   * 
+   *
    * This method is called when a form has its tag value method equals to post.
-   * 
+   *
    * @param request
    *          the request send by the client to the server
    * @param response
@@ -126,57 +127,57 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     if (uid == null || uid.isEmpty()) {
       uid = "public";
     }
-    
+
     try {
       auditManagerClient = new AuditManagerClient(uid);
       pastaUriHead = auditManagerClient.getPastaUriHead();
-    
+
     /*
      * Request and process filter parameters
      */
-    
-    // Encode empty request parameters with SQL regex string "%" 
+
+    // Encode empty request parameters with SQL regex string "%"
     String scope = "%25";
     String identifier = "%25";
     String revision = "%25";
     String resourceId = null;
-    
+
     String value = "";
-    
+
     value = request.getParameter("scope");
     if (value != null && !value.isEmpty()) scope = value;
-    
+
     value = request.getParameter("identifier");
     if (value != null && !value.isEmpty()) identifier = value;
 
     value = request.getParameter("revision");
     if (value != null && !value.isEmpty()) revision = value;
-    
+
     String packageId = scope + "." + identifier + "." + revision;
-        
+
     String begin = (String) request.getParameter("begin");
     if (begin != null && !begin.isEmpty()) {
       filter.append("fromTime=" + begin + "&");
     }
-    
+
     String end = (String) request.getParameter("end");
     if (end != null && !end.isEmpty()) {
       filter.append("toTime=" + end + "&");
     }
-    
+
     // Filter on "info"
     filter.append("category=info&");
-    
+
     boolean packageResource = false || (request.getParameter("package") != null);
     boolean metadataResource = false || (request.getParameter("metadata") != null);
     boolean dataResource = false || (request.getParameter("entity") != null);
     boolean reportResource = false || (request.getParameter("report") != null);
     boolean includeAllResources = false;
-    
+
     if (!(packageResource || metadataResource || dataResource || reportResource)) {
     	includeAllResources = true;
     }
-    
+
     // Filter on "readDataPackage"
     if (packageResource || includeAllResources) {
     	filter.append("serviceMethod=readDataPackage&");
@@ -190,7 +191,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     	resourceId = getResourceId(pastaUriHead, packageId, METADATA);
     	filter.append("resourceId=" + resourceId + "&");
     }
-    
+
     // Filter on "readDataEntity"
     if (dataResource || includeAllResources) {
     	filter.append("serviceMethod=readDataEntity&");
@@ -209,7 +210,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     if (affiliation == null || affiliation.isEmpty()) {
     	affiliation = "LTER";
     }
-    
+
     String userIdParam = (String) request.getParameter("userId");
     if (userIdParam != null && !userIdParam.isEmpty()) {
       String userParam = "public";
@@ -218,7 +219,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
       }
       filter.append("user=" + userParam + "&");
     }
-    
+
     if (limit != null && !limit.isEmpty()) {
     	if (filter.length() == 0) {
     		filter.append("limit=" + limit);
@@ -226,14 +227,19 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     		filter.append("&limit=" + limit);
     	}
     }
-    
+
     if (uid.equals("public")) {
         message = LOGIN_WARNING;
         forward = "./login.jsp";
-    } 
+    }
     else if (auditManagerClient != null) {
       	String filterStr = filter.toString();
-        xml = auditManagerClient.reportByFilter(filterStr);
+
+//        xml = auditManagerClient.reportByFilter(filterStr);
+      MyPair<String, Integer> pair= auditManagerClient.reportByFilter(filter.toString());
+      xml = pair.t;
+      logger.info(pair.u);
+
         ReportUtility reportUtility = new ReportUtility(xml);
         message = reportUtility.xmlToHtmlTable(cwd + xslpath);
     }
@@ -245,14 +251,14 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     }
 	catch (Exception e) {
 		handleDataPortalError(logger, e);
-	}   
+	}
 
   }
 
-  
+
   /**
    * Initialization of the servlet. <br>
-   * 
+   *
    * @throws ServletException
    *           if an error occurs
    */
@@ -261,18 +267,18 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     PropertiesConfiguration options = ConfigurationListener.getOptions();
 	// limits the number of audit records returned
 	limit = options.getString("auditreport.limit");
-	
+
     xslpath = options.getString("datapackageaudit.xslpath");
     cwd = options.getString("system.cwd");
 
   }
-  
+
   private String getResourceId(String pastaUriHead, String packageId, String serviceMethod) {
-  	
+
   	String resourceId = null;
-  	
+
   	String [] packageParts = packageId.split("\\.");
-  	
+
 		if (packageParts.length == 3) {
 			if (serviceMethod.equals(PACKAGE)) {
 				resourceId = pastaUriHead + "eml/" + packageParts[0] + "/" + packageParts[1]
@@ -288,9 +294,9 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 				    + "/" + packageParts[2] + "/%25";
 			}
 		}
-  	
+
   	return resourceId;
-  	
+
   }
 
 }

@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.lternet.pasta.common.MyPair;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
@@ -227,25 +228,53 @@ public class AuditReportServlet extends DataPortalServlet {
     		filter.append("&limit=" + limit);
     	}
     }
-    
+
+	// startRowId
+
+    String startRowIdParam = (String) request.getParameter("startRowId");
+    if (startRowIdParam != null && !startRowIdParam.isEmpty()) {
+    	if (filter.length() == 0) {
+    		filter.append("oid=" + startRowIdParam);
+    	} else {
+    		filter.append("&oid=" + startRowIdParam);
+    	}
+    }
+
     String message = null;
+		Integer lastOid = 0;
 
     if (uid.equals("public")) {
       message = LOGIN_WARNING;
       forward = "./login.jsp";
     } 
     else {
-
         logger.info(filter.toString());
         
         AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
-        xml = auditManagerClient.reportByFilter(filter.toString());
+		MyPair<String, Integer> pair= auditManagerClient.reportByFilter(filter.toString());
+		xml = pair.t;
+		lastOid = pair.u;
 
         ReportUtility reportUtility = new ReportUtility(xml);
         message = reportUtility.xmlToHtmlTable(cwd + xslpath);
     }
 
     request.setAttribute("reportMessage", message);
+
+	request.setAttribute("serviceMethod", serviceMethodParam == null ? "" : serviceMethodParam);
+	request.setAttribute("debug", debug == null ? "" : debug);
+	request.setAttribute("info", info == null ? "" : info);
+	request.setAttribute("warn", warn == null ? "" : warn);
+	request.setAttribute("error", error == null ? "" : error);
+	request.setAttribute("code", code == null ? "" : code);
+	request.setAttribute("userId", userIdParam == null ? "" : userIdParam);
+	request.setAttribute("affiliation", affiliation);
+	request.setAttribute("beginDate", beginDate == null ? "" : beginDate);
+	request.setAttribute("beginTime", (String) request.getParameter("beginTime"));
+	request.setAttribute("endDate", endDate == null ? "" : endDate);
+	request.setAttribute("endTime", (String) request.getParameter("endTime"));
+
+	request.setAttribute("startRowId", lastOid.toString());
 
     RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
     requestDispatcher.forward(request, response);

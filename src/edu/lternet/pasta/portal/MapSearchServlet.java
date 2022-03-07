@@ -132,7 +132,8 @@ public class MapSearchServlet extends DataPortalServlet {
 	private String executeQuery(String uid, String queryText)
 			throws ServletException {
 		String mapSearchResults = null;
-		final int ROWS_MAX = 100000;
+//		final int ROWS_MAX = 100000;
+		final int ROWS_MAX = 100;
 
 		try {
 			DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);

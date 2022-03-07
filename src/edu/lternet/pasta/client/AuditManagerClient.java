@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import edu.lternet.pasta.common.*;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -44,11 +46,11 @@ import org.apache.log4j.Logger;
 /**
  * @author costa
  * @since June 26, 2014
- * 
+ *
  *        The AuditManagerClient provides an interface to PASTA's Audit Manager
  *        service. Specifically, this class supports access to the Audit Manager
  *        reports.
- * 
+ *
  */
 public class AuditManagerClient extends PastaClient {
 
@@ -58,7 +60,7 @@ public class AuditManagerClient extends PastaClient {
 
   private static final Logger logger = Logger
       .getLogger(edu.lternet.pasta.client.AuditManagerClient.class);
-  
+
   /*
    * The cache of RecentUpload objects.
    */
@@ -66,25 +68,25 @@ public class AuditManagerClient extends PastaClient {
   private static List<RecentUpload> recentUpdates = null;
   private static long recentInsertsLastRefreshTime = 0L;
   private static long recentUpdatesLastRefreshTime = 0L;
-  
-  
+
+
   /*
    * Instance variables
    */
 
   private final String BASE_URL;
-  
-  
+
+
   /*
    * Constructors
    */
 
   /**
    * Creates a new AuditManagerClient object.
-   * 
+   *
    * @param uid
    *          The user's identifier as a String object.
-   * 
+   *
    * @throws PastaAuthenticationException
    * @throws PastaConfigurationException
    */
@@ -95,28 +97,28 @@ public class AuditManagerClient extends PastaClient {
     String pastaUrl = PastaClient.composePastaUrl(this.pastaProtocol, this.pastaHost, this.pastaPort);
     this.BASE_URL = pastaUrl + "/audit";
   }
-  
-  
+
+
   /*
    * Class methods
    */
-  
+
   /**
    * Retrieves a list of recent inserts.
-   * 
+   *
    * @param numberOfDays   the number of prior days to search for inserts, for example,
    *                       the past 100 days
    * @param limit          an upper limit on the number of matches returned
-   * @param forceRefresh   if true, refresh the search results regardless of when 
+   * @param forceRefresh   if true, refresh the search results regardless of when
    *                       they were last refreshed
-   * 
+   *
    * @return A list of RecentUpload objects, where each upload was an insert,
    *         i.e. the serviceMethod for each is "createDataPackage".
    */
 	synchronized public static List<RecentUpload> getRecentInserts(Integer numberOfDays, Integer limit, boolean forceRefresh) {
-		if (forceRefresh || 
-			recentInserts == null || 
-			recentInserts.size() < limit || 
+		if (forceRefresh ||
+			recentInserts == null ||
+			recentInserts.size() < limit ||
 			shouldRefresh(recentInsertsLastRefreshTime)
 		   ) {
 			recentInserts = getRecentUploads("createDataPackage", numberOfDays, limit);
@@ -125,24 +127,24 @@ public class AuditManagerClient extends PastaClient {
 		}
 		return recentInserts;
 	}
-  
-  
+
+
   /**
    * Retrieves a list of recent updates.
-   *  
+   *
    * @param numberOfDays   the number of prior days to search for inserts, for example,
    *                       the past 100 days
    * @param limit          an upper limit on the number of matches returned
-   * @param forceRefresh   if true, refresh the search results regardless of when 
+   * @param forceRefresh   if true, refresh the search results regardless of when
    *                       they were last refreshed
-   * 
+   *
    * @return A list of RecentUpload objects, where each upload was an update,
    *         i.e. the serviceMethod for each is "updateDataPackage".
    */
 	synchronized public static List<RecentUpload> getRecentUpdates(Integer numberOfDays, Integer limit, boolean forceRefresh) {
-		if (forceRefresh || 
-			recentUpdates == null || 
-			recentUpdates.size() < limit || 
+		if (forceRefresh ||
+			recentUpdates == null ||
+			recentUpdates.size() < limit ||
 			shouldRefresh(recentUpdatesLastRefreshTime)
 		   ) {
 			recentUpdates = getRecentUploads("updateDataPackage", numberOfDays, limit);
@@ -151,8 +153,8 @@ public class AuditManagerClient extends PastaClient {
 		}
 		return recentUpdates;
 	}
-  
-  
+
+
   /*
    * Retrieves the current cache of RecentUpload objects. Generates a new
    * list of RecentUpload objects if the cache is empty or if it's time
@@ -181,13 +183,13 @@ public class AuditManagerClient extends PastaClient {
 
 		return recentUploads;
 	}
-	
-	
+
+
 	private static List<RecentUpload> parseRecentUploadsXML(DataPackageManagerClient dpmc, String xml) {
 		List<RecentUpload> recentUploads = new ArrayList<RecentUpload>();
 		String[] lines = xml.split("\n");
 		StringBuilder sb = new StringBuilder("");
-		
+
 		for (String line : lines) {
 			line = line + "\n";
 			if (line.contains("<dataPackage>")) {
@@ -207,12 +209,12 @@ public class AuditManagerClient extends PastaClient {
 			else {
 				sb.append(line);
 			}
-		}		
-		
+		}
+
 		return recentUploads;
 	}
-	
-	
+
+
 	private static String parseElement(String xml, String elementName) {
 		String elementText = "";
 
@@ -224,7 +226,7 @@ public class AuditManagerClient extends PastaClient {
 
 		return elementText;
 	}
-		  
+
 
   /*
    * Boolean to determine whether the cache of recent uploads is due to be
@@ -238,20 +240,20 @@ public class AuditManagerClient extends PastaClient {
 	  Date now = new Date();
 	  long nowTime = now.getTime();
 	  long refreshTime = lastRefreshTime + refreshInterval;
-	  
+
 	  if (refreshTime < nowTime) {
 		  shouldRefresh = true;
 	  }
-	  
+
 	  return shouldRefresh;
   }
-  
-  
+
+
   /*
    * Instance Methods
    */
-  
-  
+
+
   /*
    * Compose a fromTime date string to use with generating the list of
    * recent uploads.
@@ -260,20 +262,20 @@ public class AuditManagerClient extends PastaClient {
 	  String fromTimeStr = "";
 	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	  final long nDays = numberOfDays * 24 * 60 * 60 * 1000L; // set the time period for recent uploads
-	  
+
 	  Date now = new Date();
 	  long nowTime = now.getTime();
-	  long fromTime = nowTime - nDays; 
+	  long fromTime = nowTime - nDays;
 	  Date fromTimeDate = new Date(fromTime);
 	  fromTimeStr = simpleDateFormat.format(fromTimeDate);
-	  
+
 	  return fromTimeStr;
   }
 
 
   /**
    * Returns an audit report based on the provided oid (object id) value
-   * 
+   *
    * @param  oid 	the oid (object id) value of the audit report to be returned
    * @return The XML document of the report as a String object.
    * @throws PastaEventException
@@ -309,7 +311,7 @@ public class AuditManagerClient extends PastaClient {
     } catch (IOException e) {
       logger.error(e);
       e.printStackTrace();
-    } 
+    }
     finally {
 		closeHttpClient(httpClient);
  	}
@@ -327,14 +329,14 @@ public class AuditManagerClient extends PastaClient {
 
   }
 
-  
+
   /**
    * Gets a list of recent uploads to PASTA.
-   * 
+   *
    * @return a list of RecentUpload objects
    * @throws PastaEventException
    *
-	private List<RecentUpload> recentUploads(String serviceMethod, Integer numberOfDays, Integer limit) throws 
+	private List<RecentUpload> recentUploads(String serviceMethod, Integer numberOfDays, Integer limit) throws
 	        PastaAuthenticationException, PastaConfigurationException, PastaEventException {
 		List<RecentUpload> recentUploadsList = new ArrayList<RecentUpload>();
 		String entity = null;
@@ -382,36 +384,36 @@ public class AuditManagerClient extends PastaClient {
 					+ "'\n";
 			throw new PastaEventException(gripe);
 		}
-		
+
 		return recentUploadsList;
 	}*/
-	
-	
+
+
 	  /**
 	   * Gets a list of recent uploads to PASTA.
-	   * 
+	   *
 	   * @return a list of RecentUpload objects
 	   * @throws PastaEventException
 	   *
-		private List<RecentUpload> recentUploads(String serviceMethod, Integer numberOfDays, Integer limit) 
+		private List<RecentUpload> recentUploads(String serviceMethod, Integer numberOfDays, Integer limit)
 				throws Exception {
 			List<RecentUpload> recentUploadsList = null;
 			String fromTime = composeFromTime(numberOfDays);
-			
+
 			recentUploadsList = getRecentUploads(serviceMethod, fromTime, limit);
-	
+
 			return recentUploadsList;
 		}*/
-		
-		
+
+
 		/**
 		 * Gets a list of recent uploads, either inserts or updates.
-		 * 
+		 *
 		 * @param serviceMethod  one of "createDataPackage" or "updateDataPackage"
 		 * @param fromTime       the cut-off date for how far back we want to query, e.g. '2015-01-01'
 		 * @param limit          a limit on the number of uploads to return, e.g. 2
 		 *
-		public List<RecentUpload> getRecentUploads(String serviceMethod, String fromTime, Integer limit) 
+		public List<RecentUpload> getRecentUploads(String serviceMethod, String fromTime, Integer limit)
 				throws Exception {
 			List<RecentUpload> recentUploadsList = new ArrayList<RecentUpload>();
 			DataPackageManagerClient dpmClient = new DataPackageManagerClient("public");
@@ -515,17 +517,17 @@ public class AuditManagerClient extends PastaClient {
 		
 		return recent;
 	}*/
-	
-	
+
+
   /**
    * Returns an audit report based on the provided query parameter filter.
-   * 
+   *
    * @param filter The query parameter filter as a String object.
    * @return The XML document of the report as a String object.
    * @throws PastaEventException
    */
-  public String reportByFilter(String filter) throws PastaEventException {
-
+	// public String reportByFilter(String filter) throws PastaEventException {
+	public MyPair<String, Integer> reportByFilter(String filter) throws PastaEventException {
     String entity = null;
     Integer statusCode = null;
     HttpEntity responseEntity = null;
@@ -539,11 +541,16 @@ public class AuditManagerClient extends PastaClient {
       httpGet.setHeader("Cookie", "auth-token=" + this.token);
     }
 
-    try {
+		int oidInt = 0;
 
+    try {
       response = httpClient.execute(httpGet);
       statusCode = (Integer) response.getStatusLine().getStatusCode();
       responseEntity = response.getEntity();
+
+			Header[] oidHeaders = response.getHeaders("PASTA-Last-OID");
+			String oidString = oidHeaders[0].getValue();
+			oidInt = Integer.parseInt(oidString);
 
       if (responseEntity != null) {
         entity = EntityUtils.toString(responseEntity);
@@ -555,13 +562,12 @@ public class AuditManagerClient extends PastaClient {
     } catch (IOException e) {
       logger.error(e);
       e.printStackTrace();
-    } 
+    }
     finally {
 		closeHttpClient(httpClient);
  	}
 
     if (statusCode != HttpStatus.SC_OK) {
-
       // Something went wrong; return message from the response entity
       String gripe = "The AuditManager responded with response code '"
           + statusCode.toString() + "' and message '" + entity + "'\n";
@@ -569,19 +575,18 @@ public class AuditManagerClient extends PastaClient {
 
     }
 
-    return entity;
-
+		return new MyPair<> (entity, oidInt);
   }
 
   /**
    * Returns an audit report based on the provided query parameter filter.
-   * 
+   *
    * @param scope   the data package scope value
    * @param identifier the data package identifier value
    * @return The XML document of the docId reads report.
    * @throws PastaEventException
    */
-  public String getDocIdReads(String scope, String identifier) 
+  public String getDocIdReads(String scope, String identifier)
 		  throws PastaEventException {
 	  String serviceUrl = String.format("%s/reads/%s/%s",
 	    		                          BASE_URL, scope, identifier);
@@ -589,19 +594,19 @@ public class AuditManagerClient extends PastaClient {
 	  return readsXML;
   }
 
-  
+
   /**
    * Returns an audit report based on the provided query parameter filter.
-   * 
+   *
    * @param scope   the data package scope value
    * @param identifier the data package identifier value
    * @param revision the data package revision value
    * @return The XML document of the packageId reads report.
    * @throws PastaEventException
    */
-  public String getPackageIdReads(String scope, 
-		                          String identifier, 
-		                          String revision) 
+  public String getPackageIdReads(String scope,
+		                          String identifier,
+		                          String revision)
 		  throws PastaEventException {
 	  String serviceUrl = String.format("%s/reads/%s/%s/%s",
 	    		                          BASE_URL, scope, identifier, revision);
@@ -609,10 +614,10 @@ public class AuditManagerClient extends PastaClient {
 	  return readsXML;
   }
 
-  
+
   /**
    * Returns an audit report based on the provided query parameter filter.
-   * 
+   *
    * @param serviceUrl   the audit service URL for the resource reads service
    * @return The XML document of the docId or packageId reads report.
    * @throws PastaEventException
@@ -655,10 +660,10 @@ public class AuditManagerClient extends PastaClient {
 		if (statusCode != HttpStatus.SC_OK) {
 
 			// Something went wrong; return message from the response entity
-			String gripe = "The AuditManager responded with response code '" + 
-			               statusCode.toString() + 
-			               "' and message '" + 
-			               entity + 
+			String gripe = "The AuditManager responded with response code '" +
+			               statusCode.toString() +
+			               "' and message '" +
+			               entity +
 			               "'\n";
 			throw new PastaEventException(gripe);
 
