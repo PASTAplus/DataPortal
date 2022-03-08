@@ -8595,18 +8595,6 @@
                 </xsl:call-template>
               </td>
             </tr>
-            <xsl:for-each select="role">
-              <tr>
-                <td class="{$projectfirstColStyle}">Role:</td>
-                <td>
-                  <table class="{$tablepartyStyle}">
-                    <tr>
-                      <td class="{$secondColStyle}"><xsl:value-of select="."/></td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </xsl:for-each>
           </xsl:for-each>
         </table>
       </td>
