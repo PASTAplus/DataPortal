@@ -209,13 +209,13 @@
     <fieldset>
       <legend>Detailed Metadata</legend>
 
-      <h3 id="toggleEntities" class="toggleButton"><button>+/-</button> Data Entities</h3>
+      <h3 id="entities" class="toggleButton"><button>+/-</button> Data Entities</h3>
       <div class="collapsible">
         <xsl:call-template name="entitypart"/>
       </div> <!-- end collapsible --> 
 
       <xsl:if test="intellectualRights">
-      <h3 id="toggleDataSetUsageRights" class="toggleButton"><button>+/-</button> Data Package Usage Rights</h3>
+      <h3 id="rights" class="toggleButton"><button>+/-</button> Data Package Usage Rights</h3>
       <div class="collapsible">
         <!-- add in the intellectual rights info -->
         <table class="subGroup onehundred_percent">  
@@ -234,7 +234,7 @@
       </xsl:if>
 
 <xsl:if test="annotation">
-  <h3 id="toggleDatasetAnnotations" class="toggleButton"><button>+/-</button> External Annotations</h3>
+  <h3 id="annotations" class="toggleButton"><button>+/-</button> External Annotations</h3>
   <div class="collapsible">
     <!-- the annotations table, with rows as an rdf-style sentence. -->
     <table class="{$tabledefaultStyle}"> 
@@ -256,7 +256,7 @@
 
 
       <xsl:if test="keywordSet">
-      <h3 id="toggleKeywords" class="toggleButton"><button>+/-</button> Keywords</h3>
+      <h3 id="keywords" class="toggleButton"><button>+/-</button> Keywords</h3>
       <div class="collapsible">
         <!-- the keywords table. -->
           <table class="{$tabledefaultStyle}"> 
@@ -282,7 +282,7 @@
       </div> <!-- end collapsible -->
       </xsl:if>
 
-      <h3 id="toggleMethods" class="toggleButton"><button>+/-</button> Methods and Protocols</h3>
+      <h3 id="methods" class="toggleButton"><button>+/-</button> Methods and Protocols</h3>
       <div class="collapsible">
         <!-- mob added 2010-03-26  -->
         <xsl:call-template name="ifmethods">
@@ -291,7 +291,7 @@
         </xsl:call-template>
       </div> <!-- end collapsible -->
 
-      <h3 id="togglePeople" class="toggleButton"><button>+/-</button> People and Organizations</h3>
+      <h3 id="people" class="toggleButton"><button>+/-</button> People and Organizations</h3>
       <div class="collapsible">
         <!-- Organization/Personnel Information -->
         <!-- mob added 2010-03-26 -->
@@ -310,7 +310,7 @@
         </xsl:call-template>
       </xsl:if>
 
-      <h3 id="toggleCoverage" class="toggleButton"><button>+/-</button> Temporal, Geographic and Taxonomic Coverage</h3>
+      <h3 id="coverage" class="toggleButton"><button>+/-</button> Temporal, Geographic and Taxonomic Coverage</h3>
       <div class="collapsible">
         <!-- mob added 2010-03-26  -->
         <xsl:call-template name="ifcoverage">
@@ -318,14 +318,14 @@
         </xsl:call-template>
       </div> <!-- end collapsible -->
 
-      <h3 id="toggleMethods" class="toggleButton"><button>+/-</button> Project</h3>
+      <h3 id="project" class="toggleButton"><button>+/-</button> Project</h3>
       <div class="collapsible">
          <xsl:call-template name="datasetproject">
          </xsl:call-template>
       </div> <!-- end collapsible -->
       
       <xsl:if test="maintenance">
-      <h3 id="toggleMaintenance" class="toggleButton"><button>+/-</button> Maintenance</h3>
+      <h3 id="maintenance" class="toggleButton"><button>+/-</button> Maintenance</h3>
       <div class="collapsible">
         <!-- add in the maintenance info -->
         <table class="subGroup onehundred_percent">  
@@ -344,7 +344,7 @@
       </xsl:if>
 
       <xsl:if test="additionalInfo">
-      <h3 id="toggleAdditionalInfo" class="toggleButton"><button>+/-</button> Additional Info</h3>
+      <h3 id="info" class="toggleButton"><button>+/-</button> Additional Info</h3>
       <div class="collapsible">
         <!-- add in the maintenance info -->
         <table class="subGroup onehundred_percent">  
@@ -2359,7 +2359,7 @@
       <tr>
         <th colspan="2"><xsl:text>Maintenance:</xsl:text></th>
       </tr>
-      <xsl:call-template name="mantenancedescription"/>
+      <xsl:call-template name="maintenancedescription"/>
       <tr>
         <td class="{$firstColStyle}">Frequency:</td>
         <td class="{$secondColStyle}" ><xsl:value-of select="maintenanceUpdateFrequency"/></td>
@@ -2367,8 +2367,8 @@
       <xsl:call-template name="datasetchangehistory"/>
   </xsl:template>
 
-  <xsl:template name="mantenancedescription">
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: mantenancedescription</xsl:text></xsl:message></xsl:if>
+  <xsl:template name="maintenancedescription">
+    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: maintenancedescription</xsl:text></xsl:message></xsl:if>
     <xsl:for-each select="description">
       <tr>
         <td class="{$firstColStyle}">Description:</td>
@@ -3933,7 +3933,7 @@
 
   <xsl:template name="additionalmetadata">
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: additionalmetadata</xsl:text></xsl:message></xsl:if>
-    <h3 class="toggleButton"><button>+/-</button> Additional Metadata</h3>
+    <h3 id="additional" class="toggleButton"><button>+/-</button> Additional Metadata</h3>
     <div class="collapsible">
 <pre>
    <xsl:text>additionalMetadata&#xA;</xsl:text>
@@ -5631,7 +5631,7 @@
    <xsl:template name="nonNumericDomain">
      <xsl:param name="nondomainfirstColStyle"/>
      <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: nonNumericDomain</xsl:text></xsl:message></xsl:if>
-      <strong id="toggleNonNumericDomain" class="toggleButton"><button>+/-</button>Allowed Values and Definitions</strong>
+      <strong class="toggleButton"><button>+/-</button>Allowed Values and Definitions</strong>
       <div class="collapsible">
      <table class="{$tabledefaultStyle}">
         <xsl:choose>

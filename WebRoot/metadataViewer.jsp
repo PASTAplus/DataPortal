@@ -68,7 +68,7 @@
 }
 </style>
 
-<body onload="convert()">
+<body onload="convert(); getPageAnchor()">
 
 <jsp:include page="header.jsp" />
 
@@ -133,6 +133,17 @@
             markdown.innerHTML = html
         }
     }
+
+	function getPageAnchor() {
+		// alert("The URL of this page is: " + window.location.href);
+		let url = window.location.href;
+		const urlSplit = url.split("#");
+		if (urlSplit.length === 2) {
+			let anchor = urlSplit[1]
+			jQuery(".collapsible").show();
+			document.querySelector("#" + anchor)
+		}
+	}
 </script>
 
 </body>
