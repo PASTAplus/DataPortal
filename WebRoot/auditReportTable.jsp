@@ -21,9 +21,6 @@
 	}
 
 	String reportMessage = (String) request.getAttribute("reportMessage");
-//	String startRowId = (String) request.getAttribute("startRowId");
-//	String filter = (String) request.getAttribute("filter");
-
 	String serviceMethod = (String) request.getAttribute("serviceMethod");
 	String debug = (String) request.getAttribute("debug");
 	String info = (String) request.getAttribute("info");
