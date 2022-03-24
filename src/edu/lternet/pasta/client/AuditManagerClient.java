@@ -25,6 +25,7 @@
 package edu.lternet.pasta.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
