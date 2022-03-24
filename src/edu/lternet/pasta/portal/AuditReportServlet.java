@@ -24,22 +24,22 @@
 
 package edu.lternet.pasta.portal;
 
-import java.io.IOException;
+import edu.lternet.pasta.client.AuditManagerClient;
+import edu.lternet.pasta.client.DataPackageManagerClient;
+import edu.lternet.pasta.client.PastaClient;
+import edu.lternet.pasta.client.ReportUtility;
+import edu.lternet.pasta.common.MyPair;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import edu.lternet.pasta.common.MyPair;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.log4j.Logger;
-
-import edu.lternet.pasta.client.AuditManagerClient;
-import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.PastaClient;
-import edu.lternet.pasta.client.ReportUtility;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class AuditReportServlet extends DataPortalServlet {
 
@@ -106,183 +106,212 @@ public class AuditReportServlet extends DataPortalServlet {
    *           if an error occurred
    */
   public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+      throws ServletException, IOException
+  {
 
-	String forward = "./auditReportTable.jsp";
+    try {
+      HttpSession httpSession = request.getSession();
+      String xml = null;
+      StringBuffer filter = new StringBuffer();
+      String uid = (String) httpSession.getAttribute("uid");
 
-	try {
-    HttpSession httpSession = request.getSession();
-    String xml = null;
-    StringBuffer filter = new StringBuffer();
-
-    String uid = (String) httpSession.getAttribute("uid");
-
-    if (uid == null || uid.isEmpty())
-      uid = "public";
-
-    /*
-     * Request and process filter parameters
-     */
-    
-    String serviceMethodParam = (String) request.getParameter("serviceMethod");
-    if (serviceMethodParam != null && 
-    	!serviceMethodParam.isEmpty() && 
-    	!serviceMethodParam.equalsIgnoreCase("all")
-       ) {
-        filter.append("&serviceMethod=" + serviceMethodParam);
-    }
-
-    String beginTime = "00:00:00";
-    String endTime   = "00:00:00";
-    String time = "";
-    
-    String beginDate = (String) request.getParameter("beginDate");
-    if (beginDate != null && !beginDate.isEmpty()) {
-  		time = (String) request.getParameter("beginTime");
-  		if (time != null && !time.isEmpty()) beginTime = time;
-    	if (filter.length() == 0) {
-    		filter.append("fromTime=" + beginDate + "T" + beginTime);
-    	} else {
-    		filter.append("&fromTime=" + beginDate + "T" + beginTime);
-    	}
-    }
-    
-    String endDate = (String) request.getParameter("endDate");
-    if (endDate != null && !endDate.isEmpty()) {
-  		time = (String) request.getParameter("endTime");
-  		if (time != null && !time.isEmpty()) endTime = time;
-    	if (filter.length() == 0) {
-    		filter.append("toTime=" + endDate + "T" + endTime);
-    	} else {
-    		filter.append("&toTime=" + endDate + "T" + endTime);
-    	}
-    }
-    
-    String debug = (String) request.getParameter("debug");
-    if (debug != null && !debug.isEmpty()) {
-    	if (filter.length() == 0) {
-    		filter.append("category=" + debug);
-    	} else {
-    		filter.append("&category=" + debug);
-    	}
-    }
-    
-    String info = (String) request.getParameter("info");
-    if (info != null && !info.isEmpty()) {
-    	if (filter.length() == 0) {
-    		filter.append("category=" + info);
-    	} else {
-    		filter.append("&category=" + info);
-    	}
-    }
-
-    String warn = (String) request.getParameter("warn");
-    if (warn != null && !warn.isEmpty()) {
-    	if (filter.length() == 0) {
-    		filter.append("category=" + warn);
-    	} else {
-    		filter.append("&category=" + warn);
-    	}
-    }
-
-    String error = (String) request.getParameter("error");
-    if (error != null && !error.isEmpty()) {
-    	if (filter.length() == 0) {
-        filter.append("category=" + error);    		
-    	} else {
-        filter.append("&category=" + error);
-    	}
-    }
-
-    String affiliation = (String) request.getParameter("affiliation");
-    if (affiliation == null || affiliation.isEmpty()) {
-    	affiliation = "LTER";
-    }
-    
-    String userIdParam = (String) request.getParameter("userId");
-    if (userIdParam != null && !userIdParam.isEmpty()) {
-      String userParam = "public";
-      if (!userIdParam.equalsIgnoreCase(userParam)) {
-        userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
+      if (uid == null || uid.isEmpty()) {
+        uid = "public";
       }
-    	if (filter.length() == 0) {
-    		filter.append("user=" + userParam);
-    	} else {
-    		filter.append("&user=" + userParam);
-    	}
+
+      /*
+       * Request and process filter parameters
+       */
+
+      String serviceMethodParam = (String) request.getParameter("serviceMethod");
+      if (serviceMethodParam != null && !serviceMethodParam.isEmpty() &&
+          !serviceMethodParam.equalsIgnoreCase("all")) {
+        filter.append("&serviceMethod=" + serviceMethodParam);
+      }
+
+      String beginTime = "00:00:00";
+      String endTime = "00:00:00";
+      String time = "";
+
+      String beginDate = (String) request.getParameter("beginDate");
+      if (beginDate != null && !beginDate.isEmpty()) {
+        time = (String) request.getParameter("beginTime");
+        if (time != null && !time.isEmpty()) {
+          beginTime = time;
+        }
+        if (filter.length() == 0) {
+          filter.append("fromTime=" + beginDate + "T" + beginTime);
+        }
+        else {
+          filter.append("&fromTime=" + beginDate + "T" + beginTime);
+        }
+      }
+
+      String endDate = (String) request.getParameter("endDate");
+      if (endDate != null && !endDate.isEmpty()) {
+        time = (String) request.getParameter("endTime");
+        if (time != null && !time.isEmpty()) {
+          endTime = time;
+        }
+        if (filter.length() == 0) {
+          filter.append("toTime=" + endDate + "T" + endTime);
+        }
+        else {
+          filter.append("&toTime=" + endDate + "T" + endTime);
+        }
+      }
+
+      String debug = (String) request.getParameter("debug");
+      if (debug != null && !debug.isEmpty()) {
+        if (filter.length() == 0) {
+          filter.append("category=" + debug);
+        }
+        else {
+          filter.append("&category=" + debug);
+        }
+      }
+
+      String info = (String) request.getParameter("info");
+      if (info != null && !info.isEmpty()) {
+        if (filter.length() == 0) {
+          filter.append("category=" + info);
+        }
+        else {
+          filter.append("&category=" + info);
+        }
+      }
+
+      String warn = (String) request.getParameter("warn");
+      if (warn != null && !warn.isEmpty()) {
+        if (filter.length() == 0) {
+          filter.append("category=" + warn);
+        }
+        else {
+          filter.append("&category=" + warn);
+        }
+      }
+
+      String error = (String) request.getParameter("error");
+      if (error != null && !error.isEmpty()) {
+        if (filter.length() == 0) {
+          filter.append("category=" + error);
+        }
+        else {
+          filter.append("&category=" + error);
+        }
+      }
+
+      String affiliation = (String) request.getParameter("affiliation");
+      if (affiliation == null || affiliation.isEmpty()) {
+        affiliation = "LTER";
+      }
+
+      String userIdParam = (String) request.getParameter("userId");
+      if (userIdParam != null && !userIdParam.isEmpty()) {
+        String userParam = "public";
+        if (!userIdParam.equalsIgnoreCase(userParam)) {
+          userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
+        }
+        if (filter.length() == 0) {
+          filter.append("user=" + userParam);
+        }
+        else {
+          filter.append("&user=" + userParam);
+        }
+      }
+
+      String code = (String) request.getParameter("code");
+      if (code != null && !code.isEmpty() && !code.equalsIgnoreCase("all")) {
+        if (filter.length() == 0) {
+          filter.append("status=" + code);
+        }
+        else {
+          filter.append("&status=" + code);
+        }
+      }
+
+      if (limit != null && !limit.isEmpty()) {
+        if (filter.length() == 0) {
+          filter.append("limit=" + limit);
+        }
+        else {
+          filter.append("&limit=" + limit);
+        }
+      }
+
+      // startRowId
+
+      String startRowIdParam = (String) request.getParameter("startRowId");
+      if (startRowIdParam != null && !startRowIdParam.isEmpty()) {
+        if (filter.length() == 0) {
+          filter.append("oid=" + startRowIdParam);
+        }
+        else {
+          filter.append("&oid=" + startRowIdParam);
+        }
+      }
+
+      String message = null;
+      Integer lastOid = 0;
+      boolean isDownload = request.getParameter("download") != null;
+      String forward = "./auditReportTable.jsp";
+
+      if (uid.equals("public")) {
+        request.setAttribute("reportMessage", LOGIN_WARNING);
+        RequestDispatcher requestDispatcher =
+            request.getRequestDispatcher("./login.jsp");
+        requestDispatcher.forward(request, response);
+        return;
+      }
+
+      AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
+
+      if (isDownload) {
+        InputStream inputStream =
+            auditManagerClient.reportByFilterCsv(filter.toString());
+        response.setHeader("content-disposition",
+            "attachment; filename=auditreport.csv");
+
+        OutputStream outputStream = response.getOutputStream();
+
+        byte[] buf = new byte[8192];
+        int length;
+        while ((length = inputStream.read(buf)) > 0) {
+          outputStream.write(buf, 0, length);
+        }
+        outputStream.flush();
+        return;
+      }
+
+      MyPair<String, Integer> pair =
+          auditManagerClient.reportByFilter(filter.toString());
+      xml = pair.t;
+      lastOid = pair.u;
+      ReportUtility reportUtility = new ReportUtility(xml);
+      message = reportUtility.xmlToHtmlTable(cwd + xslpath);
+
+      request.setAttribute("reportMessage", message);
+      request.setAttribute("serviceMethod",
+          serviceMethodParam == null ? "" : serviceMethodParam);
+      request.setAttribute("debug", debug == null ? "" : debug);
+      request.setAttribute("info", info == null ? "" : info);
+      request.setAttribute("warn", warn == null ? "" : warn);
+      request.setAttribute("error", error == null ? "" : error);
+      request.setAttribute("code", code == null ? "" : code);
+      request.setAttribute("userId", userIdParam == null ? "" : userIdParam);
+      request.setAttribute("affiliation", affiliation);
+      request.setAttribute("beginDate", beginDate == null ? "" : beginDate);
+      request.setAttribute("beginTime", (String) request.getParameter("beginTime"));
+      request.setAttribute("endDate", endDate == null ? "" : endDate);
+      request.setAttribute("endTime", (String) request.getParameter("endTime"));
+
+      request.setAttribute("startRowId", lastOid.toString());
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
+      requestDispatcher.forward(request, response);
+
+    } catch (Exception e) {
+      handleDataPortalError(logger, e);
     }
-
-    String code = (String) request.getParameter("code");
-    if (code != null && !code.isEmpty() && !code.equalsIgnoreCase("all")) {
-    	if (filter.length() == 0) {
-    		filter.append("status=" + code);
-    	} else {
-    		filter.append("&status=" + code);
-    	}
-    }
-     
-    if (limit != null && !limit.isEmpty()) {
-    	if (filter.length() == 0) {
-    		filter.append("limit=" + limit);
-    	} else {
-    		filter.append("&limit=" + limit);
-    	}
-    }
-
-	// startRowId
-
-    String startRowIdParam = (String) request.getParameter("startRowId");
-    if (startRowIdParam != null && !startRowIdParam.isEmpty()) {
-    	if (filter.length() == 0) {
-    		filter.append("oid=" + startRowIdParam);
-    	} else {
-    		filter.append("&oid=" + startRowIdParam);
-    	}
-    }
-
-    String message = null;
-		Integer lastOid = 0;
-
-    if (uid.equals("public")) {
-      message = LOGIN_WARNING;
-      forward = "./login.jsp";
-    } 
-    else {
-        logger.info(filter.toString());
-        
-        AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
-		MyPair<String, Integer> pair= auditManagerClient.reportByFilter(filter.toString());
-		xml = pair.t;
-		lastOid = pair.u;
-
-        ReportUtility reportUtility = new ReportUtility(xml);
-        message = reportUtility.xmlToHtmlTable(cwd + xslpath);
-    }
-
-    request.setAttribute("reportMessage", message);
-
-	request.setAttribute("serviceMethod", serviceMethodParam == null ? "" : serviceMethodParam);
-	request.setAttribute("debug", debug == null ? "" : debug);
-	request.setAttribute("info", info == null ? "" : info);
-	request.setAttribute("warn", warn == null ? "" : warn);
-	request.setAttribute("error", error == null ? "" : error);
-	request.setAttribute("code", code == null ? "" : code);
-	request.setAttribute("userId", userIdParam == null ? "" : userIdParam);
-	request.setAttribute("affiliation", affiliation);
-	request.setAttribute("beginDate", beginDate == null ? "" : beginDate);
-	request.setAttribute("beginTime", (String) request.getParameter("beginTime"));
-	request.setAttribute("endDate", endDate == null ? "" : endDate);
-	request.setAttribute("endTime", (String) request.getParameter("endTime"));
-
-	request.setAttribute("startRowId", lastOid.toString());
-
-    RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
-    requestDispatcher.forward(request, response);
-	}
-	catch (Exception e) {
-		handleDataPortalError(logger, e);
-	}   
-
   }
 
 

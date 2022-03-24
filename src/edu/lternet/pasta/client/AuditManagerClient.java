@@ -286,7 +286,8 @@ public class AuditManagerClient extends PastaClient {
     Integer statusCode = null;
     HttpEntity responseEntity = null;
 
-    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+    CloseableHttpClient httpClient =
+        HttpClientBuilder.create().setUserAgent("PASTA AuditManagerClient").build();
     HttpResponse response = null;
     HttpGet httpGet = new HttpGet(BASE_URL + "/report/" + oid);
 
@@ -296,7 +297,6 @@ public class AuditManagerClient extends PastaClient {
     }
 
     try {
-
       response = httpClient.execute(httpGet);
       statusCode = (Integer) response.getStatusLine().getStatusCode();
       responseEntity = response.getEntity();
@@ -526,8 +526,9 @@ public class AuditManagerClient extends PastaClient {
    * @return The XML document of the report as a String object.
    * @throws PastaEventException
    */
-	// public String reportByFilter(String filter) throws PastaEventException {
-	public MyPair<String, Integer> reportByFilter(String filter) throws PastaEventException {
+  public MyPair<String, Integer> reportByFilter(String filter)
+      throws PastaEventException
+  {
     String entity = null;
     Integer statusCode = null;
     HttpEntity responseEntity = null;
@@ -541,16 +542,16 @@ public class AuditManagerClient extends PastaClient {
       httpGet.setHeader("Cookie", "auth-token=" + this.token);
     }
 
-		int oidInt = 0;
+    int oidInt = 0;
 
     try {
       response = httpClient.execute(httpGet);
       statusCode = (Integer) response.getStatusLine().getStatusCode();
       responseEntity = response.getEntity();
 
-			Header[] oidHeaders = response.getHeaders("PASTA-Last-OID");
-			String oidString = oidHeaders[0].getValue();
-			oidInt = Integer.parseInt(oidString);
+      Header[] oidHeaders = response.getHeaders("PASTA-Last-OID");
+      String oidString = oidHeaders[0].getValue();
+      oidInt = Integer.parseInt(oidString);
 
       if (responseEntity != null) {
         entity = EntityUtils.toString(responseEntity);
@@ -562,20 +563,68 @@ public class AuditManagerClient extends PastaClient {
     } catch (IOException e) {
       logger.error(e);
       e.printStackTrace();
+    } finally {
+      closeHttpClient(httpClient);
     }
-    finally {
-		closeHttpClient(httpClient);
- 	}
 
     if (statusCode != HttpStatus.SC_OK) {
       // Something went wrong; return message from the response entity
-      String gripe = "The AuditManager responded with response code '"
-          + statusCode.toString() + "' and message '" + entity + "'\n";
+      String gripe =
+          "The AuditManager responded with response code '" + statusCode.toString() +
+              "' and message '" + entity + "'\n";
       throw new PastaEventException(gripe);
 
     }
 
-		return new MyPair<> (entity, oidInt);
+    return new MyPair<>(entity, oidInt);
+  }
+
+  /**
+   * Returns an audit report based on the provided query parameter filter.
+   *
+   * @param filter The query parameter filter as a String object.
+   * @return The XML document of the report as a String object.
+   * @throws PastaEventException
+   */
+  public InputStream reportByFilterCsv(String filter)
+      throws PastaEventException
+  {
+    Integer statusCode = null;
+    HttpEntity responseEntity = null;
+    InputStream inputStream = null;
+
+    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+    HttpResponse response = null;
+    HttpGet httpGet = new HttpGet(BASE_URL + "/csvreport?" + filter);
+
+    // Set header content
+    if (this.token != null) {
+      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    }
+
+    try {
+      response = httpClient.execute(httpGet);
+      statusCode = (Integer) response.getStatusLine().getStatusCode();
+      responseEntity = response.getEntity();
+
+      if (responseEntity != null) {
+        inputStream = responseEntity.getContent();
+      }
+    } catch (IOException e) {
+      logger.error(e);
+      e.printStackTrace();
+    } finally {
+//      closeHttpClient(httpClient);
+    }
+
+    if (statusCode != HttpStatus.SC_OK) {
+      // Something went wrong; return message from the response entity
+      String gripe =
+          "The AuditManager responded with response code '" + statusCode.toString() + "'\n";
+      throw new PastaEventException(gripe);
+    }
+
+    return inputStream;
   }
 
   /**

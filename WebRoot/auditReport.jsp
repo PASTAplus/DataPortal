@@ -315,6 +315,7 @@
 											<tr>
 												<td></td>
 												<td>
+												  <input class="btn btn-info btn-default" name="download" type="submit" value="Download" />
 												  <input class="btn btn-info btn-default" name="submit" type="submit" value="Submit" />
 												  <input class="btn btn-info btn-default" name="reset" type="reset" value="Clear" />
 												</td>
