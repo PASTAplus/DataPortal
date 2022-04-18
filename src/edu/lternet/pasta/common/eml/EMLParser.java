@@ -40,6 +40,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
@@ -98,7 +99,8 @@ public class EMLParser {
   private static final String OBJECT_NAME = "physical/objectName";
   private static final String ONLINE_URL = "physical/distribution/online/url";
   private static final String OFFLINE_PATH = "physical/distribution/offline";
-  
+  private static final String ENTITY_ANNOTATION = "annotation";
+
   String[] ENTITY_TYPES = 
   {
       OTHER_ENTITY,
@@ -523,10 +525,49 @@ public class EMLParser {
                 String offlineText = offlineNodeList.item(0).getTextContent();
                 entity.setOfflineText(offlineText);
               }
-          
+
+              NodeList annotationNodeList = xpathapi.selectNodeList(entityNode, ENTITY_ANNOTATION);
+
+              if (annotationNodeList != null && annotationNodeList.getLength() > 0) {
+                ArrayList<Annotation> annotationList = new ArrayList<Annotation>();
+                for (int a = 0; a < annotationNodeList.getLength(); a++) {
+                  Annotation annotation = new Annotation();
+
+                  Node annotationNode = annotationNodeList.item(a);
+
+                  Element annotationElement = (Element) annotationNode;
+                  String annotationId = annotationElement.getAttribute("id");
+                  if (!annotationId.isEmpty()) {
+                    annotation.setId(annotationId);
+                  }
+                  String annotationSystem = annotationElement.getAttribute("system");
+                  if (!annotationSystem.isEmpty()) {
+                    annotation.setSystem(annotationSystem);
+                  }
+                  String annotationScope = annotationElement.getAttribute("scope");
+                  if (!annotationScope.isEmpty()) {
+                    annotation.setScope(annotationScope);
+                  }
+
+                  Node propertyURINode = xpathapi.selectSingleNode(annotationNode, "propertyURI");
+                  String propertyURI = propertyURINode.getTextContent();
+                  annotation.setPropertyURI(propertyURI);
+                  Element propertyURIElement = (Element) propertyURINode;
+                  String propertyURILabel = propertyURIElement.getAttribute("label");
+                  annotation.setPropertyURILabel(propertyURILabel);
+                  Node valueURINode = xpathapi.selectSingleNode(annotationNode, "valueURI");
+                  String valueURI = valueURINode.getTextContent();
+                  annotation.setValueURI(valueURI);
+                  Element valueURIElement = (Element) valueURINode;
+                  String valueURILabel = valueURIElement.getAttribute("label");
+                  annotation.setValueURILabel(valueURILabel);
+                  annotationList.add(annotation);
+                }
+                entity.setAnnotations(annotationList);
+              }
               entityList.add(entity);
             }
-          } 
+          }
         } 
       }
     }

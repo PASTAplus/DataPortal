@@ -44,6 +44,7 @@ import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import edu.lternet.pasta.common.eml.*;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
@@ -66,11 +67,6 @@ import edu.lternet.pasta.common.EmlPackageIdFormat;
 import edu.lternet.pasta.common.JournalCitation;
 import edu.lternet.pasta.common.ScaledNumberFormat;
 import edu.lternet.pasta.common.UserErrorException;
-import edu.lternet.pasta.common.eml.DataPackage;
-import edu.lternet.pasta.common.eml.EmlObject;
-import edu.lternet.pasta.common.eml.Entity;
-import edu.lternet.pasta.common.eml.ResponsibleParty;
-import edu.lternet.pasta.common.eml.Title;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet;
 import edu.lternet.pasta.portal.user.SavedData;
 
@@ -806,6 +802,14 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String downloadLink = 
 											String.format("<a class='searchsubcat' href='%s' %s />%s</a>",
 			                                              href, onClick, fileInfo);
+
+									ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
+									ArrayList<Annotation> entityAnnotations = getEntityAnnotations(entityId, entityList);
+									String annotationsHTMLList = "";
+									if (entityAnnotations != null) {
+										annotationsHTMLList = annotationsToHTMLList(entityAnnotations);
+									}
+
 									if (experimental) {
 										String dex = "";
 										if (fileInfo.contains(".csv")) {
@@ -814,11 +818,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 											dex = String.format("<em>(<a href=\"%s/%s\" target=\"_blank\">Data Explorer - experimental</a>)</em>", dexUrl, dataUrl);
 										}
 
-										data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s %s</li>\n",
-												entityName, downloadLink, entitySizeStr, dex);
+										data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s %s</li>\n%s",
+												entityName, downloadLink, entitySizeStr, dex, annotationsHTMLList);
 									} else {
-										data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n",
-												entityName, downloadLink, entitySizeStr);
+										data += String.format("<li><em>Name</em>: %s<br/><em>File</em>: %s %s</li>\n%s",
+												entityName, downloadLink, entitySizeStr, annotationsHTMLList);
 									}
 								}
 								else {
@@ -1567,5 +1571,40 @@ public class MapBrowseServlet extends DataPortalServlet {
 		
 		return html;			
 	}
-	
+
+	private ArrayList<Annotation> getEntityAnnotations(String entityId, ArrayList<Entity> entityList) {
+		ArrayList<Annotation> entityAnnotations = null;
+		for (Entity entity: entityList) {
+			if (entityId.equals(entity.getEntityId())) {
+				entityAnnotations = entity.getAnnotations();
+				break;
+			}
+		}
+		return entityAnnotations;
+	}
+
+	private String annotationsToHTMLList(ArrayList<Annotation> annotations) {
+		StringBuilder html = new StringBuilder("<ul>\n");
+		for (Annotation annotation: annotations) {
+			String label = annotationPropertyURILabelMapper(annotation.getPropertyURI());
+			if (label != null) {
+				String anchor = String.format("<a class='searchsubcat' href='%s'>%s</a>", annotation.getValueURI(), annotation.getValueURILabel());
+				html.append(String.format("<li>This data entity <b>%s</b>: %s</li>\n", label, anchor));
+			}
+		}
+		html.append("</ul>\n");
+		return html.toString();
+	}
+
+	private String annotationPropertyURILabelMapper(String propertyURI) {
+		String label;
+		if (propertyURI.equals("https://schema.org/isBasedOn")) {
+			label = "is derived from";
+		} else if (propertyURI.equals("https://schema.org/sameAs")) {
+			label = "is a replica of";
+		} else {  // annotation mapping not supported
+			label = null;
+		}
+		return label;
+	}
 }
