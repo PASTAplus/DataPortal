@@ -40,6 +40,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class AuditReportServlet extends DataPortalServlet {
 
@@ -111,7 +112,6 @@ public class AuditReportServlet extends DataPortalServlet {
 
     try {
       HttpSession httpSession = request.getSession();
-      String xml = null;
       StringBuffer filter = new StringBuffer();
       String uid = (String) httpSession.getAttribute("uid");
 
@@ -242,7 +242,19 @@ public class AuditReportServlet extends DataPortalServlet {
       // startRowId
 
       String startRowIdParam = (String) request.getParameter("startRowId");
-      if (startRowIdParam != null && !startRowIdParam.isEmpty()) {
+      if (startRowIdParam == null || startRowIdParam.isEmpty()) {
+        startRowIdParam = "0";
+      }
+      String getPrevParam = (String) request.getParameter("getPrev");
+      if (Objects.equals(getPrevParam, "1")) {
+        if (filter.length() == 0) {
+          filter.append("roid=" + startRowIdParam);
+        }
+        else {
+          filter.append("&roid=" + startRowIdParam);
+        }
+      }
+      else {
         if (filter.length() == 0) {
           filter.append("oid=" + startRowIdParam);
         }
@@ -252,7 +264,7 @@ public class AuditReportServlet extends DataPortalServlet {
       }
 
       String message = null;
-      Integer lastOid = 0;
+
       boolean isDownload = request.getParameter("download") != null;
       String forward = "./auditReportTable.jsp";
 
@@ -283,16 +295,13 @@ public class AuditReportServlet extends DataPortalServlet {
         return;
       }
 
-      MyPair<String, Integer> pair =
-          auditManagerClient.reportByFilter(filter.toString());
-      xml = pair.t;
-      lastOid = pair.u;
-      ReportUtility reportUtility = new ReportUtility(xml);
+      MyPair<String, MyPair<Integer, Integer>> pair = auditManagerClient.reportByFilter(filter.toString());
+      ReportUtility reportUtility = new ReportUtility(pair.t);
       message = reportUtility.xmlToHtmlTable(cwd + xslpath);
-
       request.setAttribute("reportMessage", message);
-      request.setAttribute("serviceMethod",
-          serviceMethodParam == null ? "" : serviceMethodParam);
+      request.setAttribute("firstRowId", pair.u.t);
+      request.setAttribute("lastRowId", pair.u.u);
+      request.setAttribute("serviceMethod", serviceMethodParam == null ? "" : serviceMethodParam);
       request.setAttribute("debug", debug == null ? "" : debug);
       request.setAttribute("info", info == null ? "" : info);
       request.setAttribute("warn", warn == null ? "" : warn);
@@ -305,7 +314,15 @@ public class AuditReportServlet extends DataPortalServlet {
       request.setAttribute("endDate", endDate == null ? "" : endDate);
       request.setAttribute("endTime", (String) request.getParameter("endTime"));
 
-      request.setAttribute("startRowId", lastOid.toString());
+      request.setAttribute("scope", "");
+      request.setAttribute("identifier", "");
+      request.setAttribute("revision", "");
+
+      request.setAttribute("userAgent", "%");
+      request.setAttribute("userAgentNegate", "0");
+
+      request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
+
       RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
       requestDispatcher.forward(request, response);
 
@@ -358,4 +375,37 @@ public class AuditReportServlet extends DataPortalServlet {
 		return html;
 	}
 
+  /**
+   * Get a String parameter, with a fallback value. Never throws an exception.
+   * Can pass a distinguished value to default to enable checks of whether it was supplied.
+   *
+   * @param request    current HTTP request
+   * @param name       the name of the parameter
+   * @param defaultVal the default value to use as fallback
+   */
+  public static String getStringParameter(HttpServletRequest request, String name,
+                                          String defaultVal)
+  {
+    String v = request.getParameter(name);
+    return (v != null ? v : defaultVal);
+  }
+
+  /**
+   * Get an Integer parameter, with a fallback value. Never throws an exception.
+   * Can pass a distinguished value to default to enable checks of whether it was supplied.
+   *
+   * @param request    current HTTP request
+   * @param name       the name of the parameter
+   * @param defaultVal the default value to use as fallback
+   */
+  public static Integer getIntegerParameter(HttpServletRequest request, String name,
+                                            Integer defaultVal)
+  {
+    String v = getStringParameter(request, name, defaultVal.toString());
+    try {
+      return Integer.valueOf(v);
+    } catch (NumberFormatException e) {
+      return defaultVal;
+    }
+  }
 }

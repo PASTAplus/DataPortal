@@ -1,3 +1,29 @@
+/* PASTA */
+
+.pasta-button-row {
+	display: flex;
+	gap: 10px;
+}
+
+.pasta-button-disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.pasta-radio-button-col {
+	display: block;
+	margin: 0 0 0 10px;
+  	white-space: nowrap;
+}
+
+.pasta-inline {
+	display: inline;
+	white-space: nowrap;
+}
+
+/**/
+
 em {
 	font-family: 'Open Sans';
 	line-height: 18px;

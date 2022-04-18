@@ -527,7 +527,7 @@ public class AuditManagerClient extends PastaClient {
    * @return The XML document of the report as a String object.
    * @throws PastaEventException
    */
-  public MyPair<String, Integer> reportByFilter(String filter)
+  public MyPair<String, MyPair<Integer, Integer>> reportByFilter(String filter)
       throws PastaEventException
   {
     String entity = null;
@@ -543,16 +543,25 @@ public class AuditManagerClient extends PastaClient {
       httpGet.setHeader("Cookie", "auth-token=" + this.token);
     }
 
-    int oidInt = 0;
+		int firstOidInt = 0;
+		int lastOidInt = 0;
 
     try {
       response = httpClient.execute(httpGet);
       statusCode = (Integer) response.getStatusLine().getStatusCode();
       responseEntity = response.getEntity();
 
-      Header[] oidHeaders = response.getHeaders("PASTA-Last-OID");
-      String oidString = oidHeaders[0].getValue();
-      oidInt = Integer.parseInt(oidString);
+      Header[] firstOidHeaders = response.getHeaders("PASTA-First-OID");
+			if (firstOidHeaders.length > 0) {
+				String firstOidString = firstOidHeaders[0].getValue();
+				firstOidInt = Integer.parseInt(firstOidString);
+			}
+
+      Header[] lastOidHeaders = response.getHeaders("PASTA-Last-OID");
+			if (lastOidHeaders.length > 0) {
+				String lastOidString = lastOidHeaders[0].getValue();
+				lastOidInt = Integer.parseInt(lastOidString);
+			}
 
       if (responseEntity != null) {
         entity = EntityUtils.toString(responseEntity);
@@ -577,14 +586,14 @@ public class AuditManagerClient extends PastaClient {
 
     }
 
-    return new MyPair<>(entity, oidInt);
+    return new MyPair<>(entity, new MyPair<>(firstOidInt, lastOidInt));
   }
 
   /**
    * Returns an audit report based on the provided query parameter filter.
    *
    * @param filter The query parameter filter as a String object.
-   * @return The XML document of the report as a String object.
+   * @return The CSV file stream.
    * @throws PastaEventException
    */
   public InputStream reportByFilterCsv(String filter)
