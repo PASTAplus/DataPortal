@@ -105,8 +105,7 @@
 
 <body>
 
-<%--<jsp:include page="header.jsp" />--%>
-
+<jsp:include page="header.jsp" />
 
 <div class="row-fluid ">
     <div>
