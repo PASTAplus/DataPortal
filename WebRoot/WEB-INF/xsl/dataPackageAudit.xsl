@@ -34,6 +34,7 @@
               <th class="nis">Resource</th>
               <th class="nis">User</th>
               <th class="nis">Group(s)</th>
+              <th class="nis">UserAgent</th>
             </tr>
             <xsl:for-each select="/auditReport/auditRecord">
               <xsl:sort select="./oid" data-type="number" />
@@ -43,6 +44,7 @@
                 <xsl:apply-templates select="./resourceId" />
                 <xsl:apply-templates select="./user" />
                 <xsl:apply-templates select="./groups" />
+                <xsl:apply-templates select="./userAgent" />
               </tr>
             </xsl:for-each>
           </tbody>
@@ -80,4 +82,10 @@
     </td>
   </xsl:template>
   
+  <xsl:template match="userAgent">
+    <td class="nis">
+      <xsl:value-of select="."/>
+    </td>
+  </xsl:template>
+
 </xsl:stylesheet>
