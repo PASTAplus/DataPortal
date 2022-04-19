@@ -119,6 +119,13 @@ public class AuditReportServlet extends DataPortalServlet {
         uid = "public";
       }
 
+      if (uid.equals("public")) {
+        request.setAttribute("reportMessage", LOGIN_WARNING);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
+        requestDispatcher.forward(request, response);
+        return;
+      }
+
       /*
        * Request and process filter parameters
        */
@@ -266,15 +273,7 @@ public class AuditReportServlet extends DataPortalServlet {
       String message = null;
 
       boolean isDownload = request.getParameter("download") != null;
-      String forward = "./auditReportTable.jsp";
 
-      if (uid.equals("public")) {
-        request.setAttribute("reportMessage", LOGIN_WARNING);
-        RequestDispatcher requestDispatcher =
-            request.getRequestDispatcher("./login.jsp");
-        requestDispatcher.forward(request, response);
-        return;
-      }
 
       AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
 
@@ -323,9 +322,9 @@ public class AuditReportServlet extends DataPortalServlet {
 
       request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 
+      String forward = "./auditReportTable.jsp";
       RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
       requestDispatcher.forward(request, response);
-
     } catch (Exception e) {
       handleDataPortalError(logger, e);
     }

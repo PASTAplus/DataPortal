@@ -25,6 +25,9 @@
 package edu.lternet.pasta.portal;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.Objects;
 
 import javax.servlet.RequestDispatcher;
@@ -33,13 +36,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.lternet.pasta.client.*;
 import edu.lternet.pasta.common.MyPair;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
-
-import edu.lternet.pasta.client.AuditManagerClient;
-import edu.lternet.pasta.client.PastaClient;
-import edu.lternet.pasta.client.ReportUtility;
 
 
 public class DataPackageAuditServlet extends DataPortalServlet {
@@ -100,246 +100,254 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 
   /**
    * The doPost method of the servlet. <br>
-   *
+   * <p>
    * This method is called when a form has its tag value method equals to post.
    *
-   * @param request
-   *          the request send by the client to the server
-   * @param response
-   *          the response send by the server to the client
-   * @throws ServletException
-   *           if an error occurred
-   * @throws IOException
-   *           if an error occurred
+   * @param request  the request send by the client to the server
+   * @param response the response send by the server to the client
+   * @throws ServletException if an error occurred
+   * @throws IOException      if an error occurred
    */
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
-
-    String forward = "./auditReportTable.jsp";
-
     AuditManagerClient auditManagerClient = null;
     HttpSession httpSession = request.getSession();
     String xml = null;
     StringBuffer filter = new StringBuffer();
     String message = null;
-    String pastaUriHead = null;
     String uid = (String) httpSession.getAttribute("uid");
 
     if (uid == null || uid.isEmpty()) {
-      uid = "public";
+      request.setAttribute("reportMessage", LOGIN_WARNING);
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
+      requestDispatcher.forward(request, response);
+      return;
     }
 
     try {
       auditManagerClient = new AuditManagerClient(uid);
-      pastaUriHead = auditManagerClient.getPastaUriHead();
+    } catch (PastaAuthenticationException | PastaConfigurationException e) {
+      handleDataPortalError(logger, e);
+      return;
+    }
 
-      /*
-       * Request and process filter parameters
-       */
+    String pastaUriHead = auditManagerClient.getPastaUriHead();
 
-      // Encode empty request parameters with SQL regex string "%"
-      String scope = "%25";
-      String identifier = "%25";
-      String revision = "%25";
-      String resourceId = null;
+    //
+    // Process filter parameters
+    //
 
-      String value = "";
+    // Encode empty request parameters with SQL regex string "%"
+    String scope = "%25";
+    String identifier = "%25";
+    String revision = "%25";
+    String resourceId = null;
 
-      value = request.getParameter("scope");
-      if (value != null && !value.isEmpty()) {
-        scope = value;
+    String value = "";
+
+    value = request.getParameter("scope");
+    if (value != null && !value.isEmpty()) {
+      scope = value;
+    }
+
+    value = request.getParameter("identifier");
+    if (value != null && !value.isEmpty()) {
+      identifier = value;
+    }
+
+    value = request.getParameter("revision");
+    if (value != null && !value.isEmpty()) {
+      revision = value;
+    }
+
+    String packageId = scope + "." + identifier + "." + revision;
+
+    String begin = (String) request.getParameter("begin");
+    if (begin != null && !begin.isEmpty()) {
+      filter.append("fromTime=" + begin + "&");
+    }
+
+    String end = (String) request.getParameter("end");
+    if (end != null && !end.isEmpty()) {
+      filter.append("toTime=" + end + "&");
+    }
+
+    filter.append("category=info&");
+
+    Boolean packageResource = getBooleanParameter(request, "package", false);
+    Boolean metadataResource = getBooleanParameter(request, "metadata", false);
+    Boolean dataResource = getBooleanParameter(request, "entity", false);
+    Boolean reportResource = getBooleanParameter(request, "report", false);
+
+    boolean includeAllResources = false;
+
+    if (!(packageResource || metadataResource || dataResource || reportResource)) {
+      includeAllResources = true;
+    }
+
+    if (packageResource || includeAllResources) {
+      filter.append("serviceMethod=readDataPackage&");
+      resourceId = getResourceId(pastaUriHead, packageId, PACKAGE);
+      filter.append("resourceId=" + resourceId + "&");
+    }
+
+    if (metadataResource || includeAllResources) {
+      filter.append("serviceMethod=readMetadata&");
+      resourceId = getResourceId(pastaUriHead, packageId, METADATA);
+      filter.append("resourceId=" + resourceId + "&");
+    }
+
+    if (dataResource || includeAllResources) {
+      filter.append("serviceMethod=readDataEntity&");
+      resourceId = getResourceId(pastaUriHead, packageId, ENTITY);
+      filter.append("resourceId=" + resourceId + "&");
+    }
+
+    if (reportResource || includeAllResources) {
+      filter.append("serviceMethod=readDataPackageReport&");
+      resourceId = getResourceId(pastaUriHead, packageId, REPORT);
+      filter.append("resourceId=" + resourceId + "&");
+    }
+
+    String affiliation = (String) request.getParameter("affiliation");
+    if (affiliation == null || affiliation.isEmpty()) {
+      affiliation = "LTER";
+    }
+
+    String userIdParam = (String) request.getParameter("userId");
+    if (userIdParam != null && !userIdParam.isEmpty()) {
+      String userParam = "public";
+      if (!userIdParam.equalsIgnoreCase(userParam)) {
+        userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
       }
+      filter.append("user=" + userParam + "&");
+    }
 
-      value = request.getParameter("identifier");
-      if (value != null && !value.isEmpty()) {
-        identifier = value;
-      }
-
-      value = request.getParameter("revision");
-      if (value != null && !value.isEmpty()) {
-        revision = value;
-      }
-
-      String packageId = scope + "." + identifier + "." + revision;
-
-      String begin = (String) request.getParameter("begin");
-      if (begin != null && !begin.isEmpty()) {
-        filter.append("fromTime=" + begin + "&");
-      }
-
-      String end = (String) request.getParameter("end");
-      if (end != null && !end.isEmpty()) {
-        filter.append("toTime=" + end + "&");
-      }
-
-      // Filter on "info"
-      filter.append("category=info&");
-
-      // Parameters from the initial query
-      boolean packageResource = (request.getParameter("package") != null);
-      boolean metadataResource = (request.getParameter("metadata") != null);
-      boolean dataResource = (request.getParameter("entity") != null);
-      boolean reportResource = (request.getParameter("report") != null);
-
-      // Parameters from table paging
-      packageResource  |= Objects.equals(request.getParameter("package"), "1");
-      metadataResource |= Objects.equals(request.getParameter("metadata"), "1");
-      dataResource     |= Objects.equals(request.getParameter("entity"), "1");
-      reportResource   |= Objects.equals(request.getParameter("report"), "1");
-
-      boolean includeAllResources = false;
-
-      if (!(packageResource || metadataResource || dataResource || reportResource)) {
-        includeAllResources = true;
-      }
-
-      // Filter on "readDataPackage"
-      if (packageResource || includeAllResources) {
-        filter.append("serviceMethod=readDataPackage&");
-        resourceId = getResourceId(pastaUriHead, packageId, PACKAGE);
-        filter.append("resourceId=" + resourceId + "&");
-      }
-
-      // Filter on "readMetadata"
-      if (metadataResource || includeAllResources) {
-        filter.append("serviceMethod=readMetadata&");
-        resourceId = getResourceId(pastaUriHead, packageId, METADATA);
-        filter.append("resourceId=" + resourceId + "&");
-      }
-
-      // Filter on "readDataEntity"
-      if (dataResource || includeAllResources) {
-        filter.append("serviceMethod=readDataEntity&");
-        resourceId = getResourceId(pastaUriHead, packageId, ENTITY);
-        filter.append("resourceId=" + resourceId + "&");
-      }
-
-      // Filter on "readDataPackageReport"
-      if (reportResource || includeAllResources) {
-        filter.append("serviceMethod=readDataPackageReport&");
-        resourceId = getResourceId(pastaUriHead, packageId, REPORT);
-        filter.append("resourceId=" + resourceId + "&");
-      }
-
-      String affiliation = (String) request.getParameter("affiliation");
-      if (affiliation == null || affiliation.isEmpty()) {
-        affiliation = "LTER";
-      }
-
-      String userIdParam = (String) request.getParameter("userId");
-      if (userIdParam != null && !userIdParam.isEmpty()) {
-        String userParam = "public";
-        if (!userIdParam.equalsIgnoreCase(userParam)) {
-          userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
-        }
-        filter.append("user=" + userParam + "&");
-      }
-
-      String userAgentParam = (String) request.getParameter("userAgent");
-      if (userAgentParam != null && !userAgentParam.isEmpty()) {
-        String userAgentNegateParam = (String) request.getParameter("userAgentNegate");
-        if (Objects.equals(userAgentNegateParam, "1")) {
-          if (filter.length() == 0) {
-            filter.append("userAgentNegate=" + userAgentParam);
-          }
-          else {
-            filter.append("&userAgentNegate=" + userAgentParam);
-          }
-        }
-        else {
-          if (filter.length() == 0) {
-            filter.append("userAgent=" + userAgentParam);
-          }
-          else {
-            filter.append("&userAgent=" + userAgentParam);
-          }
-        }
-      }
-
-      if (limit != null && !limit.isEmpty()) {
+    String userAgentParam = (String) request.getParameter("userAgent");
+    if (userAgentParam != null && !userAgentParam.isEmpty()) {
+      String userAgentNegateParam = (String) request.getParameter("userAgentNegate");
+      if (Objects.equals(userAgentNegateParam, "1")) {
         if (filter.length() == 0) {
-          filter.append("limit=" + limit);
+          filter.append("userAgentNegate=" + userAgentParam);
         }
         else {
-          filter.append("&limit=" + limit);
+          filter.append("&userAgentNegate=" + userAgentParam);
         }
       }
-
-      if (uid.equals("public")) {
-        message = LOGIN_WARNING;
-        forward = "./login.jsp";
-      }
-      else if (auditManagerClient != null) {
-        // startRowId
-
-        String startRowIdParam = (String) request.getParameter("startRowId");
-        if (startRowIdParam == null || startRowIdParam.isEmpty()) {
-          startRowIdParam = "0";
-        }
-        String getPrevParam = (String) request.getParameter("getPrev");
-        if (Objects.equals(getPrevParam, "1")) {
-          if (filter.length() == 0) {
-            filter.append("roid=" + startRowIdParam);
-          }
-          else {
-            filter.append("&roid=" + startRowIdParam);
-          }
+      else {
+        if (filter.length() == 0) {
+          filter.append("userAgent=" + userAgentParam);
         }
         else {
-          if (filter.length() == 0) {
-            filter.append("oid=" + startRowIdParam);
-          }
-          else {
-            filter.append("&oid=" + startRowIdParam);
-          }
+          filter.append("&userAgent=" + userAgentParam);
         }
-
-        MyPair<String, MyPair<Integer, Integer>> pair =
-            auditManagerClient.reportByFilter(filter.toString());
-        xml = pair.t;
-
-        ReportUtility reportUtility = new ReportUtility(xml);
-        message = reportUtility.xmlToHtmlTable(cwd + xslpath);
-
-        request.setAttribute("reportMessage", message);
-        request.setAttribute("firstRowId", pair.u.t);
-        request.setAttribute("lastRowId", pair.u.u);
-        request.setAttribute("serviceMethod", "");
-        request.setAttribute("debug", "");
-        request.setAttribute("info", "");
-        request.setAttribute("warn", "");
-        request.setAttribute("error", "");
-        request.setAttribute("code", "");
-        request.setAttribute("userId", userIdParam == null ? "" : userIdParam);
-        request.setAttribute("affiliation", affiliation);
-        request.setAttribute("beginDate", "");
-        request.setAttribute("beginTime", "");
-        request.setAttribute("endDate", "");
-        request.setAttribute("endTime", "");
-
-        request.setAttribute("scope", scope);
-        request.setAttribute("identifier", identifier);
-        request.setAttribute("revision", revision);
-
-        request.setAttribute("package", packageResource ? "1": "0");
-        request.setAttribute("metadata", metadataResource ? "1": "0");
-        request.setAttribute("entity", dataResource ? "1": "0");
-        request.setAttribute("report", reportResource ? "1": "0");
-
-        request.setAttribute("userAgent", userAgentParam);
-        request.setAttribute("userAgentNegate", "0");
-
-        request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
       }
+    }
 
-      RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
-      requestDispatcher.forward(request, response);
-    } catch (Exception e) {
+    if (limit != null && !limit.isEmpty()) {
+      if (filter.length() == 0) {
+        filter.append("limit=" + limit);
+      }
+      else {
+        filter.append("&limit=" + limit);
+      }
+    }
+
+    boolean isDownload = getBooleanParameter(request, "download", false);
+    if (isDownload) {
+      InputStream inputStream = null;
+      try {
+        inputStream = auditManagerClient.reportByFilterCsv(filter.toString());
+      } catch (PastaEventException e) {
+        handleDataPortalError(logger, e);
+      }
+      response.setHeader("content-disposition", "attachment; filename=auditreport.csv");
+      OutputStream outputStream = response.getOutputStream();
+      byte[] buf = new byte[8192];
+      int length;
+      while ((length = inputStream.read(buf)) > 0) {
+        outputStream.write(buf, 0, length);
+      }
+      outputStream.flush();
+      return;
+    }
+
+    // startRowId
+
+    String startRowIdParam = (String) request.getParameter("startRowId");
+    if (startRowIdParam == null || startRowIdParam.isEmpty()) {
+      startRowIdParam = "0";
+    }
+    String getPrevParam = (String) request.getParameter("getPrev");
+    if (Objects.equals(getPrevParam, "1")) {
+      if (filter.length() == 0) {
+        filter.append("roid=" + startRowIdParam);
+      }
+      else {
+        filter.append("&roid=" + startRowIdParam);
+      }
+    }
+    else {
+      if (filter.length() == 0) {
+        filter.append("oid=" + startRowIdParam);
+      }
+      else {
+        filter.append("&oid=" + startRowIdParam);
+      }
+    }
+
+    MyPair<String, MyPair<Integer, Integer>> pair = null;
+    try {
+      pair = auditManagerClient.reportByFilter(filter.toString());
+    } catch (PastaEventException e) {
+      e.printStackTrace();
+    }
+    xml = pair.t;
+
+    ReportUtility reportUtility = null;
+    try {
+      reportUtility = new ReportUtility(xml);
+    } catch (ParseException e) {
       handleDataPortalError(logger, e);
     }
-  }
 
+    message = reportUtility.xmlToHtmlTable(cwd + xslpath);
+
+    request.setAttribute("reportMessage", message);
+    request.setAttribute("firstRowId", pair.u.t);
+    request.setAttribute("lastRowId", pair.u.u);
+    request.setAttribute("serviceMethod", "");
+    request.setAttribute("debug", "");
+    request.setAttribute("info", "");
+    request.setAttribute("warn", "");
+    request.setAttribute("error", "");
+    request.setAttribute("code", "");
+    request.setAttribute("userId", userIdParam == null ? "" : userIdParam);
+    request.setAttribute("affiliation", affiliation);
+    request.setAttribute("beginDate", "");
+    request.setAttribute("beginTime", "");
+    request.setAttribute("endDate", "");
+    request.setAttribute("endTime", "");
+
+    request.setAttribute("scope", scope);
+    request.setAttribute("identifier", identifier);
+    request.setAttribute("revision", revision);
+
+    request.setAttribute("package", packageResource ? "1" : "0");
+    request.setAttribute("metadata", metadataResource ? "1" : "0");
+    request.setAttribute("entity", dataResource ? "1" : "0");
+    request.setAttribute("report", reportResource ? "1" : "0");
+
+    request.setAttribute("userAgent", userAgentParam);
+    request.setAttribute("userAgentNegate", "0");
+
+    request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
+
+    String forward = "./auditReportTable.jsp";
+    RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
+    requestDispatcher.forward(request, response);
+  }
 
   /**
    * Initialization of the servlet. <br>
@@ -405,8 +413,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
    * @param name       the name of the parameter
    * @param defaultVal the default value to use as fallback
    */
-  public static Integer getIntegerParameter(HttpServletRequest request, String name,
-                                            Integer defaultVal)
+  public static Integer getIntegerParameter(HttpServletRequest request, String name, Integer defaultVal)
   {
     String v = getStringParameter(request, name, defaultVal.toString());
     try {
@@ -414,5 +421,21 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     } catch (NumberFormatException e) {
       return defaultVal;
     }
+  }
+
+  /**
+   * Get a Boolean parameter, with a fallback value. Never throws an exception.
+   *
+   * @param request    current HTTP request
+   * @param name       the name of the parameter
+   * @param defaultVal the default value to use as fallback
+   */
+  public static Boolean getBooleanParameter(HttpServletRequest request, String name, Boolean defaultVal)
+  {
+    String v = getStringParameter(request, name, "");
+    if (v.equals("")) {
+      return defaultVal;
+    }
+    return v.equalsIgnoreCase(name) || v.equals("1");
   }
 }
