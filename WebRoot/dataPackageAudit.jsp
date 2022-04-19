@@ -5,7 +5,7 @@
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%
-    final String pageTitle = "Data Package Access Reports";
+    final String pageTitle = "Data Package Access Report";
     final String titleText = DataPortalServlet.getTitleText(pageTitle);
     String path = request.getContextPath();
     String basePath =
@@ -109,7 +109,7 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="recent_title">
-                                <h2>Data Package Access Reports</h2>
+                                <h2>Data Package Access Report</h2>
                             </div>
                             <span class="row-fluid separator_border"></span>
                         </div>

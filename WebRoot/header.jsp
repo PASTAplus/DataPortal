@@ -167,7 +167,7 @@
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Reports:</p>
 					<%--<li><a href="auditReport.jsp">Audit Reports</a></li>--%>
-					<li><a href="dataPackageAudit.jsp">Data Package Access Reports</a></li>
+					<li><a href="dataPackageAudit.jsp">Data Package Access Report</a></li>
                     
                     <p class="smallmenu pull-left nis-navigation-submenu">
                     <img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
