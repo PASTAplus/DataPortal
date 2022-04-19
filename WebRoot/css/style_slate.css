@@ -22,6 +22,10 @@
 	white-space: nowrap;
 }
 
+.pasta-left-adjust {
+	margin: auto;
+}
+
 /**/
 
 em {
