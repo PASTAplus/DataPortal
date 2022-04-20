@@ -237,6 +237,28 @@ public class AuditReportServlet extends DataPortalServlet {
         }
       }
 
+      String message = null;
+      boolean isDownload = request.getParameter("download") != null;
+
+      AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
+
+      if (isDownload) {
+        InputStream inputStream =
+            auditManagerClient.reportByFilterCsv(filter.toString());
+        response.setHeader("content-disposition",
+            "attachment; filename=auditreport.csv");
+
+        OutputStream outputStream = response.getOutputStream();
+
+        byte[] buf = new byte[8192];
+        int length;
+        while ((length = inputStream.read(buf)) > 0) {
+          outputStream.write(buf, 0, length);
+        }
+        outputStream.flush();
+        return;
+      }
+
       if (limit != null && !limit.isEmpty()) {
         if (filter.length() == 0) {
           filter.append("limit=" + limit);
@@ -268,30 +290,6 @@ public class AuditReportServlet extends DataPortalServlet {
         else {
           filter.append("&oid=" + startRowIdParam);
         }
-      }
-
-      String message = null;
-
-      boolean isDownload = request.getParameter("download") != null;
-
-
-      AuditManagerClient auditManagerClient = new AuditManagerClient(uid);
-
-      if (isDownload) {
-        InputStream inputStream =
-            auditManagerClient.reportByFilterCsv(filter.toString());
-        response.setHeader("content-disposition",
-            "attachment; filename=auditreport.csv");
-
-        OutputStream outputStream = response.getOutputStream();
-
-        byte[] buf = new byte[8192];
-        int length;
-        while ((length = inputStream.read(buf)) > 0) {
-          outputStream.write(buf, 0, length);
-        }
-        outputStream.flush();
-        return;
       }
 
       MyPair<String, MyPair<Integer, Integer>> pair = auditManagerClient.reportByFilter(filter.toString());

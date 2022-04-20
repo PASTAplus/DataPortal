@@ -245,15 +245,6 @@ public class DataPackageAuditServlet extends DataPortalServlet {
       }
     }
 
-    if (limit != null && !limit.isEmpty()) {
-      if (filter.length() == 0) {
-        filter.append("limit=" + limit);
-      }
-      else {
-        filter.append("&limit=" + limit);
-      }
-    }
-
     boolean isDownload = getBooleanParameter(request, "download", false);
     if (isDownload) {
       InputStream inputStream = null;
@@ -271,6 +262,15 @@ public class DataPackageAuditServlet extends DataPortalServlet {
       }
       outputStream.flush();
       return;
+    }
+
+    if (limit != null && !limit.isEmpty()) {
+      if (filter.length() == 0) {
+        filter.append("limit=" + limit);
+      }
+      else {
+        filter.append("&limit=" + limit);
+      }
     }
 
     // startRowId
