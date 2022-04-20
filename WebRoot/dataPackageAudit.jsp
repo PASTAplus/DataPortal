@@ -92,30 +92,29 @@
 
 <jsp:include page="header.jsp"/>
 
-<div class="row-fluid ">
-<<<<<<< HEAD
-  <div class="container">
-    <div class='row-fluid'>
-      <div class='span12'>
-      </div>
-    </div>
+<form id="dataPackageAudit" action="./dataPackageAudit" method="post" name="dataPackageAudit">
 
-    <div class="row-fluid distance_1">
-      <div class="box_layout">
+  <div class="row-fluid ">
+    <div class="container">
+      <div class='row-fluid'>
+        <div class='span12'>
+        </div>
+      </div>
+
+      <div class="row-fluid distance_1">
+        <%--<div class="box_layout">--%>
         <div class="span12">
           <div class="recent_title">
-            <h2>Data Package Access Reports</h2>
+            <h2>Data Package Access Report</h2>
           </div>
         </div>
-      </div>
+        <%--</div>--%>
 
-      <div class="row-fluid distance_2">
-        <div class="span12">
-          Review a Data Package access report by entering information into one or more of the filters below.
+        <div class="row-fluid distance_1 separator_border">
+          <div class="span12">
+            Review a Data Package access report by entering information into one or more of the filters below.
+          </div>
         </div>
-      </div>
-
-      <form id="dataPackageAudit" action="./dataPackageAudit" method="post" name="dataPackageAudit">
 
         <div class="row-fluid">
           <div class="span12">
@@ -123,18 +122,15 @@
               <tr>
                 <td>
                   <label class="labelBold">Scope:</label>
-                  <input autofocus required name="scope" size="15" type="text"
-                         placeholder="e.g., knb-lter-nin"/>
+                  <input autofocus required name="scope" size="15" type="text" placeholder="e.g., knb-lter-nin"/>
                 </td>
                 <td>
                   <label class="labelBold">Identifier:</label>
-                  <input name="identifier" size="5" type="number"
-                         placeholder="e.g., 1"/>
+                  <input name="identifier" size="5" type="number" placeholder="e.g., 1"/>
                 </td>
                 <td>
                   <label class="labelBold">Revision:</label>
-                  <input name="revision" size="5" type="number"
-                         placeholder="e.g., 3"/>
+                  <input name="revision" size="5" type="number" placeholder="e.g., 3"/>
                 </td>
               </tr>
             </table>
@@ -182,7 +178,7 @@
           </div>
         </div>
 
-        <div class="row-fluid">
+        <div class="row-fluid distance_2">
           <div class="span12">
             <table>
               <tr>
@@ -193,12 +189,12 @@
                 <td class='pasta-radio-button-col'>
                   <label class="labelBold">Matching User Agents:</label>
                   <%--<div class='pasta-radio-button-col'>--%>
-                    <span>
+                  <span>
                       <input type="radio" id="id-useragent-include" name="userAgentNegate" value="0" checked>
                       <label class='pasta-inline' for="id-useragent-include">Include</label>
                     </span>
-                    <br>
-                    <span>
+                  <br>
+                  <span>
                       <input type="radio" id="id-useragent-exclude" name="userAgentNegate" value="1">
                       <label class='pasta-inline' for="id-useragent-exclude">Exclude</label>
                     </span>
@@ -230,176 +226,8 @@
           <div class="span12">
             <div class='pasta-button-row'>
               <input class="btn btn-info" name="download" type="submit" value="Download"/>
-              <input class="btn btn-info btn-default" name="submit" type="submit" value="Submit"/>
+              <input class="btn btn-info btn-default" name="submit" type="submit" value="View"/>
               <input class="btn btn-info btn-default" name="reset" type="reset" value="Clear"/>
-=======
-    <div>
-        <div class="container">
-            <div class="row-fluid distance_1">
-                <div class="box_shadow box_layout">
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <div class="recent_title">
-                                <h2>Data Package Access Report</h2>
-                            </div>
-                            <span class="row-fluid separator_border"></span>
-                        </div>
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <!-- Content -->
-                                <p>Review a Data Package access report<sup>*</sup> by entering information into one or
-                                    more of the filters
-                                    below.
-                                </p>
-                                <form id="dataPackageAudit" action="./dataPackageAudit" method="post"
-                                      name="dataPackageAudit">
-                                    <div class="section">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label class="labelBold">Scope:</label>
-                                                    <input autofocus required name="scope" size="15" type="text"
-                                                           placeholder="e.g., knb-lter-nin"/>
-                                                </td>
-                                                <td>
-                                                    <label class="labelBold">Identifier:</label>
-                                                    <input name="identifier" size="5" type="number"
-                                                           placeholder="e.g., 1"/>
-                                                </td>
-                                                <td>
-                                                    <label class="labelBold">Revision:</label>
-                                                    <input name="revision" size="5" type="number"
-                                                           placeholder="e.g., 3"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="spacer"></td>
-                                            </tr>
-                                        </table>
-
-                                        <table>
-                                            <tr>
-                                                <td><label class="labelBold">Resource Type:</label></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="spacersm"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <form>
-                                                        <label for="choices">
-                                                            <ul class="checklist">
-                                                                <li>
-                                                                    <input name="package" type="checkbox"
-                                                                           value="value1"/>
-                                                                    <p>Package</p>
-                                                                    <a class="checkbox-select" href="#">Select</a>
-                                                                    <a class="checkbox-deselect" href="#">Cancel</a>
-                                                                </li>
-                                                                <li>
-                                                                    <input name="metadata" type="checkbox"
-                                                                           value="value2"/>
-                                                                    <p>Metadata</p>
-                                                                    <a class="checkbox-select" href="#">Select</a>
-                                                                    <a class="checkbox-deselect" href="#">Cancel</a>
-                                                                </li>
-                                                                <li>
-                                                                    <input name="entity" type="checkbox"
-                                                                           value="value4"/>
-                                                                    <p>Data</p>
-                                                                    <a class="checkbox-select" href="#">Select</a>
-                                                                    <a class="checkbox-deselect" href="#">Cancel</a>
-                                                                </li>
-                                                                <li>
-                                                                    <input name="report" type="checkbox"
-                                                                           value="value3"/>
-                                                                    <p>Report</p>
-                                                                    <a class="checkbox-select" href="#">Select</a>
-                                                                    <a class="checkbox-deselect" href="#">Cancel</a>
-                                                                </li>
-                                                            </ul>
-                                                        </label>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="spacer"></td>
-                                            </tr>
-                                        </table>
-                                        <div class="display-table">
-                                            <div class="table-row">
-                                                <div class="table-cell">
-                                                    <label class="labelBold">User Name:</label>
-                                                    <input name="userId" size="15" type="text"/>
-                                                </div>
-                                                <div class="table-cell">
-                                                    <label class="labelBold">Affiliation:</label>
-                                                    <select id="affiliation-select" class="select-width-auto"
-                                                            name="affiliation">
-                                                        <option value="EDI">EDI</option>
-                                                        <option value="LTER" selected="selected">LTER</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="display-table">
-                                            <div class="table-row">
-                                                <div class="table-cell">
-                                                    <label class="labelBold">User Agent:</label>
-                                                    <input name="userAgent" size="15" type="text"/>
-                                                </div>
-                                                <div class="table-cell">
-                                                    <label class="labelBold">Matching User Agents:</label>
-                                                    <div class='pasta-radio-button-col'>
-                                                        <span>
-                                                            <input type="radio" id="id-useragent-include" name="userAgentNegate" value="0" checked>
-                                                            <label class='pasta-inline' for="id-useragent-include">Include</label>
-                                                        </span>
-                                                        <br>
-                                                        <span>
-                                                            <input type="radio" id="id-useragent-exclude" name="userAgentNegate" value="1">
-                                                            <label class='pasta-inline' for="id-useragent-exclude">Exclude</label>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <label class="labelBold">Begin Date:</label>
-                                                    <input name="begin" placeholder="YYYY-MM-DD" type="date"/>
-                                                </td>
-                                                <td>
-                                                    <label class="labelBold">End Date:</label>
-                                                    <input name="end" placeholder="YYYY-MM-DD" type="date"/>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                        <div class='pasta-button-row'>
-                                            <input class="btn btn-info btn-default" name="submit" type="submit"
-                                                   value="Submit"/>
-                                            <input class="btn btn-info btn-default" name="reset" type="reset"
-                                                   value="Clear"/>
-                                        </div>
-
-                                        <p>
-                                            <%= limitHTML %>
-                                        </p>
-                                    </div>
-                                    <!-- section -->
-                                        <%
-						if (reportMessage != null) {
-							out.println(String.format("<p class=\"nis-warn\">%s</p>", reportMessage));
-						}
-					%>
-                                    <!-- /Content -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
->>>>>>> 07587260242bad92f52f82e4557011709bbeafeb
             </div>
           </div>
         </div>
@@ -413,10 +241,11 @@
             %>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
+
+</form>
 
 <jsp:include page="footer.jsp"/>
 

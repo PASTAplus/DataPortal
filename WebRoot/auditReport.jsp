@@ -105,29 +105,30 @@
 
 <jsp:include page="header.jsp"/>
 
-<div class="row-fluid ">
-  <div class="container">
-    <div class='row-fluid'>
-      <div class='span12'>
-      </div>
-    </div>
+<form id="auditReport" action="./auditReport" method="post" name="auditReport">
 
-    <div class="row-fluid distance_1">
-      <div class="box_layout">
-        <div class="span12">
-          <div class="recent_title">
-            <h2>Audit Reports</h2>
+  <div class="row-fluid ">
+    <div class="container">
+      <div class='row-fluid'>
+        <div class='span12'>
+        </div>
+      </div>
+
+      <div class="row-fluid distance_1">
+        <div class="box_layout">
+          <div class="span12">
+            <div class="recent_title">
+              <h2>Audit Report</h2>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="row-fluid distance_2">
-        <div class="span12">
-          Review an audit report<sup>*</sup> by entering your criteria into one or more of the filters below.
+        <div class="row-fluid distance_1 separator_border">
+          <div class="span12">
+            Review an audit report by entering your criteria into one or more of the filters below.
+          </div>
         </div>
-      </div>
 
-      <form id="auditReport" action="./auditReport" method="post" name="auditReport">
 
         <div class='row-fluid'>
           <div class='span12'>
@@ -148,6 +149,7 @@
             <label class="labelBold">Category Status:</label>
           </div>
         </div>
+
         <div class='row-fluid'>
           <div class='span12'>
             <form>
@@ -319,10 +321,7 @@
               <input class="btn btn-info" name="reset" type="reset" value="Clear"/>
             </div>
           </div>
-          <%--<div class='row-fluid'>--%>
-          <%--  <div class='span12'>--%>
-          <%--  </div>--%>
-          <%--</div>--%>
+
           <div class='row-fluid distance_1'>
             <div class='span12'>
               <sup>*</sup><small><em>Time values are Mountain TZ (default 00:00:00).</em></small>
@@ -330,14 +329,20 @@
           </div>
         </div>
 
-        <%
-          if (reportMessage != null) {
-            out.println(String.format("<p class=\"nis-warn\">%s</p>", reportMessage));
-          }
-        %>
-      </form>
+        <div class="row-fluid">
+          <div class="span12">
+            <%
+              if (reportMessage != null) {
+                out.println(String.format("<p class=\"nis-warn\">%s</p>", reportMessage));
+              }
+            %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+</form>
 
 <jsp:include page="footer.jsp"/>
 
