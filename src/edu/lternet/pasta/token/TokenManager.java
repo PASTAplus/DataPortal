@@ -26,6 +26,7 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import edu.lternet.pasta.common.SqlEscape;
 import edu.lternet.pasta.portal.ConfigurationListener;
 
 import org.apache.commons.configuration.Configuration;
@@ -165,7 +166,7 @@ public class TokenManager {
             if (warn != null) {
                 while (warn != null) {
                     logger.warn("SQLState: " + warn.getSQLState());
-                    logger.warn("Message:  " + warn.getMessage());
+                    logger.warn("Message: " + warn.getMessage());
                     logger.warn("Vendor: " + warn.getErrorCode());
                     warn = warn.getNextWarning();
                 }
@@ -188,8 +189,11 @@ public class TokenManager {
     public void storeToken() throws SQLException,
                                                               ClassNotFoundException {
 
-        String sql = "SELECT authtoken.tokenstore.token FROM authtoken.tokenstore WHERE " +
-                         "authtoken.tokenstore.user_id='" + this.uid + "';";
+        String sql = String.format(
+            "SELECT authtoken.tokenstore.token " +
+                "FROM authtoken.tokenstore " +
+                "WHERE authtoken.tokenstore.user_id='%s'",
+            SqlEscape.str(this.uid));
 
         Connection dbConn = null; // database connection object
 
@@ -202,23 +206,28 @@ public class TokenManager {
                 if (rs.next()) {
 
                     // uid already in token store, perform "update".
-                    sql = "UPDATE authtoken.tokenstore SET token='" + this.extToken + "',date_created=now() " +
-                              "WHERE authtoken.tokenstore.user_id='" + this.uid + "';";
+                    sql = String.format(
+                        "UPDATE authtoken.tokenstore " +
+                            "SET token='%s', date_created=now() " +
+                            "WHERE authtoken.tokenstore.user_id='%s'",
+                        SqlEscape.str(this.extToken), SqlEscape.str(this.uid));
 
                     if (stmt.executeUpdate(sql) == 0) {
-                        SQLException e = new SQLException("setToken: update '"
-                                                              + sql + "' " +
-                                                              "failed");
+                        SQLException e = new SQLException(
+                            String.format("setToken: update '%s' failed", sql));
                         throw (e);
                     }
 
                 } else {
 
                     // uid not in token store, perform "insert".
-                    sql = "INSERT INTO authtoken.tokenstore VALUES ('" + this.uid + "','" + this.extToken + "', now());";
+                    sql = String.format(
+                        "INSERT INTO authtoken.tokenstore VALUES ('%s','%s', now())",
+                        SqlEscape.str(this.uid), SqlEscape.str(this.extToken));
 
                     if (stmt.executeUpdate(sql) == 0) {
-                        SQLException e = new SQLException("setToken: insert '" + sql + "' failed");
+                        SQLException e = new SQLException(
+                            String.format("setToken: insert '%s' failed", sql));
                         throw (e);
                     }
 
@@ -256,8 +265,11 @@ public class TokenManager {
                                                   ClassNotFoundException {
 
         String token = null;
-        String sql = "SELECT authtoken.tokenstore.token FROM authtoken.tokenstore WHERE authtoken.tokenstore.user_id='"
-                + uid + "';";
+        String sql = String.format(
+            "SELECT authtoken.tokenstore.token " +
+                "FROM authtoken.tokenstore " +
+                "WHERE authtoken.tokenstore.user_id='%s'",
+            SqlEscape.str(uid));
 
         Connection dbConn = null; // database connection object
 
@@ -304,7 +316,10 @@ public class TokenManager {
     public static void deleteToken(String uid) throws SQLException,
                                                    ClassNotFoundException {
 
-        String sql = "DELETE FROM authtoken.tokenstore WHERE authtoken.tokenstore.user_id='" + uid + "';";
+        String sql = String.format(
+            "DELETE FROM authtoken.tokenstore " +
+                "WHERE authtoken.tokenstore.user_id='%s'",
+            SqlEscape.str(uid));
 
         Connection dbConn = null; // database connection object
 

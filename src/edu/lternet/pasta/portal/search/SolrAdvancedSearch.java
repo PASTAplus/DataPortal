@@ -95,7 +95,7 @@ public class SolrAdvancedSearch extends Search  {
   private String westBound;
   private String locationName;
  
-  private String queryString;
+  private String queryStr;
   private String qString;
   private String fqString;
 
@@ -837,14 +837,16 @@ public class SolrAdvancedSearch extends Search  {
 		buildQueryFilterSpatial(this.northBound, this.southBound, this.eastBound,
 				 this.westBound, this.isBoundaryContainedChecked);
 	
-		queryString = String.format(
+		queryStr = String.format(
 				"defType=%s&q=%s&%s&fl=%s&debug=%s",
 				DEFAULT_DEFTYPE, this.qString.trim(), this.fqString.trim(),
 				DEFAULT_FIELDS, DEFAULT_DEBUG
 		);
 
 		DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
-		String extendedQueryString = String.format("%s&start=%d&rows=%d&sort=%s", queryString, DEFAULT_START, DEFAULT_ROWS, DEFAULT_SORT);
+		String extendedQueryString = String.format(
+        "%s&start=%d&rows=%d&sort=%s",
+        queryStr, DEFAULT_START, DEFAULT_ROWS, DEFAULT_SORT);
 		String resultsetXML = dpmClient.searchDataPackages(extendedQueryString);
 		logger.warn(String.format("query:\n%s", extendedQueryString));
 
@@ -853,12 +855,12 @@ public class SolrAdvancedSearch extends Search  {
 
 
 	/**
-	 * Accessor method for the queryString instance variable.
+	 * Accessor method for the queryStr instance variable.
 	 * 
-	 * @return queryString
+	 * @return queryStr
 	 */
 	public String getQueryString() {
-		return queryString;
+		return queryStr;
 	}
 
 

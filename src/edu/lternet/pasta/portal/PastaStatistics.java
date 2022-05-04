@@ -53,16 +53,32 @@ public class PastaStatistics {
     private static final String RESOURCE_REGISTRY = "datapackagemanager.resource_registry";
     
 	private static final String QUERY_CONTRIBUTED_UNIQUE = String.format(
-			"SELECT DISTINCT scope, identifier FROM %s WHERE resource_type='dataPackage' AND date_deactivated IS NULL AND scope != 'ecotrends' AND scope NOT LIKE 'lter-landsat%%'",
+			"SELECT DISTINCT scope, identifier " +
+					"FROM %s " +
+					"WHERE resource_type='dataPackage' " +
+					"AND date_deactivated IS NULL " +
+					"AND scope != 'ecotrends' " +
+					"AND scope NOT LIKE 'lter-landsat%%'",
 			RESOURCE_REGISTRY);
 	private static final String QUERY_CONTRIBUTED_ALL = String.format(
-			"SELECT DISTINCT scope, identifier, revision FROM %s WHERE resource_type='dataPackage' AND date_deactivated IS NULL AND scope != 'ecotrends' AND scope NOT LIKE 'lter-landsat%%'",
+			"SELECT DISTINCT scope, identifier, revision " +
+					"FROM %s " +
+					"WHERE resource_type='dataPackage' " +
+					"AND date_deactivated IS NULL " +
+					"AND scope != 'ecotrends' " +
+					"AND scope NOT LIKE 'lter-landsat%%'",
 			RESOURCE_REGISTRY);
 	private static final String QUERY_TOTAL_UNIQUE = String.format(
-			"SELECT DISTINCT scope, identifier FROM %s WHERE resource_type='dataPackage' AND date_deactivated IS NULL",
+			"SELECT DISTINCT scope, identifier " +
+					"FROM %s " +
+					"WHERE resource_type='dataPackage' " +
+					"AND date_deactivated IS NULL",
 			RESOURCE_REGISTRY);
 	private static final String QUERY_TOTAL_ALL = String.format(
-			"SELECT DISTINCT scope, identifier, revision FROM %s WHERE resource_type='dataPackage' AND date_deactivated IS NULL",
+			"SELECT DISTINCT scope, identifier, revision " +
+					"FROM %s " +
+					"WHERE resource_type='dataPackage' " +
+					"AND date_deactivated IS NULL",
 			RESOURCE_REGISTRY);
 
 	/*
@@ -110,8 +126,8 @@ public class PastaStatistics {
 
 		if (conn != null) {
 			try {
-				Statement stmnt = conn.createStatement();
-				ResultSet rs = stmnt.executeQuery(sql);
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
 
 				int i = 0;
 				while (rs.next()) {
