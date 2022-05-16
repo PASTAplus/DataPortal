@@ -55,13 +55,14 @@ public class TokenManagerTest {
 	
 	private static String username = null;
 	private static String token = null;
-	private static final String testToken = "dWlkPXVjYXJyb2xsLG89TFRFUixkYz1lY29pbmZvcm1hdGljcyxkYz1vcmcqaHR0cHM6Ly9wYXN0YS5sdGVybmV0LmVkdS9hdXRoZW50aWNhdGlvbioxMzcxMTg5Nzk4NDY5KmF1dGhlbnRpY2F0ZWQ=-DoU9U2H16wEO090IbLXenrGZdR48i+gQo3iJFTSLq3WYZ9VrGJ4dcctmI7AhR1o3VWWG01ezu/uNrkz0b/GpIQWlW2S1oh/qlMveMS9bLX0Azzn/U5JOpiBA4FCG4V/6s7JKp2WD1QWquv1KUk4pUMS7JT+xoBvlEMpLhrUIpj7k+u41YuEFhu4lTP4nLrl1yWQkYIzBULYuqx+B0bXeLCYAXJgpljs7QgCQAMaOGE6iBZSsCeVo8fclN9JiTzS6S52fDeTPnbdgl9iK75UQ1DEHJOggo7IT76gipxVnGhS09cC962RneFie4KnIwB8cRSq/oS0zHCmtUmr6vsZe2w==";
-    private static final String testClearTextToken = "uid=ucarroll,o=LTER,dc=ecoinformatics,dc=org*https://pasta.lternet.edu/authentication*1371189798469*authenticated";
-    private static final String testDn = "uid=ucarroll,o=LTER,dc=ecoinformatics,dc=org";
-    private static final String testAuthSystem = "https://pasta.lternet.edu/authentication";
-    private static final Long testTimeToLive = 1371189798469L;
-    private static final String testGroup = "authenticated";
-    private static final String testSignature = "DoU9U2H16wEO090IbLXenrGZdR48i+gQo3iJFTSLq3WYZ9VrGJ4dcctmI7AhR1o3VWWG01ezu/uNrkz0b/GpIQWlW2S1oh/qlMveMS9bLX0Azzn/U5JOpiBA4FCG4V/6s7JKp2WD1QWquv1KUk4pUMS7JT+xoBvlEMpLhrUIpj7k+u41YuEFhu4lTP4nLrl1yWQkYIzBULYuqx+B0bXeLCYAXJgpljs7QgCQAMaOGE6iBZSsCeVo8fclN9JiTzS6S52fDeTPnbdgl9iK75UQ1DEHJOggo7IT76gipxVnGhS09cC962RneFie4KnIwB8cRSq/oS0zHCmtUmr6vsZe2w==";
+	private static final String testToken = "dWlkPWNoYXNlLG89RURJLGRjPWVkaXJlcG9zaXRvcnksZGM9b3JnKmh0dHBzOi8vcGFzdGEuZWRpcmVwb3NpdG9yeS5vcmcvYXV0aGVudGljYXRpb24qMTY1MTgzMTU5NTM4NSphdXRoZW50aWNhdGVkKnZldHRlZA==-Yx4CXRxUtQDibJn9yFY8lmq+cSTnGGLEOlsbZBncEM+YN7dAXc9MjaExi+cMK78bKy9Oy+Do+KUAPg83xo1pRX7R0xIr1o5f6GffpNUk8A+kYI3la5q1nt9IUN1tUOd1lUYVWYq9/3Zg9B9oxdZCPHh0L6wH1A2FWJZu9uQW+CvyiHXJyMSmlcDEn/md4THbGo7CtWDSZ44Sd29H9CfgpRQz+sSe00dOwaWtVYiwgTf5MYh58i8LrWVZZEOaFeDFg/TgozE0fqyN7d1SCAnewwPig1xRZn7Evm+57qbli+3wd0mfQtz9EnSNC5pKRhvOla714dmlUXGRUagEH02SRg==";
+    private static final String testClearTextToken = "uid=chase,o=EDI,dc=edirepository,dc=org*https://pasta.edirepository.org/authentication*1651831595385*authenticated*vetted";
+    private static final String testDn = "uid=chase,o=EDI,dc=edirepository,dc=org";
+    private static final String testAuthSystem = "https://pasta.edirepository.org/authentication";
+    private static final Long testTimeToLive = 1651831595385L;
+    private static final String testGroup1 = "authenticated";
+    private static final String testGroup2 = "vetted";
+    private static final String testSignature = "Yx4CXRxUtQDibJn9yFY8lmq+cSTnGGLEOlsbZBncEM+YN7dAXc9MjaExi+cMK78bKy9Oy+Do+KUAPg83xo1pRX7R0xIr1o5f6GffpNUk8A+kYI3la5q1nt9IUN1tUOd1lUYVWYq9/3Zg9B9oxdZCPHh0L6wH1A2FWJZu9uQW+CvyiHXJyMSmlcDEn/md4THbGo7CtWDSZ44Sd29H9CfgpRQz+sSe00dOwaWtVYiwgTf5MYh58i8LrWVZZEOaFeDFg/TgozE0fqyN7d1SCAnewwPig1xRZn7Evm+57qbli+3wd0mfQtz9EnSNC5pKRhvOla714dmlUXGRUagEH02SRg==";
 	
 	/*
 	 * Instance variables
@@ -213,7 +214,7 @@ public class TokenManagerTest {
         groups = this.tokenManager.getGroups();
 
         for(String group: groups) {
-            assertTrue(group.equals(testGroup));
+            assertTrue(group.equals(testGroup1) || group.equals(testGroup2));
         }
     }
 
