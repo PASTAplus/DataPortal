@@ -290,10 +290,10 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     }
     else {
       if (filter.length() == 0) {
-        filter.append("oid=" + startRowIdParam);
+        filter.append("startOid=" + startRowIdParam);
       }
       else {
-        filter.append("&oid=" + startRowIdParam);
+        filter.append("&startOid=" + startRowIdParam);
       }
     }
 
