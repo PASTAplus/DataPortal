@@ -60,15 +60,15 @@
 								<!-- Content -->
 								<h3 style="text-align: left">EDI Resources</h3>
 								<ul>
-									<li><a class="searchsubcat" href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a></li>
-                                    <li><a class="searchsubcat" href="https://dashboard.edirepository.org/dashboard/">EDI Dashboard</a></li>
-                                    <li><a class="searchsubcat" href="https://environmentaldatainitiative.org/submit-your-data/">How to Submit Data</a></li>
+									<li><a class="searchsubcat" href="http://edirepository.org">Environmental Data Initiative</a></li>
+                                    <li><a class="searchsubcat" href="https://dashboard.edirepository.org/dashboard">EDI Dashboard</a></li>
+                                    <li><a class="searchsubcat" href="https://edirepository.org/data/publish-data">How to Submit Data</a></li>
 								</ul>
 								<h3 style="text-align: left">LTER Resources</h3>
 								<ul>
                                     <li><a class="searchsubcat" href="http://www.lternet.edu">LTER Network</a></li>
 									<li><a class="searchsubcat" href="http://vocab.lternet.edu/vocab/vocab/index.php">LTER Network Controlled Vocabulary</a></li>
-									<li><a class="searchsubcat" href="http://unit.lternet.edu/unitregistry/">LTER Network Unit Registry</a></li>
+<%--									<li><a class="searchsubcat" href="http://unit.lternet.edu/unitregistry/">LTER Network Unit Registry</a></li>--%>
 								  </li>
 								</ul>
 								<!-- /Content -->

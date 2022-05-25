@@ -155,15 +155,15 @@ int year = ld.getYear();
 					</span>
 					<div class="row-fluid">
 						<div class="span12 ">
-							Copyright <%= year %> <a href="http://environmentaldatainitiative.org/">Environmental Data Initiative</a>.
+							Copyright <%= year %> <a href="http://edirepository.org/">Environmental Data Initiative</a>.
 							This material is based upon work supported by the National Science Foundation under grants 
 							#1931143 and #1931174. Any opinions, findings, conclusions, or recommendations
 							expressed in the material are those of the author(s) and do not necessarily reflect the views of 
 							the National Science Foundation. Please
-							<a href="mailto:info@environmentaldatainitiative.org">contact us</a> 
+							<a href="mailto:info@edirepository.org">contact us</a>
 							with questions, comments, or for technical assistance regarding this web site or the 
 							Environmental Data Initiative. Please read our
-							<a href="https://environmentaldatainitiative.org/environmental-data-initiative-privacy-policy">privacy policy</a>
+							<a href="https://edirepository.org/about/edi-policy#privacy-policy">privacy policy</a>
 							to know what information we collect about you and to understand your privacy rights.
 							<br/><br/>
 						</div>
