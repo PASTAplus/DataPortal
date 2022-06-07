@@ -800,7 +800,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String onClick = "onclick=\"return alert('To use these data with confidence, " +
 										"contact the data creator for information on context and fitness of use.')\"";
 									String downloadLink = 
-											String.format("%s <button class=\"btn btn-info btn-default\"><a href='%s' %s />Download</a></button>", fileInfo, href, onClick);
+											String.format("<button class=\"btn btn-info btn-default\"><a href='%s' %s />Download</a></button>", href, onClick);
 									ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
 									ArrayList<Annotation> entityAnnotations = getEntityAnnotations(entityId, entityList);
 									String annotationsHTMLList = "";
@@ -808,15 +808,15 @@ public class MapBrowseServlet extends DataPortalServlet {
 										annotationsHTMLList = annotationsToHTMLList(entityAnnotations);
 									}
 
-										String dex = "";
-										if (fileInfo.contains(".csv")) {
-											String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
-											String dexUrl = "https://dex.edirepository.org";
-											dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Data Explorer</a></button>", dexUrl, dataUrl);
-										}
+									String dex = "";
+									if (fileInfo.contains(".csv")) {
+										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
+										String dexUrl = "https://dex.edirepository.org";
+										dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Data Explorer</a></button>", dexUrl, dataUrl);
+									}
 
-										data += String.format("<li style=\"padding-bottom: 0.5em;\"><em>Name</em>: %s %s<br/><em>File</em>: %s %s</li>",
-												entityName, entitySizeStr, downloadLink, dex);
+									data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s<br/>%s %s</li>",
+											entityName, entitySizeStr, downloadLink, dex);
 								}
 								else {
 									entityName = "Data object";
@@ -940,7 +940,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 //
 				resourcesHTMLBuilder.append("<li>\n");
 				resourcesHTMLBuilder.append("<div>\n");				
-				resourcesHTMLBuilder.append("<form style=\"margin-bottom: 0px;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
+				resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0px;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
 				resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
 				resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Download Zip Archive\" >\n");
 				resourcesHTMLBuilder.append("</form>\n");
