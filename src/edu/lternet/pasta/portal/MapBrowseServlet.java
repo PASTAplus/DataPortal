@@ -800,7 +800,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String onClick = "onclick=\"return alert('To use these data with confidence, " +
 										"contact the data creator for information on context and fitness of use.')\"";
 									String downloadLink = 
-											String.format("<button class=\"btn btn-info btn-default\"><a href='%s' %s />Download</a></button>", href, onClick);
+											String.format("<span name='%s' class='tooltip'><button class=\"btn btn-info btn-default\"><a href='%s' %s />Download</a></button></span>",
+													fileInfo, href, onClick);
 									ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
 									ArrayList<Annotation> entityAnnotations = getEntityAnnotations(entityId, entityList);
 									String annotationsHTMLList = "";
