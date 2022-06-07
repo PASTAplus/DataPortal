@@ -2510,9 +2510,10 @@ select.select-menu {
 .tooltip {
 	display: inline;
 	position: relative;
-	font-family: 'Open Sans';
-	line-height: 20px;
-	font-size: 14px;
+	font-family: serif;
+	line-height: 1em;
+	font-size: 1em;
+	font-weight: bold;
 	color: #5990bd;
 }
 
