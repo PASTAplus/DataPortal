@@ -2508,20 +2508,20 @@ select.select-menu {
 
 /* LTER TOOLTIP CSS */
 .tooltip {
-	display: inline;
+	display: inline-block;
 	position: relative;
-	font-family: serif;
+	font-family: sans-serif;
 	line-height: 1em;
 	font-size: 1em;
-	font-weight: bold;
+	font-weight: normal;
 	color: #5990bd;
 }
 
 .tooltip:hover:after {
     background: #333;
-    background: rgba(0,0,0,.8);
+    background: rgba(0,0,0);
 /*    font-style: italic;  */
-    font-size: 11px;
+    font-size: 1em;
     border-radius: 5px;
     bottom: 26px;
     color: #fff;
@@ -2530,12 +2530,12 @@ select.select-menu {
     padding: 5px 5px;
     position: absolute;
     z-index: 98;
-    width: 360px;
+    width: max-content;
 }
 
 .tooltip:hover:before {
     border: solid;
-    border-color: #333 transparent;
+    border-color: #000000 transparent;
     border-width: 6px 6px 0 6px;
     bottom: 20px;
     content: "";
