@@ -929,9 +929,19 @@ public class MapBrowseServlet extends DataPortalServlet {
 					data += String.format("<li>%s</li>\n", offlineMsg);
 				}
 
+				resourcesHTMLBuilder.append("<li>\n");
+				resourcesHTMLBuilder.append("<div>\n");
+				resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
+				resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
+				resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\" >\n");
+				resourcesHTMLBuilder.append("</form>\n");
+				resourcesHTMLBuilder.append("</div>\n");
+				resourcesHTMLBuilder.append("</li>\n");
+
 				String listOrder = "ol";
-				String downloadStr = downloadableData ? "Download Data" : "Data";
-				resourcesHTMLBuilder.append(String.format("<li>%s\n", downloadStr));
+//				String downloadStr = downloadableData ? "Download Data" : "Data";
+//				resourcesHTMLBuilder.append(String.format("<li>%s\n", downloadStr));
+				resourcesHTMLBuilder.append("<li>Data Entities:\n");
 				resourcesHTMLBuilder.append(String.format("<%s>\n", listOrder));
 				resourcesHTMLBuilder.append(data);
 				resourcesHTMLBuilder.append(String.format("</%s>\n", listOrder));
@@ -939,14 +949,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 //				resourcesHTMLBuilder.append("<li>&nbsp;</li>\n");
 //
-				resourcesHTMLBuilder.append("<li>\n");
-				resourcesHTMLBuilder.append("<div>\n");				
-				resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0px;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
-				resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
-				resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Download Zip Archive\" >\n");
-				resourcesHTMLBuilder.append("</form>\n");
-				resourcesHTMLBuilder.append("</div>\n");
-				resourcesHTMLBuilder.append("</li>\n");
 
 				/*
 				hasIntellectualRights = emlObject.hasIntellectualRights();
