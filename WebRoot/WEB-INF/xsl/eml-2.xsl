@@ -1869,7 +1869,7 @@
   <!-- download XML part -->
   <xsl:template name="xml">
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: xml</xsl:text></xsl:message></xsl:if>
-    <br/><a target="_blank" href="./metadataviewer?packageid={$packageID}&#38;contentType=application/xml">Download as XML</a> (in Ecological Metadata Language)
+    <br/><button class="btn btn-info btn-default"><a target="_blank" href="./metadataviewer?packageid={$packageID}&#38;contentType=application/xml">View EML as XML</a></button>
   </xsl:template>
   
   <!-- This module is for dataset -->
