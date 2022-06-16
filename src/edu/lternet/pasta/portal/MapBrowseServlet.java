@@ -741,7 +741,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 							report = "<li><a class=\"searchsubcat\" href=\"./reportviewer?packageid="
 									+ packageId
-									+ "\" target=\"_blank\">View Data Package Report</a></li>\n";
+									+ "\" target=\"_blank\">View Quality Report</a></li>\n";
 
 						}
 						else if (resource.contains(dataUri)) {
@@ -813,7 +813,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									if (fileInfo.contains(".csv")) {
 										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
 										String dexUrl = "https://dex.edirepository.org";
-										dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Data Explorer</a></button>", dexUrl, dataUrl);
+										dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Explore Data</a></button>", dexUrl, dataUrl);
 									}
 
 									data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s<br/>%s %s</li>",
