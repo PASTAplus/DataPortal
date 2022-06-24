@@ -324,7 +324,14 @@
 
           <div class='row-fluid distance_1'>
             <div class='span12'>
-              <sup>*</sup><small><em>Time values are Mountain TZ (default 00:00:00).</em></small>
+              <ul>
+                <li>
+                  'Download' returns an unordered CSV file
+                </li>
+                <li>
+                  All times are in the Mountain timezone
+                </li>
+              </ul>
             </div>
           </div>
         </div>

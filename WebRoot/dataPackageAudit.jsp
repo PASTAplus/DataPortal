@@ -230,6 +230,19 @@
               <input class="btn btn-info btn-default" name="reset" type="reset" value="Clear"/>
             </div>
           </div>
+
+          <div class='row-fluid distance_1'>
+            <div class='span12'>
+              <ul>
+                <li>
+                  'Download' returns an unordered CSV file
+                </li>
+                <li>
+                  All times are in the Mountain timezone
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div class="row-fluid">
