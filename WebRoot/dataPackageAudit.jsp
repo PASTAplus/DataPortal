@@ -235,7 +235,7 @@
             <div class='span12'>
               <ul>
                 <li>
-                  'Download' returns an unordered CSV file
+                  Download CSV results may not be time-ordered
                 </li>
                 <li>
                   All times are in the Mountain timezone
