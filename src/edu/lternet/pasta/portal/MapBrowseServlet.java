@@ -812,7 +812,12 @@ public class MapBrowseServlet extends DataPortalServlet {
 									String dex = "";
 									if (fileInfo.contains(".csv")) {
 										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
-										String dexUrl = "https://dex.edirepository.org";
+										String dexUrl = null;
+										if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
+											dexUrl = "https://dex-d.edirepository.org";
+										} else {  // staging or production host
+											dexUrl = "https://dex.edirepository.org";
+										}
 										dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Explore Data</a></button>", dexUrl, dataUrl);
 									}
 
