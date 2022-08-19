@@ -98,12 +98,6 @@
         }
     }
 
-    String outage = "EDI System Maintenance: the EDI Data Repository will undergo planned maintenance from 6 PM MDT " +
-            "on Tuesday, 16 August 2022, through Thursday, 18 August 2022. During this period, EDI Data Repository " +
-            "services may be unavailable or in READ-ONLY mode. We apologize for any inconvenience this may cause. " +
-            "See this <a href='https://edirepository.org/news/news-20220809.00'><u>news article</u></a> for more " +
-            "information.";
-
     DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
     String pastaHost = dpmc.getPastaHost();
     String tier = null;
@@ -224,9 +218,6 @@
                                     <strong><%= downtimeHTML %></strong>
                                 </div>
                             <% } %>
-                                <div class="alert alert-info">
-                                    <strong><%= outage %></strong>
-                                </div>
                             <div class="recent_title">
 								<h2>Welcome to the EDI Data Portal</h2>
 							</div>
