@@ -185,7 +185,7 @@
           </div>
         </div>
 
-        <div class='row-fluid'>
+        <div class='row-fluid distance_2'>
           <div class='span12'>
             <label class="labelBold">HTML Code:</label>
           </div>
@@ -312,9 +312,18 @@
 
           </div>
         </div>
+
         <div class='row-fluid'>
           <div class='span12'>
+            <label class="labelBold">Include robots:
+              <br>
+              <input name="robots" type="checkbox" value="robots"/>
+            </label>
+          </div>
+        </div>
 
+        <div class='row-fluid distance_2'>
+          <div class='span12'>
             <div class='pasta-button-row'>
               <input class="btn btn-info" name="download" type="submit" value="Download"/>
               <input class="btn btn-info btn-default" name="submit" type="submit" value="View"/>

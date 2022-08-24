@@ -57,6 +57,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.lternet.pasta.client.RidareClient;
 import edu.lternet.pasta.client.AuditManagerClient;
 import edu.lternet.pasta.client.CiteClient;
 import edu.lternet.pasta.client.DataPackageManagerClient;
@@ -482,6 +483,22 @@ public class MapBrowseServlet extends DataPortalServlet {
 			            e.printStackTrace();
 			        }
 
+
+					// Ridare
+
+					try {
+						RidareClient ridareClient = new RidareClient(uid);
+						abstractHTML = ridareClient.fetchTextType(packageId, "%2Fabstract");
+						// citationHTML = String.format("<ul class=\"no-list-style\"><li><div id=\"citation\">%s</div></li><li></li></ul>", citation);
+					}
+					catch (Exception e) {
+						abstractHTML = String.format("Error fetching citation from Ridare server for %s %s: %s", packageId, "%2Fabstract", e.getMessage());
+						// logger.error(msg);
+						// e.printStackTrace();
+					}
+
+					//
+
 					try {
 						CiteClient citeClient = new CiteClient(uid);
 						String citation = citeClient.fetchCitation(packageId);
@@ -581,11 +598,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 						creatorsHTML = creatorsHTMLBuilder.toString();
 					}
 					
-					String abstractText = emlObject.getAbstractText();
-
-					if (abstractText != null) {
-						abstractHTML = toSingleLine(abstractText);
-					}
+					// String abstractText = emlObject.getAbstractText();
+					//
+					// if (abstractText != null) {
+					// 	abstractHTML = toSingleLine(abstractText);
+					// }
 
 					
 					String intellectualRightsText = emlObject.getIntellectualRightsText();

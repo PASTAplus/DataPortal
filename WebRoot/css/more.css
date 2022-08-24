@@ -1,0 +1,37 @@
+/*body {*/
+/*    font-size: 10px;*/
+/*    line-height: 1em;*/
+/*    background-color: black;*/
+/*    color: gray;*/
+/*}*/
+
+.ridare-text {
+}
+
+.ridare-content {
+    line-height: 1em;
+    max-height: 6em;
+    overflow-y: hidden;
+    /*color: green;*/
+    word-break: break-word;
+}
+
+.ridare-more {
+    display: none;
+    cursor: pointer;
+    color: rgb(121, 153, 174);
+    margin: 1em 0 1em 0;
+}
+
+.ridare-more:after {
+    content: "Show more >"
+}
+
+.ridare-less:after {
+    /*content: "< Show less"*/
+}
+
+.ridare-more:hover {
+    text-decoration: underline;
+}
+
