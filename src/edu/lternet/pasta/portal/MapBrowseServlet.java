@@ -488,7 +488,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					try {
 						RidareClient ridareClient = new RidareClient(uid);
-						abstractHTML = ridareClient.fetchTextType(packageId, "%2Fabstract");
+						abstractHTML = ridareClient.fetchTextType(packageId, "/dataset/abstract");
 					}
 					catch (Exception e) {
 						logger.error(String.format("Error fetching abstract from Ridare server for %s %s: %s", packageId, "%2Fabstract", e.getMessage()));

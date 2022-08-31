@@ -31,6 +31,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import java.net.URLEncoder;
+
 
 public class RidareClient extends PastaClient {
   /*
@@ -92,9 +94,13 @@ public class RidareClient extends PastaClient {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     String htmlStr;
 
-    String serviceURL =
-        String.format("%s/%s/%s?env=%s", BASE_SERVICE_URL, packageId, textTypeXpath,
-            this.tier);
+    String serviceURL = String.format(
+        "%s/%s/%s?env=%s",
+        BASE_SERVICE_URL,
+        packageId,
+        URLEncoder.encode(textTypeXpath, "UTF-8"),
+        this.tier
+    );
 
     try {
       httpGet = new HttpGet(serviceURL);
