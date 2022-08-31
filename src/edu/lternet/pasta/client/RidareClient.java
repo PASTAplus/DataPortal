@@ -88,6 +88,8 @@ public class RidareClient extends PastaClient {
    */
   public String fetchTextType(String packageId, String textTypeXpath) throws Exception
   {
+    // Force a package ID that is not available locally. This allows testing of more
+    // complex TextType elements.
     // packageId = "knb-lter-cap.633.4";
 
     HttpGet httpGet;

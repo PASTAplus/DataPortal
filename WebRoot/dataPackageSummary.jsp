@@ -323,13 +323,9 @@
                           <div class="table-cell">
                             <ul class="no-list-style">
                               <li>
-                                <div class="ridare-text">
-                                  <div class="ridare-content">
-                                    <%= abstractHTML %>
-                                  </div>
-                                  <div class="ridare-more">
-                                  </div>
-                                </div>
+                                <%--This section is wrapped with ridare- classes when returned by the Ridare service.
+                                If Ridare failed, it is wrapped by the servlet. --%>
+                                <%= abstractHTML %>
                               </li>
                             </ul>
                           </div>
