@@ -323,7 +323,13 @@
                           <div class="table-cell">
                             <ul class="no-list-style">
                               <li>
-                                <%= abstractHTML %>
+                                <div class="ridare-text">
+                                  <div class="ridare-content">
+                                    <%= abstractHTML %>
+                                  </div>
+                                  <div class="ridare-more">
+                                  </div>
+                                </div>
                               </li>
                             </ul>
                           </div>
