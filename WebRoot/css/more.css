@@ -5,33 +5,39 @@
 /*    color: gray;*/
 /*}*/
 
+:root {
+/*     --ridare-max-height: 20px; */
+    --show-more-color: rgb(121, 153, 174);
+}
+
 .ridare-text {
+    line-height: 1em;
 }
 
 .ridare-content {
-    line-height: 1em;
-    max-height: 6em;
-    overflow-y: hidden;
-    /*color: green;*/
-    word-break: break-word;
+    margin-bottom: 1rem;
+}
+
+.ridare-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .ridare-more {
-    display: none;
+    color: var(--show-more-color);
     cursor: pointer;
-    color: rgb(121, 153, 174);
-    margin: 1em 0 1em 0;
 }
 
-.ridare-more:after {
-    content: "Show more >"
+.ridare-more-show::after {
+    content: "Show more >";
 }
 
-.ridare-less:after {
-    /*content: "< Show less"*/
+.ridare-less-show::after {
+    content: "< Show less"
 }
 
-.ridare-more:hover {
+.ridare-more-show:hover, .ridare-less-show:hover {
     text-decoration: underline;
 }
-

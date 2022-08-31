@@ -86,6 +86,8 @@ public class RidareClient extends PastaClient {
    */
   public String fetchTextType(String packageId, String textTypeXpath) throws Exception
   {
+    // packageId = "knb-lter-cap.633.4";
+
     HttpGet httpGet;
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     String htmlStr;

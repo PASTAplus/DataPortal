@@ -144,10 +144,7 @@
   <link href="bootstrap/css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css">
 
 
-
-
   <link rel="stylesheet" href="./css/more.css" type="text/css"/>
-
 
 
   <!-- JS
@@ -197,21 +194,6 @@
       }
   </style>
   <% } %>
-
-  <%--<style>--%>
-  <%--    #more {--%>
-  <%--        display: none;--%>
-  <%--    }--%>
-
-  <%--    .button_moreless {--%>
-  <%--        border: none;--%>
-  <%--        background-color: white;--%>
-  <%--        color: #5990bd;--%>
-  <%--        text-align: left;--%>
-  <%--        padding-left: 0;--%>
-  <%--    }--%>
-  <%--</style>--%>
-
 
 </head>
 
@@ -264,15 +246,13 @@
                 </h1>
               </div>
 
-
               <span class="row-fluid separator_border"></span>
-
             </div>
+
             <div class="row-fluid">
               <div class="span12">
                 <div class="display-table">
                   <div class="watermark">
-
                     <div class="table-row">
                       <div class="table-cell text-align-right">
                         <label class="labelBold">Title:</label>
@@ -289,7 +269,12 @@
                       <div class="table-cell">
                         <ul class="no-list-style">
                           <li>
-                            <div><%= creatorsHTML %>
+                            <div class="ridare-text">
+                              <div class="ridare-content">
+                                <%= creatorsHTML %>
+                              </div>
+                              <div class="ridare-more">
+                              </div>
                             </div>
                           </li>
                         </ul>
@@ -315,7 +300,11 @@
                         <label class="labelBold">Citation:</label>
                       </div>
                       <div class="table-cell">
-                        <%= citationHTML %>
+                        <ul class="no-list-style">
+                          <li>
+                            <%= citationHTML %>
+                          </li>
+                        </ul>
                         <ul class="no-list-style">
                           <li>
                             <button class="btn btn-info btn-default" onclick="copyCitation()">Copy Citation</button>
@@ -323,7 +312,6 @@
                         </ul>
                       </div>
                     </div>
-
 
                     <c:set var="showAbstract" value="<%= showAbstract %>"/>
                     <c:choose>
@@ -417,7 +405,12 @@
                           <div class="table-cell">
                             <ul class="no-list-style">
                               <li>
-                                <div class="more"><%= intellectualRightsHTML %>
+                                <div class="ridare-text">
+                                  <div class="ridare-content">
+                                    <%= intellectualRightsHTML %>
+                                  </div>
+                                  <div class="ridare-more">
+                                  </div>
                                 </div>
                               </li>
                             </ul>
@@ -470,17 +463,17 @@
                     </div>
 
                     <!--
-									<div class="table-row">										
-										<div class="table-cell text-align-right">
-											<label class="labelBold">Citation:</label>
-										</div>
-										<div class="table-cell">
-											<ul class="no-list-style">
-												<li><%= citationLinkHTML %></li>
-											</ul>
-										</div>											
-									</div>
--->
+                    <div class="table-row">
+                      <div class="table-cell text-align-right">
+                        <label class="labelBold">Citation:</label>
+                      </div>
+                      <div class="table-cell">
+                        <ul class="no-list-style">
+                          <li><%= citationLinkHTML %></li>
+                        </ul>
+                      </div>
+                    </div>
+                    -->
 
                     <c:set var="showCodeGeneration" value="<%= showCodeGeneration %>"/>
                     <c:if test="${showCodeGeneration}">
@@ -503,7 +496,14 @@
                       </div>
                       <div class="table-cell">
                         <ul class="no-list-style">
-                          <li><%= provenanceHTML %>
+                          <li>
+                            <div class="ridare-text">
+                              <div class="ridare-content">
+                                <%= provenanceHTML %>
+                              </div>
+                              <div class="ridare-more">
+                              </div>
+                            </div>
                           </li>
                         </ul>
                       </div>
@@ -542,7 +542,6 @@
 
 <jsp:include page="footer.jsp"/>
 
-
 <!-- jqWidgets JavaScript for jqxTree widget -->
 <script type="text/javascript" src="./js/jqwidgets-ver3.2.1/jqxcore.js"></script>
 <script type="text/javascript" src="./js/jqwidgets-ver3.2.1/jqxexpander.js"></script>
@@ -558,42 +557,18 @@ $("#jqxExpander").jqxExpander(
 </script>
 <!-- End jqWidgets JavaScript for jqxTree widget -->
 
-<script src="./js/more_less.js" type="text/javascript"></script>
 <script src="./js/more.js" type="text/javascript"></script>
-
 
 <script type="text/javascript">
 function copyCitation()
 {
-  /* Get the text field */
   var copyText = document.getElementById("citation");
-
   var selection = window.getSelection();
   var range = document.createRange();
   range.selectNodeContents(copyText);
   selection.removeAllRanges();
   selection.addRange(range);
   document.execCommand("Copy");
-}
-</script>
-
-<script>
-function moreless()
-{
-  var dots = document.getElementById("dots");
-  var moreText = document.getElementById("more");
-  var btnText = document.getElementById("morelessBtn");
-
-  if (dots.style.display === "none") {
-    dots.style.display = "inline";
-    btnText.innerHTML = "Show more &gt;";
-    moreText.style.display = "none";
-  }
-  else {
-    dots.style.display = "none";
-    btnText.innerHTML = "&lt; Show less";
-    moreText.style.display = "inline";
-  }
 }
 </script>
 
