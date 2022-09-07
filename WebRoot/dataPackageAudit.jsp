@@ -96,8 +96,8 @@
 
   <div class="row-fluid ">
     <div class="container">
-      <div class='row-fluid'>
-        <div class='span12'>
+      <div class="row-fluid">
+        <div class="span12">
         </div>
       </div>
 
@@ -186,17 +186,17 @@
                   <label class="labelBold">User Agent:</label>
                   <input name="userAgent" size="15" type="text"/>
                 </td>
-                <td class='pasta-radio-button-col'>
+                <td class="pasta-radio-button-col">
                   <label class="labelBold">Matching User Agents:</label>
                   <%--<div class='pasta-radio-button-col'>--%>
                   <span>
                       <input type="radio" id="id-useragent-include" name="userAgentNegate" value="0" checked>
-                      <label class='pasta-inline' for="id-useragent-include">Include</label>
+                      <label class="pasta-inline" for="id-useragent-include">Include</label>
                     </span>
                   <br>
                   <span>
                       <input type="radio" id="id-useragent-exclude" name="userAgentNegate" value="1">
-                      <label class='pasta-inline' for="id-useragent-exclude">Exclude</label>
+                      <label class="pasta-inline" for="id-useragent-exclude">Exclude</label>
                     </span>
                   <%--</div>--%>
                 </td>
@@ -224,15 +224,36 @@
 
         <div class="row-fluid">
           <div class="span12">
-            <div class='pasta-button-row'>
+            <table>
+              <tr>
+                <td>
+                  <label class="labelBold">Robots:</label>
+                  <span>
+                      <input type="radio" id="id-robots-include" name="includeRobots" value="1">
+                      <label class="pasta-inline" for="id-robots-include">Include</label>
+                    </span>
+                  <br>
+                  <span>
+                      <input type="radio" id="id-robots-exclude" name="includeRobots" value="0" checked>
+                      <label class="pasta-inline" for="id-robots-exclude">Exclude</label>
+                    </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="row-fluid distance_2">
+          <div class="span12">
+            <div class="pasta-button-row">
               <input class="btn btn-info" name="download" type="submit" value="Download"/>
               <input class="btn btn-info btn-default" name="submit" type="submit" value="View"/>
               <input class="btn btn-info btn-default" name="reset" type="reset" value="Clear"/>
             </div>
           </div>
 
-          <div class='row-fluid distance_1'>
-            <div class='span12'>
+          <div class="row-fluid distance_1">
+            <div class="span12">
               <ul>
                 <li>
                   Download CSV results may not be time-ordered

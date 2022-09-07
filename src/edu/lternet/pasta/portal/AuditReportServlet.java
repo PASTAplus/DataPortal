@@ -318,6 +318,8 @@ public class AuditReportServlet extends DataPortalServlet {
       request.setAttribute("userAgent", "%");
       request.setAttribute("userAgentNegate", "0");
 
+      request.setAttribute("includeRobots", "0");
+
       request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 
       String forward = "./auditReportTable.jsp";
