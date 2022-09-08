@@ -486,15 +486,17 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					// Ridare
 
-					try {
-						RidareClient ridareClient = new RidareClient(uid);
-						abstractHTML = ridareClient.fetchTextType(packageId, "/dataset/abstract");
-					}
-					catch (Exception e) {
-						logger.error(String.format("Error fetching abstract from Ridare server for %s %s: %s", packageId, "%2Fabstract", e.getMessage()));
-						e.printStackTrace();
-						abstractHTML = String.format("<div>%s</div>", emlObject.getAbstractText());
-					}
+					abstractHTML = String.format("<div>%s</div>", emlObject.getAbstractText());
+
+					// try {
+					// 	RidareClient ridareClient = new RidareClient(uid);
+					// 	abstractHTML = ridareClient.fetchTextType(packageId, "/dataset/abstract");
+					// }
+					// catch (Exception e) {
+					// 	logger.error(String.format("Error fetching abstract from Ridare server for %s %s: %s", packageId, "%2Fabstract", e.getMessage()));
+					// 	e.printStackTrace();
+					// 	abstractHTML = String.format("<div>%s</div>", emlObject.getAbstractText());
+					// }
 
 					// Cite
 
