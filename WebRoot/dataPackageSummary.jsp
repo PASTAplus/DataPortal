@@ -505,13 +505,13 @@
                       <div class="table-cell">
                         <ul class="no-list-style">
                           <li>
-                            <div class="ridare-text">
-                              <div class="ridare-content">
+                            <!--<div class="ridare-text">-->
+                            <!--  <div class="ridare-content">-->
                                 <%= provenanceHTML %>
-                              </div>
-                              <div class="ridare-more">
-                              </div>
-                            </div>
+                              <!--</div>-->
+                              <!--<div class="ridare-more">-->
+                              <!--</div>-->
+                            <!--</div>-->
                           </li>
                         </ul>
                       </div>
