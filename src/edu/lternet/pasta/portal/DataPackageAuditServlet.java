@@ -245,6 +245,16 @@ public class DataPackageAuditServlet extends DataPortalServlet {
       }
     }
 
+    String includeRobotsParam = (String) request.getParameter("includeRobots");
+    if (Objects.equals(includeRobotsParam, "1")) {
+      if (filter.length() == 0) {
+          filter.append("robots");
+        }
+        else {
+          filter.append("&robots");
+        }
+      }
+
     boolean isDownload = getBooleanParameter(request, "download", false);
     if (isDownload) {
       InputStream inputStream = null;
@@ -290,10 +300,10 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     }
     else {
       if (filter.length() == 0) {
-        filter.append("oid=" + startRowIdParam);
+        filter.append("startOid=" + startRowIdParam);
       }
       else {
-        filter.append("&oid=" + startRowIdParam);
+        filter.append("&startOid=" + startRowIdParam);
       }
     }
 
@@ -341,6 +351,8 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 
     request.setAttribute("userAgent", userAgentParam);
     request.setAttribute("userAgentNegate", "0");
+    
+    request.setAttribute("includeRobots", "0");
 
     request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 

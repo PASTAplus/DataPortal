@@ -185,7 +185,7 @@
           </div>
         </div>
 
-        <div class='row-fluid'>
+        <div class='row-fluid distance_2'>
           <div class='span12'>
             <label class="labelBold">HTML Code:</label>
           </div>
@@ -312,9 +312,30 @@
 
           </div>
         </div>
-        <div class='row-fluid'>
-          <div class='span12'>
 
+        <div class="row-fluid">
+          <div class="span12">
+            <table>
+              <tr>
+                <td>
+                  <label class="labelBold">Robots:</label>
+                  <span>
+                      <input type="radio" id="id-robots-include" name="includeRobots" value="1">
+                      <label class="pasta-inline" for="id-robots-include">Include</label>
+                    </span>
+                  <br>
+                  <span>
+                      <input type="radio" id="id-robots-exclude" name="includeRobots" value="0" checked>
+                      <label class="pasta-inline" for="id-robots-exclude">Exclude</label>
+                    </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class='row-fluid distance_2'>
+          <div class='span12'>
             <div class='pasta-button-row'>
               <input class="btn btn-info" name="download" type="submit" value="Download"/>
               <input class="btn btn-info btn-default" name="submit" type="submit" value="View"/>
@@ -324,7 +345,14 @@
 
           <div class='row-fluid distance_1'>
             <div class='span12'>
-              <sup>*</sup><small><em>Time values are Mountain TZ (default 00:00:00).</em></small>
+              <ul>
+                <li>
+                  Download CSV results may not be time-ordered
+                </li>
+                <li>
+                  All times are in the Mountain timezone
+                </li>
+              </ul>
             </div>
           </div>
         </div>

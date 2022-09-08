@@ -60,16 +60,16 @@
 								<!-- Content -->
 								<h3>People</h3>
 <ul>
-	<li><a class="searchsubcat" href="https://environmentaldatainitiative.org/team/corinna-gries/">Corinna Gries</a>, 
+	<li><a class="searchsubcat" href="https://edirepository.org/about/about-edi#team">Corinna Gries</a>,
 	    Principal Investigator, University of Wisconsin
 	</li>
-	<li><a class="searchsubcat" href="https://environmentaldatainitiative.org/team/mark-servilla-pi/">Mark Servilla</a>, 
+	<li><a class="searchsubcat" href="https://edirepository.org/about/about-edi#team/">Mark Servilla</a>,
 		Principal Investigator, University of New Mexico
 	</li>
 </ul>
 								<h3>E-Mail Address</h3>
 								<ul class="no-list-style">
-									<li><a href="mailto:support@environmentaldatainitiative.org">support@environmentaldatainitiative.org</a></li>
+									<li><a href="mailto:support@edirepository.org">support@edirepository.org</a></li>
 								</ul>
 								<h3>Mailing Address</h3>
 								<ul class="no-list-style">

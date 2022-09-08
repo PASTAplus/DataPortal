@@ -49,6 +49,8 @@
     String userAgent = (String) request.getAttribute("userAgent");
     String userAgentNegate = (String) request.getAttribute("userAgentNegate");
 
+    String includeRobots = (String) request.getAttribute("includeRobots");
+
     Integer pageIdx = (Integer) request.getAttribute("pageIdx");
 %>
 
@@ -138,6 +140,8 @@
                             <input type='hidden' name='userAgent' value='<%= userAgent %>'>
                             <input type='hidden' name='userAgentNegate' value='<%= userAgentNegate %>'>
 
+                            <input type='hidden' name='includeRobots' value='<%= includeRobots %>'>
+
                             <input type='hidden' name='startRowId' value='0'>
                             <input type='hidden' name='getPrev' value='0'>
                             <input type='hidden' name='pageIdx' value='<%= 0 %>'>
@@ -170,6 +174,8 @@
 
                             <input type='hidden' name='userAgent' value='<%= userAgent %>'>
                             <input type='hidden' name='userAgentNegate' value='<%= userAgentNegate %>'>
+
+                            <input type='hidden' name='includeRobots' value='<%= includeRobots %>'>
 
                             <input type='hidden' name='startRowId' value='<%= firstRowId %>'>
                             <input type='hidden' name='getPrev' value='1'>
@@ -205,6 +211,8 @@
 
                             <input type='hidden' name='userAgent' value='<%= userAgent %>'>
                             <input type='hidden' name='userAgentNegate' value='<%= userAgentNegate %>'>
+
+                            <input type='hidden' name='includeRobots' value='<%= includeRobots %>'>
 
                             <input type='hidden' name='startRowId' value='<%= lastRowId %>'>
                             <input type='hidden' name='pageIdx' value='<%= pageIdx + 1 %>'>

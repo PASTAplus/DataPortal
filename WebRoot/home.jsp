@@ -224,9 +224,9 @@
 							<span class="row-fluid separator_border"></span>
 						</div>
 						<div class="row-fluid">
-<h2 style="text-align: center"><a class="searchsubcat"  href="https://environmentaldatainitiative.org/submit-your-data/">How to Submit Data</a></h2>
+<h2 style="text-align: center"><a class="searchsubcat"  href="https://edirepository.org/data/publish-data">How to Submit Data</a></h2>
 <p>Data are one of the most valuable products curated by the 
-<a class="searchsubcat" href="https://environmentaldatainitiative.org">Environmental Data Initiative</a>
+<a class="searchsubcat" href="https://edirepository.org">Environmental Data Initiative</a>
 (EDI). Data and metadata derived from publicly funded research are made available 
 through this website with as few restrictions as possible, and on a 
 non-discriminatory basis. In return, EDI expects users of data to act ethically 
@@ -242,7 +242,7 @@ well-designed and well-documented data. To understand data fully, please read
 the associated metadata and contact data providers if you have any questions. 
 Data may be used in a manner conforming with the license information found in 
 the “Intellectual Rights” section of the data package metadata or defaults to the 
-<a class="searchsubcat" href="https://environmentaldatainitiative.org/edi-data-policy/">EDI Data Policy</a>. 
+<a class="searchsubcat" href="https://edirepository.org/about/edi-policy#data-policy">EDI Data Policy</a>.
 The Environmental Data Initiative shall not be liable for any damages resulting 
 from misinterpretation or misuse of the data or metadata.</p>
 						</div>

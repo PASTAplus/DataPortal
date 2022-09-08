@@ -123,7 +123,7 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 						<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI">
 						EDI Data Policy:</p>
-					<li><a href="https://environmentaldatainitiative.org/edi-data-policy-2/">Data Policy</a> </li>
+					<li><a href="https://edirepository.org/about/edi-policy#data-policy">Data Policy</a> </li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img class="mini-arrow-margin" alt="" src="images/mini_arrow.png" title="EDI">
 					Browse Data By:</p>
@@ -190,12 +190,12 @@
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Resources:</p>
-				  <li><a href="https://environmentaldatainitiative.org/submit-your-data/">How to Submit Data</a></li>
+				  <li><a href="https://edirepository.org/data/publish-data">How to Submit Data</a></li>
 				  <li><a href="resources.jsp">Additional Resources</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					About:</p>
-                  <li><a href="https://environmentaldatainitiative.org/">About the EDI Project</a></li>
+                  <li><a href="https://edirepository.org/about/about-edi">About the EDI Project</a></li>
 				  <li><a href="about.jsp">About the EDI Data Portal</a></li>
 				</ul>
 				</li>

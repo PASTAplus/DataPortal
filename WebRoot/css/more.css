@@ -1,0 +1,45 @@
+/*body {*/
+/*    font-size: 10px;*/
+/*    line-height: 1em;*/
+/*    background-color: black;*/
+/*    color: gray;*/
+/*}*/
+
+:root {
+    /* Max number of lines to show by default in a Ridare section */
+    --ridare-max-lines: 3;
+    --show-more-color: rgb(121, 153, 174);
+}
+
+.ridare-text {
+    /*line-height: 1em;*/
+}
+
+.ridare-content {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--ridare-max-lines);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.ridare-content-all {
+    margin-bottom: 1rem;
+}
+
+.ridare-more {
+    color: var(--show-more-color);
+    cursor: pointer;
+}
+
+.ridare-more-show::after {
+    content: "Show more >";
+}
+
+.ridare-less-show::after {
+    content: "< Show less"
+}
+
+.ridare-more-show:hover, .ridare-less-show:hover {
+    text-decoration: underline;
+}

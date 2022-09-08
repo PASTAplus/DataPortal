@@ -285,10 +285,10 @@ public class AuditReportServlet extends DataPortalServlet {
       }
       else {
         if (filter.length() == 0) {
-          filter.append("oid=" + startRowIdParam);
+          filter.append("startOid=" + startRowIdParam);
         }
         else {
-          filter.append("&oid=" + startRowIdParam);
+          filter.append("&startOid=" + startRowIdParam);
         }
       }
 
@@ -317,6 +317,8 @@ public class AuditReportServlet extends DataPortalServlet {
 
       request.setAttribute("userAgent", "%");
       request.setAttribute("userAgentNegate", "0");
+
+      request.setAttribute("includeRobots", "0");
 
       request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 

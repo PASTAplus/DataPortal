@@ -105,8 +105,8 @@
 							<span class="row-fluid separator_border"></span>
 							<h3>
 								Use your EDI account to upload data (contact
-								<a href="mailto:support@environmentaldatainitiative.org">
-								support@environmentaldatainitiative.org</a> to create an account
+								<a href="mailto:support@edirepository.org">
+								support@edirepository.org</a> to create an account
 								or <a href="https://dashboard.edirepository.org/dashboard/auth/reset_password_init">click
 								here</a> to reset your password):
 							</h3>
@@ -160,7 +160,7 @@
 								   <a href="https://<%=auth%>.edirepository.org/auth/login/orcid?target=<%=target%>"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
 								<br/><br/><br/>
 								<p>Please read our
-									<a class="searchsubcat" href="https://environmentaldatainitiative.org/environmental-data-initiative-privacy-policy">privacy policy</a>
+									<a class="searchsubcat" href="https://edirepository.org/about/edi-policy#privacy-policy">privacy policy</a>
 									to know what information we collect about you and to understand your privacy rights.</p>
 								<!-- /Content -->
 							</div>
