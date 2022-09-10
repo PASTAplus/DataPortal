@@ -269,11 +269,13 @@
                       <div class="table-cell">
                         <ul class="no-list-style">
                           <li>
-                            <div class="ridare-text">
-                              <div class="ridare-content">
-                                <%= creatorsHTML %>
+                            <div class="pasta-more-text">
+                              <div class="pasta-more-content">
+                                <div>
+                                  <%= creatorsHTML %>
+                                </div>
                               </div>
-                              <div class="ridare-more">
+                              <div class="pasta-more">
                               </div>
                             </div>
                           </li>
@@ -323,13 +325,13 @@
                           <div class="table-cell">
                             <ul class="no-list-style">
                               <li>
-                                  <%--This section is wrapped with ridare- classes when returned by the Ridare service.
-                                  If Ridare failed, it is wrapped by the servlet. --%>
-                                <div class="ridare-text">
-                                  <div class="ridare-content">
-                                    <%= abstractHTML %>
+                                <div class="pasta-more-text">
+                                  <div class="pasta-more-content">
+                                    <div>
+                                      <%= abstractHTML %>
+                                    </div>
                                   </div>
-                                  <div class="ridare-more">
+                                  <div class="pasta-more">
                                   </div>
                                 </div>
                               </li>
@@ -413,11 +415,13 @@
                           <div class="table-cell">
                             <ul class="no-list-style">
                               <li>
-                                <div class="ridare-text">
-                                  <div class="ridare-content">
-                                    <%= intellectualRightsHTML %>
+                                <div class="pasta-more-text">
+                                  <div class="pasta-more-content">
+                                    <div>
+                                      <%= intellectualRightsHTML %>
+                                    </div>
                                   </div>
-                                  <div class="ridare-more">
+                                  <div class="pasta-more">
                                   </div>
                                 </div>
                               </li>
@@ -505,13 +509,15 @@
                       <div class="table-cell">
                         <ul class="no-list-style">
                           <li>
-                            <!--<div class="ridare-text">-->
-                            <!--  <div class="ridare-content">-->
-                                <%= provenanceHTML %>
-                              <!--</div>-->
-                              <!--<div class="ridare-more">-->
-                              <!--</div>-->
-                            <!--</div>-->
+                            <div class="pasta-more-text">
+                              <div class="pasta-more-content">
+                                <div>
+                                  <%= provenanceHTML %>
+                                </div>
+                              </div>
+                              <div class="pasta-more">
+                              </div>
+                            </div>
                           </li>
                         </ul>
                       </div>
