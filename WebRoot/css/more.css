@@ -1,5 +1,5 @@
 /*
-    Styles for "Show more" and "Show less" adding functionality to HTML sections.
+    Styles for "Show more" and "Show less" functionality in HTML sections.
     The corresponding JS is in more.js.
 */
 
@@ -9,8 +9,28 @@
     --show-more-color: rgb(121, 153, 174);
 }
 
-.pasta-more-text {
+/* Text */
+
+/* Styling to make Ridare content line up flush with the label */
+.pasta-more-text,
+.pasta-more-text :is(h1, h2, h3, h4, h5, h6),
+.pasta-more-text :first-child,
+.pasta-more-text p:first-of-type,
+.pasta-more-text div:first-of-type
+{
+    /* color: gold; */
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
 }
+
+.pasta-more-text p:empty,
+.pasta-more-text div > hr
+{
+    display: none;
+}
+
+/* Content */
 
 .pasta-more-content {
     display: -webkit-box;
@@ -18,11 +38,16 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: 1rem;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
 }
 
 .pasta-more-content-all {
     margin-bottom: 1rem;
 }
+
+/* More / less "button" */
 
 .pasta-more {
     color: var(--show-more-color);
@@ -37,6 +62,7 @@
     content: "< Show less"
 }
 
-.pasta-more-show:hover, .pasta-more-less-show:hover {
+.pasta-more-show:hover,
+.pasta-more-less-show:hover {
     text-decoration: underline;
 }
