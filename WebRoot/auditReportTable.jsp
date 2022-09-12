@@ -29,9 +29,10 @@
     String code = (String) request.getAttribute("code");
     String userId = (String) request.getAttribute("userId");
     String affiliation = (String) request.getAttribute("affiliation");
+
     String beginDate = (String) request.getAttribute("beginDate");
-    String beginTime = (String) request.getAttribute("beginTime");
     String endDate = (String) request.getAttribute("endDate");
+    String beginTime = (String) request.getAttribute("beginTime");
     String endTime = (String) request.getAttribute("endTime");
 
     Integer firstRowId = (Integer) request.getAttribute("firstRowId");
@@ -124,8 +125,8 @@
                             <input type='hidden' name='userId' value='<%= userId %>'>
                             <input type='hidden' name='affiliation' value='<%= affiliation %>'>
                             <input type='hidden' name='beginDate' value='<%= beginDate %>'>
-                            <input type='hidden' name='beginTime' value='<%= beginTime %>'>
                             <input type='hidden' name='endDate' value='<%= endDate %>'>
+                            <input type='hidden' name='beginTime' value='<%= beginTime %>'>
                             <input type='hidden' name='endTime' value='<%= endTime %>'>
 
                             <input type='hidden' name='scope' value='<%= scope %>'>
@@ -159,8 +160,8 @@
                             <input type='hidden' name='userId' value='<%= userId %>'>
                             <input type='hidden' name='affiliation' value='<%= affiliation %>'>
                             <input type='hidden' name='beginDate' value='<%= beginDate %>'>
-                            <input type='hidden' name='beginTime' value='<%= beginTime %>'>
                             <input type='hidden' name='endDate' value='<%= endDate %>'>
+                            <input type='hidden' name='beginTime' value='<%= beginTime %>'>
                             <input type='hidden' name='endTime' value='<%= endTime %>'>
 
                             <input type='hidden' name='scope' value='<%= scope %>'>
@@ -195,8 +196,8 @@
                             <input type='hidden' name='userId' value='<%= userId %>'>
                             <input type='hidden' name='affiliation' value='<%= affiliation %>'>
                             <input type='hidden' name='beginDate' value='<%= beginDate %>'>
-                            <input type='hidden' name='beginTime' value='<%= beginTime %>'>
                             <input type='hidden' name='endDate' value='<%= endDate %>'>
+                            <input type='hidden' name='beginTime' value='<%= beginTime %>'>
                             <input type='hidden' name='endTime' value='<%= endTime %>'>
                             <input type='hidden' name='getPrev' value='0'>
 

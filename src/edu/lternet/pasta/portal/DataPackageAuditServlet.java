@@ -163,14 +163,14 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 
     String packageId = scope + "." + identifier + "." + revision;
 
-    String begin = (String) request.getParameter("begin");
-    if (begin != null && !begin.isEmpty()) {
-      filter.append("fromTime=" + begin + "&");
+    String beginDate = (String) request.getParameter("beginDate");
+    if (beginDate != null && !beginDate.isEmpty()) {
+      filter.append("fromTime=" + beginDate + "&");
     }
 
-    String end = (String) request.getParameter("end");
-    if (end != null && !end.isEmpty()) {
-      filter.append("toTime=" + end + "&");
+    String endDate = (String) request.getParameter("endDate");
+    if (endDate != null && !endDate.isEmpty()) {
+      filter.append("toTime=" + endDate + "&");
     }
 
     filter.append("category=info&");
@@ -328,32 +328,31 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     request.setAttribute("firstRowId", pair.u.t);
     request.setAttribute("lastRowId", pair.u.u);
     request.setAttribute("serviceMethod", "");
-    request.setAttribute("debug", "");
-    request.setAttribute("info", "");
-    request.setAttribute("warn", "");
-    request.setAttribute("error", "");
-    request.setAttribute("code", "");
+    request.setAttribute("debug", getStringParameter(request, "debug", ""));
+    request.setAttribute("info", getStringParameter(request, "info", ""));
+    request.setAttribute("warn", getStringParameter(request, "warn", ""));
+    request.setAttribute("error", getStringParameter(request, "error", ""));
+    request.setAttribute("code", getStringParameter(request, "code", ""));
     request.setAttribute("userId", userIdParam == null ? "" : userIdParam);
     request.setAttribute("affiliation", affiliation);
-    request.setAttribute("beginDate", "");
-    request.setAttribute("beginTime", "");
-    request.setAttribute("endDate", "");
-    request.setAttribute("endTime", "");
+
+    request.setAttribute("beginDate", beginDate == null ? "" : beginDate);
+    request.setAttribute("endDate", endDate == null ? "" : endDate);
+    String beginTime = (String) request.getParameter("beginTime");
+    request.setAttribute("beginTime", beginTime == null ? "" : beginTime);
+    String endTime = (String) request.getParameter("endTime");
+    request.setAttribute("endTime", endTime == null ? "" : endTime);
 
     request.setAttribute("scope", scope);
     request.setAttribute("identifier", identifier);
     request.setAttribute("revision", revision);
-
     request.setAttribute("package", packageResource ? "1" : "0");
     request.setAttribute("metadata", metadataResource ? "1" : "0");
     request.setAttribute("entity", dataResource ? "1" : "0");
     request.setAttribute("report", reportResource ? "1" : "0");
-
     request.setAttribute("userAgent", userAgentParam);
     request.setAttribute("userAgentNegate", userAgentNegateParam);
-    
     request.setAttribute("includeRobots", includeRobotsParam);
-
     request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 
     String forward = "./auditReportTable.jsp";
