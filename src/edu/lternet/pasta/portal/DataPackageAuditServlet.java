@@ -225,8 +225,8 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     }
 
     String userAgentParam = (String) request.getParameter("userAgent");
+    String userAgentNegateParam = (String) request.getParameter("userAgentNegate");
     if (userAgentParam != null && !userAgentParam.isEmpty()) {
-      String userAgentNegateParam = (String) request.getParameter("userAgentNegate");
       if (Objects.equals(userAgentNegateParam, "1")) {
         if (filter.length() == 0) {
           filter.append("userAgentNegate=" + userAgentParam);
@@ -350,9 +350,9 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     request.setAttribute("report", reportResource ? "1" : "0");
 
     request.setAttribute("userAgent", userAgentParam);
-    request.setAttribute("userAgentNegate", "0");
+    request.setAttribute("userAgentNegate", userAgentNegateParam);
     
-    request.setAttribute("includeRobots", "0");
+    request.setAttribute("includeRobots", includeRobotsParam);
 
     request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 
