@@ -501,7 +501,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					try {
 						CiteClient citeClient = new CiteClient(uid);
-						citationHTML = citeClient.fetchCitation(packageId);
+						String citation = citeClient.fetchCitation(packageId);
+						citationHTML = String.format("<div id=\"citation\">%s</div>", citation);
 					}
 					catch (Exception e) {
 						logger.error(String.format("Error fetching citation from Cite server for %s: %s", packageId, e.getMessage()));
