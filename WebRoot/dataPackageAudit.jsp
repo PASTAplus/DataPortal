@@ -211,11 +211,11 @@
               <tr>
                 <td>
                   <label class="labelBold">Begin Date:</label>
-                  <input name="begin" placeholder="YYYY-MM-DD" type="date"/>
+                  <input name="beginDate" placeholder="YYYY-MM-DD" type="date"/>
                 </td>
                 <td>
                   <label class="labelBold">End Date:</label>
-                  <input name="end" placeholder="YYYY-MM-DD" type="date"/>
+                  <input name="endDate" placeholder="YYYY-MM-DD" type="date"/>
                 </td>
               </tr>
             </table>

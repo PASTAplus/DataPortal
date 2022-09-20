@@ -1,45 +1,68 @@
-/*body {*/
-/*    font-size: 10px;*/
-/*    line-height: 1em;*/
-/*    background-color: black;*/
-/*    color: gray;*/
-/*}*/
+/*
+    Styles for "Show more" and "Show less" functionality in HTML sections.
+    The corresponding JS is in more.js.
+*/
 
 :root {
-    /* Max number of lines to show by default in a Ridare section */
-    --ridare-max-lines: 3;
+    /* Max number of lines to show by default in a more-less section */
+    --pasta-more-max-lines: 3;
     --show-more-color: rgb(121, 153, 174);
 }
 
-.ridare-text {
-    /*line-height: 1em;*/
+/* Text */
+
+/* Styling to make Ridare content line up flush with the label */
+.pasta-more-text,
+.pasta-more-text :is(h1, h2, h3, h4, h5, h6),
+.pasta-more-text :first-child,
+.pasta-more-text p:first-of-type,
+.pasta-more-text div:first-of-type
+{
+    /* color: gold; */
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
 }
 
-.ridare-content {
+.pasta-more-text p:empty,
+.pasta-more-text div > hr
+{
+    display: none;
+}
+
+/* Content */
+
+.pasta-more-content {
     display: -webkit-box;
-    -webkit-line-clamp: var(--ridare-max-lines);
+    -webkit-line-clamp: var(--pasta-more-max-lines);
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: 1rem;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
 }
 
-.ridare-content-all {
+.pasta-more-content-all {
     margin-bottom: 1rem;
 }
 
-.ridare-more {
+/* More / less "button" */
+
+.pasta-more {
     color: var(--show-more-color);
     cursor: pointer;
 }
 
-.ridare-more-show::after {
+.pasta-more-show::after {
     content: "Show more >";
 }
 
-.ridare-less-show::after {
+.pasta-more-less-show::after {
     content: "< Show less"
 }
 
-.ridare-more-show:hover, .ridare-less-show:hover {
+.pasta-more-show:hover,
+.pasta-more-less-show:hover {
     text-decoration: underline;
 }
