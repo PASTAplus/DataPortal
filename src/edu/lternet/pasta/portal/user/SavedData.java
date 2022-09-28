@@ -427,5 +427,4 @@ public class SavedData extends Search {
 			logger.error("Error getting connection.");
 		}
 	}
-
 }

@@ -192,7 +192,7 @@ public class TokenManager {
         String sql = String.format(
             "SELECT authtoken.tokenstore.token " +
                 "FROM authtoken.tokenstore " +
-                "WHERE authtoken.tokenstore.user_id='%s'",
+                "WHERE authtoken.tokenstore.user_id=%s",
             SqlEscape.str(this.uid));
 
         Connection dbConn = null; // database connection object
@@ -208,9 +208,11 @@ public class TokenManager {
                     // uid already in token store, perform "update".
                     sql = String.format(
                         "UPDATE authtoken.tokenstore " +
-                            "SET token='%s', date_created=now() " +
-                            "WHERE authtoken.tokenstore.user_id='%s'",
-                        SqlEscape.str(this.extToken), SqlEscape.str(this.uid));
+                            "SET token=%s, date_created=now() " +
+                            "WHERE authtoken.tokenstore.user_id=%s",
+                        SqlEscape.str(this.extToken),
+                        SqlEscape.str(this.uid)
+                    );
 
                     if (stmt.executeUpdate(sql) == 0) {
                         SQLException e = new SQLException(
@@ -222,8 +224,10 @@ public class TokenManager {
 
                     // uid not in token store, perform "insert".
                     sql = String.format(
-                        "INSERT INTO authtoken.tokenstore VALUES ('%s','%s', now())",
-                        SqlEscape.str(this.uid), SqlEscape.str(this.extToken));
+                        "INSERT INTO authtoken.tokenstore VALUES (%s,%s, now())",
+                        SqlEscape.str(this.uid),
+                        SqlEscape.str(this.extToken)
+                    );
 
                     if (stmt.executeUpdate(sql) == 0) {
                         SQLException e = new SQLException(
@@ -268,8 +272,9 @@ public class TokenManager {
         String sql = String.format(
             "SELECT authtoken.tokenstore.token " +
                 "FROM authtoken.tokenstore " +
-                "WHERE authtoken.tokenstore.user_id='%s'",
-            SqlEscape.str(uid));
+                "WHERE authtoken.tokenstore.user_id=%s",
+            SqlEscape.str(uid)
+        );
 
         Connection dbConn = null; // database connection object
 
@@ -318,8 +323,9 @@ public class TokenManager {
 
         String sql = String.format(
             "DELETE FROM authtoken.tokenstore " +
-                "WHERE authtoken.tokenstore.user_id='%s'",
-            SqlEscape.str(uid));
+                "WHERE authtoken.tokenstore.user_id=%s",
+            SqlEscape.str(uid)
+        );
 
         Connection dbConn = null; // database connection object
 
