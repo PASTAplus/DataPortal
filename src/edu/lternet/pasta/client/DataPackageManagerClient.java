@@ -28,6 +28,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -2051,6 +2052,34 @@ public class DataPackageManagerClient extends PastaClient {
 		}
 
 		return resultSetXML;
+	}
+
+	public InputStream searchDataPackagesStream(String solrQuery) throws Exception {
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		HttpGet httpGet = new HttpGet(BASE_URL + "/search/emlcsv?" + solrQuery + "&start=0&rows=99999");
+		InputStream inputStream = null;
+
+		// Set header content
+		if (this.token != null) {
+			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		}
+
+		try {
+			HttpResponse httpResponse = httpClient.execute(httpGet);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+
+			if (statusCode == HttpStatus.SC_OK) {
+				inputStream = httpResponse.getEntity().getContent();
+			}
+			else {
+				String entityString = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+				handleStatusCode(statusCode, entityString);
+			}
+		} finally {
+			// closeHttpClient(httpClient);
+		}
+
+		return inputStream;
 	}
 
 	/**
