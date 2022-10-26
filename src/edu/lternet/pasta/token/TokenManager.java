@@ -195,6 +195,8 @@ public class TokenManager {
                 "WHERE authtoken.tokenstore.user_id=%s",
             SqlEscape.str(this.uid));
 
+        logger.info(String.format("sql=%s", sql));
+
         Connection dbConn = null; // database connection object
 
         try {
@@ -214,6 +216,8 @@ public class TokenManager {
                         SqlEscape.str(this.uid)
                     );
 
+                    logger.info(String.format("sql=%s", sql));
+
                     if (stmt.executeUpdate(sql) == 0) {
                         SQLException e = new SQLException(
                             String.format("setToken: update '%s' failed", sql));
@@ -228,6 +232,8 @@ public class TokenManager {
                         SqlEscape.str(this.uid),
                         SqlEscape.str(this.extToken)
                     );
+
+                    logger.info(String.format("sql=%s", sql));
 
                     if (stmt.executeUpdate(sql) == 0) {
                         SQLException e = new SQLException(
@@ -275,6 +281,8 @@ public class TokenManager {
                 "WHERE authtoken.tokenstore.user_id=%s",
             SqlEscape.str(uid)
         );
+
+        logger.info(String.format("sql=%s", sql));
 
         Connection dbConn = null; // database connection object
 
@@ -326,6 +334,8 @@ public class TokenManager {
                 "WHERE authtoken.tokenstore.user_id=%s",
             SqlEscape.str(uid)
         );
+
+        logger.info(String.format("sql=%s", sql));
 
         Connection dbConn = null; // database connection object
 
