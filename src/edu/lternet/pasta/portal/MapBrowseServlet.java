@@ -828,7 +828,17 @@ public class MapBrowseServlet extends DataPortalServlet {
 									}
 
 									String dex = "";
-									if (fileInfo.contains(".csv")) {
+									DataPackage dp = emlObject.getDataPackage();
+									ArrayList<Entity> entities = dp.getEntityList();
+									Entity.EntityType entityType = null;
+									for (Entity entity : entities) {
+										if (entity.getEntityId().equals(entityId)) {
+											entityType = entity.getEntityType();
+											break;
+										}
+									}
+
+									if (entityType.equals(Entity.EntityType.dataTable)) {
 										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
 										String dexUrl = null;
 										if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
