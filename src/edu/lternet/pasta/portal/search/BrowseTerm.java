@@ -59,7 +59,7 @@ public class BrowseTerm {
    */
   private String browseTermPath = null;
   private int matchCount = 0;
-  private String queryString = null;
+  private String queryStr = null;
   private TermsList termsList;
   private final String value;    // Text value of this browse term, e.g. "percent carbon"
   private String displayValue;
@@ -85,7 +85,7 @@ public class BrowseTerm {
         displayValue = lterSite.getSiteName();
     }   
     this.browseTermPath = BrowseSearch.browseCacheDir + fileSeparator + fileName() + ".term";
-    this.queryString = composeQueryString();
+    this.queryStr = composeQueryString();
     this.termsList = new TermsList();
     termsList.addTerm(displayValue);
   }
@@ -126,9 +126,7 @@ public class BrowseTerm {
     }
     
     SimpleSearch simpleSearch = new SimpleSearch();
-    String queryString = simpleSearch.buildSolrQuery(searchValue, isLTERSite());
-    
-    return queryString;
+    return simpleSearch.buildSolrQuery(searchValue, isLTERSite());
   }
   
   
@@ -240,7 +238,7 @@ public class BrowseTerm {
     try {  
       DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
       String extendedQueryString = String.format("%s&start=%d&rows=%d&sort=%s", 
-    		  this.queryString, Search.DEFAULT_START, Search.DEFAULT_ROWS, Search.DEFAULT_SORT);		
+    		  this.queryStr, Search.DEFAULT_START, Search.DEFAULT_ROWS, Search.DEFAULT_SORT);
       resultsetXML = dpmClient.searchDataPackages(extendedQueryString);    
     } 
     catch (PastaAuthenticationException e) {
@@ -319,7 +317,7 @@ public class BrowseTerm {
   
   
   public String getQueryString() {
-	  return queryString;
+	  return queryStr;
   }
   
   

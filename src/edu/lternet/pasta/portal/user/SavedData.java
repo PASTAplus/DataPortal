@@ -146,11 +146,11 @@ public class SavedData extends Search {
 		}
 		
 		if (dataStore.size() > 0) {
-			String queryString = composeQueryString(dataStore);
+			String queryStr = composeQueryString(dataStore);
 			
-			if (queryString != null) {
+			if (queryStr != null) {
 				DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
-				String extendedQueryString = String.format("%s&start=%d&rows=%d&sort=%s", queryString, start, rows, sort);
+				String extendedQueryString = String.format("%s&start=%d&rows=%d&sort=%s", queryStr, start, rows, sort);
 				logger.warn(String.format("query:\n%s", extendedQueryString));
 				String resultsetXML = dpmClient.searchDataPackages(extendedQueryString);
 				savedData = resultsetXML;
@@ -184,7 +184,7 @@ public class SavedData extends Search {
 	
 	
 	private String composeQueryString(ArrayList<String> dataStore) {
-		String queryString = null;
+		String queryStr = null;
 		StringBuilder queryBuilder = new StringBuilder("id:(");
 		
 		if (dataStore != null) {
@@ -196,13 +196,13 @@ public class SavedData extends Search {
 		    queryBuilder.append(")");	
 		
 		    String qString = queryBuilder.toString().trim();
-		    queryString = String.format(
+		   queryStr = String.format(
 				"defType=%s&q=%s&fl=%s&debug=%s",
 				DEFAULT_DEFTYPE, qString, DEFAULT_FIELDS, DEFAULT_DEBUG
 		    );
 		}
 		
-		return queryString;
+		return queryStr;
 	}
 
 	
@@ -217,8 +217,9 @@ public class SavedData extends Search {
 		
 		Connection conn = databaseClient.getConnection();		
 		if (conn != null) {
-			String sqlQuery = String.format("SELECT DISTINCT scope, identifier FROM %s WHERE user_id=?",
-				                        	TABLE_NAME);
+			String sqlQuery = String.format(
+					"SELECT DISTINCT scope, identifier FROM %s WHERE user_id=?",
+					TABLE_NAME);
 			try {
 				PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
 				pstmt.setString(1, uid);
@@ -258,8 +259,11 @@ public class SavedData extends Search {
 		
 		if (conn != null && uid != null) {
 			boolean hasDocid = false;
-			String SQL_QUERY = ("SELECT scope, identifier FROM " + TABLE_NAME + 
-						        " WHERE user_id=? AND scope=? AND identifier=?");
+			String SQL_QUERY = String.format(
+					"SELECT scope, identifier " +
+							"FROM %s " +
+							"WHERE user_id=? AND scope=? AND identifier=?",
+					TABLE_NAME);
 			logger.debug("SQL_QUERY: " + SQL_QUERY);
 
 			try {
@@ -281,12 +285,14 @@ public class SavedData extends Search {
 			
 			// If not already saved, then insert the entry for this user and docid
 			if (!hasDocid) {
-				String updateSQL = String.format("INSERT INTO %s VALUES(?, ?, ?, ?)",
-												TABLE_NAME);
-				logger.debug("INSERT statement: " + updateSQL);
+				String queryStr = String.format(
+						"INSERT INTO %s VALUES(?, ?, ?, ?)",
+						TABLE_NAME);
+
+				logger.debug("queryStr: " + queryStr);
 
 				try {
-					PreparedStatement pstmt = conn.prepareStatement(updateSQL);
+					PreparedStatement pstmt = conn.prepareStatement(queryStr);
 					pstmt.setString(1, uid);
 					pstmt.setString(2, scope);
 					pstmt.setInt(3, identifier);
@@ -324,8 +330,11 @@ public class SavedData extends Search {
 		Connection conn = databaseClient.getConnection();
 		
 		if (conn != null && uid != null) {
-			String SQL_QUERY = ("SELECT scope, identifier FROM " + TABLE_NAME + 
-						        " WHERE user_id=? AND scope=? AND identifier=?");
+			String SQL_QUERY = String.format(
+					"SELECT scope, identifier " +
+							"FROM %s " +
+							"WHERE user_id=? AND scope=? AND identifier=?",
+					TABLE_NAME);
 			logger.debug("SQL_QUERY: " + SQL_QUERY);
 
 			try {
@@ -358,11 +367,11 @@ public class SavedData extends Search {
 
 		if (conn != null) {
 			if (uid != null) {
-				String updateSQL = String.format("DELETE FROM %s WHERE user_id=?", TABLE_NAME);
-				logger.debug("DELETE statement: " + updateSQL);
+				String queryStr = String.format("DELETE FROM %s WHERE user_id=?", TABLE_NAME);
+				logger.debug("queryStr: " + queryStr);
 
 				try {
-					PreparedStatement pstmt = conn.prepareStatement(updateSQL);
+					PreparedStatement pstmt = conn.prepareStatement(queryStr);
 					pstmt.setString(1, uid);
 					pstmt.executeUpdate();
 					pstmt.close();
@@ -386,19 +395,20 @@ public class SavedData extends Search {
 	 * Removes a data package from the saved data for this user.
 	 * 
 	 * @param scope   the scope value of the data package to be removed
-	 * @param identifer   the identifier value of the data package to be removed
+	 * @param identifier   the identifier value of the data package to be removed
 	 */
 	public void removeDocid(String scope, Integer identifier) {
 		Connection conn = databaseClient.getConnection();
 
 		if (conn != null) {
-			String updateSQL = 
-				String.format("DELETE FROM %s WHERE user_id=? AND scope=? AND identifier=?", 
-							   TABLE_NAME);
-			logger.debug("DELETE statement: " + updateSQL);
+			String queryStr = String.format(
+					"DELETE FROM %s WHERE user_id=? AND scope=? AND identifier=?",
+					TABLE_NAME);
+
+			logger.debug("queryStr: " + queryStr);
 
 			try {
-				PreparedStatement pstmt = conn.prepareStatement(updateSQL);
+				PreparedStatement pstmt = conn.prepareStatement(queryStr);
 				pstmt.setString(1, uid);
 				pstmt.setString(2, scope);
 				pstmt.setInt(3, identifier);
@@ -417,5 +427,4 @@ public class SavedData extends Search {
 			logger.error("Error getting connection.");
 		}
 	}
-
 }

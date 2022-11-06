@@ -64,11 +64,11 @@ public class Search {
 	   * post-processing by removing escaped spaces and double-quotes. 
 	   * This helps support phrase queries such as "coral reef".
 	   * 
-	   * @param queryString   The query string
+	   * @param queryStr   The query string
 	   * @return escapedString, The escaped query string
 	   */
-	  public static String escapeQueryChars(String queryString) {
-		  String escapedString = ClientUtils.escapeQueryChars(queryString);
+	  public static String escapeQueryChars(String queryStr) {
+		  String escapedString = ClientUtils.escapeQueryChars(queryStr);
 		  if (escapedString != null) {
 			  escapedString = escapedString.replace("\\ ", " "); // don't escape spaces
 			  escapedString = escapedString.replace("\\\"", "\""); // don't escape double quotes

@@ -50,10 +50,11 @@ public class GrowthStats {
 
   DatabaseClient databaseClient;
   
-  final String WHERE_CLAUSE = " WHERE resource_type='dataPackage' AND" +
-                              "  date_deactivated IS NULL AND" +
-		                      "  scope != 'ecotrends' AND" +
-                              "  scope NOT LIKE 'lter-landsat%' ";
+  final String WHERE_CLAUSE = String.format(
+      " WHERE resource_type='dataPackage' " +
+          "AND date_deactivated IS NULL " +
+          "AND scope != 'ecotrends' " +
+          "AND scope NOT LIKE 'lter-landsat%%' ");
   final String SELECT_CLAUSE_UNIQUE = 
       "SELECT scope || '.' || identifier,date_created FROM ";
   final String SELECT_CLAUSE_ALL = 
@@ -172,8 +173,8 @@ public class GrowthStats {
 
 	if (conn != null) {
 		try {
-			Statement stmnt = conn.createStatement();
-			ResultSet rs = stmnt.executeQuery(sql);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				String key = rs.getString(1);
