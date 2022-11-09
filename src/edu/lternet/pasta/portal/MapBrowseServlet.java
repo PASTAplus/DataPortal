@@ -838,7 +838,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 										}
 									}
 
-									if (entityType.equals(Entity.EntityType.dataTable)) {
+									if (entityType != null && entityType.equals(Entity.EntityType.dataTable)) {
 										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
 										String dexUrl = null;
 										if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
