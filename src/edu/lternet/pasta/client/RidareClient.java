@@ -21,6 +21,7 @@
 package edu.lternet.pasta.client;
 
 import edu.lternet.pasta.portal.ConfigurationListener;
+import org.apache.commons.configuration.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -41,7 +42,7 @@ public class RidareClient extends PastaClient {
 
   private static final Logger logger = Logger.getLogger(RidareClient.class);
 
-  private static final String BASE_SERVICE_URL = "https://ridare-d.edirepository.org";
+  private static String ridareUrl;
 
 
   /*
@@ -63,6 +64,11 @@ public class RidareClient extends PastaClient {
       throws PastaAuthenticationException, PastaConfigurationException
   {
     super(uid);
+
+        Configuration options = ConfigurationListener.getOptions();
+
+        ridareUrl = options.getString("ridare.url");
+
     if (this.pastaHost.startsWith("pasta.")) {
       tier = "p";
     }
@@ -98,7 +104,7 @@ public class RidareClient extends PastaClient {
 
     String serviceURL = String.format(
         "%s/%s/%s?env=%s",
-        BASE_SERVICE_URL,
+        ridareUrl,
         packageId,
         URLEncoder.encode(textTypeXpath, "UTF-8"),
         this.tier
