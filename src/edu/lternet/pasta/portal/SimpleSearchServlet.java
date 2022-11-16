@@ -183,7 +183,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
   {
     request.setAttribute("mapButtonHTML", mapButtonHTML);
     request.setAttribute("relevanceHTML", relevanceHTML);
-    request.setAttribute("searchresult", htmlTable);
+    request.setAttribute("searchResult", htmlTable);
     RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
     requestDispatcher.forward(request, response);
   }

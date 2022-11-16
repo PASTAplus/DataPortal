@@ -33,7 +33,7 @@
     relevanceHTML = "";
   }
 
-  String searchResult = (String) request.getAttribute("searchresult");
+  String searchResult = (String) request.getAttribute("searchResult");
 
   if (searchResult == null) {
     searchResult = "";
@@ -149,8 +149,7 @@ clipboard.on('error', function (e) {
                       <!--<button class="btn btn-info btn-default">Download Search Results As CSV</button>-->
                       <label for="downloadXml"></label>
                       <!--<input id="downloadXml" type="submit" name="downloadXml" value="true"/>-->
-                      <button id="downloadXml" type="submit" name="downloadXml" value="<%=queryText%>">Download Search Results As CSV</button>
-
+                      <button id="downloadXml" type="submit" name="downloadXml" class="btn btn-info btn-default" value="<%=queryText%>">Download Search Results As CSV</button>
                     </td>
                   </tr>
                 </table>
