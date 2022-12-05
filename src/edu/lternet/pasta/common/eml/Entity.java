@@ -168,7 +168,7 @@ public class Entity {
     this.name = name;
     // If we know the entity's name, then we can also derive its id
     if (name != null) {
-        this.entityId = entityIdFromEntityName(name);
+        this.entityId = entityIdFromEntityName(name.trim());
     }
   }
   

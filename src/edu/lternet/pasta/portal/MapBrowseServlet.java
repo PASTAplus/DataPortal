@@ -90,6 +90,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 	private static String pastaUriHead;
 	private static Boolean experimental;
+
+	private static String dexUrl;
 	private static final String forward = "./dataPackageSummary.jsp";
 	private static final String PUBLISHER = "Environmental Data Initiative. ";
 	private static final String DoiOrg = "https://doi.org/";
@@ -838,14 +840,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 										}
 									}
 
-									if (entityType.equals(Entity.EntityType.dataTable)) {
+									if (entityType != null && entityType.equals(Entity.EntityType.dataTable)) {
 										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
-										String dexUrl = null;
-										if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
-											dexUrl = "https://dex-d.edirepository.org";
-										} else {  // staging or production host
-											dexUrl = "https://dex.edirepository.org";
-										}
 										dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Explore Data</a></button>", dexUrl, dataUrl);
 									}
 
@@ -1386,6 +1382,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		PropertiesConfiguration options = ConfigurationListener.getOptions();
 		pastaUriHead = options.getString("pasta.uriHead");
 		experimental = options.getBoolean("dataportal.experimental");
+		dexUrl = options.getString("dex.url");
 
 		if ((pastaUriHead == null) || (pastaUriHead.equals(""))) {
 			throw new ServletException(

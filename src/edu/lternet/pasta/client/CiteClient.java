@@ -31,6 +31,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import org.apache.commons.configuration.Configuration;
+
+
 
 /**
  * 
@@ -49,8 +52,7 @@ public class CiteClient extends PastaClient {
         .getLogger(CiteClient.class);
 
     // Cite base service URL
-    private static final String BASE_SERVICE_URL =
-        "https://cite.edirepository.org/cite";
+    private static String citeUrl;
 
 
     /*
@@ -72,6 +74,11 @@ public class CiteClient extends PastaClient {
     public CiteClient(String uid)
             throws PastaAuthenticationException, PastaConfigurationException {
         super(uid);
+
+        Configuration options = ConfigurationListener.getOptions();
+
+        citeUrl = options.getString("cite.url");
+
         if (this.pastaHost.startsWith("pasta.")) {
             tier = "p";
         }
@@ -102,7 +109,7 @@ public class CiteClient extends PastaClient {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String citeString = null;
 
-        String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access&no_dot", BASE_SERVICE_URL, packageId, this.tier);
+        String serviceURL = String.format("%s/%s?style=ESIP&env=%s&access&no_dot", citeUrl, packageId, this.tier);
         if (packageId.startsWith("knb-lter-and.")){
             serviceURL = serviceURL + "&ignore=ORGANIZATIONS";
         }

@@ -80,3 +80,12 @@ maps.google.key=GOOGLE_MAPS_KEY
 
 # Umbra service
 umbra.creators.urlHead=https://umbra-d.edirepository.org/creators
+
+# Dex service
+dex.url=https://dex.edirepository.org
+
+# Ridare service
+ridare.url=https://ridare.edirepository.org
+
+# Cite service
+cite.url=https://cite.edirepository.org
