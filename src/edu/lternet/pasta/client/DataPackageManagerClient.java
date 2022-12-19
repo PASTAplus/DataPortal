@@ -2056,7 +2056,7 @@ public class DataPackageManagerClient extends PastaClient {
 
 	public InputStream searchDataPackagesStream(String solrQuery) throws Exception {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		HttpGet httpGet = new HttpGet(BASE_URL + "/search/emlcsv?" + solrQuery + "&start=0&rows=99999");
+		HttpGet httpGet = new HttpGet(BASE_URL + "/search/download?" + solrQuery + "&start=0&rows=99999");
 		InputStream inputStream = null;
 
 		// Set header content

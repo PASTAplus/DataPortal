@@ -144,17 +144,27 @@ clipboard.on('error', function (e) {
                       <input id="queryURL" type="url" value="<%=queryURL%>" size="<%=textBoxSizeStr%>">
                     </td>
                   </tr>
-                  <tr>
-                    <td colspan="3">
-                      <!--<button class="btn btn-info btn-default">Download Search Results As CSV</button>-->
-                      <label for="downloadXml"></label>
-                      <!--<input id="downloadXml" type="submit" name="downloadXml" value="true"/>-->
-                      <button id="downloadXml" type="submit" name="downloadXml" class="btn btn-info btn-default" value="<%=queryText%>">Download Search Results As CSV</button>
-                    </td>
-                  </tr>
+                  <!--<tr>-->
+                  <!--  <td colspan="3">-->
+                  <!--    &lt;!&ndash;<button class="btn btn-info btn-default">Download Search Results As CSV</button>&ndash;&gt;-->
+                  <!--    <label for="downloadXml">Download the results from this search as a CSV file</label>-->
+                  <!--    &lt;!&ndash;<input id="downloadXml" type="submit" name="downloadXml" value="true"/>&ndash;&gt;-->
+
+                  <!--  </td>-->
+                  <!--</tr>-->
                 </table>
               </form>
 
+              <table>
+                <tr>
+                  <td>
+                    <form action="./downloadSearch">
+                      <label for="downloadSearchButton">Download the results from this search as a CSV file</label>
+                      <button id="downloadSearchButton" type="submit" name="q" class="btn btn-info btn-default" value="<%=queryText%>">Download Search Results As CSV</button>
+                    </form>
+                  </td>
+                </tr>
+              </table>
 
               <%=termsListHTML%>
               <%=searchResult%>

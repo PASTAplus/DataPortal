@@ -24,28 +24,21 @@
 
 package edu.lternet.pasta.portal;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import edu.lternet.pasta.client.PastaAuthenticationException;
-import edu.lternet.pasta.client.PastaConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.ResultSetUtility;
 import edu.lternet.pasta.portal.search.Search;
 import edu.lternet.pasta.portal.search.SimpleSearch;
 import edu.lternet.pasta.portal.search.TermsList;
 import edu.lternet.pasta.portal.user.SavedData;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 public class SimpleSearchServlet extends DataPortalServlet {
 
@@ -110,48 +103,6 @@ public class SimpleSearchServlet extends DataPortalServlet {
     String sort = Search.DEFAULT_SORT;
 
     String q = (String) request.getParameter("q");
-
-
-    // Download results as XML
-
-    String solrQuery = (String) request.getParameter("downloadXml");
-
-    if (solrQuery != null) {
-      InputStream inputStream = null;
-
-      // InputStream inputStream = IOUtils.toInputStream("TEST", "UTF-8");
-      // auditManagerClient.reportByFilterCsv(filter.toString());
-
-      String uid = (String) httpSession.getAttribute("uid");
-      if (uid == null || uid.isEmpty()) {
-        uid = "public";
-      }
-      DataPackageManagerClient dpmClient;
-      try {
-        dpmClient = new DataPackageManagerClient(uid);
-      } catch (PastaAuthenticationException | PastaConfigurationException e) {
-        throw new RuntimeException(e);
-      }
-      try {
-        inputStream = dpmClient.searchDataPackagesStream(solrQuery);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-
-      response.setHeader("content-disposition", "attachment; filename=search-results.csv");
-
-      OutputStream outputStream = response.getOutputStream();
-
-      byte[] buf = new byte[8192];
-      int length;
-      while ((length = inputStream.read(buf)) > 0) {
-        outputStream.write(buf, 0, length);
-      }
-      outputStream.flush();
-
-      return;
-    }
-
 
     if (q == null || q.equals("")) {
       doPost(request, response);
