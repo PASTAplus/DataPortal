@@ -243,6 +243,12 @@
     <servlet-class>edu.lternet.pasta.portal.MapSearchServlet</servlet-class>
   </servlet>
   <servlet>
+    <description>Download Search Servlet</description>
+    <display-name>DownloadSearchServlet</display-name>
+    <servlet-name>DownloadSearchServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.DownloadSearchServlet</servlet-class>
+  </servlet>
+  <servlet>
     <description>Tombstone Servlet</description>
     <display-name>TombstoneServlet</display-name>
     <servlet-name>TombstoneServlet</servlet-name>
@@ -395,6 +401,10 @@
   <servlet-mapping>
     <servlet-name>MapSearchServlet</servlet-name>
     <url-pattern>/mapSearchServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DownloadSearchServlet</servlet-name>
+    <url-pattern>/downloadSearch</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>TombstoneServlet</servlet-name>

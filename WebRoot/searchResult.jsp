@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%@ page import="edu.lternet.pasta.portal.search.LTERTerms" %>
 
@@ -6,13 +6,13 @@
   final String pageTitle = "Search Results";
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
   String path = request.getContextPath();
-  String basePath = request.getScheme() + "://" + request.getServerName()
-      + ":" + request.getServerPort() + path + "/";
+  String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 
   String termsListHTML = (String) session.getAttribute("termsListHTML");
-  if (termsListHTML == null)
+  if (termsListHTML == null) {
     termsListHTML = "";
-  
+  }
+
   String queryText = (String) session.getAttribute("queryText");
   String queryURL = "";
   int textBoxSize = 100;
@@ -24,17 +24,20 @@
   }
 
   String mapButtonHTML = (String) request.getAttribute("mapButtonHTML");
-  if (mapButtonHTML == null)
+  if (mapButtonHTML == null) {
     mapButtonHTML = "";
+  }
 
   String relevanceHTML = (String) request.getAttribute("relevanceHTML");
-  if (relevanceHTML == null)
+  if (relevanceHTML == null) {
     relevanceHTML = "";
+  }
 
-  String searchResult = (String) request.getAttribute("searchresult");
+  String searchResult = (String) request.getAttribute("searchResult");
 
-  if (searchResult == null)
+  if (searchResult == null) {
     searchResult = "";
+  }
 
   //String jqueryString = LTERTerms.getJQueryString(); // for auto-complete using JQuery
 %>
@@ -43,112 +46,137 @@
 <html lang="en">
 
 <head>
-<title><%= titleText %></title>
+  <title><%= titleText %>
+  </title>
 
-<meta charset="UTF-8" />
-<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
 
-<link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon"/>
 
-<!-- Google Fonts CSS -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300italic" rel="stylesheet" type="text/css">
+  <!-- Google Fonts CSS -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,300italic" rel="stylesheet" type="text/css">
 
-<!-- Page Layout CSS MUST LOAD BEFORE bootstap.css -->
-<link href="css/style_slate.css" media="all" rel="stylesheet" type="text/css">
+  <!-- Page Layout CSS MUST LOAD BEFORE bootstap.css -->
+  <link href="css/style_slate.css" media="all" rel="stylesheet" type="text/css">
 
-<!-- JS 
-<script src="js/jqueryba3a.js?ver=1.7.2" type="text/javascript"></script>
-<script src="bootstrap/js/bootstrap68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/jquery.easing.1.368b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/jquery.flexslider-min68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/themeple68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/jquery.pixel68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/jquery.mobilemenu68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/isotope68b368b3.js?ver=1" type="text/javascript"></script>
-<script src="js/mediaelement-and-player.min68b368b3.js?ver=1" type="text/javascript"></script>-->
-<script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
-<script src="js/data-shelf-ajax.js" type="text/javascript"></script>
-<script src="js/clipboard.min.js"></script>
+  <!-- JS
+  <script src="js/jqueryba3a.js?ver=1.7.2" type="text/javascript"></script>
+  <script src="bootstrap/js/bootstrap68b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/jquery.easing.1.368b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/jquery.flexslider-min68b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/themeple68b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/jquery.pixel68b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/jquery.mobilemenu68b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/isotope68b368b3.js?ver=1" type="text/javascript"></script>
+  <script src="js/mediaelement-and-player.min68b368b3.js?ver=1" type="text/javascript"></script>-->
+  <script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+  <script src="js/data-shelf-ajax.js" type="text/javascript"></script>
+  <script src="js/clipboard.min.js"></script>
 
-<!-- Mobile Device CSS -->
-<link href="bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
-<link href="bootstrap/css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css">
+  <!-- Mobile Device CSS -->
+  <link href="bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="bootstrap/css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
 
 
-<jsp:include page="header.jsp" />
+<jsp:include page="header.jsp"/>
 
-    <script>
-    var clipboard = new Clipboard('.btn');
+<script>
+var clipboard = new Clipboard('.btn');
 
-    clipboard.on('success', function(e) {
-        console.log(e);
-    });
+clipboard.on('success', function (e) {
+  console.log(e);
+});
 
-    clipboard.on('error', function(e) {
-        console.log(e);
-    });
-    </script>
- 
-  <div class="row-fluid ">
-		<div class="container">
-			<div class="row-fluid distance_1">
-				<div class="box_shadow box_layout">
-					<div class="row-fluid">
-						<div class="span12">
-							<div class="recent_title">
-								<h2>Search Results</h2>
-							</div>
-							<span class="row-fluid separator_border"></span>
-						</div>
-						
-						<div class="row-fluid">
-							<div class="span12">
-								<!-- Content -->
-	<table>
-   		<tr>
-			<td>			
-				<%=mapButtonHTML%>
-			</td>
-			<td>
-				<%=relevanceHTML%>
-			</td>
-  		</tr>
-	</table>
-    <table>
-        <tr>
-            <td>
+clipboard.on('error', function (e) {
+  console.log(e);
+});
+</script>
+
+<div class="row-fluid ">
+  <div class="container">
+    <div class="row-fluid distance_1">
+      <div class="box_shadow box_layout">
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="recent_title">
+              <h2>Search Results</h2>
+            </div>
+            <span class="row-fluid separator_border"></span>
+          </div>
+
+          <div class="row-fluid">
+            <div class="span12">
+              <!-- Content -->
+
+              <form>
+                <table>
+                  <tr>
+                    <td>
+                      <%=mapButtonHTML%>
+                    </td>
+                    <td>
+                      <%=relevanceHTML%>
+                    </td>
+                  </tr>
+                </table>
+                <table>
+                  <tr>
+                    <td>
+                      <table>
+                        <tr>
+                          <td>
+                            <button class="btn btn-info btn-default" data-clipboard-action="copy" data-clipboard-target="#queryURL">Copy Query URL</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>&nbsp;</td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                      <label for="queryURL">Query URL</label>
+                      <input id="queryURL" type="url" value="<%=queryURL%>" size="<%=textBoxSizeStr%>">
+                    </td>
+                  </tr>
+                  <!--<tr>-->
+                  <!--  <td colspan="3">-->
+                  <!--    &lt;!&ndash;<button class="btn btn-info btn-default">Download Search Results As CSV</button>&ndash;&gt;-->
+                  <!--    <label for="downloadXml">Download the results from this search as a CSV file</label>-->
+                  <!--    &lt;!&ndash;<input id="downloadXml" type="submit" name="downloadXml" value="true"/>&ndash;&gt;-->
+
+                  <!--  </td>-->
+                  <!--</tr>-->
+                </table>
+              </form>
+
               <table>
                 <tr>
-                  <td><button class="btn btn-info btn-default" data-clipboard-action="copy" data-clipboard-target="#queryURL">Copy Query URL</button></td>
-                </tr>
-                <tr>
-                  <td>&nbsp;</td>
+                  <td>
+                    <form action="./downloadSearch">
+                      <label for="downloadSearchButton">Download the results from this search as a CSV file</label>
+                      <button id="downloadSearchButton" type="submit" name="q" class="btn btn-info btn-default" value="<%=queryText%>">Download Search Results As CSV</button>
+                    </form>
+                  </td>
                 </tr>
               </table>
-            </td>
-            <td>&nbsp;</td>
-            <td>
-              <input id="queryURL" type="url" value="<%=queryURL%>" size="<%=textBoxSizeStr%>">
-            </td>
-        </tr>
-    </table>
 
+              <%=termsListHTML%>
+              <%=searchResult%>
 
-                <%=termsListHTML%>
-				<%=searchResult%>
-			    
-						  </div>
-		 		    </div>
-				  </div>
-			  </div>
-		  </div>
-	  </div>
-		<jsp:include page="footer.jsp" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <jsp:include page="footer.jsp"/>
+</div>
 
 </body>
 
