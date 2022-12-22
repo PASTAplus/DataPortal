@@ -224,6 +224,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
       filter.append("user=" + userParam + "&");
     }
 
+    // Filter on user agent
     String userAgentParam = (String) request.getParameter("userAgent");
     String userAgentNegateParam = (String) request.getParameter("userAgentNegate");
     if (userAgentParam != null && !userAgentParam.isEmpty()) {
@@ -245,15 +246,27 @@ public class DataPackageAuditServlet extends DataPortalServlet {
       }
     }
 
-    String includeRobotsParam = (String) request.getParameter("includeRobots");
-    if (Objects.equals(includeRobotsParam, "1")) {
-      if (filter.length() == 0) {
-          filter.append("robots");
+    // Filter on user distinguished name
+    String userDnParam = (String) request.getParameter("userDn");
+    String userDnNegateParam = (String) request.getParameter("userDnNegate");
+    if (userDnParam != null && !userDnParam.isEmpty()) {
+      if (Objects.equals(userDnNegateParam, "1")) {
+        if (filter.length() == 0) {
+          filter.append("userDnNegate=" + userDnParam);
         }
         else {
-          filter.append("&robots");
+          filter.append("&userDnNegate=" + userDnParam);
         }
       }
+      else {
+        if (filter.length() == 0) {
+          filter.append("userDn=" + userDnParam);
+        }
+        else {
+          filter.append("&userDn=" + userDnParam);
+        }
+      }
+    }
 
     boolean isDownload = getBooleanParameter(request, "download", false);
     if (isDownload) {
@@ -352,7 +365,8 @@ public class DataPackageAuditServlet extends DataPortalServlet {
     request.setAttribute("report", reportResource ? "1" : "0");
     request.setAttribute("userAgent", userAgentParam);
     request.setAttribute("userAgentNegate", userAgentNegateParam);
-    request.setAttribute("includeRobots", includeRobotsParam);
+    request.setAttribute("userDn", userDnParam);
+    request.setAttribute("userDnNegate", userDnNegateParam);
     request.setAttribute("pageIdx", getIntegerParameter(request, "pageIdx", 0));
 
     String forward = "./auditReportTable.jsp";

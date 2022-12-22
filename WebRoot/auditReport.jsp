@@ -281,7 +281,7 @@
           </div>
         </div>
 
-        <div class='row-fluid'>
+        <div class='row-fluid distance_2'>
           <div class='span12'>
             <%--<div class='pasta-button-row'>--%>
 
@@ -310,27 +310,6 @@
 
             </div>
 
-          </div>
-        </div>
-
-        <div class="row-fluid">
-          <div class="span12">
-            <table>
-              <tr>
-                <td>
-                  <label class="labelBold">Robots:</label>
-                  <span>
-                      <input type="radio" id="id-robots-include" name="includeRobots" value="1">
-                      <label class="pasta-inline" for="id-robots-include">Include</label>
-                    </span>
-                  <br>
-                  <span>
-                      <input type="radio" id="id-robots-exclude" name="includeRobots" value="0" checked>
-                      <label class="pasta-inline" for="id-robots-exclude">Exclude</label>
-                    </span>
-                </td>
-              </tr>
-            </table>
           </div>
         </div>
 
