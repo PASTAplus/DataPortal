@@ -189,7 +189,7 @@ public class SavedDataServlet extends DataPortalServlet {
 						ResultSetUtility resultSetUtility = new ResultSetUtility(xml, sort, savedData, isSavedDataPage);
 						html = resultSetUtility.xmlToHtmlTable(cwd + xslpath);
 					}
-					request.setAttribute("searchresult", html);
+					request.setAttribute("searchResult", html);
 				}
 				catch (Exception e) {
 					handleDataPortalError(logger, e);

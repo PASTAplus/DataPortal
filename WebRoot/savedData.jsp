@@ -18,7 +18,7 @@
 	requestDispatcher.forward(request, response);
   }
 
-  String searchResult = (String) request.getAttribute("searchresult");
+  String searchResult = (String) request.getAttribute("searchResult");
 
   if (searchResult == null)
     searchResult = "";
