@@ -177,7 +177,7 @@ public class BrowseServlet extends DataPortalServlet {
 	  //String relevanceHTML = resultSetUtility.getRelevanceHTML();
 	  //request.setAttribute("relevanceHTML", relevanceHTML);
       html = resultSetUtility.xmlToHtmlTable(cwd + xslpath);
-      request.setAttribute("searchresult", html);
+      request.setAttribute("searchResult", html);
       RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
       requestDispatcher.forward(request, response);
     } 

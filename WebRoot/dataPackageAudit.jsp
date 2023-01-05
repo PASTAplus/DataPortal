@@ -183,6 +183,23 @@
             <table>
               <tr>
                 <td>
+                  <label class="labelBold">Begin Date:</label>
+                  <input name="beginDate" placeholder="YYYY-MM-DD" type="date"/>
+                </td>
+                <td>
+                  <label class="labelBold">End Date:</label>
+                  <input name="endDate" placeholder="YYYY-MM-DD" type="date"/>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="row-fluid ">
+          <div class="span12">
+            <table>
+              <tr>
+                <td>
                   <label class="labelBold">User Agent:</label>
                   <input name="userAgent" size="15" type="text"/>
                 </td>
@@ -205,38 +222,27 @@
           </div>
         </div>
 
-        <div class="row-fluid">
+        <div class="row-fluid ">
           <div class="span12">
             <table>
               <tr>
                 <td>
-                  <label class="labelBold">Begin Date:</label>
-                  <input name="beginDate" placeholder="YYYY-MM-DD" type="date"/>
+                  <label class="labelBold">User:</label>
+                  <input name="userDn" size="15" type="text"/>
                 </td>
-                <td>
-                  <label class="labelBold">End Date:</label>
-                  <input name="endDate" placeholder="YYYY-MM-DD" type="date"/>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="row-fluid">
-          <div class="span12">
-            <table>
-              <tr>
-                <td>
-                  <label class="labelBold">Robots:</label>
+                <td class="pasta-radio-button-col">
+                  <label class="labelBold">Matching Users:</label>
+                  <%--<div class='pasta-radio-button-col'>--%>
                   <span>
-                      <input type="radio" id="id-robots-include" name="includeRobots" value="1">
-                      <label class="pasta-inline" for="id-robots-include">Include</label>
+                      <input type="radio" id="id-user-include" name="userDnNegate" value="0" checked>
+                      <label class="pasta-inline" for="id-user-include">Include</label>
                     </span>
                   <br>
                   <span>
-                      <input type="radio" id="id-robots-exclude" name="includeRobots" value="0" checked>
-                      <label class="pasta-inline" for="id-robots-exclude">Exclude</label>
+                      <input type="radio" id="id-userdn-exclude" name="userDnNegate" value="1">
+                      <label class="pasta-inline" for="id-userdn-exclude">Exclude</label>
                     </span>
+                  <%--</div>--%>
                 </td>
               </tr>
             </table>
