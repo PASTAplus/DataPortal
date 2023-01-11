@@ -33,6 +33,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 
 public class RidareClient extends PastaClient {
@@ -135,6 +136,22 @@ public class RidareClient extends PastaClient {
     return htmlStr;
   }
 
+  /**
+   * Fetch the first available xpath
+   */
+  public String fetchFirstAvailable(String packageId, ArrayList<String> textTypeXpathList)
+  {
+    for (String textTypeXpath : textTypeXpathList) {
+      try {
+        return fetchTextType(packageId, textTypeXpath);
+      } catch (Exception e) {
+        logger.error(
+            String.format("Error fetching abstract from Ridare server for %s %s: %s",
+                packageId, textTypeXpath, e.getMessage()));
+      }
+    }
+    return null;
+  }
 
   public static void main(String[] args)
   {
