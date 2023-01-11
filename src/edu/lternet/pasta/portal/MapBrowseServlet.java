@@ -27,12 +27,7 @@ package edu.lternet.pasta.portal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -486,16 +481,17 @@ public class MapBrowseServlet extends DataPortalServlet {
 			        }
 
 
-					// Ridare
+					// Retrieve abstract from Ridare
 
-					try {
-						RidareClient ridareClient = new RidareClient(uid);
-						abstractHTML = ridareClient.fetchTextType(packageId, "//dataset/abstract");
-					} catch (Exception e) {
-						logger.error(String.format(
-								"Error fetching abstract from Ridare server for %s %s: %s", packageId,
-								"//dataset/abstract", e.getMessage()));
-						e.printStackTrace();
+					RidareClient ridareClient = new RidareClient(uid);
+					ArrayList<String> xpathList = new ArrayList<>(
+							Arrays.asList(
+									"//dataset/abstract",
+									"//dataset/project/abstract"
+							)
+					);
+					abstractHTML = ridareClient.fetchFirstAvailable(packageId, xpathList);
+					if (abstractHTML == null) {
 						abstractHTML = String.format("<div>%s</div>", emlObject.getAbstractText());
 					}
 
