@@ -492,7 +492,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 					);
 					abstractHTML = ridareClient.fetchFirstAvailable(packageId, xpathList);
 					if (abstractHTML == null) {
-						abstractHTML = String.format("<div>%s</div>", emlObject.getAbstractText());
+						abstractHTML = emlObject.getAbstractText();
+						if (abstractHTML == null) {
+							abstractHTML = "Not found";
+						}
+						abstractHTML = String.format("<div>%s</div>", abstractHTML);
 					}
 
 					// Cite
