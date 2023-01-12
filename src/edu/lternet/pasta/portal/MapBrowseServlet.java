@@ -494,7 +494,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 					if (abstractHTML == null) {
 						abstractHTML = String.format("<div>%s</div>", emlObject.getAbstractText());
 					}
-					if (abstractHTML == null) {
+					if (abstractHTML == "null") {
 						abstractHTML = "Not found";
 					}
 
