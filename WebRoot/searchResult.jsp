@@ -113,47 +113,32 @@ clipboard.on('error', function (e) {
             <div class="span12">
               <!-- Content -->
 
-              <form>
-                <table>
-                  <tr>
-                    <td>
-                      <%=mapButtonHTML%>
-                    </td>
-                    <td>
-                      <%=relevanceHTML%>
-                    </td>
-                  </tr>
-                </table>
-                <table>
-                  <tr>
-                    <td>
-                      <table>
-                        <tr>
-                          <td>
-                            <button class="btn btn-info btn-default" data-clipboard-action="copy" data-clipboard-target="#queryURL">Copy Query URL</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                      </table>
-                    </td>
-                    <td>&nbsp;</td>
-                    <td>
-                      <label for="queryURL">Query URL</label>
-                      <input id="queryURL" type="url" value="<%=queryURL%>" size="<%=textBoxSizeStr%>">
-                    </td>
-                  </tr>
-                  <!--<tr>-->
-                  <!--  <td colspan="3">-->
-                  <!--    &lt;!&ndash;<button class="btn btn-info btn-default">Download Search Results As CSV</button>&ndash;&gt;-->
-                  <!--    <label for="downloadXml">Download the results from this search as a CSV file</label>-->
-                  <!--    &lt;!&ndash;<input id="downloadXml" type="submit" name="downloadXml" value="true"/>&ndash;&gt;-->
+              <table>
+                <tr>
+                  <td>
+                    <%=mapButtonHTML%>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <%=relevanceHTML%>
+                  </td>
+                </tr>
+              </table>
 
-                  <!--  </td>-->
-                  <!--</tr>-->
-                </table>
-              </form>
+              <table>
+                <tr>
+                  <td style="padding-top: 1rem">
+                    <label for="queryURLButton">Query URL</label>
+                    <button type="button" id="queryURLButton" class="btn btn-info btn-default" data-clipboard-action="copy" data-clipboard-target="#queryURL">Copy Query URL</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top: .5rem">
+                    <input id="queryURL" type="url" value="<%=queryURL%>" size="<%=textBoxSizeStr%>">
+                  </td>
+                </tr>
+              </table>
 
               <table>
                 <tr>
