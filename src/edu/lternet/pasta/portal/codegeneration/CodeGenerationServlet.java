@@ -272,7 +272,7 @@ public class CodeGenerationServlet extends DataPortalServlet {
 				request.setAttribute("packageId", packageId);
 				request.setAttribute("mapBrowseURL", mapBrowseURL);
 				request.setAttribute("instructions", instructions);
-				request.setAttribute("programCode", programCode);
+				request.setAttribute(filename, programCode);
 				RequestDispatcher requestDispatcher = request
 						.getRequestDispatcher(forward);
 				requestDispatcher.forward(request, response);
