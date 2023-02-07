@@ -12,8 +12,8 @@
   String packageId = (String) request.getAttribute("packageId");
   String mapBrowseURL = (String) request.getAttribute("mapBrowseURL");
   String instructions = (String) request.getAttribute("instructions");
-  String programCode = (String) request.getAttribute("programCode");
-  session.setAttribute("programCode", programCode);
+  String programCode = (String) request.getAttribute(filename);
+  session.setAttribute(filename, programCode);
 %>
 
 <!DOCTYPE html>

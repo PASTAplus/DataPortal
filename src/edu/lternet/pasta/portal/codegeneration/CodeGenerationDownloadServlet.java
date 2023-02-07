@@ -72,7 +72,7 @@ public class CodeGenerationDownloadServlet extends HttpServlet {
 		}
 
 		String filename = request.getParameter("filename");
-		String programCode = (String) session.getAttribute("programCode");
+		String programCode = (String) session.getAttribute(filename);
 		
 		if (filename != null && !filename.equals("") && 
 			programCode != null && !programCode.equals("")
