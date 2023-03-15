@@ -42,6 +42,7 @@
     <servlet-class>edu.lternet.pasta.portal.ReserveIdentifierDeleteServlet</servlet-class>
     <load-on-startup>2</load-on-startup>
   </servlet>
+  <!-- Journal Citations -->
   <servlet>
     <description>Journal Citation Add Servlet</description>
     <display-name>Journal Citation Add Servlet</display-name>
@@ -54,6 +55,13 @@
     <servlet-name>JournalCitationDeleteServlet</servlet-name>
     <servlet-class>edu.lternet.pasta.portal.JournalCitationDeleteServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description>Journal Citation Edit Servlet</description>
+    <display-name>Journal Citation Edit Servlet</display-name>
+    <servlet-name>JournalCitationServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.JournalCitationServlet</servlet-class>
+  </servlet>
+  <!-- / Journal Citations -->
   <servlet>
     <description>Event Subscribe Servlet</description>
     <display-name>EventSubscribeServlet</display-name>
@@ -270,6 +278,7 @@
     <servlet-name>ReserveIdentifierDeleteServlet</servlet-name>
     <url-pattern>/reserveidentifierdelete</url-pattern>
   </servlet-mapping>
+  <!-- Journal Citations -->
   <servlet-mapping>
     <servlet-name>JournalCitationAddServlet</servlet-name>
     <url-pattern>/journalcitationadd</url-pattern>
@@ -278,6 +287,11 @@
     <servlet-name>JournalCitationDeleteServlet</servlet-name>
     <url-pattern>/journalcitationdelete</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JournalCitationServlet</servlet-name>
+    <url-pattern>/journal-citation-crud</url-pattern>
+  </servlet-mapping>
+  <!-- / Journal Citations -->
   <servlet-mapping>
     <servlet-name>EventSubscribeServlet</servlet-name>
     <url-pattern>/eventsubscribe</url-pattern>

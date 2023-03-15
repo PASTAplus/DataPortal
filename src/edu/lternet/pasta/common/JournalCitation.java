@@ -12,6 +12,8 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.xpath.CachedXPathAPI;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -55,7 +57,29 @@ public class JournalCitation {
     public JournalCitation() {
         super();
     }
-    
+
+    // json = {
+    //   "citationId": "1049",
+    //   "packageId": "knb-lter-cap.661.5",
+    //   "doi": "10.1016/j.worlddev.2020.7"
+    //   "url": "http://invalid.invalid/7",
+    //   "articleTitle": "test-7",
+    //   "journalTitle": "test-7",
+    //   "relationType": "IsCitedBy",
+    // }
+    public JournalCitation(JSONObject json)
+    {
+        try {
+            this.journalCitationId = json.getInt("citationId");
+        } catch (JSONException ignored) {
+        }
+        this.packageId = json.getString("packageId");
+        this.articleDoi = json.getString("doi");
+        this.articleUrl = json.getString("url");
+        this.articleTitle = json.getString("articleTitle");
+        this.journalTitle = json.getString("journalTitle");
+        this.relationType = json.getString("relationType");
+    }
     
     /**
      * Create a new JournalCitation object by parsing the journal citation XML string.
