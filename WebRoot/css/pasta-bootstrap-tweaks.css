@@ -1,0 +1,237 @@
+/* Journal Citations page */
+
+/* Hide the underlying HTML table that is to become a DataTable
+
+Without this, the underlying HTML table will show as the page is being loaded.
+
+The HTML table is only wrapped with a DataTable after the page has loaded.
+*/
+
+body {
+    font-family: 'Open Sans';
+    line-height: 18px;
+    font-size: 14px !important;
+    background-color: #ffffff;
+}
+
+table {
+    /* Hide the HTML table before it is wrapped with the dataTable */
+    /* Caused layout problems */
+    /*display: none; */
+    width: 100%;
+}
+
+.distance_3 {
+    margin-top: 2rem;
+}
+
+/* The whole table */
+.dataTables_wrapper {
+}
+
+/* Highlight rows on hover */
+
+.dataTables_wrapper tr {
+    transition: background-color .25s;
+}
+
+.dataTables_wrapper tr:hover {
+    background-color: #9cadb5;
+}
+
+.dataTables_wrapper tr td {
+    white-space: nowrap;
+}
+
+.dataTables_wrapper th:first-child,
+.dataTables_wrapper td:first-child {
+    display: none;
+}
+
+/* Show N entries */
+
+.dataTables_length {
+    display: inline;
+    float: left;
+    font-size: larger;
+}
+
+.dataTables_length > label > select {
+    margin: 0 .3rem 0 .3rem;
+    padding: 0 .3rem 0 .3rem;
+}
+
+/* Search */
+
+.dataTables_filter {
+    float: right;
+}
+
+.dataTables_filter > label > input {
+    margin: 0 0 0 .3rem;
+    padding: 0 .3rem 0 .3rem;
+}
+
+/* Pagination */
+
+.dataTables_paginate {
+    float: right;
+}
+
+.dataTables_paginate ul {
+    list-style-type: none;
+}
+
+.dataTables_paginate li {
+    float: left;
+    margin: 0 0 0 1rem;
+}
+
+/**/
+
+.dataTables_info {
+    display: inline;
+}
+
+
+/* Modal dialog */
+
+#citations-modal > div > div > div.modal-body {
+}
+
+.modal {
+}
+
+.modal-header {
+    font-size: x-large;
+}
+
+.modal-header .btn-close {
+    display: none;
+}
+
+.modal-header .modal-title {
+    margin: 1rem 0 1rem 0;
+}
+
+.modal-content {
+}
+
+.modal-backdrop {
+}
+
+.modal-body {
+    min-height: 30rem;
+}
+
+.modal-body form {
+}
+
+.modal-body select,
+.modal-body textarea,
+.modal-body input[type=text],
+.modal-body input[type=password],
+.modal-body input[type=datetime],
+.modal-body input[type=datetime-local],
+.modal-body input[type=date],
+.modal-body input[type=month],
+.modal-body input[type=time],
+.modal-body input[type=week],
+.modal-body input[type=number],
+.modal-body input[type=email],
+.modal-body input[type=url],
+.modal-body input[type=search],
+.modal-body input[type=tel],
+.modal-body input[type=color],
+.modal-body .uneditable-input {
+    height: inherit;
+    margin: 0 0 10px 0;
+    padding: 5px;
+}
+
+/* Modal footer, containing buttons */
+
+.modal-footer {
+    display: flex;
+}
+
+.modal-footer .flex-left {
+    display: flex;
+    flex: 1;
+}
+
+.modal-footer .flex-right {
+    display: flex;
+    column-gap: 1rem;
+}
+
+
+/* The EDI copyright notice in the footer */
+.footer_copyright {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+/* Instruction bullet list */
+
+.instruction {
+    margin: 0;
+}
+
+.instruction li {
+    list-style: none;
+    padding: 0 0 1rem 0;
+}
+
+.instruction li::before {
+    content: "\27A4  ";
+}
+
+
+/* Spinner */
+
+.spinner-border {
+    display: inline-block;
+    width: var(--bs-spinner-width);
+    height: var(--bs-spinner-height);
+    vertical-align: var(--bs-spinner-vertical-align);
+    border-radius: 50%;
+    animation: var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name);
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg) /* rtl:ignore */;
+    }
+}
+
+.spinner-border {
+    --bs-spinner-width: 2rem;
+    --bs-spinner-height: 2rem;
+    --bs-spinner-vertical-align: -0.125em;
+    --bs-spinner-border-width: 0.25em;
+    --bs-spinner-animation-speed: 0.75s;
+    --bs-spinner-animation-name: spinner-border;
+    border: var(--bs-spinner-border-width) solid currentcolor;
+    border-right-color: transparent;
+}
+
+.spinner-border-sm {
+    --bs-spinner-width: 1rem;
+    --bs-spinner-height: 1rem;
+    --bs-spinner-border-width: 0.2em;
+}
+
+#spinner-modal {
+    color: #001629;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    height: 5rem;
+    box-shadow: none;
+}
+
+.spinner-border {
+}

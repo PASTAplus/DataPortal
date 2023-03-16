@@ -26,11 +26,11 @@ package edu.lternet.pasta.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import edu.lternet.pasta.common.JournalCitation;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -40,6 +40,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -200,6 +201,82 @@ public class JournalCitationsClient extends PastaClient {
 
         return journalCitationId;
     }
+
+  public Integer update(String journalCitationXML) throws PastaEventException
+  {
+    JournalCitation journalCitation = new JournalCitation(journalCitationXML);
+    int journalCitationId = journalCitation.getJournalCitationId();
+    HttpPut httpPut = new HttpPut(BASE_URL_ONE_CITATION + "/" + journalCitationId);
+
+    if (this.token != null) {
+      httpPut.setHeader("Cookie", "auth-token=" + this.token);
+    }
+    httpPut.setHeader("Content-Type", "application/xml");
+
+    StringEntity requestEntity = new StringEntity(journalCitationXML, "utf-8");
+
+    httpPut.setEntity(requestEntity);
+
+    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+    Integer statusCode = null;
+    Header[] headers = null;
+    String statusMessage = null;
+
+    try {
+      HttpResponse response = httpClient.execute(httpPut);
+      statusCode = response.getStatusLine().getStatusCode();
+      headers = response.getAllHeaders();
+      HttpEntity responseEntity = response.getEntity();
+
+      if (responseEntity != null) {
+        statusMessage = EntityUtils.toString(responseEntity);
+      }
+    } catch (IOException e) {
+      logger.error(e);
+      e.printStackTrace();
+    } finally {
+      closeHttpClient(httpClient);
+    }
+
+    if (statusCode == HttpStatus.SC_CREATED) {
+      String headerName = null;
+      String headerValue = null;
+
+      // Loop through all headers looking for the "Location" header.
+      for (Header header : headers) {
+        headerName = header.getName();
+
+        if (headerName.equals("Location")) {
+          headerValue = header.getValue();
+          String[] path = headerValue.split("/");
+          /*
+           * the journal citation identifier is
+           * in the last field of the path array
+           */
+          String journalCitationStr = path[path.length - 1];
+          try {
+            journalCitationId = Integer.parseInt(journalCitationStr);
+          } catch (NumberFormatException e) {
+            String gripe = String.format(
+                "PASTA responded with response code '%d' and message '%s'.\n",
+                statusCode, statusMessage);
+            throw new PastaEventException(gripe);
+          }
+          break;
+        }
+      }
+    }
+    else { // Something went wrong; return message from the response
+      // entity
+      String gripe =
+          String.format("PASTA responded with response code '%d' and message '%s'.\n",
+              statusCode, statusMessage);
+      throw new PastaEventException(gripe);
+    }
+
+    return journalCitationId;
+  }
 
     
   /**
