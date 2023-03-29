@@ -25,6 +25,11 @@
     JournalCitationsClient jcc = new JournalCitationsClient(uid);
     journalCitationsHTML = jcc.citationsTableHTML();
   }
+
+  String packageId = request.getParameter("packageid");
+  if (packageId == null) {
+    packageId = "";
+  }
 %>
 
 
@@ -134,6 +139,10 @@
 
 <!-- Modal dialog for creating and editing citations -->
 
+<script>
+  let packageId = "<%= packageId %>";
+</script>
+
 <div class="modal fade" id="citations-modal" tabindex="-1" role="dialog" aria-labelledby="citations-modalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -152,7 +161,7 @@
           </div>
           <div class="form-group">
             <label for="package-id" class="col-form-label">Package ID <em>(Required)</em></label>
-            <input class="form-control" id="package-id" required="required" size="50" type="text"/>
+            <input class="form-control" id="package-id" required="required" size="50" type="text" value="<%= packageId %>"/>
           </div>
           <div class="form-group">
             <label for="relation-type" class="col-form-label">Relation Type <em>(See below)</em></label>

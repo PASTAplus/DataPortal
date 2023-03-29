@@ -34,7 +34,6 @@ $(document).ready(function () {
     ]
   });
 
-
   // Event handlers
 
   $(document).on('show.bs.modal', '.modal', function () {
@@ -93,6 +92,11 @@ $(document).ready(function () {
       updateCitation(citationMap);
     }
   });
+
+  // If we have a PackageID, then we're adding a new citation, so we open the modal directly.
+  if (packageId !== '') {
+    $('#new-button').click();
+  }
 
   // CRUD operations
 
