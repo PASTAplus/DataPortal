@@ -15,6 +15,7 @@ alexa
 Alexandria(\s|\+)prototype(\s|\+)project
 AllenTrack
 almaden
+Anthill
 appie
 API[\+\s]scraper
 Arachmo
@@ -102,7 +103,8 @@ geturl
 G-i-g-a-b-o-t
 GLMSLinkAnalysis
 Goldfire(\s|\+)Server
-google
+###google
+Googlebot
 Grammarly
 grub
 gulliver
@@ -132,7 +134,6 @@ jeeves
 jobo
 kyluka
 larbin
-libcurl
 libhttp
 libwww
 lilina
@@ -241,7 +242,6 @@ ultraseek
 ^unknown$
 URL2File
 urlaliasbuilder
-urllib
 ^user.?agent$
 validator
 virus.detector
@@ -262,7 +262,7 @@ webmon
 webreaper
 WebStripper
 WebZIP
-Wget
+###Wget
 wordpress
 worm
 www.gnip.com
