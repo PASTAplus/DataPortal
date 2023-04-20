@@ -32,6 +32,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.apache.commons.configuration.Configuration;
 
 import edu.lternet.pasta.portal.ConfigurationListener;
 
@@ -55,7 +56,7 @@ public class SEOClient extends PastaClient {
         .getLogger(edu.lternet.pasta.client.SEOClient.class);
 
     // SEO base service URL
-    private static final String BASE_SERVICE_URL = "https://seo.edirepository.org/seo/schema/";
+    private static String seoUrl;
     
     
     /*
@@ -77,6 +78,11 @@ public class SEOClient extends PastaClient {
     public SEOClient(String uid)
             throws PastaAuthenticationException, PastaConfigurationException {
         super(uid);
+
+        Configuration options = ConfigurationListener.getOptions();
+
+        seoUrl = options.getString("seo.url");
+
         if (this.pastaHost.startsWith("pasta.")) {
             tier = "p";
         }
@@ -106,7 +112,7 @@ public class SEOClient extends PastaClient {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String jsonString = null;
-        String serviceURL = String.format("%s?pid=%s&env=%s", BASE_SERVICE_URL + "dataset", packageId, this.tier);
+        String serviceURL = String.format("%s?pid=%s&env=%s", seoUrl + "/dataset", packageId, this.tier);
 
         try {
             httpGet = new HttpGet(serviceURL);
@@ -143,7 +149,7 @@ public class SEOClient extends PastaClient {
         HttpGet httpGet = null;
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String jsonString = null;
-        String serviceURL = BASE_SERVICE_URL + "repository";
+        String serviceURL = seoUrl + "/repository";
 
         try {
             httpGet = new HttpGet(serviceURL);
