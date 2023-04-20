@@ -89,3 +89,6 @@ ridare.url=https://ridare.edirepository.org
 
 # Cite service
 cite.url=https://cite.edirepository.org
+
+# SEO service
+seo.url=https://seo-d.edirepository.org/seo/schema/
