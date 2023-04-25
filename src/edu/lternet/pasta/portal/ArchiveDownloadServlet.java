@@ -119,7 +119,8 @@ public class ArchiveDownloadServlet extends DataPortalServlet {
 			revision = tokens[2];
 			String userAgent = request.getHeader("User-Agent");
 			DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid, userAgent);
-			dpmClient.getDataPackageArchive(scope, identifier, revision, response);
+			// dpmClient.getDataPackageArchive(scope, identifier, revision, response);
+      dpmClient.downloadDataPackageArchive(scope, identifier, Integer.valueOf(revision), response);
 		}
 		else {
 			String errorMessage = 

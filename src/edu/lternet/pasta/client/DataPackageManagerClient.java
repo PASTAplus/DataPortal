@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.Header;
@@ -92,10 +93,10 @@ public class DataPackageManagerClient extends PastaClient {
 	/**
 	 * Creates a new DataPackageManagerClient object and sets the user's
 	 * authentication token if it exists.
-	 * 
+	 *
 	 * @param uid
 	 *          The user's identifier as a String object.
-	 * 
+	 *
 	 * @throws PastaAuthenticationException
 	 */
 	public DataPackageManagerClient(String uid, String userAgent)
@@ -107,10 +108,10 @@ public class DataPackageManagerClient extends PastaClient {
 	/**
 	 * Creates a new DataPackageManagerClient object and sets the user's
 	 * authentication token if it exists.
-	 * 
+	 *
 	 * @param uid
 	 *          The user's identifier as a String object.
-	 * 
+	 *
 	 * @throws PastaAuthenticationException
 	 */
 	public DataPackageManagerClient(String uid)
@@ -122,22 +123,22 @@ public class DataPackageManagerClient extends PastaClient {
 		this.BASE_URL = pastaUrl + "/package";
 	}
 
-	
+
 	/*
 	 * Class Methods
 	 */
-	
-	
+
+
 	/**
 	 * Note: Before running this test program, login to the Data Portal
 	 * as user LNO. This will insert a token for "LNO" into the token store.
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		String uid = "LNO";
 	    ConfigurationListener.configure();
-		
+
 		try {
 			DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
 			String workingOn = dpmc.listWorkingOn();
@@ -157,11 +158,11 @@ public class DataPackageManagerClient extends PastaClient {
 		}
 	}
 
-	
+
 	/**
 	 * Determine the test identifier used for testing data package operations.
 	 * Eliminate identifiers that were previously deleted or are currently in use.
-	 * 
+	 *
 	 * @param dpmClient
 	 *          the DataPackageManagerClient object
 	 * @param scope
@@ -184,7 +185,7 @@ public class DataPackageManagerClient extends PastaClient {
         if (deletedDataPackages != null && !deletedDataPackages.isEmpty()) {
             String[] deletedArray = deletedDataPackages.split("\n");
             for (int i = 0; i < deletedArray.length; i++) {
-                if (deletedArray[i] != null && !deletedArray[i].equals("") && 
+                if (deletedArray[i] != null && !deletedArray[i].equals("") &&
                     deletedArray[i].startsWith(scope)) {
                     deletedSet.add(deletedArray[i]);
                 }
@@ -218,7 +219,7 @@ public class DataPackageManagerClient extends PastaClient {
 	/**
 	 * Modifies the packageId value in a test EML file. Useful for testing
 	 * purposes.
-	 * 
+	 *
 	 * @param testEmlFile
 	 *          The test EML document file
 	 * @param scope
@@ -256,7 +257,7 @@ public class DataPackageManagerClient extends PastaClient {
 
 	/**
 	 * Executes the 'createDataPackage' web service method.
-	 * 
+	 *
 	 * @param emlFile
 	 *          the Level-0 EML document describing the data package
 	 * @return a string representation of the resource map for the newly created
@@ -276,7 +277,7 @@ public class DataPackageManagerClient extends PastaClient {
 		if (this.token != null) {
 			httpPost.setHeader("Cookie", "auth-token=" + this.token);
 		}
-		
+
 		httpPost.setHeader("Content-Type", contentType);
 
 		// Set the request entity
@@ -302,22 +303,22 @@ public class DataPackageManagerClient extends PastaClient {
 
 				// Initial sleep period to mitigate potential error-check race condition 
 				Thread.sleep(initialSleepTime);
-				
+
 				while (idleTime <= maxIdleTime) {
 					logIdleTime(serviceMethod, emlPackageId.toString(), idleTime);
-					
+
 					try {
 						String errorText = readDataPackageError(transactionId);
 						throw new Exception(errorText);
-					} 
+					}
 					catch (ResourceNotFoundException e) {
 						logger.info(e.getMessage());
-						
+
 						try {
 							resourceMap = readDataPackage(packageScope, packageIdentifier,
 									packageRevision.toString());
 							break;
-						} 
+						}
 						catch (ResourceNotFoundException e1) {
 							logger.info(e1.getMessage());
 							Thread.sleep(idleSleepTime);
@@ -353,7 +354,7 @@ public class DataPackageManagerClient extends PastaClient {
 	 *      href="http://package.lternet.edu/package/docs/api">Data Package
 	 *      Manager web service API</a>
 	 */
-	public String getDataPackageArchive(String scope, Integer identifier, String revision, HttpServletResponse servletResponse) 
+	public String getDataPackageArchive(String scope, Integer identifier, String revision, HttpServletResponse servletResponse)
 			throws Exception {
 		String serviceMethod = "getDataPackageArchive";
 		String contentType = "text/plain";
@@ -366,7 +367,7 @@ public class DataPackageManagerClient extends PastaClient {
 		if (this.token != null) {
 			httpPost.setHeader("Cookie", "auth-token=" + this.token);
 		}
-		
+
 		httpPost.setHeader("Content-Type", contentType);
 
 		try {
@@ -377,28 +378,28 @@ public class DataPackageManagerClient extends PastaClient {
 			EmlPackageId emlPackageId = new EmlPackageId(scope, identifier, new Integer(revision));
 			EmlPackageIdFormat epif = new EmlPackageIdFormat();
 			String packageId = epif.format(emlPackageId);
-			
+
 			if (statusCode == HttpStatus.SC_ACCEPTED) {
 				String transactionId = entityString;
 				Integer idleTime = 0;
 
 				// Initial sleep period to mitigate potential error-check race condition 
 				Thread.sleep(initialSleepTime);
-				
+
 				while (idleTime <= maxIdleTime) {
 					logIdleTime(serviceMethod, emlPackageId.toString(), idleTime);
-					
+
 					try {
 						String errorText = readDataPackageError(transactionId);
 						throw new Exception(errorText);
-					} 
+					}
 					catch (ResourceNotFoundException e) {
 						logger.info(e.getMessage());
-						
+
 						try {
 							readDataPackageArchive(scope, identifier, revision, transactionId, servletResponse);
 							break;
-						} 
+						}
 						catch (ResourceNotFoundException e1) {
 							logger.info(e1.getMessage());
 							Thread.sleep(idleSleepTime);
@@ -417,6 +418,56 @@ public class DataPackageManagerClient extends PastaClient {
 		}
 
 		return resourceMap;
+	}
+
+	/**
+	 * Execute the 'downloadDataPackageArchive' web service method.
+	 *
+	 * @param scope      the scope value, e.g. "knb-lter-lno"
+	 * @param identifier the identifier value, e.g. 10
+	 * @param revision   the revision value, e.g. "1"
+	 * @see <a target="top"
+	 * href="http://package.lternet.edu/package/docs/api">Data Package
+	 * Manager web service API</a>
+	 */
+	public void downloadDataPackageArchive(
+			String scope,
+			Integer identifier,
+			Integer revision,
+			HttpServletResponse servletResponse
+	) throws Exception
+	{
+		HttpResponse httpResponse;
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		String url = String.format("%s/download/eml/%s/%d/%d", BASE_URL, scope, identifier, revision);
+		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+		try {
+			httpResponse = httpClient.execute(httpGet);
+			getInfo(httpResponse);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			HttpEntity httpEntity = httpResponse.getEntity();
+			if (statusCode != HttpStatus.SC_OK) {
+				handleStatusCode(statusCode, String.format(
+						"An error occurred while attempting to read the data package archive for %s.%d.%d",
+						scope, identifier, revision
+				));
+			}
+			else {
+				// Copy httpResponse headers to servletResponse headers
+				Header[] headers = httpResponse.getAllHeaders();
+				for (Header header : headers) {
+					servletResponse.setHeader(header.getName(), header.getValue());
+				}
+				// Suggest name for downloaded file
+				servletResponse.setHeader("Content-Type", "application/zip");
+				String filename = String.format("%s.%d.%d.zip", scope, identifier, revision);
+				servletResponse.setHeader("Content-Disposition", "attachment; filename=" + filename);
+				// Stream output
+				httpEntity.writeTo(servletResponse.getOutputStream());
+			}
+		} finally {
+			closeHttpClient(httpClient);
+		}
 	}
 
 	/**
