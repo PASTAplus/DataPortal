@@ -2,10 +2,25 @@ $(document).ready(function () {
   const citationsTable = $('#citations-table');
   const citationsModal = $('#citations-modal');
 
+  const newButton = $('#new-button');
+  const deleteButton = $('#delete-button');
+  const cancelButton = $('#cancel-button');
+  const okButton = $('#ok-button');
+  const fillButton = $('#fill-button');
+  const openButton = $('#open-button');
+
+  const packageInput = $('#package-id');
+  const articleDoiInput = $('#article-doi');
+  const articleUrlInput = $('#article-url');
+  const articleTitleInput = $('#article-title');
+  const journalTitleInput = $('#journal-title');
+
   // Prevent accidental click outside the dialog from closing the modal.
-  // citationsModal.modal({
-  //   backdrop: false,
-  // });
+  citationsModal.modal({
+    show: false,
+    backdrop: 'static',
+    keyboard: false,
+  });
 
   const citationsDataTable = citationsTable.DataTable({
     // Enable DataTable features:
@@ -45,17 +60,18 @@ $(document).ready(function () {
   });
 
   // Start creating a new citation
-  $('#new-button').on('click', function (_event) {
+
+  newButton.on('click', function (_event) {
     console.debug('new-button');
     // Clear the form. It could contain values from a previous create or update.
     citationsModal.find('form')[0].reset()
     // Disable the Delete button.
-    $('#delete-button').addClass('hidden');
+    deleteButton.addClass('hidden');
     citationsModal.modal('show');
   });
 
   // Delete a citation
-  $('#delete-button').on('click', function (_event) {
+  deleteButton.on('click', function (_event) {
     const isSure = confirm("Are you sure you want to delete this citation?");
     if (!isSure) {
       return;
@@ -71,18 +87,18 @@ $(document).ready(function () {
     const rowArr = $(clickedRow).find('td');
     const citationMap = getRowValues(rowArr);
     setModalValues(citationMap);
-    $('#delete-button').removeClass('hidden');
+    deleteButton.removeClass('hidden');
     citationsModal.modal('show');
     console.debug('END open modal');
   });
 
   // Close modal without making any changes
-  citationsModal.find('#cancel-button').on('click', function (_event) {
+  cancelButton.on('click', function (_event) {
     citationsModal.modal('hide');
   });
 
   // Create or update a citation on OK button click
-  citationsModal.find('#ok-button').on('click', function (_event) {
+  okButton.on('click', function (_event) {
     console.debug('ok-button');
     const citationMap = getModalValues();
     if (citationMap.citationId === '') {
@@ -95,7 +111,7 @@ $(document).ready(function () {
 
   // If we have a PackageID, then we're adding a new citation, so we open the modal directly.
   if (packageId !== '') {
-    $('#new-button').click();
+    newButton.click();
   }
 
   // CRUD operations
@@ -103,7 +119,7 @@ $(document).ready(function () {
   function createCitation(citationMap)
   {
     showSpinner();
-    myFetch('POST', citationMap)
+    myFetch('POST', "journal-citation-crud", citationMap)
     .then(responseMap => {
       location.reload();
       // citationMap.citationId = responseMap.citationId;
@@ -119,7 +135,7 @@ $(document).ready(function () {
     const rowArr = getRowArr(citationMap.citationId);
     const oldCitationMap = getRowValues(rowArr);
     setRowValues(rowArr, citationMap)
-    myFetch('PUT', citationMap)
+    myFetch('PUT', "journal-citation-crud", citationMap)
     .catch(() => {
       setRowValues(rowArr, oldCitationMap)
     });
@@ -128,27 +144,91 @@ $(document).ready(function () {
   function deleteCitation(citationMap)
   {
     removeRow(citationMap);
-    myFetch('DELETE', citationMap)
+    myFetch('DELETE', "journal-citation-crud", citationMap)
     .catch(() => {
       addRow(citationMap);
     });
   }
 
+  // Form validation
+
+  packageInput.on('keyup', function (event) {
+    setValidationStatus(event, /^[a-z-]{3,}\.\d+\.\d+$/.test($(event.target).val()));
+  });
+  articleDoiInput.on('keyup', function (event) {
+    setValidationStatus(event, /^10\.\d{4,9}\/[-._;()/:A-Za-z\d]+$/.test($(event.target).val()));
+  });
+  articleUrlInput.on('keyup', function (event) {
+    setValidationStatus(event, /^(ftp|http|https):\/\/[^ "]+$/.test($(event.target).val()));
+  });
+  articleTitleInput.on('keyup', function (event) {
+  });
+  journalTitleInput.on('keyup', function (event) {
+  });
+
+  function setValidationStatus(event, isValid)
+  {
+    let el = $(event.target).parent('.control-group');
+    if (isValid) {
+      el.removeClass('error')
+      el.addClass('success')
+    }
+    else {
+      el.removeClass('success')
+      el.addClass('error')
+    }
+  }
+
+  // Fill the modal article URL and titles with values fetched by DOI lookup.
+
+  fillButton.on('click', function (_event) {
+    let doi = articleDoiInput.val();
+    showFillSpinner();
+    myFetch('POST', 'doi', {doi: doi})
+    .then(responseMap => {
+      setModalDoiValues(responseMap);
+    })
+    .catch(() => {
+      // alert('error');
+    })
+    .finally(() => {
+      hideFillSpinner();
+    });
+  });
+
+  openButton.on('click', function (_event) {
+    window.open(articleUrlInput.val(), '_blank');
+  });
+
+  function showFillSpinner()
+  {
+    fillButton.prop("disabled", true);
+    fillButton.addClass('spinner-border');
+    fillButton.text('');
+  }
+
+  function hideFillSpinner()
+  {
+    fillButton.removeClass('spinner-border');
+    fillButton.prop("disabled", false);
+    fillButton.text('Fill ↲');
+  }
+
   // Helpers
 
-  function myFetch(method, citationMap)
+  function myFetch(method, path, valueMap = {})
   {
     return new Promise((resolve, reject) => {
       let status = 0;
       let isOk = false;
       let json = null;
 
-      fetch('journal-citation-crud', {
+      fetch(path, {
         method: method,
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(citationMap)
+        body: JSON.stringify(valueMap)
       })
       .then(response => {
         isOk = response.ok;
@@ -167,9 +247,12 @@ $(document).ready(function () {
           else if ([401, 403].includes(status)) {
             alert('Access Denied. Try logging in again.');
           }
+          else if (status === 404) {
+            alert('Article DOI Not Found');
+          }
           else {
-            console.error(body)
-            alert(`Internal error (see console for details): ${body}`);
+            console.error(`Internal error: ${body}`);
+            alert('Internal error. See console for details');
           }
           reject(null);
         }
@@ -177,7 +260,7 @@ $(document).ready(function () {
       // Catch any errors from fetch that are not HTTP errors.
       .catch(error => {
         console.error(error);
-        alert(`Internal error (see console for details): ${error}`);
+        alert('Internal error. See console for details');
         reject(null);
       })
       .finally(() => {
@@ -199,24 +282,31 @@ $(document).ready(function () {
   {
     return {
       citationId: $('#citation-id').val(),
-      packageId: $('#package-id').val(),
+      packageId: packageInput.val(),
       relationType: $('#relation-type').val(),
-      doi: $('#article-doi').val(),
-      url: $('#article-url').val(),
-      articleTitle: $('#article-title').val(),
-      journalTitle: $('#journal-title').val(),
+      doi: articleDoiInput.val(),
+      url: articleUrlInput.val(),
+      articleTitle: articleTitleInput.val(),
+      journalTitle: journalTitleInput.val(),
     };
   }
 
   function setModalValues(citationMap)
   {
     $('#citation-id').val(citationMap.citationId);
-    $('#package-id').val(citationMap.packageId);
+    packageInput.val(citationMap.packageId);
     $('#relation-type').val(citationMap.relationType);
-    $('#article-doi').val(citationMap.doi);
-    $('#article-url').val(citationMap.url);
-    $('#article-title').val(citationMap.articleTitle);
-    $('#journal-title').val(citationMap.journalTitle);
+    articleDoiInput.val(citationMap.doi);
+    articleUrlInput.val(citationMap.url);
+    articleTitleInput.val(citationMap.articleTitle);
+    journalTitleInput.val(citationMap.journalTitle);
+  }
+
+  function setModalDoiValues(doiMap)
+  {
+    articleUrlInput.val(doiMap.resource.primary.URL);
+    articleTitleInput.val(doiMap.title);
+    journalTitleInput.val(doiMap['container-title']);
   }
 
   function getRowArr(citationId)

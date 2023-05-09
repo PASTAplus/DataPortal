@@ -297,6 +297,18 @@
     <url-pattern>/journal-citation-crud</url-pattern>
   </servlet-mapping>
   <!-- / Journal Citations -->
+  <!-- DOI metadata lookups -->
+  <servlet>
+    <description>DOI Servlet</description>
+    <display-name>DOI Servlet</display-name>
+    <servlet-name>DoiServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.DoiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DoiServlet</servlet-name>
+    <url-pattern>/doi</url-pattern>
+  </servlet-mapping>
+  <!-- / DOI metadata lookups -->
   <servlet-mapping>
     <servlet-name>EventSubscribeServlet</servlet-name>
     <url-pattern>/eventsubscribe</url-pattern>

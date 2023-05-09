@@ -173,13 +173,18 @@
           </div>
           <div class="form-group">
             <label for="article-doi" class="col-form-label">Article DOI <span style="color:red;">*</span></label>
-            <input class="form-control" id="article-doi" size="50" type="text"/>
+            <div class="pasta-row">
+              <input class="form-control" id="article-doi" size="50" type="text"/>
+              <button id="fill-button" type="button" class="btn">Fill ↲</button>
+            </div>
           </div>
           <div class="form-group">
             <label for="article-url" class="col-form-label">Article URL <span style="color:red;">*</span></label>
-            <input class="form-control" id="article-url" size="50" type="url"/>
-          </div>
-          <div class="form-group">
+            <div class="pasta-row">
+              <input class="form-control" id="article-url" size="50" type="url"/>
+              <button id="open-button" type="button" class="btn">Open</button>
+            </div>
+          <div class="control-group">
             <label for="article-title" class="col-form-label">Article Title <em>(Optional)</em></label>
             <input class="form-control" id="article-title" size="50" type="text"/>
           </div>

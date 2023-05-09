@@ -92,3 +92,6 @@ cite.url=https://cite.edirepository.org
 
 # SEO service
 seo.url=https://seo.edirepository.org/seo/schema
+
+# Crossref API service
+crossref.url=http://dx.doi.org
