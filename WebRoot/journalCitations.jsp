@@ -67,6 +67,8 @@
   <script src="js/mediaelement-and-player.min68b368b3.js?ver=1" type="text/javascript"></script>
   <!-- DataTables, depends on jQuery  -->
   <script src="./DataTables/datatables.min.js" type="text/javascript"></script>
+  <%-- Couldn't get this working. --%>
+  <%--<script src="./DataTables/dataTables.fixedColumns.min.js" type="text/javascript"></script>--%>
   <!-- script for this page -->
   <script src="js/journal-citations.js" type="text/javascript"></script>
 </head>

@@ -1,6 +1,7 @@
 const VALID_DOI_RX = /^10\.\d{4,9}\/[-._;()/:A-Za-z\d]+$/;
 const VALID_URL_RX = /^(ftp|http|https):\/\/[^ "]+$/;
 const PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
+
 $(document).ready(function() {
   const citationsTable = $('#citations-table');
   const citationsModal = $('#citations-modal');
@@ -20,10 +21,12 @@ $(document).ready(function() {
 
   // Prevent accidental click outside the dialog from closing the modal.
   citationsModal.modal({
-    show: false, backdrop: 'static', keyboard: false,
+    show: false,
+    backdrop: 'static',
+    keyboard: false,
   });
 
-  const citationsDataTable = citationsTable.DataTable({
+  const citationsDataTable = citationsTable.removeAttr('width').DataTable({
     // Enable DataTable features:
     // B - Buttons
     // R - ColReorder
@@ -36,22 +39,42 @@ $(document).ready(function() {
     // i - Table information summary
     // p - pagination control
     // r - processing display element
-    dom: 'Plftipr', autoWidth: false, 'columns': [// The Citation ID column is hidden with CSS
-      // {"visible": false},
-      null, null, null, null, null, null, null],
+    dom: 'Plftipr',
+    // Attempt at controlling column widths. Couldn't get it working, maybe due to old jQuery.
+    // autoWidth: true,
+    // columns: [
+      // The Citation ID column is hidden with CSS.
+      // null, null, null, null, null, null, null,
+    // ],
+    // fixedColumns: true,
+    // columns: [
+    //   { width: 10, targets: 0 },
+    //   { width: 10, targets: 1 },
+    //   { width: 10, targets: 2 },
+    //   { width: 10, targets: 3 },
+    //   { width: 10, targets: 4 },
+    //   { width: 10, targets: 5 },
+    //   { width: 10, targets: 6 },
+    // ],
+    // scrollCollapse: true,
+    // scrollY:        "30px",
+    // scrollX:        true,
   });
 
   // Event handlers
 
   $(document).on('show.bs.modal', '.modal', function() {
+    console.log('show.bs.modal');
     validateForm();
   });
 
   citationsModal.on('hidden.bs.modal', function(_event) {
+    console.log('hidden.bs.modal');
   });
 
-  // Start creating a new citation
+  // Buttons
 
+  // Start creating a new citation
   newButton.on('click', function(_event) {
     // Clear the form. It could contain values from a previous create or update.
     citationsModal.find('form')[0].reset();
@@ -70,16 +93,6 @@ $(document).ready(function() {
     deleteCitation(citationMap);
   });
 
-  // Open the modal on row click
-  citationsTable.on('click', 'tbody td', function(_event) {
-    const clickedRow = $(this).closest('tr');
-    const rowArr = $(clickedRow).find('td');
-    const citationMap = getRowValues(rowArr);
-    setModalValues(citationMap);
-    deleteButton.removeClass('hidden');
-    citationsModal.modal('show');
-  });
-
   // Close modal without making any changes
   cancelButton.on('click', function(_event) {
     citationsModal.modal('hide');
@@ -94,6 +107,16 @@ $(document).ready(function() {
     else {
       updateCitation(citationMap);
     }
+  });
+
+  // Open the modal on row click
+  citationsTable.on('click', 'tbody td', function(_event) {
+    const clickedRow = $(this).closest('tr');
+    const rowArr = $(clickedRow).find('td');
+    const citationMap = getRowValues(rowArr);
+    setModalValues(citationMap);
+    deleteButton.removeClass('hidden');
+    citationsModal.modal('show');
   });
 
   // If we have a PackageID, then we're adding a new citation, so we open the modal directly.
@@ -236,33 +259,33 @@ $(document).ready(function() {
         status = response.status;
         return response.text();
       }).then(body => {
-        if (isOk) {
-          json = JSON.parse(body);
-          resolve(json);
-        }
-        else {
-          if (status === 400) {
-            alert(body);
-          }
-          else if ([401, 403].includes(status)) {
-            alert('Access Denied. Try logging in again.');
-          }
-          else if (status === 404) {
-            alert('Article DOI Not Found');
-          }
-          else {
-            console.error(`Internal error: ${body}`);
-            alert('Internal error. See console for details');
-          }
-          reject(null);
-        }
-      })
-      // Catch any errors from fetch that are not HTTP errors.
-      .catch(error => {
-        console.error(error);
-        alert('Internal error. See console for details');
-        reject(null);
-      }).finally(() => {
+           if (isOk) {
+             json = JSON.parse(body);
+             resolve(json);
+           }
+           else {
+             if (status === 400) {
+               alert(body);
+             }
+             else if ([401, 403].includes(status)) {
+               alert('Access Denied. Try logging in again.');
+             }
+             else if (status === 404) {
+               alert('Article DOI Not Found');
+             }
+             else {
+               console.error(`Internal error: ${body}`);
+               alert('Internal error. See console for details');
+             }
+             reject(null);
+           }
+         })
+        // Catch any errors from fetch that are not HTTP errors.
+         .catch(error => {
+           console.error(error);
+           alert('Internal error. See console for details');
+           reject(null);
+         }).finally(() => {
       });
     });
   }
@@ -316,8 +339,8 @@ $(document).ready(function() {
 
   function addRow(citationMap) {
     citationsDataTable.row.add(
-      [citationMap.citationId, citationMap.packageId, citationMap.relationType, citationMap.doi, citationMap.url, citationMap.articleTitle, citationMap.journalTitle]).
-    draw();
+                         [citationMap.citationId, citationMap.packageId, citationMap.relationType, citationMap.doi, citationMap.url, citationMap.articleTitle, citationMap.journalTitle]).
+                       draw();
   }
 
   function removeRow(citationMap) {
