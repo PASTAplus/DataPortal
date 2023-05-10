@@ -154,56 +154,45 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group" hidden>
-            <!-- <div class="form-group"> -->
+          <div class="control-group" hidden>
             <label for="citation-id" class="col-form-label">Citation ID:</label>
             <input class="form-control" id="citation-id" type="number" disabled="disabled">
           </div>
-          <div class="form-group">
+          <div class="control-group">
             <label for="package-id" class="col-form-label">Package ID <em>(Required)</em></label>
             <input class="form-control" id="package-id" required="required" size="50" type="text" value="<%= packageId %>"/>
           </div>
-          <div class="form-group">
-            <label for="relation-type" class="col-form-label">Relation Type <em>(See below)</em></label>
-            <select class="form-control" id="relation-type">
-              <option value="IsCitedBy">IsCitedBy</option>
-              <option value="IsDescribedBy">IsDescribedBy</option>
-              <option value="IsReferencedBy">IsReferencedBy</option>
+          <div class="control-group">
+            <label for="relation-type" class="col-form-label">Relation Type</em></label>
+            <select class="form-control" id="relation-type" style="width: 31em;">
+              <option value="IsCitedBy">IsCitedBy - package is formally cited in the manuscript</option>
+              <option value="IsDescribedBy">IsDescribedBy - package is explicitly described within the manuscript</option>
+              <option value="IsReferencedBy">IsReferencedBy - package is implicitly described within the manuscript</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="article-doi" class="col-form-label">Article DOI <span style="color:red;">*</span></label>
+          <div class="control-group">
+            <label for="article-doi" class="col-form-label">Article DOI <em>(Required unless Article URL is provided)</em></label>
             <div class="pasta-row">
               <input class="form-control" id="article-doi" size="50" type="text"/>
               <button id="fill-button" type="button" class="btn">Fill ↲</button>
             </div>
           </div>
-          <div class="form-group">
-            <label for="article-url" class="col-form-label">Article URL <span style="color:red;">*</span></label>
+          <div class="control-group">
+            <label for="article-url" class="col-form-label">Article URL <em>(Required unless Article DOI is provided)</em></label>
             <div class="pasta-row">
               <input class="form-control" id="article-url" size="50" type="url"/>
               <button id="open-button" type="button" class="btn">Open</button>
             </div>
+          </div>
           <div class="control-group">
             <label for="article-title" class="col-form-label">Article Title <em>(Optional)</em></label>
             <input class="form-control" id="article-title" size="50" type="text"/>
           </div>
-          <div class="form-group">
+          <div class="control-group">
             <label for="journal-title" class="col-form-label">Journal Title <em>(Optional)</em></label>
             <input class="form-control" id="journal-title" size="50" type="text"/>
           </div>
         </form>
-        <div>
-          <span class="text-muted"><em><span style="color:red;">*</span> At least one of these fields are required</em></span>
-        </div>
-        <div>
-          <br>
-          The Relation Type describes the relationship between this data package and the journal manuscript:<br>
-          <br>
-          <b>IsCitedBy</b> - this data package is formally cited in the manuscript<br>
-          <b>IsDescribedBy</b> - this data package is explicitly described within the manuscript<br>
-          <b>IsReferencedBy</b> - this data package is implicitly described within the manuscript<br>
-        </div>
       </div>
       <div class="modal-footer">
         <div class="flex-left">
