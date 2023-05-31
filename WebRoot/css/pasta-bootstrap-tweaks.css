@@ -55,7 +55,6 @@ table {
     width: 25%;
     white-space: normal;
     line-break: anywhere;
-    background-color: blue;
 }
 /* Journal Article Title */
 .dataTables_wrapper tbody td:nth-child(6) {
