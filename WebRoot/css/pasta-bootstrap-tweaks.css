@@ -78,7 +78,7 @@ table {
 }
 
 .dataTables_wrapper tr td {
-    white-space: nowrap;
+/*     white-space: nowrap; */
 }
 
 .dataTables_wrapper th:first-child,
@@ -89,9 +89,9 @@ table {
 /* Show N entries */
 
 .dataTables_length {
-    display: inline;
+/*     display: inline; */
     float: left;
-    font-size: larger;
+/*     font-size: larger; */
 }
 
 .dataTables_length > label > select {
