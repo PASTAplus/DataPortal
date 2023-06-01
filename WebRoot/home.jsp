@@ -88,8 +88,9 @@
     HttpSession httpSession = request.getSession();
     String downtimeHTML = "";
     
+    String today = "";
     if (downtime != null && !downtime.isEmpty()) {
-        String today = CalendarUtility.todaysDayOfWeek();
+        today = CalendarUtility.todaysDayOfWeek();
         if (today != null && today.equalsIgnoreCase(downtime)) {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("Reminder: The Data Portal and PASTA+ services will be unavailable on %s " +
@@ -135,7 +136,7 @@
 <html lang="en">
 
 <head>
-
+<!--Today is <%= today %> -->
 <%= googleAnalyticsScript %>
 
 

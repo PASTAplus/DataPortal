@@ -26,7 +26,7 @@ package edu.lternet.pasta.common;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.TimeZone;
 
 public class CalendarUtility {
 
@@ -35,14 +35,16 @@ public class CalendarUtility {
      * 
      * @param  date  
      *         a Date object
+     * @param  timezone
+     *         the timezone string for which to calculate the day
      * @return  
      *         the corresponding day of the week, e.g. "Tuesday"
      */
-    public static String getDayOfWeek(Date date) {
+    public static String getDayOfWeek(Date date, String timezone) {
         String dayOfWeek = null;
-        Calendar c = Calendar.getInstance(Locale.US);
-
+        Calendar c = Calendar.getInstance();
         c.setTime(date);
+        c.setTimeZone(TimeZone.getTimeZone(timezone));
 
         switch (c.get(Calendar.DAY_OF_WEEK)) {
            case Calendar.MONDAY: dayOfWeek =  "Monday"; break;
@@ -53,19 +55,22 @@ public class CalendarUtility {
            case Calendar.SATURDAY: dayOfWeek =  "Saturday"; break;
            case Calendar.SUNDAY: dayOfWeek =  "Sunday"; break;
         }
-        
+
+        System.out.println(dayOfWeek);
+
         return dayOfWeek;
     }
     
     
     /**
-     * Returns today's day of the week as a string. For example, "Tuesday".
+     * Returns today's day of the week as a string in the America/Denver timezone. For example, "Tuesday".
      * 
      * @return   Today's day of the week.
      */
     public static String todaysDayOfWeek() {
         Date today = new Date();
-        return CalendarUtility.getDayOfWeek(today);
+        String timezone ="America/Denver";
+        return CalendarUtility.getDayOfWeek(today, timezone);
     }
     
     
