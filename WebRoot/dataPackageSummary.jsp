@@ -190,7 +190,7 @@
     </c:when>
   </c:choose>
 
-  <% if (tier != null) { %>
+  <% if (!tier.equals("production")) { %>
   <style>
       .watermark {
           background-image: url(/nis/images/watermark.png);
