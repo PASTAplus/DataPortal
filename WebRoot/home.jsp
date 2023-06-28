@@ -22,7 +22,6 @@
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%@ page import="edu.lternet.pasta.portal.PastaStatistics"%>
-<%@ page import="edu.lternet.pasta.portal.search.LTERTerms"%>
 <%@ page import="edu.lternet.pasta.portal.statistics.GrowthStats"%>
 
 <%
@@ -87,7 +86,7 @@
     final String downtime = (String) ConfigurationListener.getOptions().getProperty("dataportal.downtime.dayOfWeek");
     HttpSession httpSession = request.getSession();
     String downtimeHTML = "";
-    
+
     String today = "";
     if (downtime != null && !downtime.isEmpty()) {
         today = CalendarUtility.todaysDayOfWeek();
@@ -103,7 +102,7 @@
     String pastaHost = dpmc.getPastaHost();
     String tier = null;
 
-    if (pastaHost.startsWith("pasta-d") || 
+    if (pastaHost.startsWith("pasta-d") ||
         pastaHost.startsWith("localhost")
        ) {
        tier = "development";
@@ -111,13 +110,13 @@
     else if (pastaHost.startsWith("pasta-s")) {
        tier = "staging";
     }
-    
+
     StringBuffer googleAnalyticsScriptBuffer = new StringBuffer("");
-    
+
     //tier = "localtest";  // Uncomment this for local testing when not on production
-    
+
     // We want the Google Analytics script on the production tier only
-    if (tier == null || tier.equals("localtest")) { 
+    if (tier == null || tier.equals("localtest")) {
         googleAnalyticsScriptBuffer.append("<!-- Global site tag (gtag.js) - Google Analytics -->\n");
         googleAnalyticsScriptBuffer.append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-130591981-1\"></script>\n");
         googleAnalyticsScriptBuffer.append("<script>\n");
@@ -127,9 +126,9 @@
         googleAnalyticsScriptBuffer.append("gtag('config', 'UA-130591981-1');\n");
         googleAnalyticsScriptBuffer.append("</script>\n");
     }
-    
+
     String googleAnalyticsScript = googleAnalyticsScriptBuffer.toString();
-     
+
 %>
 
 <!DOCTYPE html>
@@ -183,7 +182,7 @@
       data.addRows([
           <%=googleChartJson%>
       ]);
-        
+
       var options = {
         'title':'Contributed Data Package Growth\n\n',
         'width' :  450,
@@ -215,15 +214,19 @@
 					<div class="row-fluid">
 						<div class="span12">
                             <% if (downtimeHTML != "") { %>
-                                <div class="alert alert-info">
-                                    <strong><%= downtimeHTML %></strong>
-                                </div>
+                            <div class="alert alert-info">
+                                <strong><%= downtimeHTML %>
+                                </strong>
+                            </div>
                             <% } %>
+
+                            <%@ include file="statusNotices.jsp" %>
+
                             <div class="recent_title">
-								<h2>Welcome to the EDI Data Portal</h2>
-							</div>
-							<span class="row-fluid separator_border"></span>
-						</div>
+                                <h2>Welcome to the EDI Data Portal</h2>
+                            </div>
+                            <span class="row-fluid separator_border"></span>
+                        </div>
 						<div class="row-fluid">
 <h2 style="text-align: center"><a class="searchsubcat"  href="https://edirepository.org/data/publish-data">How to Submit Data</a></h2>
 <p>Data are one of the most valuable products curated by the 
@@ -265,9 +268,9 @@ from misinterpretation or misuse of the data or metadata.</p>
 			</div>
 		</div>
 	</div>
-        
+
 <jsp:include page="footer.jsp" />
-		
+
 </div>
 
 </body>

@@ -1,0 +1,1383 @@
+{
+  "bozo": false,
+  "entries": [
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17622127",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/b17jr06s43jw",
+      "published": "2023-06-20T15:40:03Z",
+      "published_parsed": [
+        2023,
+        6,
+        20,
+        15,
+        40,
+        3,
+        1,
+        171,
+        0
+      ],
+      "updated": "2023-06-20T15:40:03Z",
+      "updated_parsed": [
+        2023,
+        6,
+        20,
+        15,
+        40,
+        3,
+        1,
+        171,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/b17jr06s43jw"
+        }
+      ],
+      "title": "20 June - weekly maintenance, release v0.163.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "20 June - weekly maintenance, release v0.163.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Jun <var>20</var>, <var>15:40</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Jun <var>20</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Jun <var>19</var>, <var>16:39</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.163.0 - on Tuesday, 20 June from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Jun <var>20</var>, <var>15:40</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Jun <var>20</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Jun <var>19</var>, <var>16:39</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.163.0 - on Tuesday, 20 June from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17457832",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/wg3q82g2m3j7",
+      "published": "2023-06-13T21:33:19Z",
+      "published_parsed": [
+        2023,
+        6,
+        13,
+        21,
+        33,
+        19,
+        1,
+        164,
+        0
+      ],
+      "updated": "2023-06-13T21:33:19Z",
+      "updated_parsed": [
+        2023,
+        6,
+        13,
+        21,
+        33,
+        19,
+        1,
+        164,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/wg3q82g2m3j7"
+        }
+      ],
+      "title": "Delays with submission processing at doi.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Delays with submission processing at doi.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Jun <var>13</var>, <var>21:33</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Jun <var> 6</var>, <var>16:27</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Jun <var> 6</var>, <var>15:46</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Jun <var> 6</var>, <var>07:15</var> UTC</small><br /><strong>Update</strong> - We continue to see problems with content registration. We are still receiving content registration requests but they are not being processed. Our team is looking into the problem and we'll update as soon as we have more news.</p><p><small>Jun <var> 5</var>, <var>07:26</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Jun <var> 2</var>, <var>22:54</var> UTC</small><br /><strong>Update</strong> - Content registration to doi.crossref.org is currently delayed. We're processing submissions but currently have a reduced number of threads within the submission queue for that processing. Submissions through Metadata Manager are returning 500 status error messages, so are unable to be processed at this time. For urgent Metadata Manager registrations, consider using the web deposit form: https://apps.crossref.org/webDeposit/. We do not anticipate a full resolution of this incident until Monday, 5 June.</p><p><small>Jun <var> 2</var>, <var>22:49</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>Jun <var> 2</var>, <var>22:11</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+        }
+      ],
+      "summary": "<p><small>Jun <var>13</var>, <var>21:33</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Jun <var> 6</var>, <var>16:27</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Jun <var> 6</var>, <var>15:46</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Jun <var> 6</var>, <var>07:15</var> UTC</small><br /><strong>Update</strong> - We continue to see problems with content registration. We are still receiving content registration requests but they are not being processed. Our team is looking into the problem and we'll update as soon as we have more news.</p><p><small>Jun <var> 5</var>, <var>07:26</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Jun <var> 2</var>, <var>22:54</var> UTC</small><br /><strong>Update</strong> - Content registration to doi.crossref.org is currently delayed. We're processing submissions but currently have a reduced number of threads within the submission queue for that processing. Submissions through Metadata Manager are returning 500 status error messages, so are unable to be processed at this time. For urgent Metadata Manager registrations, consider using the web deposit form: https://apps.crossref.org/webDeposit/. We do not anticipate a full resolution of this incident until Monday, 5 June.</p><p><small>Jun <var> 2</var>, <var>22:49</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>Jun <var> 2</var>, <var>22:11</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17442960",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/t65rggc5l59x",
+      "published": "2023-06-05T07:27:00Z",
+      "published_parsed": [
+        2023,
+        6,
+        5,
+        7,
+        27,
+        0,
+        0,
+        156,
+        0
+      ],
+      "updated": "2023-06-05T07:27:00Z",
+      "updated_parsed": [
+        2023,
+        6,
+        5,
+        7,
+        27,
+        0,
+        0,
+        156,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/t65rggc5l59x"
+        }
+      ],
+      "title": "Submission logs not being emailed for registrations to our admin tool - doi.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Submission logs not being emailed for registrations to our admin tool - doi.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Jun <var> 5</var>, <var>07:27</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Jun <var> 2</var>, <var>14:36</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Jun <var> 1</var>, <var>17:14</var> UTC</small><br /><strong>Update</strong> - We are continuing to work on a fix for this issue. We do not expect to resolve this issue until tomorrow. Unfortunately, email notifications of your submissions logs will continue to be delayed. <br /><br />In the interim, we are still processing submissions and you can confirm any past registrations in our admin tool using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p><p><small>Jun <var> 1</var>, <var>16:09</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Jun <var> 1</var>, <var>15:21</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>Jun <var> 1</var>, <var>13:46</var> UTC</small><br /><strong>Investigating</strong> - We have had several members report that they are not receiving submission logs via email for their registrations. We have been able to replicate the issue and are investigating it further. In the interim, we are still processing those submissions and you can confirm any past registrations in our admin tool using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p>"
+        }
+      ],
+      "summary": "<p><small>Jun <var> 5</var>, <var>07:27</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Jun <var> 2</var>, <var>14:36</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Jun <var> 1</var>, <var>17:14</var> UTC</small><br /><strong>Update</strong> - We are continuing to work on a fix for this issue. We do not expect to resolve this issue until tomorrow. Unfortunately, email notifications of your submissions logs will continue to be delayed. <br /><br />In the interim, we are still processing submissions and you can confirm any past registrations in our admin tool using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p><p><small>Jun <var> 1</var>, <var>16:09</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Jun <var> 1</var>, <var>15:21</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>Jun <var> 1</var>, <var>13:46</var> UTC</small><br /><strong>Investigating</strong> - We have had several members report that they are not receiving submission logs via email for their registrations. We have been able to replicate the issue and are investigating it further. In the interim, we are still processing those submissions and you can confirm any past registrations in our admin tool using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17433230",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/63l9q1qskhbh",
+      "published": "2023-05-31T18:20:04Z",
+      "published_parsed": [
+        2023,
+        5,
+        31,
+        18,
+        20,
+        4,
+        2,
+        151,
+        0
+      ],
+      "updated": "2023-05-31T18:20:04Z",
+      "updated_parsed": [
+        2023,
+        5,
+        31,
+        18,
+        20,
+        4,
+        2,
+        151,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/63l9q1qskhbh"
+        }
+      ],
+      "title": "31 May - special maintenance, release v0.162.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "31 May - special maintenance, release v0.162.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>31</var>, <var>18:20</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var>31</var>, <var>17:02</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var>31</var>, <var>15:39</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing unplanned maintenance - release v0.162.0 - today, 31 May from 1700 to 1900 UTC as a follow-on to the incident we had earlier today - https://status.crossref.org/incidents/pnq1r662cvmr. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the special maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>31</var>, <var>18:20</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var>31</var>, <var>17:02</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var>31</var>, <var>15:39</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing unplanned maintenance - release v0.162.0 - today, 31 May from 1700 to 1900 UTC as a follow-on to the incident we had earlier today - https://status.crossref.org/incidents/pnq1r662cvmr. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the special maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17427071",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/pnq1r662cvmr",
+      "published": "2023-05-31T14:17:06Z",
+      "published_parsed": [
+        2023,
+        5,
+        31,
+        14,
+        17,
+        6,
+        2,
+        151,
+        0
+      ],
+      "updated": "2023-05-31T14:17:06Z",
+      "updated_parsed": [
+        2023,
+        5,
+        31,
+        14,
+        17,
+        6,
+        2,
+        151,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/pnq1r662cvmr"
+        }
+      ],
+      "title": "Errors with submission processing at doi.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Errors with submission processing at doi.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>31</var>, <var>14:17</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>May <var>31</var>, <var>04:06</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>May <var>31</var>, <var>03:59</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>May <var>31</var>, <var>03:46</var> UTC</small><br /><strong>Investigating</strong> - Our fix did not remedy the issue. We're investigating an alternative solution.</p><p><small>May <var>31</var>, <var>02:37</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>May <var>31</var>, <var>01:52</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>May <var>31</var>, <var>01:16</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>31</var>, <var>14:17</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>May <var>31</var>, <var>04:06</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>May <var>31</var>, <var>03:59</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>May <var>31</var>, <var>03:46</var> UTC</small><br /><strong>Investigating</strong> - Our fix did not remedy the issue. We're investigating an alternative solution.</p><p><small>May <var>31</var>, <var>02:37</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>May <var>31</var>, <var>01:52</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>May <var>31</var>, <var>01:16</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17331571",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/2ztl844jx0j9",
+      "published": "2023-05-23T16:00:30Z",
+      "published_parsed": [
+        2023,
+        5,
+        23,
+        16,
+        0,
+        30,
+        1,
+        143,
+        0
+      ],
+      "updated": "2023-05-23T16:00:30Z",
+      "updated_parsed": [
+        2023,
+        5,
+        23,
+        16,
+        0,
+        30,
+        1,
+        143,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/2ztl844jx0j9"
+        }
+      ],
+      "title": "23 May - weekly maintenance, release v0.161.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "23 May - weekly maintenance, release v0.161.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>23</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var>23</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var>22</var>, <var>17:13</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.161.0 - on Tuesday, 23 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>23</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var>23</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var>22</var>, <var>17:13</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.161.0 - on Tuesday, 23 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17301936",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/k3nqb7x1mk5d",
+      "published": "2023-05-19T14:13:30Z",
+      "published_parsed": [
+        2023,
+        5,
+        19,
+        14,
+        13,
+        30,
+        4,
+        139,
+        0
+      ],
+      "updated": "2023-05-19T14:13:30Z",
+      "updated_parsed": [
+        2023,
+        5,
+        19,
+        14,
+        13,
+        30,
+        4,
+        139,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/k3nqb7x1mk5d"
+        }
+      ],
+      "title": "Our Test admin tool - test.crossref.org - is down",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Our Test admin tool - test.crossref.org - is down"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>19</var>, <var>14:13</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>May <var>19</var>, <var>13:43</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>May <var>19</var>, <var>12:46</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>19</var>, <var>14:13</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>May <var>19</var>, <var>13:43</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>May <var>19</var>, <var>12:46</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17268647",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/y3qlvdgkgbqp",
+      "published": "2023-05-16T21:12:07Z",
+      "published_parsed": [
+        2023,
+        5,
+        16,
+        21,
+        12,
+        7,
+        1,
+        136,
+        0
+      ],
+      "updated": "2023-05-16T21:12:07Z",
+      "updated_parsed": [
+        2023,
+        5,
+        16,
+        21,
+        12,
+        7,
+        1,
+        136,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/y3qlvdgkgbqp"
+        }
+      ],
+      "title": "Submissions failing with connection timeout",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Submissions failing with connection timeout"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>16</var>, <var>21:12</var> UTC</small><br /><strong>Resolved</strong> - This incident - an issue with one of the handle servers - has been resolved. Members who received a connection time out failure in their submission logs between 15:42 and 17:06 UTC should resubmit their deposits to us so we can reprocess those failures.</p><p><small>May <var>16</var>, <var>18:17</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>May <var>16</var>, <var>17:12</var> UTC</small><br /><strong>Investigating</strong> - We're seeing a number of failed submissions in doi.crossref.org with error messages like this: java.net.SocketTimeoutException: connect timed out. We've suspended submission processing in the admin tool submission queue to investigate. You may continue sending us submissions at this time, but submission processing has been paused.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>16</var>, <var>21:12</var> UTC</small><br /><strong>Resolved</strong> - This incident - an issue with one of the handle servers - has been resolved. Members who received a connection time out failure in their submission logs between 15:42 and 17:06 UTC should resubmit their deposits to us so we can reprocess those failures.</p><p><small>May <var>16</var>, <var>18:17</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>May <var>16</var>, <var>17:12</var> UTC</small><br /><strong>Investigating</strong> - We're seeing a number of failed submissions in doi.crossref.org with error messages like this: java.net.SocketTimeoutException: connect timed out. We've suspended submission processing in the admin tool submission queue to investigate. You may continue sending us submissions at this time, but submission processing has been paused.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17267226",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/3bk8g167yc6m",
+      "published": "2023-05-16T16:12:47Z",
+      "published_parsed": [
+        2023,
+        5,
+        16,
+        16,
+        12,
+        47,
+        1,
+        136,
+        0
+      ],
+      "updated": "2023-05-16T16:12:47Z",
+      "updated_parsed": [
+        2023,
+        5,
+        16,
+        16,
+        12,
+        47,
+        1,
+        136,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/3bk8g167yc6m"
+        }
+      ],
+      "title": "Submission logs not being emailed for registrations to our admin tool - doi.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Submission logs not being emailed for registrations to our admin tool - doi.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>16</var>, <var>16:12</var> UTC</small><br /><strong>Resolved</strong> - Many of the emails containing submission logs for our members' registrations bounced yesterday and early today. We have resolved the immediate crisis and email notifications are again being sent and delivered. <br /><br />Unfortunately, we don't have a mechanism for resending those bounced emails. Members who have been awaiting emails containing their submission logs for registrations made yesterday or today should access our admin tool to review those submission logs using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p><p><small>May <var>16</var>, <var>14:30</var> UTC</small><br /><strong>Investigating</strong> - We have had several members report that they are not receiving submission logs via email for their registrations. We have been able to replicate the issue and are investigating it further. In the interim, we are still processing those submissions and you can confirm any past registrations in our admin tool using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>16</var>, <var>16:12</var> UTC</small><br /><strong>Resolved</strong> - Many of the emails containing submission logs for our members' registrations bounced yesterday and early today. We have resolved the immediate crisis and email notifications are again being sent and delivered. <br /><br />Unfortunately, we don't have a mechanism for resending those bounced emails. Members who have been awaiting emails containing their submission logs for registrations made yesterday or today should access our admin tool to review those submission logs using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p><p><small>May <var>16</var>, <var>14:30</var> UTC</small><br /><strong>Investigating</strong> - We have had several members report that they are not receiving submission logs via email for their registrations. We have been able to replicate the issue and are investigating it further. In the interim, we are still processing those submissions and you can confirm any past registrations in our admin tool using these instructions: https://www.crossref.org/documentation/register-maintain-records/verify-your-registration/submission-queue-and-log/#00143</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17206661",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/hh3lzg92thxt",
+      "published": "2023-05-11T17:54:49Z",
+      "published_parsed": [
+        2023,
+        5,
+        11,
+        17,
+        54,
+        49,
+        3,
+        131,
+        0
+      ],
+      "updated": "2023-05-11T17:54:49Z",
+      "updated_parsed": [
+        2023,
+        5,
+        11,
+        17,
+        54,
+        49,
+        3,
+        131,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/hh3lzg92thxt"
+        }
+      ],
+      "title": "Regenerating XML Metadata Plus Snapshots - March and April 2023",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Regenerating XML Metadata Plus Snapshots - March and April 2023"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var>11</var>, <var>17:54</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>May <var>10</var>, <var>13:03</var> UTC</small><br /><strong>Investigating</strong> - There was an issue with the generation of March and April's XML Metadata Plus snapshots. As a result, we are rebuilding those. We expect to have both available later this week and will update this message when they are posted.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var>11</var>, <var>17:54</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>May <var>10</var>, <var>13:03</var> UTC</small><br /><strong>Investigating</strong> - There was an issue with the generation of March and April's XML Metadata Plus snapshots. As a result, we are rebuilding those. We expect to have both available later this week and will update this message when they are posted.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17181792",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/jfqs88s04q6n",
+      "published": "2023-05-09T16:00:24Z",
+      "published_parsed": [
+        2023,
+        5,
+        9,
+        16,
+        0,
+        24,
+        1,
+        129,
+        0
+      ],
+      "updated": "2023-05-09T16:00:24Z",
+      "updated_parsed": [
+        2023,
+        5,
+        9,
+        16,
+        0,
+        24,
+        1,
+        129,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/jfqs88s04q6n"
+        }
+      ],
+      "title": "9 May - weekly maintenance, release v0.160.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "9 May - weekly maintenance, release v0.160.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var> 9</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var> 9</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var> 8</var>, <var>14:37</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.160.0 - on Tuesday, 9 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var> 9</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var> 9</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var> 8</var>, <var>14:37</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.160.0 - on Tuesday, 9 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17121843",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/vc0ctzlyp8zg",
+      "published": "2023-05-03T16:00:35Z",
+      "published_parsed": [
+        2023,
+        5,
+        3,
+        16,
+        0,
+        35,
+        2,
+        123,
+        0
+      ],
+      "updated": "2023-05-03T16:00:35Z",
+      "updated_parsed": [
+        2023,
+        5,
+        3,
+        16,
+        0,
+        35,
+        2,
+        123,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/vc0ctzlyp8zg"
+        }
+      ],
+      "title": "3 May - special maintenance, release v0.159.1",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "3 May - special maintenance, release v0.159.1"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var> 3</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var> 3</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var> 2</var>, <var>15:58</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing special maintenance - release v0.159.1 - on Wednesday, 3 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var> 3</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var> 3</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var> 2</var>, <var>15:58</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing special maintenance - release v0.159.1 - on Wednesday, 3 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/17111169",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/w2747bq39m26",
+      "published": "2023-05-02T15:52:51Z",
+      "published_parsed": [
+        2023,
+        5,
+        2,
+        15,
+        52,
+        51,
+        1,
+        122,
+        0
+      ],
+      "updated": "2023-05-02T15:52:51Z",
+      "updated_parsed": [
+        2023,
+        5,
+        2,
+        15,
+        52,
+        51,
+        1,
+        122,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/w2747bq39m26"
+        }
+      ],
+      "title": "2 May - weekly maintenance, release v0.159.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "2 May - weekly maintenance, release v0.159.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>May <var> 2</var>, <var>15:52</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var> 2</var>, <var>14:01</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var> 1</var>, <var>17:10</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.159.0 - on Tuesday, 2 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>May <var> 2</var>, <var>15:52</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>May <var> 2</var>, <var>14:01</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>May <var> 1</var>, <var>17:10</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.159.0 - on Tuesday, 2 May from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16952942",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/jg3hytk9tgt1",
+      "published": "2023-04-25T16:00:22Z",
+      "published_parsed": [
+        2023,
+        4,
+        25,
+        16,
+        0,
+        22,
+        1,
+        115,
+        0
+      ],
+      "updated": "2023-04-25T16:00:22Z",
+      "updated_parsed": [
+        2023,
+        4,
+        25,
+        16,
+        0,
+        22,
+        1,
+        115,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/jg3hytk9tgt1"
+        }
+      ],
+      "title": "25 April - weekly maintenance, release v0.158.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "25 April - weekly maintenance, release v0.158.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var>25</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>25</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>24</var>, <var>15:03</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.158.0 - on Tuesday, 25 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var>25</var>, <var>16:00</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>25</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>24</var>, <var>15:03</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.158.0 - on Tuesday, 25 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16893319",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/3cdsk9zr3wd2",
+      "published": "2023-04-18T16:01:25Z",
+      "published_parsed": [
+        2023,
+        4,
+        18,
+        16,
+        1,
+        25,
+        1,
+        108,
+        0
+      ],
+      "updated": "2023-04-18T16:01:25Z",
+      "updated_parsed": [
+        2023,
+        4,
+        18,
+        16,
+        1,
+        25,
+        1,
+        108,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/3cdsk9zr3wd2"
+        }
+      ],
+      "title": "18 April - weekly maintenance, release v0.157.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "18 April - weekly maintenance, release v0.157.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var>18</var>, <var>16:01</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>18</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>17</var>, <var>17:53</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.157.0 - on Tuesday, 18 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var>18</var>, <var>16:01</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>18</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>17</var>, <var>17:53</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.157.0 - on Tuesday, 18 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16841036",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/2fk4wwkpz0p7",
+      "published": "2023-04-13T15:40:00Z",
+      "published_parsed": [
+        2023,
+        4,
+        13,
+        15,
+        40,
+        0,
+        3,
+        103,
+        0
+      ],
+      "updated": "2023-04-13T15:40:00Z",
+      "updated_parsed": [
+        2023,
+        4,
+        13,
+        15,
+        40,
+        0,
+        3,
+        103,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/2fk4wwkpz0p7"
+        }
+      ],
+      "title": "13 April - weekly maintenance, release v0.156.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "13 April - weekly maintenance, release v0.156.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var>13</var>, <var>15:40</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>13</var>, <var>15:25</var> UTC</small><br /><strong>Verifying</strong> - Verification is currently underway for the maintenance items.</p><p><small>Apr <var>13</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>12</var>, <var>20:29</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.156.0 - on Thursday, 13 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var>13</var>, <var>15:40</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>13</var>, <var>15:25</var> UTC</small><br /><strong>Verifying</strong> - Verification is currently underway for the maintenance items.</p><p><small>Apr <var>13</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>12</var>, <var>20:29</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.156.0 - on Thursday, 13 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16809553",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/9m25n4mc6vry",
+      "published": "2023-04-11T14:53:44Z",
+      "published_parsed": [
+        2023,
+        4,
+        11,
+        14,
+        53,
+        44,
+        1,
+        101,
+        0
+      ],
+      "updated": "2023-04-11T14:53:44Z",
+      "updated_parsed": [
+        2023,
+        4,
+        11,
+        14,
+        53,
+        44,
+        1,
+        101,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/9m25n4mc6vry"
+        }
+      ],
+      "title": "11 April - weekly maintenance, release v0.155.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "11 April - weekly maintenance, release v0.155.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var>11</var>, <var>14:53</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>11</var>, <var>13:29</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>10</var>, <var>13:30</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.155.0 - on Tuesday, 11 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var>11</var>, <var>14:53</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var>11</var>, <var>13:29</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var>10</var>, <var>13:30</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.155.0 - on Tuesday, 11 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16791757",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/d446p1vcc74l",
+      "published": "2023-04-08T17:19:49Z",
+      "published_parsed": [
+        2023,
+        4,
+        8,
+        17,
+        19,
+        49,
+        5,
+        98,
+        0
+      ],
+      "updated": "2023-04-08T17:19:49Z",
+      "updated_parsed": [
+        2023,
+        4,
+        8,
+        17,
+        19,
+        49,
+        5,
+        98,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/d446p1vcc74l"
+        }
+      ],
+      "title": "Content registration degraded for maintenance",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Content registration degraded for maintenance"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var> 8</var>, <var>17:19</var> UTC</small><br /><strong>Resolved</strong> - The database maintenance is complete.  Files are processing normally.</p><p><small>Apr <var> 8</var>, <var>16:16</var> UTC</small><br /><strong>Investigating</strong> - We are planning to do emergency maintenance over the next 2 hours. The submission queue may be paused in this time. We will update if this happens.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var> 8</var>, <var>17:19</var> UTC</small><br /><strong>Resolved</strong> - The database maintenance is complete.  Files are processing normally.</p><p><small>Apr <var> 8</var>, <var>16:16</var> UTC</small><br /><strong>Investigating</strong> - We are planning to do emergency maintenance over the next 2 hours. The submission queue may be paused in this time. We will update if this happens.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16738029",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/4cy8k87657jq",
+      "published": "2023-04-04T14:38:51Z",
+      "published_parsed": [
+        2023,
+        4,
+        4,
+        14,
+        38,
+        51,
+        1,
+        94,
+        0
+      ],
+      "updated": "2023-04-04T14:38:52Z",
+      "updated_parsed": [
+        2023,
+        4,
+        4,
+        14,
+        38,
+        52,
+        1,
+        94,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/4cy8k87657jq"
+        }
+      ],
+      "title": "4 April - weekly maintenance, release v0.154.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "4 April - weekly maintenance, release v0.154.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var> 4</var>, <var>14:38</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var> 4</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var> 3</var>, <var>15:03</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.154.0 - on Tuesday, 4 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var> 4</var>, <var>14:38</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Apr <var> 4</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Apr <var> 3</var>, <var>15:03</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.154.0 - on Tuesday, 4 April from 1400 to 1600 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16738152",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/wc5nhzkn2kf9",
+      "published": "2023-04-03T15:38:48Z",
+      "published_parsed": [
+        2023,
+        4,
+        3,
+        15,
+        38,
+        48,
+        0,
+        93,
+        0
+      ],
+      "updated": "2023-04-03T15:38:49Z",
+      "updated_parsed": [
+        2023,
+        4,
+        3,
+        15,
+        38,
+        49,
+        0,
+        93,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/wc5nhzkn2kf9"
+        }
+      ],
+      "title": "Performance issues with search.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Performance issues with search.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Apr <var> 3</var>, <var>15:38</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Apr <var> 3</var>, <var>15:20</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Apr <var> 3</var>, <var>15:17</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+        }
+      ],
+      "summary": "<p><small>Apr <var> 3</var>, <var>15:38</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Apr <var> 3</var>, <var>15:20</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Apr <var> 3</var>, <var>15:17</var> UTC</small><br /><strong>Investigating</strong> - We are currently investigating this issue.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16689999",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/msp6hkdx24bc",
+      "published": "2023-03-30T15:28:18Z",
+      "published_parsed": [
+        2023,
+        3,
+        30,
+        15,
+        28,
+        18,
+        3,
+        89,
+        0
+      ],
+      "updated": "2023-03-30T15:28:19Z",
+      "updated_parsed": [
+        2023,
+        3,
+        30,
+        15,
+        28,
+        19,
+        3,
+        89,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/msp6hkdx24bc"
+        }
+      ],
+      "title": "30 March - weekly maintenance, release v0.153.0",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "30 March - weekly maintenance, release v0.153.0"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Mar <var>30</var>, <var>15:28</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Mar <var>30</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Mar <var>29</var>, <var>18:42</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.153.0 - on Thursday, 30 March from 1400 to 1700 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+        }
+      ],
+      "summary": "<p><small>Mar <var>30</var>, <var>15:28</var> UTC</small><br /><strong>Completed</strong> - The scheduled maintenance has been completed.</p><p><small>Mar <var>30</var>, <var>14:00</var> UTC</small><br /><strong>In progress</strong> - Scheduled maintenance is currently in progress. We will provide updates as necessary.</p><p><small>Mar <var>29</var>, <var>18:42</var> UTC</small><br /><strong>Scheduled</strong> - We will be undergoing scheduled maintenance - release v0.153.0 - on Thursday, 30 March from 1400 to 1700 UTC. Our members may experience delays in deposit system admin tool (doi.crossref.org) processing. Deposits submitted during this time will be stored and processed after the maintenance has been completed.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16688592",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/73slhqqq3w5c",
+      "published": "2023-03-29T13:30:00Z",
+      "published_parsed": [
+        2023,
+        3,
+        29,
+        13,
+        30,
+        0,
+        2,
+        88,
+        0
+      ],
+      "updated": "2023-03-29T15:56:02Z",
+      "updated_parsed": [
+        2023,
+        3,
+        29,
+        15,
+        56,
+        2,
+        2,
+        88,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/73slhqqq3w5c"
+        }
+      ],
+      "title": "Performance issues with search.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Performance issues with search.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Mar <var>29</var>, <var>13:30</var> UTC</small><br /><strong>Resolved</strong> - Earlier today we observed intermittent  \u201cInternal Server Error\u201d and \u201c504 Gateway Time-out\u201d messages from search.crossref.org. We have blocked the user who was creating the instability.</p>"
+        }
+      ],
+      "summary": "<p><small>Mar <var>29</var>, <var>13:30</var> UTC</small><br /><strong>Resolved</strong> - Earlier today we observed intermittent  \u201cInternal Server Error\u201d and \u201c504 Gateway Time-out\u201d messages from search.crossref.org. We have blocked the user who was creating the instability.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16591450",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/vj0nwvwdgx1x",
+      "published": "2023-03-21T17:35:25Z",
+      "published_parsed": [
+        2023,
+        3,
+        21,
+        17,
+        35,
+        25,
+        1,
+        80,
+        0
+      ],
+      "updated": "2023-03-21T17:35:26Z",
+      "updated_parsed": [
+        2023,
+        3,
+        21,
+        17,
+        35,
+        26,
+        1,
+        80,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/vj0nwvwdgx1x"
+        }
+      ],
+      "title": "Errors with search.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Errors with search.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Mar <var>21</var>, <var>17:35</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Mar <var>21</var>, <var>16:19</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Mar <var>21</var>, <var>16:05</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Mar <var>21</var>, <var>13:27</var> UTC</small><br /><strong>Investigating</strong> - We have received reports from members and users again today that Crossref metadata search - search.crossref.org - is returning intermittent  \u201cInternal Server Error\u201d and \u201c504 Gateway Time-out\u201d messages. We're investigating.</p>"
+        }
+      ],
+      "summary": "<p><small>Mar <var>21</var>, <var>17:35</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Mar <var>21</var>, <var>16:19</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Mar <var>21</var>, <var>16:05</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Mar <var>21</var>, <var>13:27</var> UTC</small><br /><strong>Investigating</strong> - We have received reports from members and users again today that Crossref metadata search - search.crossref.org - is returning intermittent  \u201cInternal Server Error\u201d and \u201c504 Gateway Time-out\u201d messages. We're investigating.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16576552",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/hcb2jnf4kcym",
+      "published": "2023-03-20T19:14:20Z",
+      "published_parsed": [
+        2023,
+        3,
+        20,
+        19,
+        14,
+        20,
+        0,
+        79,
+        0
+      ],
+      "updated": "2023-03-20T19:14:22Z",
+      "updated_parsed": [
+        2023,
+        3,
+        20,
+        19,
+        14,
+        22,
+        0,
+        79,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/hcb2jnf4kcym"
+        }
+      ],
+      "title": "Errors with search.crossref.org",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Errors with search.crossref.org"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Mar <var>20</var>, <var>19:14</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Mar <var>20</var>, <var>16:50</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Mar <var>20</var>, <var>15:17</var> UTC</small><br /><strong>Investigating</strong> - We have received reports from members and users that Crossref metadata search - search.crossref.org - is returning intermittent  \u201cInternal Server Error\u201d and \u201c504 Gateway Time-out\u201d messages. We're investigating.</p>"
+        }
+      ],
+      "summary": "<p><small>Mar <var>20</var>, <var>19:14</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Mar <var>20</var>, <var>16:50</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Mar <var>20</var>, <var>15:17</var> UTC</small><br /><strong>Investigating</strong> - We have received reports from members and users that Crossref metadata search - search.crossref.org - is returning intermittent  \u201cInternal Server Error\u201d and \u201c504 Gateway Time-out\u201d messages. We're investigating.</p>"
+    },
+    {
+      "id": "tag:status.crossref.org,2005:Incident/16390038",
+      "guidislink": true,
+      "link": "https://status.crossref.org/incidents/h64sw379q9wg",
+      "published": "2023-03-10T14:24:41Z",
+      "published_parsed": [
+        2023,
+        3,
+        10,
+        14,
+        24,
+        41,
+        4,
+        69,
+        0
+      ],
+      "updated": "2023-03-10T14:24:41Z",
+      "updated_parsed": [
+        2023,
+        3,
+        10,
+        14,
+        24,
+        41,
+        4,
+        69,
+        0
+      ],
+      "links": [
+        {
+          "rel": "alternate",
+          "type": "text/html",
+          "href": "https://status.crossref.org/incidents/h64sw379q9wg"
+        }
+      ],
+      "title": "Web deposit form: degraded performance",
+      "title_detail": {
+        "type": "text/plain",
+        "language": "en-US",
+        "base": "https://status.crossref.org/history.atom",
+        "value": "Web deposit form: degraded performance"
+      },
+      "content": [
+        {
+          "type": "text/html",
+          "language": "en-US",
+          "base": "https://status.crossref.org/history.atom",
+          "value": "<p><small>Mar <var>10</var>, <var>14:24</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Mar <var> 9</var>, <var>18:45</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Mar <var> 9</var>, <var>14:50</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Mar <var> 8</var>, <var>18:03</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>Mar <var> 8</var>, <var>15:38</var> UTC</small><br /><strong>Investigating</strong> - We're observing problems with our web deposit form - https://apps.crossref.org/webDeposit/ - at the moment. Loading times are slow and some users are reporting problems accessing the web deposit form. We're investigating.</p>"
+        }
+      ],
+      "summary": "<p><small>Mar <var>10</var>, <var>14:24</var> UTC</small><br /><strong>Resolved</strong> - This incident has been resolved.</p><p><small>Mar <var> 9</var>, <var>18:45</var> UTC</small><br /><strong>Monitoring</strong> - A fix has been implemented and we are monitoring the results.</p><p><small>Mar <var> 9</var>, <var>14:50</var> UTC</small><br /><strong>Identified</strong> - The issue has been identified and a fix is being implemented.</p><p><small>Mar <var> 8</var>, <var>18:03</var> UTC</small><br /><strong>Update</strong> - We are continuing to investigate this issue.</p><p><small>Mar <var> 8</var>, <var>15:38</var> UTC</small><br /><strong>Investigating</strong> - We're observing problems with our web deposit form - https://apps.crossref.org/webDeposit/ - at the moment. Loading times are slow and some users are reporting problems accessing the web deposit form. We're investigating.</p>"
+    }
+  ],
+  "feed": {
+    "language": "en-US",
+    "id": "tag:status.crossref.org,2005:/history",
+    "guidislink": true,
+    "link": "https://status.crossref.org",
+    "links": [
+      {
+        "rel": "alternate",
+        "type": "text/html",
+        "href": "https://status.crossref.org"
+      },
+      {
+        "rel": "self",
+        "type": "application/atom+xml",
+        "href": "https://status.crossref.org/history.atom"
+      }
+    ],
+    "title": "Crossref Status - Incident History",
+    "title_detail": {
+      "type": "text/plain",
+      "language": "en-US",
+      "base": "https://status.crossref.org/history.atom",
+      "value": "Crossref Status - Incident History"
+    },
+    "updated": "2023-06-21T15:24:43Z",
+    "updated_parsed": [
+      2023,
+      6,
+      21,
+      15,
+      24,
+      43,
+      2,
+      172,
+      0
+    ],
+    "authors": [
+      {
+        "name": "Crossref"
+      }
+    ],
+    "author_detail": {
+      "name": "Crossref"
+    },
+    "author": "Crossref"
+  },
+  "headers": {
+    "vary": "Accept,Accept-Encoding,Fastly-SSL",
+    "cache-control": "max-age=0, private, must-revalidate",
+    "x-cache": "HIT",
+    "content-type": "application/atom+xml; charset=utf-8",
+    "content-encoding": "gzip",
+    "strict-transport-security": "max-age=259200",
+    "date": "Wed, 21 Jun 2023 23:35:27 GMT",
+    "x-request-id": "2ca14205-1f6a-4607-ba21-b0a8322eb5b1",
+    "x-download-options": "noopen",
+    "x-xss-protection": "1; mode=block",
+    "x-runtime": "0.041037",
+    "x-permitted-cross-domain-policies": "none",
+    "access-control-allow-origin": "*",
+    "accept-ranges": "bytes",
+    "x-content-type-options": "nosniff",
+    "etag": "W/\"gz[dfed127325c04823b57a14ee854d0290]\"",
+    "x-statuspage-skip-logging": "true",
+    "connection": "close",
+    "x-statuspage-version": "f786c8b0107acff4faf167a86b8333c90e6ef703",
+    "x-pollinator-metadata-service": "status-page-web-pages",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "age": "510"
+  },
+  "etag": "W/\"gz[dfed127325c04823b57a14ee854d0290]\"",
+  "href": "https://status.crossref.org/history.atom",
+  "status": 200,
+  "encoding": "utf-8",
+  "version": "atom10",
+  "namespaces": {
+    "": "http://www.w3.org/2005/Atom"
+  }
+}

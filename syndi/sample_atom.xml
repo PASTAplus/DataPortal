@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom">
+  <id>tag:status.datacite.org,2005:/history</id>
+  <link rel="alternate" type="text/html" href="https://status.datacite.org"/>
+  <link rel="self" type="application/atom+xml" href="https://status.datacite.org/history.atom"/>
+  <title>DataCite Status - Incident History</title>
+  <updated>2023-06-21T12:32:49Z</updated>
+  <author>
+    <name>DataCite</name>
+  </author>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/17492927</id>
+    <published>2023-06-06T23:49:31Z</published>
+    <updated>2023-06-06T23:49:31Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/gkqwt2n5kmvc"/>
+    <title>Slow response times from DOI Registration Services</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt; 6&lt;/var&gt;, &lt;var data-var='time'&gt;23:49&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - All services appear normal now, closing incident. Services are still marginally scaled up to prevent issues.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt; 6&lt;/var&gt;, &lt;var data-var='time'&gt;20:27&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - Services have been scaled to cope with load, we are monitoring the situation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt; 6&lt;/var&gt;, &lt;var data-var='time'&gt;19:23&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating an issue with response times being slow for DOI registration. This appears to be related to increased service load and we are scaling services to compensate.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/17443983</id>
+    <published>2023-06-02T11:50:18Z</published>
+    <updated>2023-06-02T11:50:18Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/xhs20wkfr50y"/>
+    <title>DOI Registration Issues</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt; 2&lt;/var&gt;, &lt;var data-var='time'&gt;11:50&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - All services appear normal now, closing incident. Services are still marginally scaled up to prevent issues.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt; 2&lt;/var&gt;, &lt;var data-var='time'&gt;07:59&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - We increased our capacity to cope with an increased load on our services. We are still monitoring at this stage but affected systems appear operational.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;15:46&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We've received reports and internal monitoring that is showing errors when attempting to register DOIs, this appears to not affect all registrations but instead intermittent performance issues. We are currently investigating.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/16750558</id>
+    <published>2023-04-05T08:17:18Z</published>
+    <updated>2023-04-05T08:17:18Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/390xpn4dvxgw"/>
+    <title>High load on DOI registration and related services</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 5&lt;/var&gt;, &lt;var data-var='time'&gt;08:17&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - All services appear normal.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 4&lt;/var&gt;, &lt;var data-var='time'&gt;15:47&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - The initial capacity increases looks to have provided the needed support for services, there may be some slowness for indexing of DOIs which may take longer than the usual few minutes, a backlog queue is currently being processed after the load spike. We are monitoring for further problems.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 4&lt;/var&gt;, &lt;var data-var='time'&gt;15:13&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - increased load has been creeping up for past couple of hours, some automatic and manual mitigation has already taken place, but we are investigating further.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/16622785</id>
+    <published>2023-03-24T09:56:33Z</published>
+    <updated>2023-03-24T09:56:33Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/shxtmh3bj6xf"/>
+    <title>Slow DOI registration and timeouts</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Mar &lt;var data-var='date'&gt;24&lt;/var&gt;, &lt;var data-var='time'&gt;09:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Service appears stable for few hours now, incident resolved but will continue monitoring.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Mar &lt;var data-var='date'&gt;23&lt;/var&gt;, &lt;var data-var='time'&gt;20:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - We have identified that our services are experiencing high load.&lt;br /&gt;It is primarily affecting MDS however REST API for DOI registrations may also be affected, consequently our frontend application Fabrica is potentially affected.&lt;br /&gt;We've already compensated with higher number of servers running in our production cluster and our now monitoring the situation.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/16257179</id>
+    <published>2023-02-24T00:39:50Z</published>
+    <updated>2023-02-24T00:42:49Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/2rynm92r52mv"/>
+    <title>Commons experiencing errors</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt;24&lt;/var&gt;, &lt;var data-var='time'&gt;00:39&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt;24&lt;/var&gt;, &lt;var data-var='time'&gt;00:24&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been implemented and we are monitoring the results.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt;24&lt;/var&gt;, &lt;var data-var='time'&gt;00:13&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Identified&lt;/strong&gt; - The issue has been identified and a fix is being implemented.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt;23&lt;/var&gt;, &lt;var data-var='time'&gt;22:20&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating errors in Commons. Other services are not affected.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/14075680</id>
+    <published>2022-12-02T10:38:18Z</published>
+    <updated>2022-12-02T10:38:18Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/c477lygrjthw"/>
+    <title>MDS experiencing timeouts and slowness</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Dec &lt;var data-var='date'&gt; 2&lt;/var&gt;, &lt;var data-var='time'&gt;10:38&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - We believe the performance issues were due to increased load, we've increased our capacity and still investigating further options. We hope changes made yesterday have returned stability but we will continue monitoring.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Dec &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;14:12&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - There are still some reported issues with the MDS API, we are investigating and continuing to monitor for any further issues.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Dec &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;12:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been deployed, there was an issue with automatic scaling of servers, this has been now corrected and it should be operating as normal.&lt;br /&gt;We will continue to monitor.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Dec &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;11:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/11091036</id>
+    <published>2022-09-09T20:38:52Z</published>
+    <updated>2022-09-09T20:38:53Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/x8zx17lpqnrm"/>
+    <title>Degraded performance for MDS and REST APIs</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Sep &lt;var data-var='date'&gt; 9&lt;/var&gt;, &lt;var data-var='time'&gt;20:38&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved. We will continue to monitor the MDS and REST APIs for performance issues.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Sep &lt;var data-var='date'&gt; 9&lt;/var&gt;, &lt;var data-var='time'&gt;18:37&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been implemented and we are monitoring the results.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Sep &lt;var data-var='date'&gt; 9&lt;/var&gt;, &lt;var data-var='time'&gt;18:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating an issue that may be causing degraded performance for the MDS and REST APIs in our test and production systems.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/9161415</id>
+    <published>2022-01-25T18:34:41Z</published>
+    <updated>2022-01-25T18:34:41Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/jbd897lmw7q8"/>
+    <title>OAI-PMH API Outage</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;18:34&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - Due to a deployment problem search and the oai-pmh service were unable to be deployed into our infrastructure after they were routinely cycled. This has now been upgraded to use our new standard workflow and have deployed successfully.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;17:05&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - search.datacite.org is also affected. commons.datacite.org however is not affected, please use that for any front-end search queries.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;16:57&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - The OAI-PMH service is currently down, we are investigating the probable cause.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/9053428</id>
+    <published>2022-01-24T09:20:26Z</published>
+    <updated>2022-01-24T09:20:26Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/k7rjjq59kpyb"/>
+    <title>High load amongst content negotiation service.</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;24&lt;/var&gt;, &lt;var data-var='time'&gt;09:20&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - We are still receiving a high load of requests but we are now fufilling due to increased capacity, so this issue is being marked resolved.&lt;br /&gt;Requests for DataCite DOIs should be unaffected going forward, requests for Crossref DOIs against DataCite Content negotiation directly may occasionally return 404s when it is unable to process.&lt;br /&gt;It is preferred if possible to use Content Negotiation via doi.org and you will be redirected as appropriate to the registration agencies content negotiation service as appropriate.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;19&lt;/var&gt;, &lt;var data-var='time'&gt;18:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - The service appears stable now, and we are processing requests. We are monitoring now with the changes we've made.&lt;br /&gt;As mentioned in the previous update, do note requests for Crossref DOIs via DataCite Content Negotiation may still return a 404 and this is expected behaviour at present.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;19&lt;/var&gt;, &lt;var data-var='time'&gt;15:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Identified&lt;/strong&gt; - A large number of requests has been identified that are specifically attempting to resolve Crossref DOIs via the DataCite content negotiation service, we are having on-going conversations about this use-case.&lt;br /&gt;&lt;br /&gt;To remedy we've implemented some timeout logic and additional rate limiting, this however may have a knock on effect those attempting Content Negotiation for Crossref DOIs via DataCite Content Negotiation (Crossref Content Negotiation or via doi.org is unaffected) may receive a 404.&lt;br /&gt;&lt;br /&gt;Requests for DataCite DOIs via Content Negotiation should now start to be resolving.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;11&lt;/var&gt;, &lt;var data-var='time'&gt;11:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - During the past week or so we've noticed a huge surge of increased traffic to the Content Negotiation Service. This has unfortunately caused various problems with requests not being resolved. This is currently affecting both the Content Negotiation service but also the Citation Formatter service.&lt;br /&gt;&lt;br /&gt;We've made some initial improvements to support the increased load on the service, but it is unfortunately still causing issues. &lt;br /&gt;We will continue to investigate.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/7545177</id>
+    <published>2021-07-19T10:28:12Z</published>
+    <updated>2021-07-19T10:28:12Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/gd6rzd5xywyf"/>
+    <title>Fabrica in Production and Test are not working properly because of a CORS issue</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jul &lt;var data-var='date'&gt;19&lt;/var&gt;, &lt;var data-var='time'&gt;10:28&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The issue has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jul &lt;var data-var='date'&gt;19&lt;/var&gt;, &lt;var data-var='time'&gt;10:23&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are deploying a fix that should address the issue in the next 30 min.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/7242381</id>
+    <published>2021-06-14T15:20:52Z</published>
+    <updated>2021-06-14T15:20:52Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/mk9pr250gpxs"/>
+    <title>Stability issues with the DataCite REST API</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;14&lt;/var&gt;, &lt;var data-var='time'&gt;15:20&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;14&lt;/var&gt;, &lt;var data-var='time'&gt;14:35&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been implemented and we are monitoring the results.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;14&lt;/var&gt;, &lt;var data-var='time'&gt;14:35&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - We have identified and fixed the issue. We will continue to monitor the REST API for irregularities.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;14&lt;/var&gt;, &lt;var data-var='time'&gt;08:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating the issue.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/6486021</id>
+    <published>2021-03-09T07:34:26Z</published>
+    <updated>2021-03-09T07:34:27Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/j4q0pw1mhv0m"/>
+    <title>Issue registering DOIs in the handle system</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Mar &lt;var data-var='date'&gt; 9&lt;/var&gt;, &lt;var data-var='time'&gt;07:34&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - In the last 8 hours there has been an issue registering DataCite DOIs in the handle system managed by CNRI. The issue has been identified and fixed by CNRI, and DataCite has re-registered all DOIs from the last 24 hours where handle registration failed. The issue has been resolved.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/6184541</id>
+    <published>2021-02-03T18:07:25Z</published>
+    <updated>2021-02-03T18:07:27Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/d038l8h33zg1"/>
+    <title>The Fabrica service is not responding properly.</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt; 3&lt;/var&gt;, &lt;var data-var='time'&gt;18:07&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt; 3&lt;/var&gt;, &lt;var data-var='time'&gt;17:07&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been implemented and we are monitoring the results.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt; 3&lt;/var&gt;, &lt;var data-var='time'&gt;16:06&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating the issue.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/6174054</id>
+    <published>2021-02-02T17:09:46Z</published>
+    <updated>2021-02-02T17:09:46Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/g25h0dj3d17t"/>
+    <title>We are experiencing issues with Fabrica service.</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt; 2&lt;/var&gt;, &lt;var data-var='time'&gt;17:09&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt; 2&lt;/var&gt;, &lt;var data-var='time'&gt;16:31&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been implemented and we are monitoring the results.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Feb &lt;var data-var='date'&gt; 2&lt;/var&gt;, &lt;var data-var='time'&gt;15:59&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating the issue. Other services are not affected.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/6004168</id>
+    <published>2021-01-12T14:56:47Z</published>
+    <updated>2021-01-12T14:56:47Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/f3lyp6kz39k1"/>
+    <title>Re are seeing issues with the DataCite Fabrica service. We are investigating. Other services are not affected.</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;12&lt;/var&gt;, &lt;var data-var='time'&gt;14:56&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;12&lt;/var&gt;, &lt;var data-var='time'&gt;12:36&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - DataCite Fabrica is operating normally again. We continue to monitor the service.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jan &lt;var data-var='date'&gt;12&lt;/var&gt;, &lt;var data-var='time'&gt;11:02&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently investigating this issue.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4670603</id>
+    <published>2020-07-21T10:03:43Z</published>
+    <updated>2020-07-21T10:03:44Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/sct09jr4mf01"/>
+    <title>Fabrica service not available</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jul &lt;var data-var='date'&gt;21&lt;/var&gt;, &lt;var data-var='time'&gt;10:03&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jul &lt;var data-var='date'&gt;21&lt;/var&gt;, &lt;var data-var='time'&gt;08:50&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - We have encountered an issue with the Fabrica service. We have found the problem and have deployed a fix, we expect this issue to be resolved within the next 30 min.&lt;br /&gt;&lt;br /&gt;Other DataCite services are not affected by this issue.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4373406</id>
+    <published>2020-06-17T08:50:40Z</published>
+    <updated>2020-06-17T08:50:41Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/gl140lzl29d4"/>
+    <title>Repository creation and DOI registration is currently not working correctly in the test system</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;17&lt;/var&gt;, &lt;var data-var='time'&gt;08:50&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The incident has been resolved and the test system is operating normally again.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;16&lt;/var&gt;, &lt;var data-var='time'&gt;23:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - A fix has been deployed and we are monitoring the situation.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Jun &lt;var data-var='date'&gt;15&lt;/var&gt;, &lt;var data-var='time'&gt;17:40&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are investigating the issue. The production infrastructure is not affected.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4191713</id>
+    <published>2020-05-29T13:12:28Z</published>
+    <updated>2020-05-29T13:12:28Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/ppy4hzqwmg6j"/>
+    <title>Scheduled database maintenance for the DataCite test system.</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;29&lt;/var&gt;, &lt;var data-var='time'&gt;13:12&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Completed&lt;/strong&gt; - The scheduled maintenance has been completed and the test system is operating normally again.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;29&lt;/var&gt;, &lt;var data-var='time'&gt;12:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;In progress&lt;/strong&gt; - Scheduled maintenance is currently in progress. We will provide updates as necessary.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;13:44&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Scheduled&lt;/strong&gt; - This is the last scheduled maintenance for the DataCite Test system.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4200458</id>
+    <published>2020-05-26T17:25:01Z</published>
+    <updated>2020-05-26T17:25:01Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/q5gmy9wwbrp8"/>
+    <title>Intermittent problems with the MDS API in the Test System</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;26&lt;/var&gt;, &lt;var data-var='time'&gt;17:25&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;26&lt;/var&gt;, &lt;var data-var='time'&gt;17:24&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - This issue has been resolved and the Test MDS is operating normally again.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;26&lt;/var&gt;, &lt;var data-var='time'&gt;16:24&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - The MDS API in the Test System is only reachable intermittently. We are investigating.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4190830</id>
+    <published>2020-05-25T13:42:36Z</published>
+    <updated>2020-05-25T13:42:37Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/z0vzzb2ylh3q"/>
+    <title>The scheduled maintainance of the test system has been delayed</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;13:42&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Completed&lt;/strong&gt; - The scheduled maintenance has been completed.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;13:42&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - The scheduled maintenance has been completed.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;11:16&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;In progress&lt;/strong&gt; - Scheduled maintenance is currently in progress. We will provide updates as necessary.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;11:12&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Scheduled&lt;/strong&gt; - The scheduled maintenance of the test system should now complete at about 2 PM GMT.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4189055</id>
+    <published>2020-05-25T09:00:37Z</published>
+    <updated>2020-05-25T09:00:38Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/ttr1kpp46zgq"/>
+    <title>Maintenance of the test system</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;09:00&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Completed&lt;/strong&gt; - The scheduled maintenance has been completed.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;06:30&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;In progress&lt;/strong&gt; - Scheduled maintenance is currently in progress. We will provide updates as necessary.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;25&lt;/var&gt;, &lt;var data-var='time'&gt;06:18&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Scheduled&lt;/strong&gt; - The test system is undergoing maintenance until 9 AM GMT this morning. Please excuse the inconvenience.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4083407</id>
+    <published>2020-05-11T14:34:23Z</published>
+    <updated>2020-05-11T14:34:24Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/0t54bhc5jn5d"/>
+    <title>DOI Fabrica service down</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;11&lt;/var&gt;, &lt;var data-var='time'&gt;14:34&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;11&lt;/var&gt;, &lt;var data-var='time'&gt;11:07&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - We identified the problem related to the availability of the Fabrica service. A fix has been applied and service should be operational, we will continue to monitor.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt;11&lt;/var&gt;, &lt;var data-var='time'&gt;08:47&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - The Fabrica service for DOI registrations is not working properly and we are investigating. Other services, including the REST and MDS APIs, are not affected.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/4049562</id>
+    <published>2020-05-07T05:11:08Z</published>
+    <updated>2020-05-07T05:17:36Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/9cnqr1956pkp"/>
+    <title>We are experiencing a slow REST API</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt; 7&lt;/var&gt;, &lt;var data-var='time'&gt;05:11&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The slowness of the REST API was caused by an unusually high amount of traffic to our Event Data API. This incident has been resolved.&lt;/p&gt;&lt;p&gt;&lt;small&gt;May &lt;var data-var='date'&gt; 6&lt;/var&gt;, &lt;var data-var='time'&gt;20:37&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Investigating&lt;/strong&gt; - We are currently seeing a slow REST API because of extra traffic. We are monitoring the situation.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/3841425</id>
+    <published>2020-04-06T18:30:56Z</published>
+    <updated>2020-04-06T18:30:57Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/lht0c4ln68vq"/>
+    <title>Missing DOIs in DOI index</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 6&lt;/var&gt;, &lt;var data-var='time'&gt;18:30&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The DOI index has been successfully refreshed.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 6&lt;/var&gt;, &lt;var data-var='time'&gt;14:51&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Monitoring&lt;/strong&gt; - We last updated our DOI index on Sunday, but unfortunately about 10% or 2.5 million of our DOIs were not indexed properly. We have started another reindexing, and this issue should be resolved at about 8 PM GMT or in five hours today.&lt;br /&gt;&lt;br /&gt;Searching for 90% of DOIs, as well as DOI registrations and updates work normally.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:status.datacite.org,2005:Incident/3809418</id>
+    <published>2020-04-01T12:36:10Z</published>
+    <updated>2020-04-01T12:36:11Z</updated>
+    <link rel="alternate" type="text/html" href="https://status.datacite.org/incidents/c5xmfhpytdfr"/>
+    <title>DOI index incomplete for the next few hours</title>
+    <content type="html">&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;12:36&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Resolved&lt;/strong&gt; - The DOI index has been completely refreshed, and all services are operating normally again.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Apr &lt;var data-var='date'&gt; 1&lt;/var&gt;, &lt;var data-var='time'&gt;05:22&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Update&lt;/strong&gt; - The reindexing of all DOIs took longer than expected. More than 80% of DOIs are again available in the search index, we expect the indexing to be completed by 12 PM GMT.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Mar &lt;var data-var='date'&gt;31&lt;/var&gt;, &lt;var data-var='time'&gt;10:28&lt;/var&gt; UTC&lt;/small&gt;&lt;br&gt;&lt;strong&gt;Identified&lt;/strong&gt; - We had an unexpected issue with our search index for DOIs. We have started to reindex all DOIs, and the full index should again be available by 8 PM GMT. We are sorry for the inconvenience. DOI registrations or updates are not affected.&lt;/p&gt;</content>
+  </entry>
+</feed>

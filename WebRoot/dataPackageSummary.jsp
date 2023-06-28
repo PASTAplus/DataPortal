@@ -190,7 +190,7 @@
     </c:when>
   </c:choose>
 
-  <% if (tier != null) { %>
+  <% if (!tier.equals("production")) { %>
   <style>
       .watermark {
           background-image: url(/nis/images/watermark.png);
@@ -212,6 +212,7 @@
           <div class="row-fluid">
             <div class="span12">
 
+              <%@ include file="statusNotices.jsp" %>
 
               <c:set var="showTestHTML" value="<%= showTestHTML %>"/>
               <c:choose>

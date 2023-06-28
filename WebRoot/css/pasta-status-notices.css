@@ -1,0 +1,26 @@
+/* Crossref and DataCite status notices */
+
+.status-notices {
+    color: #505000;
+    background-color: #ffff9c;
+    border-color: #d0d000;
+    border-width: .1rem;
+}
+
+.status-notices a[target='_blank'] {
+    display: inline-flex;
+    margin-right: .5rem;
+}
+
+.status-notices a[target='_blank']:after {
+    content: url(../images/external_link.svg);
+    margin-left: 0.25rem;
+    height:.6rem;
+    width: .6rem;
+}
+
+.status-notices p {
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+}

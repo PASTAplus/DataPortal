@@ -77,9 +77,13 @@
 
 <jsp:include page="header.jsp"/>
 
+
 <div class="container">
   <div class="row distance_1">
     <div class="col">
+
+      <%@ include file="statusNotices.jsp" %>
+
       <div class="recent_title">
         <h1><%= pageTitle %>
         </h1>
