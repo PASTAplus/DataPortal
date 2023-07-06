@@ -33,10 +33,10 @@ Display 3rd-party service status notices.
 
 <%
     Configuration options = ConfigurationListener.getOptions();
-    String dbDriver = options.getString("db.pkg.Driver");
-    String dbUrl = options.getString("db.pkg.URL");
-    String dbUser = options.getString("db.pkg.User");
-    String dbPassword = options.getString("db.pkg.Password");
+    String dbDriver = options.getString("db.Driver");
+    String dbUrl = options.getString("db.URL");
+    String dbUser = options.getString("db.User");
+    String dbPassword = options.getString("db.Password");
     DatabaseClient databaseClient = new DatabaseClient(dbDriver, dbUrl, dbUser, dbPassword);
     Connection conn = databaseClient.getConnection();
     Result statusNotices;

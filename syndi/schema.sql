@@ -1,4 +1,4 @@
-drop table authtoken.rss_feed;
+drop table if exists authtoken.rss_feed;
 
 create table authtoken.rss_feed
 (

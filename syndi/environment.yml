@@ -1,0 +1,11 @@
+name: syndi
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - feedparser
+  - psycopg2
+  - pip
+  - pip:
+    - jproperties
+prefix: /home/pasta/anaconda3/envs/syndi

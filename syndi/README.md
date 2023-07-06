@@ -7,5 +7,11 @@ Syndi reads service status notices from Crossref and DataCite Atom (RSS) feeds, 
 ```shell
 sudo apt update
 sudo apt install libpq-dev
-pip install psycopg2
+
+cd ~/git/DataPortal/syndi
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+sh Miniconda3-latest-Linux-x86_64.sh
+conda update -n base -c defaults conda
+conda env create -f environment.yml
+conda activate syndi
 ```
