@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import contextlib
 import datetime
 import logging
@@ -13,7 +14,7 @@ import psycopg2
 
 log = logging.getLogger(__name__)
 
-CONF_PATH = './syndi.conf'
+PROPERTIES_PATH = '~/git/DataPortal/WebRoot/WEB-INF/conf/dataportal.properties'
 
 SITE_LIST = [
     'https://status.crossref.org/history.atom',
@@ -109,7 +110,7 @@ def is_resolved(content_str):
 @contextlib.contextmanager
 def connect():
     prop = jproperties.Properties()
-    prop_path = pathlib.Path('~/git/DataPortal/WebRoot/WEB-INF/conf/dataportal.properties').expanduser()
+    prop_path = pathlib.Path(PROPERTIES_PATH).expanduser()
     with prop_path.open('rb') as prop_file:
         prop.load(prop_file)
 
