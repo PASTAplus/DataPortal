@@ -26,6 +26,7 @@ package edu.lternet.pasta.portal;
 
 import edu.lternet.pasta.client.*;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -65,6 +66,7 @@ public class DoiServlet extends DataPortalServlet {
           response, HttpServletResponse.SC_FORBIDDEN,
           "Method can only be called by authenticated users"
       );
+      return;
     }
     // Decode JSON body
     JSONObject json = getJson(request);
@@ -79,7 +81,7 @@ public class DoiServlet extends DataPortalServlet {
     try {
       JSONObject doiJson = crossrefClient.fetchByDoi(json.getString("doi"));
       response.setContentType("application/json");
-      response.setStatus(200);
+      response.setStatus(HttpStatus.SC_OK);
       response.getWriter().write(doiJson.toString());
     } catch (CrossrefClientException e) {
       logger.error(e.toString());

@@ -32,52 +32,59 @@ import org.json.JSONObject;
 
 
 public class CrossrefClient extends PastaClient {
-  private static final Logger logger = Logger.getLogger(CrossrefClient.class);
-  private static String crossrefUrl;
+    private static final Logger logger = Logger.getLogger(CrossrefClient.class);
+    private static String crossrefUrl;
 
-  /**
-   * @param uid User ID, needed for the parent PastaClient class
-   */
-  public CrossrefClient(String uid) throws PastaConfigurationException, PastaAuthenticationException
-  {
-    super(uid);
-    Configuration options = ConfigurationListener.getOptions();
-    crossrefUrl = options.getString("crossref.url");
-  }
-
-  /**
-   * Call the Crossref API
-   *
-   * @return DOI metadata as JSON.
-   */
-  public JSONObject fetchByDoi(String doi) throws CrossrefClientException
-  {
-    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-    String serviceURL = String.format("%s/%s", crossrefUrl, doi);
-    int statusCode = 500;
-    try {
-      HttpGet httpGet = new HttpGet(serviceURL);
-      httpGet.setHeader(HttpHeaders.ACCEPT, "application/json");
-      HttpResponse httpResponse = httpClient.execute(httpGet);
-      StatusLine statusLine = httpResponse.getStatusLine();
-      statusCode = statusLine.getStatusCode();
-      if (statusCode == HttpStatus.SC_OK) {
-        HttpEntity httpEntity = httpResponse.getEntity();
-        String bodyStr = EntityUtils.toString(httpEntity, "UTF-8").trim();
-        return new JSONObject(bodyStr);
-      }
-      else {
-        String reasonPhrase = statusLine.getReasonPhrase();
-        String errorMsg = String.format("Error fetching DOI metadata: %d %s", statusCode, reasonPhrase);
-        logger.error(errorMsg);
-        throw new CrossrefClientException(statusCode, reasonPhrase);
-      }
-    } catch (Exception e) {
-      String errorMsg = String.format("Error fetching DOI metadata: %s", e.getMessage());
-      logger.error(errorMsg);
-      throw new CrossrefClientException(statusCode, errorMsg);
-    } finally {
-      closeHttpClient(httpClient);
+    /**
+     * @param uid User ID, needed for the parent PastaClient class
+     */
+    public CrossrefClient(String uid) throws PastaConfigurationException, PastaAuthenticationException {
+        super(uid);
+        Configuration options = ConfigurationListener.getOptions();
+        crossrefUrl = options.getString("crossref.url");
     }
-  }
+
+    /**
+     * Call the Crossref API
+     *
+     * @return DOI metadata as JSON.
+     */
+    public JSONObject fetchByDoi(String doi) throws CrossrefClientException {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String serviceURL = String.format("%s/%s", crossrefUrl, doi);
+        HttpGet httpGet = new HttpGet(serviceURL);
+        httpGet.setHeader(HttpHeaders.ACCEPT, "application/json");
+
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            StatusLine statusLine = httpResponse.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            String reasonPhrase = statusLine.getReasonPhrase();
+
+            if (statusCode == HttpStatus.SC_NOT_FOUND) {
+                throw new Exception("DOI Not Found");
+            }
+
+            if (statusCode != HttpStatus.SC_OK) {
+                throw new Exception(String.format("%d %s", statusCode, reasonPhrase));
+            }
+
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String bodyStr = EntityUtils.toString(httpEntity, "UTF-8").trim();
+            try {
+                return new JSONObject(bodyStr);
+            }
+            catch (Exception e) {
+                throw new Exception("Response is not valid JSON");
+            }
+        } catch (Exception e) {
+            String errorMsg = String.format("Error fetching DOI: %s", e.getMessage());
+            logger.error(errorMsg);
+            JSONObject json = new JSONObject();
+            json.put("error", errorMsg);
+            return json;
+        } finally {
+            closeHttpClient(httpClient);
+        }
+    }
 }
