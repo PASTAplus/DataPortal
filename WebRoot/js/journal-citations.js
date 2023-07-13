@@ -318,9 +318,18 @@ $(document).ready(function() {
   }
 
   function setModalDoiValues(doiMap) {
-    articleUrlInput.val(doiMap.resource.primary.URL);
-    articleTitleInput.val(doiMap.title);
-    journalTitleInput.val(doiMap['container-title']);
+    if (doiMap.hasOwnProperty('error')) {
+      alert(doiMap.error);
+    }
+    else {
+      try {
+        articleUrlInput.val(doiMap.resource.primary.URL);
+        articleTitleInput.val(doiMap.title);
+        journalTitleInput.val(doiMap['container-title']);
+      } catch (TypeError) {
+         alert('Received unexpected value');
+      }
+    }
   }
 
   function getRowArr(citationId) {

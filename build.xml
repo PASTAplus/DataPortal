@@ -154,6 +154,7 @@
 				<include name="**/*.css" />
 				<include name="**/*.png" />
 				<include name="**/*.jpg" />
+				<include name="**/*.svg" />
 				<include name="**/*.gif" />
                 <include name="**/*.ico" />
 				<include name="**/*.xml" />
