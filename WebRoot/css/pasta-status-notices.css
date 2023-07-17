@@ -14,6 +14,7 @@
 
 .status-notices a[target='_blank']:after {
     content: url(../images/external_link.svg);
+    filter: brightness(0) contrast(50%);
     margin-left: 0.25rem;
     height:.6rem;
     width: .6rem;
