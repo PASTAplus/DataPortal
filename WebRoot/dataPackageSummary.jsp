@@ -100,17 +100,18 @@
 
   //tier = "localtest";  // Uncomment this for local testing when not on production
 
+// Google Analytics began causing extreme latency with new version on 1 July 2023 so comment out until resolved
   // We want the Google Analytics script on the production or localhost testing tiers only
-  if (tier.equals("production") || pastaHost.startsWith("localhost")) {
-    googleAnalyticsScriptBuffer.append("<!-- Global site tag (gtag.js) - Google Analytics -->\n");
-    googleAnalyticsScriptBuffer.append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-YBTPJW4NGB\"></script>\n");
-    googleAnalyticsScriptBuffer.append("<script>\n");
-    googleAnalyticsScriptBuffer.append("window.dataLayer = window.dataLayer || [];\n");
-    googleAnalyticsScriptBuffer.append("function gtag(){dataLayer.push(arguments);}\n");
-    googleAnalyticsScriptBuffer.append("gtag('js', new Date());\n");
-    googleAnalyticsScriptBuffer.append("gtag('config', 'G-YBTPJW4NGB');\n");
-    googleAnalyticsScriptBuffer.append("</script>\n");
-  }
+//  if (tier.equals("production") || pastaHost.startsWith("localhost")) {
+//    googleAnalyticsScriptBuffer.append("<!-- Global site tag (gtag.js) - Google Analytics -->\n");
+//    googleAnalyticsScriptBuffer.append("<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-YBTPJW4NGB\"></script>\n");
+//    googleAnalyticsScriptBuffer.append("<script>\n");
+//    googleAnalyticsScriptBuffer.append("window.dataLayer = window.dataLayer || [];\n");
+//    googleAnalyticsScriptBuffer.append("function gtag(){dataLayer.push(arguments);}\n");
+//    googleAnalyticsScriptBuffer.append("gtag('js', new Date());\n");
+//    googleAnalyticsScriptBuffer.append("gtag('config', 'G-YBTPJW4NGB');\n");
+//    googleAnalyticsScriptBuffer.append("</script>\n");
+//  }
 
   String googleAnalyticsScript = googleAnalyticsScriptBuffer.toString();
 
