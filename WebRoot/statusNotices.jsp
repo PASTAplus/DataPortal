@@ -44,21 +44,22 @@ Display 3rd-party service status notices.
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(
                 "select site, ( " +
-                "    select url " +
-                "    from pasta.authtoken.rss_feed " +
-                "    where updated = ( " +
-                "        select max(updated) " +
-                "        from pasta.authtoken.rss_feed " +
-                "        where site = a.site " +
-                "        limit 1 " +
-                "    ) " +
-                ")  " +
-                "from pasta.authtoken.rss_feed a " +
-                "where resolved is false " +
-                "and updated > now() - interval '8 hours' " +
-                "group by site " +
-                "order by site " +
-                ";"
+                        "    select url " +
+                        "    from pasta.authtoken.rss_feed " +
+                        "    where greatest(published, updated) = ( " +
+                        "        select max(greatest(published, updated)) " +
+                        "        from pasta.authtoken.rss_feed " +
+                        "        where site = a.site " +
+                        "        limit 1 " +
+                        "    ) " +
+                        ") " +
+                        "from pasta.authtoken.rss_feed a " +
+                        "where resolved is false " +
+                        "and now() >= greatest(published, updated) " +
+                        "and now() <  greatest(published, updated) + interval '8 hours' " +
+                        "group by site " +
+                        "order by site " +
+                        "; "
         );
         statusNotices = ResultSupport.toResult(rs);
     } catch (SQLException e) {
