@@ -23,5 +23,5 @@ For running every 5 minutes WITHOUT logging:
 
 For running every 5 minutes WITH logging:
 
-*/5 * * * * . ~/miniconda3/etc/profile.d/conda.sh && conda activate syndi && python ~/git/DataPortal/syndi/syndi.py > ~/git/DataPortal/syndi/syndi.log
+*/5 * * * * . ~/miniconda3/etc/profile.d/conda.sh && conda activate syndi && python ~/git/DataPortal/syndi/syndi.py > ~/git/DataPortal/syndi/syndi.log 2>&1
 ```

@@ -25,4 +25,6 @@ create index rss_feed_resolved_index
     on authtoken.rss_feed (resolved);
 
 create index rss_feed_site_index
-    on authtoken.rss_feed (site)
+    on authtoken.rss_feed (site);
+
+
