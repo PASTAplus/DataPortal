@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -79,7 +80,14 @@ public class JournalCitationServlet extends DataPortalServlet {
       return;
     }
     // Create the journal citation
-    JournalCitation journalCitation = new JournalCitation(json);
+    JournalCitation journalCitation;
+    try {
+      journalCitation = new JournalCitation(json);
+    }
+    catch (ParseException e) {
+      plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, "Internal error");
+      throw new RuntimeException(e);
+    }
     String journalCitationXML = journalCitation.toXML(true);
     JournalCitationsClient journalCitationsClient;
     try {
@@ -121,7 +129,13 @@ public class JournalCitationServlet extends DataPortalServlet {
       return;
     }
     // Update the journal citation
-    JournalCitation journalCitation = new JournalCitation(json);
+    JournalCitation journalCitation;
+    try {
+      journalCitation = new JournalCitation(json);
+    } catch (ParseException e) {
+      plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, "Internal error");
+      throw new RuntimeException(e);
+    }
     journalCitation.setDateCreated(LocalDateTime.now());
     String journalCitationXML = journalCitation.toXML(true);
     JournalCitationsClient journalCitationsClient;
@@ -202,27 +216,19 @@ public class JournalCitationServlet extends DataPortalServlet {
   // validation failed.
   private String validateInput(JSONObject json)
   {
-    String packageId = json.getString("packageId");
     String doi = json.getString("doi");
     String url = json.getString("url");
-    String articleTitle = json.getString("articleTitle");
-    String journalTitle = json.getString("journalTitle");
     String relationType = json.getString("relationType");
-
     StringBuilder msgBuffer = new StringBuilder();
-
     if (doi.isEmpty() && url.isEmpty()) {
       msgBuffer.append("Either an article DOI or an article URL is required. ");
     }
-
     if (relationType.isEmpty()) {
       msgBuffer.append("RelationType is required. ");
     }
-
     if (!doi.isEmpty() && !doi.matches("10\\.\\d{4,9}/[-._;()/:A-Za-z\\d]+")) {
       msgBuffer.append("DOI format is invalid. ");
     }
-
     String msg = msgBuffer.toString();
     return msg.isEmpty() ? null : msg;
   }
