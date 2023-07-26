@@ -2,8 +2,12 @@ package edu.lternet.pasta.common;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,7 +27,8 @@ import org.owasp.encoder.Encode;
 
 
 public class JournalCitation {
-    
+    DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     /*
      * Class variables
      */
@@ -44,7 +49,7 @@ public class JournalCitation {
     String packageId;
     String journalTitle;
     String relationType;
-    
+    Date pubDate;
 
     /*
      * Constructors
@@ -66,9 +71,9 @@ public class JournalCitation {
     //   "articleTitle": "test-7",
     //   "journalTitle": "test-7",
     //   "relationType": "IsCitedBy",
+    //   "pubDate": "2023-12-31"
     // }
-    public JournalCitation(JSONObject json)
-    {
+    public JournalCitation(JSONObject json) throws ParseException {
         try {
             this.journalCitationId = json.getInt("citationId");
         } catch (JSONException ignored) {
@@ -79,6 +84,7 @@ public class JournalCitation {
         this.articleTitle = json.getString("articleTitle");
         this.journalTitle = json.getString("journalTitle");
         this.relationType = json.getString("relationType");
+        setPubDate(json.getString("pubDate"));
     }
     
     /**
@@ -121,6 +127,7 @@ public class JournalCitation {
                         String articleUrl = null;
                         String journalTitle = null;
                         String relationType = null;
+                        Date pubDate = null;
                         String principalOwner = null;
                         Node journalCitationNode = journalCitationNodes.item(i);
  
@@ -158,6 +165,11 @@ public class JournalCitation {
                         if (relationTypeNode != null) {
                           relationType = relationTypeNode.getTextContent();
                           journalCitation.setRelationType(relationType);
+                        }
+
+                        Node pubDateNode = xpathapi.selectSingleNode(journalCitationNode, "pubDate");
+                        if (pubDateNode != null) {
+                            journalCitation.setPubDate(pubDateNode.getTextContent());
                         }
 
                         Node principalOwnerNode = xpathapi.selectSingleNode(journalCitationNode, "principalOwner");
@@ -266,6 +278,12 @@ public class JournalCitation {
               setJournalTitle(journalTitle);
             }
             
+            Node pubDateNode = xpathapi.selectSingleNode(document, "//pubDate");
+            if (pubDateNode != null) {
+              String pubDate = pubDateNode.getTextContent();
+              setPubDate(pubDate);
+            }
+
             Node dateCreatedNode = xpathapi.selectSingleNode(document, "//dateCreated");
             if (dateCreatedNode != null) {
               String dateCreated = dateCreatedNode.getTextContent();
@@ -324,6 +342,9 @@ public class JournalCitation {
         if (this.relationType != null)
             { sb.append(String.format("    <relationType>%s</relationType>\n", Encode.forXml(this.relationType))); }
 
+        if (this.pubDate != null)
+            { sb.append(String.format("    <pubDate>%s</pubDate>\n", Encode.forXml(getPubDateAsString()))); }
+
         sb.append("</journalCitation>\n");
 
         String xml = sb.toString();
@@ -337,6 +358,7 @@ public class JournalCitation {
         String articleUrl = getArticleUrl();
         String articleTitle = getArticleTitle();
         String journalTitle = getJournalTitle();        
+        String pubDate = getPubDateAsString();
         String articleDoi = getArticleDoi();
         String packageId = getPackageId();
         
@@ -358,6 +380,10 @@ public class JournalCitation {
 
         if (journalTitle != null && !journalTitle.isEmpty()) {
             sb.append(String.format(", %s", journalTitle));
+        }
+
+        if (pubDate != null && !pubDate.isEmpty()) {
+            sb.append(String.format(", %s", pubDate));
         }
 
         sb.append(String.format(" <em>(%s)</em>", packageId));
@@ -475,4 +501,23 @@ public class JournalCitation {
         this.relationType = relationType;
     }
 
+    public Date getPubDate() {
+        return this.pubDate;
+    }
+
+    public String getPubDateAsString() {
+        return this.pubDate != null ? DATE_FORMAT.format(this.pubDate) : null;
+    }
+
+    public void setPubDate(Date pubDate) {
+        this.pubDate = pubDate;
+    }
+
+    public void setPubDate(String pubDate) {
+        try {
+            this.pubDate = pubDate == null || pubDate.equals("") ? null : DATE_FORMAT.parse(pubDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

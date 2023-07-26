@@ -119,6 +119,7 @@
           <th class="nis">Journal Article URL</th>
           <th class="nis">Journal Article Title</th>
           <th class="nis">Journal Title</th>
+          <th class="nis">Publication Date</th>
         </tr>
         </thead>
         <tbody>
@@ -197,6 +198,10 @@
           <div class="control-group">
             <label for="journal-title" class="col-form-label">Journal Title <em>(Optional)</em></label>
             <input class="form-control" id="journal-title" size="50" type="text"/>
+          </div>
+          <div class="control-group">
+            <label for="pub-date" class="col-form-label">Publication Date <em>(Optional)</em></label>
+            <input class="form-control" id="pub-date" placeholder="YYYY-MM-DD" type="date"/>
           </div>
         </form>
       </div>
