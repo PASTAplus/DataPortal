@@ -496,7 +496,7 @@ public class JournalCitationsClient extends PastaClient {
                     String articleTitle = "";
                     String journalTitle = "";
                     String relationType = "";
-                    String pubDate = "";
+                    String journalPubYear = "";
 
                     for (int j = 0; j < journalCitationChildren.getLength(); j++) {
                         Node childNode = journalCitationChildren.item(j);
@@ -548,7 +548,7 @@ public class JournalCitationsClient extends PastaClient {
                             else if (subscriptionElement.getTagName().equals("pubDate")) {
                                 Text text = (Text) subscriptionElement.getFirstChild();
                                 if (text != null) {
-                                    pubDate = text.getData().trim();
+                                    journalPubYear = text.getData().trim();
                                 }
                            }
                         }
@@ -585,7 +585,7 @@ public class JournalCitationsClient extends PastaClient {
                     sb.append("</td>\n");
 
                     sb.append("<td class='nis'>");
-                    sb.append(pubDate);
+                    sb.append(journalPubYear);
                     sb.append("</td>\n");
 
                     sb.append("</tr>\n");

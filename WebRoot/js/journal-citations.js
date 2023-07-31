@@ -1,5 +1,6 @@
 const VALID_DOI_RX = /^10\.\d{4,9}\/[-._;()/:A-Za-z\d]+$/;
 const VALID_URL_RX = /^(ftp|http|https):\/\/[^ "]+$/;
+const VALID_YEAR_RX = /^(\d{4}$|$)/;
 const PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
 
 $(document).ready(function () {
@@ -18,7 +19,7 @@ $(document).ready(function () {
     const articleUrlInput = $('#article-url');
     const articleTitleInput = $('#article-title');
     const journalTitleInput = $('#journal-title');
-    const pubDateInput = $('#pub-date');
+    const journalPubYearInput = $('#journal-pub-year');
 
     // Prevent accidental click outside the dialog from closing the modal.
     citationsModal.modal({
@@ -160,15 +161,19 @@ $(document).ready(function () {
     function validateForm() {
         const hasArticleDoi = Boolean(articleDoiInput.val());
         const hasArticleUrl = Boolean(articleUrlInput.val());
-
+        const hasYear = Boolean(journalPubYearInput.val());
         const isPackageIdValid = PACKAGE_ID_RX.test(packageInput.val());
         const isDoiValid = !hasArticleDoi || VALID_DOI_RX.test(articleDoiInput.val());
         const isUrlValid = !hasArticleUrl || VALID_URL_RX.test(articleUrlInput.val());
-
-        let formIsValid = isPackageIdValid && isDoiValid && isUrlValid;
-
+        const isYearValid = VALID_YEAR_RX.test(journalPubYearInput.val());
+        let formIsValid = isPackageIdValid && isDoiValid && isUrlValid && isYearValid;
         setValidationClasses(packageInput, isPackageIdValid);
-
+        if (hasYear) {
+            setValidationClasses(journalPubYearInput, isYearValid);
+        }
+        else {
+            clearValidationClasses(journalPubYearInput);
+        }
         if (hasArticleDoi && hasArticleUrl) {
             setValidationClasses(articleDoiInput, isDoiValid);
             setValidationClasses(articleUrlInput, isUrlValid);
@@ -183,7 +188,6 @@ $(document).ready(function () {
             setValidationClasses(articleUrlInput, false);
             formIsValid = false;
         }
-
         okButton.prop('disabled', !formIsValid);
         fillButton.prop('disabled', !(hasArticleDoi && isDoiValid));
         openButton.prop('disabled', !(hasArticleUrl && isUrlValid));
@@ -290,11 +294,14 @@ $(document).ready(function () {
 
     function getModalValues() {
         return {
-            citationId: $('#citation-id').val(), packageId: packageInput.val(),
-            relationType: $('#relation-type').val(), doi: articleDoiInput.val(),
-            url: articleUrlInput.val(), articleTitle: articleTitleInput.val(),
+            citationId: $('#citation-id').val(),
+            packageId: packageInput.val(),
+            relationType: $('#relation-type').val(),
+            doi: articleDoiInput.val(),
+            url: articleUrlInput.val(),
+            articleTitle: articleTitleInput.val(),
             journalTitle: journalTitleInput.val(),
-            pubDate: pubDateInput.val(),
+            journalPubYear: journalPubYearInput.val(),
         };
     }
 
@@ -306,7 +313,7 @@ $(document).ready(function () {
         articleUrlInput.val(citationMap.url);
         articleTitleInput.val(citationMap.articleTitle);
         journalTitleInput.val(citationMap.journalTitle);
-        pubDateInput.val(citationMap.pubDate);
+        journalPubYearInput.val(citationMap.journalPubYear);
     }
 
     function setModalDoiValues(doiMap) {
@@ -318,7 +325,7 @@ $(document).ready(function () {
                 articleTitleInput.val(doiMap.title);
                 journalTitleInput.val(doiMap['container-title']);
                 const dateArr = doiMap.created['date-parts'][0];
-                pubDateInput.val(`${dateArr[0]}-${dateArr[1].toString().padStart(2, '0')}-${dateArr[2].toString().padStart(2, '0')}`);
+                journalPubYearInput.val(`${dateArr[0]}-${dateArr[1].toString().padStart(2, '0')}-${dateArr[2].toString().padStart(2, '0')}`);
             } catch (TypeError) {
                 alert('Received unexpected value');
             }
@@ -348,7 +355,7 @@ $(document).ready(function () {
                 citationMap.doi, citationMap.url,
                 citationMap.articleTitle,
                 citationMap.journalTitle,
-                citationMap.pubDate
+                citationMap.journalPubYear
             ]
         ).draw();
     }
@@ -367,7 +374,7 @@ $(document).ready(function () {
             url: rowArr[4].textContent,
             articleTitle: rowArr[5].textContent,
             journalTitle: rowArr[6].textContent,
-            pubDate: rowArr[7].textContent,
+            journalPubYear: rowArr[7].textContent,
         };
     }
 
@@ -379,6 +386,6 @@ $(document).ready(function () {
         rowArr[4].textContent = citationMap.url;
         rowArr[5].textContent = citationMap.articleTitle;
         rowArr[6].textContent = citationMap.journalTitle;
-        rowArr[7].textContent = citationMap.pubDate;
+        rowArr[7].textContent = citationMap.journalPubYear;
     }
 });

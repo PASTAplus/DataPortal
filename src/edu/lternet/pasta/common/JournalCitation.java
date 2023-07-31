@@ -2,12 +2,11 @@ package edu.lternet.pasta.common;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,8 +26,6 @@ import org.owasp.encoder.Encode;
 
 
 public class JournalCitation {
-    DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
     /*
      * Class variables
      */
@@ -49,7 +46,7 @@ public class JournalCitation {
     String packageId;
     String journalTitle;
     String relationType;
-    Date pubDate;
+    Integer journalPubYear;
 
     /*
      * Constructors
@@ -71,7 +68,7 @@ public class JournalCitation {
     //   "articleTitle": "test-7",
     //   "journalTitle": "test-7",
     //   "relationType": "IsCitedBy",
-    //   "pubDate": "2023-12-31"
+    //   "journalPubYear": 2023
     // }
     public JournalCitation(JSONObject json) throws ParseException {
         try {
@@ -84,7 +81,7 @@ public class JournalCitation {
         this.articleTitle = json.getString("articleTitle");
         this.journalTitle = json.getString("journalTitle");
         this.relationType = json.getString("relationType");
-        setPubDate(json.getString("pubDate"));
+        setJournalPubYear(json.getString("journalPubYear"));
     }
     
     /**
@@ -127,7 +124,7 @@ public class JournalCitation {
                         String articleUrl = null;
                         String journalTitle = null;
                         String relationType = null;
-                        Date pubDate = null;
+                        Integer journalPubYear = null;
                         String principalOwner = null;
                         Node journalCitationNode = journalCitationNodes.item(i);
  
@@ -169,7 +166,7 @@ public class JournalCitation {
 
                         Node pubDateNode = xpathapi.selectSingleNode(journalCitationNode, "pubDate");
                         if (pubDateNode != null) {
-                            journalCitation.setPubDate(pubDateNode.getTextContent());
+                            journalCitation.setJournalPubYear(pubDateNode.getTextContent());
                         }
 
                         Node principalOwnerNode = xpathapi.selectSingleNode(journalCitationNode, "principalOwner");
@@ -281,7 +278,7 @@ public class JournalCitation {
             Node pubDateNode = xpathapi.selectSingleNode(document, "//pubDate");
             if (pubDateNode != null) {
               String pubDate = pubDateNode.getTextContent();
-              setPubDate(pubDate);
+              setJournalPubYear(pubDate);
             }
 
             Node dateCreatedNode = xpathapi.selectSingleNode(document, "//dateCreated");
@@ -342,8 +339,8 @@ public class JournalCitation {
         if (this.relationType != null)
             { sb.append(String.format("    <relationType>%s</relationType>\n", Encode.forXml(this.relationType))); }
 
-        if (this.pubDate != null)
-            { sb.append(String.format("    <pubDate>%s</pubDate>\n", Encode.forXml(getPubDateAsString()))); }
+        if (this.journalPubYear != null)
+            { sb.append(String.format("    <pubDate>%s</pubDate>\n", Encode.forXml(this.journalPubYear.toString()))); }
 
         sb.append("</journalCitation>\n");
 
@@ -358,7 +355,7 @@ public class JournalCitation {
         String articleUrl = getArticleUrl();
         String articleTitle = getArticleTitle();
         String journalTitle = getJournalTitle();        
-        String pubDate = getPubDateAsString();
+        Integer journalPubYear = getJournalPubYear();
         String articleDoi = getArticleDoi();
         String packageId = getPackageId();
         
@@ -382,8 +379,8 @@ public class JournalCitation {
             sb.append(String.format(", %s", journalTitle));
         }
 
-        if (pubDate != null && !pubDate.isEmpty()) {
-            sb.append(String.format(", %s", pubDate));
+        if (journalPubYear != null) {
+            sb.append(String.format(", %s", journalPubYear.toString()));
         }
 
         sb.append(String.format(" <em>(%s)</em>", packageId));
@@ -501,23 +498,39 @@ public class JournalCitation {
         this.relationType = relationType;
     }
 
-    public Date getPubDate() {
-        return this.pubDate;
+    public Integer getJournalPubYear() {
+        return this.journalPubYear;
     }
 
-    public String getPubDateAsString() {
-        return this.pubDate != null ? DATE_FORMAT.format(this.pubDate) : null;
+    public void setJournalPubYear(Integer journalPubYear) {
+        this.journalPubYear = journalPubYear;
     }
 
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
-    }
-
-    public void setPubDate(String pubDate) {
-        try {
-            this.pubDate = pubDate == null || pubDate.equals("") ? null : DATE_FORMAT.parse(pubDate);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+    /**
+     * Set journalPubYear from pubDate String in YYYY-MM-DD format
+     */
+    public void setJournalPubYear(String pubDate) {
+        if (pubDate == null || pubDate.equals("")) {
+            this.journalPubYear = null;
+            return;
         }
+
+        Pattern pubYearMonthDayPattern = Pattern.compile("^(\\d{4})-\\d{2}-\\d{2}$");
+        Matcher pubYearMonthDayMatcher = pubYearMonthDayPattern.matcher(pubDate);
+        if (pubYearMonthDayMatcher.matches()) {
+            this.journalPubYear = Integer.valueOf(pubYearMonthDayMatcher.group(1));
+            return;
+        }
+
+        Pattern pubYearPattern = Pattern.compile("^(\\d{4})$");
+        Matcher pubYearMatcher = pubYearPattern.matcher(pubDate);
+        if (pubYearMatcher.matches()) {
+            this.journalPubYear = Integer.valueOf(pubYearMatcher.group(1));
+            return;
+        }
+
+        String errorMsg = String.format("Error extracting year from PubDate: %s", pubDate);
+        logger.error(errorMsg);
+        throw new RuntimeException(errorMsg);
     }
 }
