@@ -19,8 +19,10 @@ positional arguments:
   message     Notice to display (up to 256 characters)
 ```
 
+E.g.:
 ```shell
-E.g.: ./adhoc.py 2023-05-03 07:30 2023-05-04 15:00 'The message to display'
+$ conda activate syndi
+$ ./adhoc.py 2023-05-03 07:30 2023-05-04 15:00 'The message to display'
 ```
 
 To stop displaying a notification message before the specified end datetime:
@@ -34,8 +36,10 @@ positional arguments:
 options:
   -h, --help  show this help message and exit
 ```
+E.g.:
 ```shell
-E.g.: ./resolve.py 123
+$ conda activate syndi
+$ ./resolve.py 123
 ```
 
 ## Install
