@@ -40,49 +40,69 @@ Display 3rd-party service status notices.
     DatabaseClient databaseClient = new DatabaseClient(dbDriver, dbUrl, dbUser, dbPassword);
     Connection conn = databaseClient.getConnection();
     Result statusNotices;
+    Result adhocNotices;
+
     try {
         Statement stmt = conn.createStatement();
+        // Automatic, RSS/Atom based notifications.
         ResultSet rs = stmt.executeQuery(
-                "select site, ( " +
-                        "    select url " +
-                        "    from pasta.authtoken.rss_feed " +
-                        "    where greatest(published, updated) = ( " +
-                        "        select max(greatest(published, updated)) " +
-                        "        from pasta.authtoken.rss_feed " +
-                        "        where site = a.site " +
-                        "        limit 1 " +
-                        "    ) " +
-                        ") " +
-                        "from pasta.authtoken.rss_feed a " +
-                        "where resolved is false " +
-                        "and now() >= greatest(published, updated) " +
-                        "and now() <  greatest(published, updated) + interval '8 hours' " +
-                        "group by site " +
-                        "order by site " +
-                        "; "
+                "select site, (\n" +
+                        "    select url\n" +
+                        "    from pasta.authtoken.rss_feed\n" +
+                        "    where greatest(published, updated) = (\n" +
+                        "         select max(greatest(published, updated))\n" +
+                        "         from pasta.authtoken.rss_feed\n" +
+                        "         where site = a.site\n" +
+                        "         limit 1\n" +
+                        "    )\n" +
+                        ")\n" +
+                        "from pasta.authtoken.rss_feed a\n" +
+                        "where resolved is false\n" +
+                        "and site != 'adhoc'" +
+                        "and now() >= greatest(published, updated)\n" +
+                        "and now() <  greatest(published, updated) + interval '8 hours'\n" +
+                        "group by site\n" +
+                        "order by site\n" +
+                        ";\n"
         );
         statusNotices = ResultSupport.toResult(rs);
+        // Ad-hoc / manually created notifications.
+        rs = stmt.executeQuery(
+                "select title from pasta.authtoken.rss_feed\n" +
+                        "where resolved = false\n" +
+                        "    and site = 'adhoc'\n" +
+                        "    and now() between published and updated\n" +
+                        "order by published, updated\n" +
+                        ";\n"
+        );
+        adhocNotices = ResultSupport.toResult(rs);
     } catch (SQLException e) {
         throw new RuntimeException(e);
     }
 %>
 
-<% if (statusNotices.getRowCount() > 0) { %>
-
+<% if (statusNotices.getRowCount() > 0 || adhocNotices.getRowCount() > 0) { %>
 <link href="./css/pasta-status-notices.css" rel="stylesheet" type="text/css">
-
 <div class="alert-block">
     <div class="alert alert-warning status-notices">
-        <p>
-            The following 3rd-party service<%= statusNotices.getRowCount() > 1 ? "s " : " " %>
-            may be experiencing technical issues which can impact the Data Portal:
-            <% for (SortedMap entry : statusNotices.getRows()) { %>
-            <a href="<%= entry.get("url") %>" target="_blank" rel="noopener noreferrer" class="alert-link">
-                <%= entry.get("site") %>
-            </a>
+    <% if (statusNotices.getRowCount() > 0) { %>
+            <p>
+                The following 3rd-party service<%= statusNotices.getRowCount() > 1 ? "s " : " " %>
+                may be experiencing technical issues which can impact the Data Portal:
+                <% for (SortedMap entry : statusNotices.getRows()) { %>
+                <a href="<%= entry.get("url") %>" target="_blank" rel="noopener noreferrer" class="alert-link">
+                    <%= entry.get("site") %>
+                </a>
+                <% } %>
+            </p>
+    <% } %>
+    <% if (adhocNotices.getRowCount() > 0) { %>
+            <% for (SortedMap entry : adhocNotices.getRows()) { %>
+            <p>
+                <%= entry.get("title") %>
+            </p>
             <% } %>
-        </p>
+    <% } %>
     </div>
 </div>
-
 <% } %>
