@@ -203,10 +203,10 @@
             <label for="journal-pub-year" class="col-form-label">Publication Date <em>(Optional)</em></label>
             <input type="number" class="form-control" id="journal-pub-year"/>
           </div>
-          <div class="control-group" disabled="disabled">
-            <label for="author-list" class="col-form-label" disabled="disabled">Authors <em>(From Crossref)</em></label>
-            <input class="form-control" id="author-list" size="50" type="text"/>
-          </div>
+<%--          <div class="control-group" disabled="disabled">--%>
+<%--            <label for="author-list" class="col-form-label" disabled="disabled">Authors <em>(From Crossref)</em></label>--%>
+<%--            <input class="form-control" id="author-list" size="50" type="text"/>--%>
+<%--          </div>--%>
         </form>
       </div>
       <div class="modal-footer">
