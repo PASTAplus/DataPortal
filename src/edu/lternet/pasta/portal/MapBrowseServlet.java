@@ -1418,7 +1418,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String creatorText = "";
 		String orgText = "";
 		String pubDateText = null;
-		String citationId = "";
+		String journalCitationId = "";
 		String caveat = "";
 		String citationUrl = "";
 		String pastaHost = null;
@@ -1495,21 +1495,21 @@ public class MapBrowseServlet extends DataPortalServlet {
 			}
 
 			try {
-				citationId = dpmClient.readDataPackageDoi(scope, identifier, revision);
-				citationId = citationId.replace("doi:", DoiOrg);
+				journalCitationId = dpmClient.readDataPackageDoi(scope, identifier, revision);
+				journalCitationId = journalCitationId.replace("doi:", DoiOrg);
 				if (!productionTier) {
-					citationId = "https://doi.org/DOI_PLACE_HOLDER";
+					journalCitationId = "https://doi.org/DOI_PLACE_HOLDER";
 				}
 			}
 			catch (Exception e) {
 				logger.error(e.getMessage());
 				e.printStackTrace();
-				citationId = dpmClient.getPastaPackageUri(scope, identifier, revision);
+				journalCitationId = dpmClient.getPastaPackageUri(scope, identifier, revision);
 				caveat = "Note: DOIs are generated hourly for all data packages"
 				    + " that are \"publicly\" accessible.";
 			}
 
-			citationUrl = citationId;
+			citationUrl = journalCitationId;
 
 			String pubYear = emlObject.getPubYear();
 
