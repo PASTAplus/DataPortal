@@ -253,7 +253,7 @@ public class JournalCitationServlet extends DataPortalServlet {
     if (relationType.isEmpty()) {
       msgBuffer.append("RelationType is required. ");
     }
-    if (!doi.isEmpty() && !doi.matches("10\\.\\d{4,9}/[-._;()/:A-Za-z\\d]+")) {
+    if (!doi.isEmpty() && !doi.matches("10\\.\\d{4,9}/.+")) {
       msgBuffer.append("DOI format is invalid. ");
     }
     String msg = msgBuffer.toString();

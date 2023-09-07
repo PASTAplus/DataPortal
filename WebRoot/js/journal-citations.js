@@ -1,4 +1,4 @@
-const VALID_DOI_RX = /^10\.\d{4,9}\/[-._;()/:A-Za-z\d]+$/;
+const VALID_DOI_RX = /^10\.\d{4,9}\/.+$/;
 const VALID_URL_RX = /^(ftp|http|https):\/\/[^ "]+$/;
 const VALID_YEAR_RX = /^(\d{4}$|$)/;
 const PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
