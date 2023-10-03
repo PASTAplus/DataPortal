@@ -207,6 +207,12 @@
     <servlet-class>edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet</servlet-class>
   </servlet>
   <servlet>
+    <description>Code Generation Download Servlet</description>
+    <display-name>CodeGenerationDownloadServlet</display-name>
+    <servlet-name>CodeGenerationDownloadServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.codegeneration.CodeGenerationDownloadServlet</servlet-class>
+  </servlet>
+  <servlet>
     <description>Data Package Citation Servlet</description>
     <display-name>DataPackageCitationServlet</display-name>
     <servlet-name>DataPackageCitationServlet</servlet-name>
@@ -400,6 +406,10 @@
   <servlet-mapping>
     <servlet-name>CodeGenerationServlet</servlet-name>
     <url-pattern>/codeGeneration</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CodeGenerationDownloadServlet</servlet-name>
+    <url-pattern>/codegenerationdownload</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DataPackageCitationServlet</servlet-name>
