@@ -2745,7 +2745,7 @@
       </tr>
     </xsl:if>
   </xsl:template>
-  
+
   <!-- 
   2010: started using the userId field to display a link to the user's profile page.
   This could also be done with the creator id attribute, but only one of those is allowed. The userId
@@ -2757,7 +2757,11 @@
     <xsl:param name="useridDirectoryApp1_URI" select="$useridDirectoryApp1_URI"/>
     <xsl:param name="useridDirectoryLabel1" select="$useridDirectoryLabel1"/>
     <xsl:param name="partyfirstColStyle"/>
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: userId</xsl:text></xsl:message></xsl:if>
+
+    <xsl:if test="boolean(number($debugmessages))">
+      <xsl:message><xsl:text>TEMPLATE: userId</xsl:text></xsl:message>
+    </xsl:if>
+
     <xsl:choose>
       <xsl:when test=" @directory=$useridDirectory1 ">
         <xsl:if test="normalize-space(.)!=''">
@@ -2790,13 +2794,27 @@
         <xsl:if test="normalize-space(.) != ''">
           <tr>
             <td class="{$partyfirstColStyle}" >Id:</td>
-            <td class="{$secondColStyle}"><xsl:value-of select="."/></td>
+            <td class="{$secondColStyle}">
+              <xsl:choose>
+                <xsl:when test="contains(@directory, 'ror.org') or contains(@directory, 'orcid.org')">
+                  <xsl:element name="a">
+                    <xsl:attribute name="href"><xsl:value-of select="resolve-uri(text(), @directory)"/></xsl:attribute>
+                    <xsl:attribute name="target">_blank</xsl:attribute>
+                    <xsl:attribute name="class">dataseteml</xsl:attribute>
+                    <xsl:value-of select="resolve-uri(text(), @directory)"/>
+                  </xsl:element>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="resolve-uri(text(), @directory)"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </td>
           </tr>
         </xsl:if>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
   <xsl:template match="role" mode="party">
     <xsl:param name="partyfirstColStyle" select="$firstColStyle"/>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: role</xsl:text></xsl:message></xsl:if>
