@@ -82,7 +82,7 @@ Display 3rd-party service status notices.
 %>
 
 <% if (statusNotices.getRowCount() > 0 || adhocNotices.getRowCount() > 0) { %>
-<link href="./css/pasta-status-notices.css" rel="stylesheet" type="text/css">
+<link href="./css/pasta-status-notices.css" rel="stylesheet" type="text/css" />
 <div class="alert-block">
     <div class="alert alert-warning status-notices">
     <% if (statusNotices.getRowCount() > 0) { %>

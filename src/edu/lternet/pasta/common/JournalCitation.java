@@ -131,6 +131,9 @@ public class JournalCitation {
     String relationType;
     Integer journalPubYear;
     ArrayList<ArticleAuthor> articleAuthorList = new ArrayList<>();
+    String journalIssue;
+    String journalVolume;
+    String articlePages;
 
     /*
      * Constructors
@@ -157,6 +160,9 @@ public class JournalCitation {
         this.relationType = json.getString("relationType");
         setJournalPubYear(json.getString("journalPubYear"));
         setArticleAuthorList(json.getJSONArray("articleAuthorList"));
+        setJournalIssue(json.getString("journalIssue"));
+        setJournalVolume(json.getString("journalVolume"));
+        setArticlePages(json.getString("articlePages"));
     }
 
     /**
@@ -199,6 +205,10 @@ public class JournalCitation {
                         String journalTitle = null;
                         String relationType = null;
                         String principalOwner = null;
+                        String journalIssue = null;
+                        String journalVolume = null;
+                        String articlePages = null;
+
                         Node journalCitationNode = journalCitationNodes.item(i);
 
                         Node packageIdNode = xpathapi.selectSingleNode(journalCitationNode, "packageId");
@@ -246,6 +256,29 @@ public class JournalCitation {
                         if (principalOwnerNode != null) {
                             principalOwner = principalOwnerNode.getTextContent();
                             journalCitation.setPrincipalOwner(principalOwner);
+                        }
+
+                        Node journalIssueNode = xpathapi.selectSingleNode(journalCitationNode, "journalIssue");
+                        if (journalIssueNode != null) {
+                            journalIssue = journalIssueNode.getTextContent();
+                            journalCitation.setJournalIssue(journalIssue);
+                        }
+
+                        Node journalVolumeNode = xpathapi.selectSingleNode(journalCitationNode, "journalVolume");
+                        if (journalVolumeNode != null) {
+                            journalVolume = journalVolumeNode.getTextContent();
+                            journalCitation.setJournalVolume(journalVolume);
+                        }
+
+                        Node articlePagesNode = xpathapi.selectSingleNode(journalCitationNode, "articlePages");
+                        if (articlePagesNode != null) {
+                            articlePages = articlePagesNode.getTextContent();
+                            journalCitation.setArticlePages(articlePages);
+                        }
+
+                        Node articleAuthorNode = xpathapi.selectSingleNode(journalCitationNode, "articleAuthors");
+                        if (articleAuthorNode != null) {
+                            journalCitation.setArticleAuthorList(articleAuthorNode);
                         }
 
                         journalCitations.add(journalCitation);
@@ -360,7 +393,7 @@ public class JournalCitation {
               setDateCreated(LocalDateTime.parse(dateCreated));
             }
 
-            Node articleAuthorNode = xpathapi.selectSingleNode(document, "//articleAuthorList");
+            Node articleAuthorNode = xpathapi.selectSingleNode(document, "//articleAuthors");
             if (articleAuthorNode != null) {
                 setArticleAuthorList(articleAuthorNode);
             }
@@ -368,6 +401,21 @@ public class JournalCitation {
             Node relationTypeNode = xpathapi.selectSingleNode(document, "//relationType");
             if (relationTypeNode != null) {
                 setRelationType(relationTypeNode.getTextContent());
+            }
+
+            Node journalIssueNode = xpathapi.selectSingleNode(document, "//journalIssue");
+            if (journalIssueNode != null) {
+                setJournalIssue(journalIssueNode.getTextContent());
+            }
+
+            Node journalVolumeNode = xpathapi.selectSingleNode(document, "//journalVolume");
+            if (journalVolumeNode != null) {
+                setJournalVolume(journalVolumeNode.getTextContent());
+            }
+
+            Node articlePagesNode = xpathapi.selectSingleNode(document, "//articlePages");
+            if (articlePagesNode != null) {
+                setArticlePages(articlePagesNode.getTextContent());
             }
         }
       }
@@ -390,30 +438,23 @@ public class JournalCitation {
 
     private void setArticleAuthorList(Node articleAuthorNode) throws TransformerException {
         CachedXPathAPI xpathapi = new CachedXPathAPI();
-        NodeList authorNodeList = xpathapi.selectNodeList(articleAuthorNode, "//author");
+        NodeList authorNodeList = xpathapi.selectNodeList(articleAuthorNode, "author");
 
         articleAuthorList.clear();
 
         for (int i = 0; i < authorNodeList.getLength(); i++) {
             Node authorNode = authorNodeList.item(i);
-
             Node node;
-
             node = xpathapi.selectSingleNode(authorNode, "sequence");
             Integer sequence = node != null ? Integer.parseInt(node.getTextContent()) : null;
-
             node = xpathapi.selectSingleNode(authorNode, "given");
             String given = node != null ? node.getTextContent() : null;
-
             node = xpathapi.selectSingleNode(authorNode, "family");
             String family = node != null ? node.getTextContent() : null;
-
             node = xpathapi.selectSingleNode(authorNode, "suffix");
             String suffix = node != null ? node.getTextContent() : null;
-
             node = xpathapi.selectSingleNode(authorNode, "orcid");
             String orcid = node != null ? node.getTextContent() : null;
-
             articleAuthorList.add(new ArticleAuthor(sequence, given, family, suffix, orcid));
         }
     }
@@ -453,8 +494,17 @@ public class JournalCitation {
         if (this.journalPubYear != null) {
             xmlBuilder.append(String.format("    <pubDate>%d</pubDate>\n", this.journalPubYear));
         }
+        if (this.journalIssue != null) {
+            xmlBuilder.append(String.format("    <journalIssue>%s</journalIssue>\n", Encode.forXml(this.journalIssue)));
+        }
+        if (this.journalVolume != null) {
+            xmlBuilder.append(String.format("    <journalVolume>%s</journalVolume>\n", Encode.forXml(this.journalVolume)));
+        }
+        if (this.articlePages != null) {
+            xmlBuilder.append(String.format("    <articlePages>%s</articlePages>\n", Encode.forXml(this.articlePages)));
+        }
         if (this.articleAuthorList != null) {
-            xmlBuilder.append("    <articleAuthorList>\n");
+            xmlBuilder.append("    <articleAuthors>\n");
             for (ArticleAuthor author : this.articleAuthorList) {
                 xmlBuilder.append("        <author>\n");
                 xmlBuilder.append(String.format("            <sequence>%d</sequence>\n", author.getSequence()));
@@ -464,7 +514,7 @@ public class JournalCitation {
                 xmlBuilder.append(String.format("            <orcid>%s</orcid>\n",       Encode.forXml(author.getOrcidUrl() == null ? "" : author.getOrcidUrl())));
                 xmlBuilder.append("        </author>\n");
             }
-            xmlBuilder.append("    </articleAuthorList>\n");
+            xmlBuilder.append("    </articleAuthors>\n");
         }
         xmlBuilder.append("</journalCitation>\n");
         return xmlBuilder.toString();
@@ -480,16 +530,32 @@ public class JournalCitation {
         return 2;
     }
 
+    // Elsevir – Standard numbered style
+    // https://booksite.elsevier.com/9780081019375/content/Elsevier%20Standard%20Reference%20Styles.pdf
+    //
+    // articleUrl
+    // articleTitle
+    // articleDoi
+    // journalTitle
+    // journalPubYear
+    // shortAuthorList
+    // journalIssue
+    // journalVolume
+    // articlePages
+    // packageId
+
+    // Multiple Sources and Forms of Nitrogen Sustain Year-Round Kelp Growth on the Inner Continental Shelf of the Santa
+    // Barbara Channel (10.5670/oceanog.2013.53), Oceanography (edi.36.16)
+
+
     public String toHTML() {
-        String html = null;
-        StringBuffer sb = new StringBuffer("");
+        StringBuilder sb = new StringBuilder();
+        String shortAuthorList = getShortArticleAuthorList();
+        if (shortAuthorList != null && !shortAuthorList.isEmpty()) {
+            sb.append(String.format("%s, ", shortAuthorList));
+        }
         String articleUrl = getArticleUrl();
         String articleTitle = getArticleTitle();
-        String journalTitle = getJournalTitle();
-        Integer journalPubYear = getJournalPubYear();
-        String articleDoi = getArticleDoi();
-        String packageId = getPackageId();
-
         if (articleUrl != null) {
             if (articleTitle != null && !articleTitle.isEmpty()) {
                 sb.append(String.format("<a class='searchsubcat' href='%s'>%s</a>", articleUrl, articleTitle));
@@ -499,25 +565,38 @@ public class JournalCitation {
             }
         }
         else {
-            sb.append(articleTitle);
+            if (articleTitle != null && !articleTitle.isEmpty()) {
+                sb.append(String.format("%s", articleTitle));
+            }
         }
-
+        String articleDoi = getArticleDoi();
         if (articleDoi != null && !articleDoi.isEmpty()) {
             sb.append(String.format(" (%s)", articleDoi));
         }
-
+        String journalTitle = getJournalTitle();
         if (journalTitle != null && !journalTitle.isEmpty()) {
             sb.append(String.format(", %s", journalTitle));
         }
-
-        if (journalPubYear != null) {
-            sb.append(String.format(", %d", journalPubYear));
+        String journalIssue = getJournalIssue();
+        if (journalIssue != null && !journalIssue.isEmpty()) {
+            sb.append(String.format(", %s", journalIssue));
         }
-
+        String journalVolume = getJournalVolume();
+        if (journalVolume != null && !journalVolume.isEmpty()) {
+            sb.append(String.format(" %s", journalVolume));
+        }
+        String articlePages = getArticlePages();
+        if (articlePages != null && !articlePages.isEmpty()) {
+            sb.append(String.format(" %s", articlePages));
+        }
+        Integer journalPubYear = getJournalPubYear();
+        if (journalPubYear != null) {
+            sb.append(String.format(" %d", journalPubYear));
+        }
+        String packageId = getPackageId();
         sb.append(String.format(" <em>(%s)</em>", packageId));
 
-        html = sb.toString();
-        return html;
+        return sb.toString();
     }
 
 
@@ -544,6 +623,9 @@ public class JournalCitation {
         json.put("journalTitle", jsonNull(this.journalTitle));
         json.put("relationType", jsonNull(this.relationType));
         json.put("journalPubYear", jsonNull(this.journalPubYear));
+        json.put("journalIssue", jsonNull(this.journalIssue));
+        json.put("journalVolume", jsonNull(this.journalVolume));
+        json.put("articlePages", jsonNull(this.articlePages));
 
         JSONArray authorJsonArray = new JSONArray();
 
@@ -770,23 +852,50 @@ public class JournalCitation {
     }
 
     public static String givenNameToInitials(String givenName) {
-    if (givenName == null) {
-        return null;
-    }
-    String[] parts = givenName.split(" ");
-    StringBuilder result = new StringBuilder();
-    for (String part : parts) {
-        if (!part.isEmpty()) {
-            result.append(part.charAt(0)).append(".");
+        if (givenName == null) {
+            return null;
         }
+        String[] parts = givenName.split(" ");
+        StringBuilder result = new StringBuilder();
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                result.append(part.charAt(0)).append(".");
+            }
+        }
+        return result.toString();
     }
-    return result.toString();
-}
+
+    public String getJournalIssue() {
+        return journalIssue;
+    }
+
+    public String getJournalVolume() {
+        return journalVolume;
+    }
+
+    public String getArticlePages() {
+        return articlePages;
+    }
+
+    public void setJournalIssue(String journalIssue) {
+        this.journalIssue = journalIssue;
+    }
+
+    public void setJournalVolume(String journalVolume) {
+        this.journalVolume = journalVolume;
+    }
+
+    public void setArticlePages(String articlePages) {
+        this.articlePages = articlePages;
+    }
 
     public String toString() {
         return String.format("JournalCitation: id=%d, packageId=%s, articleDoi=%s, articleUrl=%s, articleTitle=%s, " +
-                "journalTitle=%s, relationType=%s, journalPubYear=%d, shortArticleAuthorList=%s",
+                "journalTitle=%s, relationType=%s, journalPubYear=%d, shortArticleAuthorList=%s, journalIssue=%s, " +
+                "journalVolume=%s, articlePages=%s",
                 this.journalCitationId, this.packageId, this.articleDoi, this.articleUrl, this.articleTitle,
-                this.journalTitle, this.relationType, this.journalPubYear, getShortArticleAuthorList());
+                this.journalTitle, this.relationType, this.journalPubYear, getShortArticleAuthorList(),
+                this.journalIssue, this.journalVolume, this.articlePages
+            );
     }
 }
