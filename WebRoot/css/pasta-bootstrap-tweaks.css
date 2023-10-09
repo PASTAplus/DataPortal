@@ -138,7 +138,7 @@ table {
 }
 
 .modal {
-    width: 30rem;
+    width: 35rem;
     /*height: 50rem;*/
     z-index: -1;
 }
@@ -163,7 +163,7 @@ table {
 
 .modal-body {
     /*overflow: hidden; !* Hide scrollbars *!*/
-    min-height: 30rem;
+    min-height: 35rem;
 }
 
 .modal-body form {
