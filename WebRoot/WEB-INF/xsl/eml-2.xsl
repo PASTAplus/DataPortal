@@ -2795,17 +2795,35 @@
           <tr>
             <td class="{$partyfirstColStyle}" >Id:</td>
             <td class="{$secondColStyle}">
+              <xsl:variable name="dirBase">
+                <xsl:choose>
+                  <xsl:when test="matches(@directory, '([^a-zA-Z]|^)(orcid|ORCID)([^a-zA-Z]|$)')">
+                    <xsl:text>https://orcid.org</xsl:text>
+                  </xsl:when>
+                  <xsl:when test="matches(@directory, '([^a-zA-Z]|^)(ror|ROR)([^a-zA-Z]|$)')">
+                    <xsl:text>https://ror.org</xsl:text>
+                  </xsl:when>
+                  <xsl:when test="matches(@directory, '^(https?|HTTPS?)://')">
+                    <xsl:value-of select="@directory"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+
               <xsl:choose>
-                <xsl:when test="contains(@directory, 'ror.org') or contains(@directory, 'orcid.org')">
+                <xsl:when test="$dirBase != ''">
                   <xsl:element name="a">
-                    <xsl:attribute name="href"><xsl:value-of select="resolve-uri(text(), @directory)"/></xsl:attribute>
+                    <xsl:attribute name="href">
+                      <xsl:value-of select="resolve-uri(text(), $dirBase)"/>
+                    </xsl:attribute>
                     <xsl:attribute name="target">_blank</xsl:attribute>
                     <xsl:attribute name="class">dataseteml</xsl:attribute>
-                    <xsl:value-of select="resolve-uri(text(), @directory)"/>
+                    <xsl:value-of select="resolve-uri(text(), $dirBase)"/>
                   </xsl:element>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="resolve-uri(text(), @directory)"/>
+                  <xsl:value-of select="text()"/>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
