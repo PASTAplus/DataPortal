@@ -256,6 +256,9 @@ public class LoginServlet extends DataPortalServlet {
         httpSession.setAttribute("vetted", vetted);
         httpSession.setAttribute("uid", distinguishedName);
         httpSession.setAttribute("cname", cname);
+
+        httpSession.setMaxInactiveInterval(60 * 60 * 12);
+        logger.info(String.format("Session %s: Logged in session MaxInactiveInterval set to 12 hours", httpSession.getId()));
     }
 
     /* Allows redirect back to page that forced a login action */

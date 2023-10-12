@@ -58,7 +58,11 @@ public class SessionListener implements HttpSessionListener {
 		String sessionId = httpSession.getId();
 		String uid = (String) httpSession.getAttribute("uid");
 		String contextPath = servletContext.getContextPath();
-		logger.warn(String.format("Session Created: %s; Context Path: %s; User Id: %s; Total Sessions: %d", sessionId, contextPath, uid, sessionCount));
+		Long creationTime = httpSession.getCreationTime();
+		Long lastAccessedTime = httpSession.getLastAccessedTime();
+		logger.info(String.format("Session Created: %s; ContextPath: %s; UserId: %s; CreationTime: %d; LastAccessedTime: %d; TotalSessions: %d",
+			sessionId, contextPath, uid, creationTime, lastAccessedTime, sessionCount)
+		);
 	}
 
 
@@ -71,7 +75,11 @@ public class SessionListener implements HttpSessionListener {
 		String sessionId = httpSession.getId();
 		String uid = (String) httpSession.getAttribute("uid");
 		String contextPath = servletContext.getContextPath();
-		logger.warn(String.format("Session Destroyed: %s; Context Path: %s; User Id: %s; Total Sessions: %d", sessionId, contextPath, uid, sessionCount));
+		Long creationTime = httpSession.getCreationTime();
+		Long lastAccessedTime = httpSession.getLastAccessedTime();
+		logger.info(String.format("Session Destroyed: %s; ContextPath: %s; UserId: %s; CreationTime: %d; LastAccessedTime: %d; TotalSessions: %d",
+			sessionId, contextPath, uid, creationTime, lastAccessedTime, sessionCount)
+		);
 	}
 	
 }
