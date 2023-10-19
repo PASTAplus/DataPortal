@@ -5,6 +5,16 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         version="3.0"
         metadata-complete="true">
+
+<!--  <session-config>-->
+<!--    <session-timeout>30</session-timeout>-->
+<!--    <cookie-config>-->
+<!--        <http-only>true</http-only>-->
+<!--        <secure>true</secure>-->
+<!--    </cookie-config>-->
+<!--    <tracking-mode>COOKIE</tracking-mode>-->
+<!--  </session-config>-->
+
   <display-name></display-name>
   <context-param>
     <param-name>CONFIG_DIR</param-name>

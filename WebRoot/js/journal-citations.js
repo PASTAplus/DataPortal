@@ -1,7 +1,8 @@
+const VALID_PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
 const VALID_DOI_RX = /^10\.\d{4,9}\/.+$/;
 const VALID_URL_RX = /^(ftp|http|https):\/\/[^ "]+$/;
-const VALID_YEAR_RX = /^(\d{4}$|$)/;
-const PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
+const VALID_YEAR_RX = /^(\d{4}$)/;
+const VALID_MAX_32_CHAR_RX = /^.{0,32}$/;
 
 $(document).ready(function () {
     const citationsTable = $('#citations-table');
@@ -20,6 +21,11 @@ $(document).ready(function () {
     const articleTitleInput = $('#article-title');
     const journalTitleInput = $('#journal-title');
     const journalPubYearInput = $('#journal-pub-year');
+    const articleAuthorShortInput = $('#article-author-short');
+    const journalIssueInput = $('#journal-issue');
+    const journalVolumeInput = $('#journal-volume');
+    const articlePagesInput = $('#article-pages');
+    let articleAuthorList = null;
 
     // Prevent accidental click outside the dialog from closing the modal.
     citationsModal.modal({
@@ -66,12 +72,19 @@ $(document).ready(function () {
     // Event handlers
 
     $(document).on('show.bs.modal', '.modal', function () {
-        console.log('show.bs.modal');
+        console.debug('show.bs.modal');
         validateForm();
     });
 
+    citationsModal.on('shown.bs.modal', function (_event) {
+        console.debug('shown.bs.modal');
+        // Scroll to top of modal body. Unfortunately, this doesn't if the dialog is hidden, so this causes a
+        // jump when the dialog is shown.
+        $('.modal-body').scrollTop(0);
+    });
+
     citationsModal.on('hidden.bs.modal', function (_event) {
-        console.log('hidden.bs.modal');
+        // console.debug('hidden.bs.modal');
     });
 
     // Buttons
@@ -82,6 +95,7 @@ $(document).ready(function () {
         citationsModal.find('form')[0].reset();
         // Disable the Delete button.
         deleteButton.addClass('hidden');
+        $('.modal').css('z-index', 100000);
         citationsModal.modal('show');
     });
 
@@ -103,7 +117,7 @@ $(document).ready(function () {
     // Create or update a citation on OK button click
     okButton.on('click', function (_event) {
         const citationMap = getModalValues();
-        if (citationMap.citationId === '') {
+        if (citationMap.journalCitationId === '') {
             createCitation(citationMap);
         } else {
             updateCitation(citationMap);
@@ -114,10 +128,13 @@ $(document).ready(function () {
     citationsTable.on('click', 'tbody td', function (_event) {
         const clickedRow = $(this).closest('tr');
         const rowArr = $(clickedRow).find('td');
-        const citationMap = getRowValues(rowArr);
-        setModalValues(citationMap);
-        deleteButton.removeClass('hidden');
-        citationsModal.modal('show');
+        const citationMapFromRow = getRowValues(rowArr);
+        myFetch('GET', `journal-citation-crud?journalCitationId=${citationMapFromRow.journalCitationId}`, null).then(responseMap => {
+            setModalValues(responseMap);
+            deleteButton.removeClass('hidden');
+            $('.modal').css('z-index', 100000);
+            citationsModal.modal('show');
+        });
     });
 
     // If we have a PackageID, then we're adding a new citation, so we open the modal directly.
@@ -137,7 +154,7 @@ $(document).ready(function () {
     }
 
     function updateCitation(citationMap) {
-        const rowArr = getRowArr(citationMap.citationId);
+        const rowArr = getRowArr(citationMap.journalCitationId);
         const oldCitationMap = getRowValues(rowArr);
         setRowValues(rowArr, citationMap);
         myFetch('PUT', 'journal-citation-crud', citationMap).catch(() => {
@@ -161,40 +178,36 @@ $(document).ready(function () {
     function validateForm() {
         const hasArticleDoi = Boolean(articleDoiInput.val());
         const hasArticleUrl = Boolean(articleUrlInput.val());
-        const hasYear = Boolean(journalPubYearInput.val());
-        const isPackageIdValid = PACKAGE_ID_RX.test(packageInput.val());
-        const isDoiValid = !hasArticleDoi || VALID_DOI_RX.test(articleDoiInput.val());
-        const isUrlValid = !hasArticleUrl || VALID_URL_RX.test(articleUrlInput.val());
-        const isYearValid = VALID_YEAR_RX.test(journalPubYearInput.val());
-        let formIsValid = isPackageIdValid && isDoiValid && isUrlValid && isYearValid;
-        setValidationClasses(packageInput, isPackageIdValid);
-        if (hasYear) {
-            setValidationClasses(journalPubYearInput, isYearValid);
+
+        const isPackageIdValid = updateValidationClasses(packageInput, VALID_PACKAGE_ID_RX, false);
+        const isDoiValid = updateValidationClasses(articleDoiInput, VALID_DOI_RX);
+        const isUrlValid = updateValidationClasses(articleUrlInput, VALID_URL_RX);
+        const isYearValid = updateValidationClasses(journalPubYearInput, VALID_YEAR_RX);
+        const isJournalIssueValid = updateValidationClasses(journalIssueInput, VALID_MAX_32_CHAR_RX);
+        const isJournalVolumeValid = updateValidationClasses(journalVolumeInput, VALID_MAX_32_CHAR_RX);
+        const isArticlePagesValid = updateValidationClasses(articlePagesInput, VALID_MAX_32_CHAR_RX);
+
+        let isFormValid = isPackageIdValid && isDoiValid && isUrlValid && isYearValid && isJournalIssueValid && isJournalVolumeValid && isArticlePagesValid;
+        if (!(hasArticleDoi || hasArticleUrl)) {
+            isFormValid = false;
         }
-        else {
-            clearValidationClasses(journalPubYearInput);
-        }
-        if (hasArticleDoi && hasArticleUrl) {
-            setValidationClasses(articleDoiInput, isDoiValid);
-            setValidationClasses(articleUrlInput, isUrlValid);
-        } else if (hasArticleDoi && !hasArticleUrl) {
-            setValidationClasses(articleDoiInput, isDoiValid);
-            clearValidationClasses(articleUrlInput);
-        } else if (!hasArticleDoi && hasArticleUrl) {
-            clearValidationClasses(articleDoiInput);
-            setValidationClasses(articleUrlInput, isUrlValid);
-        } else {
-            setValidationClasses(articleDoiInput, false);
-            setValidationClasses(articleUrlInput, false);
-            formIsValid = false;
-        }
-        okButton.prop('disabled', !formIsValid);
-        fillButton.prop('disabled', !(hasArticleDoi && isDoiValid));
-        openButton.prop('disabled', !(hasArticleUrl && isUrlValid));
+
+        fillButton.prop('disabled', !isDoiValid);
+        openButton.prop('disabled', !isUrlValid);
+        okButton.prop('disabled', !isFormValid);
     }
 
-    function setValidationClasses(inputEl, isValid) {
+    function updateValidationClasses(inputEl, validationRx, emptyIsValid = true) {
         let el = $(inputEl).closest('.control-group');
+        const val = inputEl.val();
+
+        if (val === '' && emptyIsValid) {
+            el.removeClass('success error');
+            return true;
+        }
+
+        const isValid = validationRx.test(val);
+
         if (isValid) {
             el.removeClass('error');
             el.addClass('success');
@@ -202,11 +215,8 @@ $(document).ready(function () {
             el.removeClass('success');
             el.addClass('error');
         }
-    }
 
-    function clearValidationClasses(inputEl) {
-        let el = $(inputEl).closest('.control-group');
-        el.removeClass('success error');
+        return isValid;
     }
 
     // Fill the modal article URL and titles with values fetched by DOI lookup.
@@ -247,11 +257,12 @@ $(document).ready(function () {
             let status = 0;
             let isOk = false;
             let json = null;
+            const valueJson = valueMap === null ? null : JSON.stringify(valueMap);
 
             fetch(path, {
                 method: method, headers: {
                     'Content-Type': 'application/json',
-                }, body: JSON.stringify(valueMap),
+                }, body: valueJson,
             }).then(response => {
                 isOk = response.ok;
                 status = response.status;
@@ -268,7 +279,8 @@ $(document).ready(function () {
                     } else if (status === 404) {
                         alert('Article DOI Not Found');
                     } else {
-                        console.error(`Internal error: ${body}`);
+                        console.error("Internal error:");
+                        console.error({body});
                         alert('Internal error. See console for details');
                     }
                     reject(null);
@@ -276,6 +288,7 @@ $(document).ready(function () {
             })
                 // Catch any errors from fetch that are not HTTP errors.
                 .catch(error => {
+                    console.error("Internal error:");
                     console.error(error);
                     alert('Internal error. See console for details');
                     reject(null);
@@ -294,26 +307,35 @@ $(document).ready(function () {
 
     function getModalValues() {
         return {
-            citationId: $('#citation-id').val(),
+            journalCitationId: $('#citation-id').val(),
             packageId: packageInput.val(),
             relationType: $('#relation-type').val(),
-            doi: articleDoiInput.val(),
-            url: articleUrlInput.val(),
+            articleDoi: articleDoiInput.val(),
+            articleUrl: articleUrlInput.val(),
             articleTitle: articleTitleInput.val(),
             journalTitle: journalTitleInput.val(),
             journalPubYear: journalPubYearInput.val(),
+            articleAuthorList: articleAuthorList,
+            journalIssue: journalIssueInput.val(),
+            journalVolume: journalVolumeInput.val(),
+            articlePages: articlePagesInput.val(),
         };
     }
 
     function setModalValues(citationMap) {
-        $('#citation-id').val(citationMap.citationId);
+        $('#citation-id').val(citationMap.journalCitationId);
         packageInput.val(citationMap.packageId);
         $('#relation-type').val(citationMap.relationType);
-        articleDoiInput.val(citationMap.doi);
-        articleUrlInput.val(citationMap.url);
+        articleDoiInput.val(citationMap.articleDoi);
+        articleUrlInput.val(citationMap.articleUrl);
         articleTitleInput.val(citationMap.articleTitle);
         journalTitleInput.val(citationMap.journalTitle);
         journalPubYearInput.val(citationMap.journalPubYear);
+        articleAuthorList = citationMap.articleAuthorList;
+        articleAuthorShortInput.val(citationMap.shortArticleAuthorList);
+        journalIssueInput.val(citationMap.journalIssue);
+        journalVolumeInput.val(citationMap.journalVolume);
+        articlePagesInput.val(citationMap.articlePages);
     }
 
     function setModalDoiValues(doiMap) {
@@ -324,22 +346,31 @@ $(document).ready(function () {
                 articleUrlInput.val(doiMap.resource.primary.URL);
                 articleTitleInput.val(doiMap.title);
                 journalTitleInput.val(doiMap['container-title']);
+
                 const dateArr = doiMap.created['date-parts'][0];
-                journalPubYearInput.val(`${dateArr[0]}-${dateArr[1].toString().padStart(2, '0')}-${dateArr[2].toString().padStart(2, '0')}`);
+                journalPubYearInput.val(dateArr[0]);
+
+                articleAuthorShortInput.val(getAuthorsAsCitation(doiMap.author));
+                articleAuthorList = sequenceToInt(doiMap.author);
+
+                journalIssueInput.val(doiMap.issue);
+                journalVolumeInput.val(doiMap.volume);
+                articlePagesInput.val(doiMap.page);
+
             } catch (TypeError) {
                 alert('Received unexpected value');
             }
         }
     }
 
-    function getRowArr(citationId) {
-        return getRow(citationId).find('td');
+    function getRowArr(journalCitationId) {
+        return getRow(journalCitationId).find('td');
     }
 
-    function getRow(citationId) {
+    function getRow(journalCitationId) {
         let tr_el = null;
         $('#citations-table td:first-child').filter(function () {
-            if ($(this).text() === citationId) {
+            if ($(this).text() === journalCitationId) {
                 tr_el = $(this).closest('tr');
             }
         });
@@ -349,10 +380,11 @@ $(document).ready(function () {
     function addRow(citationMap) {
         citationsDataTable.row.add(
             [
-                citationMap.citationId,
+                citationMap.journalCitationId,
                 citationMap.packageId,
                 citationMap.relationType,
-                citationMap.doi, citationMap.url,
+                citationMap.doi,
+                citationMap.url,
                 citationMap.articleTitle,
                 citationMap.journalTitle,
                 citationMap.journalPubYear
@@ -361,17 +393,17 @@ $(document).ready(function () {
     }
 
     function removeRow(citationMap) {
-        const tr_el = getRow(citationMap.citationId);
+        const tr_el = getRow(citationMap.journalCitationId);
         citationsDataTable.row(tr_el).remove().draw();
     }
 
     function getRowValues(rowArr) {
         return {
-            citationId: rowArr[0].textContent,
+            journalCitationId: rowArr[0].textContent,
             packageId: rowArr[1].textContent,
             relationType: rowArr[2].textContent,
-            doi: rowArr[3].textContent,
-            url: rowArr[4].textContent,
+            articleDoi: rowArr[3].textContent,
+            articleUrl: rowArr[4].textContent,
             articleTitle: rowArr[5].textContent,
             journalTitle: rowArr[6].textContent,
             journalPubYear: rowArr[7].textContent,
@@ -379,13 +411,65 @@ $(document).ready(function () {
     }
 
     function setRowValues(rowArr, citationMap) {
-        rowArr[0].textContent = citationMap.citationId;
+        rowArr[0].textContent = citationMap.journalCitationId;
         rowArr[1].textContent = citationMap.packageId;
         rowArr[2].textContent = citationMap.relationType;
-        rowArr[3].textContent = citationMap.doi;
-        rowArr[4].textContent = citationMap.url;
+        rowArr[3].textContent = citationMap.articleDoi;
+        rowArr[4].textContent = citationMap.articleUrl;
         rowArr[5].textContent = citationMap.articleTitle;
         rowArr[6].textContent = citationMap.journalTitle;
         rowArr[7].textContent = citationMap.journalPubYear;
+    }
+
+    function getAuthorsAsCitation(authorObj) {
+        const authorList = [];
+
+        authorObj.forEach(row => {
+            const familyStr = row.family;
+            const initialsStr = givenNameToInitials(row.given);
+            const suffixStr = row.suffix;
+
+            if (familyStr && initialsStr && suffixStr) {
+                authorList.push(`${familyStr}, ${initialsStr} ${suffixStr}`);
+            } else if (familyStr && initialsStr) {
+                authorList.push(`${familyStr}, ${initialsStr}`);
+            } else if (initialsStr && suffixStr) {
+                authorList.push(`${initialsStr} ${suffixStr}`);
+            } else if (familyStr && suffixStr) {
+                authorList.push(`${suffixStr} ${familyStr}`);
+            }
+        });
+
+        if (authorList.length > 1) {
+            authorList[authorList.length - 1] = `& ${authorList[authorList.length - 1]}`;
+        }
+
+        return authorList.join(', ');
+    }
+
+    function givenNameToInitials(givenStr) {
+        if (givenStr !== null) {
+            return givenStr
+                .split(' ')
+                .map(s => `${s[0]}.`)
+                .join(' ');
+        }
+    }
+
+    // Crossref returns an author sequence designator as string, which is inconvenient for sorting, so
+    // we convert it to an integer.
+    function sequenceToInt(authorMap) {
+        for (let i = 0; i < authorMap.length; i++) {
+            if (authorMap[i].sequence === 'first') {
+                authorMap[i].sequence = 0;
+            }
+            else if (authorMap[i].sequence === 'additional') {
+                authorMap[i].sequence = 1;
+            }
+            else {
+                authorMap[i].sequence = 2;
+            }
+        }
+        return authorMap;
     }
 });

@@ -161,52 +161,82 @@
       </div>
       <div class="modal-body">
         <form>
+          <%-- Citation ID --%>
           <div class="control-group" hidden>
             <label for="citation-id" class="col-form-label">Citation ID:</label>
             <input class="form-control" id="citation-id" type="number" disabled="disabled">
           </div>
+          <%-- Package ID --%>
           <div class="control-group">
             <label for="package-id" class="col-form-label">Package ID <em>(Required)</em></label>
-            <input class="form-control" id="package-id" required="required" size="50" type="text" value="<%= packageId %>"/>
+            <input class="form-control" id="package-id" required="required" size="50" type="text"
+                   value="<%= packageId %>"/>
           </div>
+          <%-- Relation Type --%>
           <div class="control-group">
-            <label for="relation-type" class="col-form-label">Relation Type</em></label>
+            <label for="relation-type" class="col-form-label">Relation Type</label>
             <select class="form-control" id="relation-type" style="width: 31em;">
               <option value="IsCitedBy">IsCitedBy - package is formally cited in the manuscript</option>
-              <option value="IsDescribedBy">IsDescribedBy - package is explicitly described within the manuscript</option>
-              <option value="IsReferencedBy">IsReferencedBy - package is implicitly described within the manuscript</option>
+              <option value="IsDescribedBy">IsDescribedBy - package is explicitly described within the manuscript
+              </option>
+              <option value="IsReferencedBy">IsReferencedBy - package is implicitly described within the manuscript
+              </option>
             </select>
           </div>
+          <%-- Article DOI --%>
           <div class="control-group">
-            <label for="article-doi" class="col-form-label">Article DOI <em>(Required unless Article URL is provided)</em></label>
+            <label for="article-doi" class="col-form-label">Article DOI <em>(Required unless Article URL is
+              provided)</em></label>
             <div class="pasta-row">
               <input class="form-control" id="article-doi" size="50" type="text"/>
               <button id="fill-button" type="button" class="btn">Fill ↲</button>
             </div>
           </div>
+          <%-- Article URL --%>
           <div class="control-group">
-            <label for="article-url" class="col-form-label">Article URL <em>(Required unless Article DOI is provided)</em></label>
+            <label for="article-url" class="col-form-label">Article URL <em>(Required unless Article DOI is
+              provided)</em></label>
             <div class="pasta-row">
               <input class="form-control" id="article-url" size="50" type="url"/>
               <button id="open-button" type="button" class="btn">Open</button>
             </div>
           </div>
+          <%-- Article Title --%>
           <div class="control-group">
             <label for="article-title" class="col-form-label">Article Title <em>(Optional)</em></label>
             <input class="form-control" id="article-title" size="50" type="text"/>
           </div>
+          <%-- Journal Title --%>
           <div class="control-group">
             <label for="journal-title" class="col-form-label">Journal Title <em>(Optional)</em></label>
             <input class="form-control" id="journal-title" size="50" type="text"/>
           </div>
+          <%-- Publication Date --%>
           <div class="control-group">
-            <label for="journal-pub-year" class="col-form-label">Publication Date <em>(Optional)</em></label>
+            <label for="journal-pub-year" class="col-form-label">Publication Date <em>(Year) (Optional)</em></label>
             <input type="number" class="form-control" id="journal-pub-year"/>
           </div>
-<%--          <div class="control-group" disabled="disabled">--%>
-<%--            <label for="author-list" class="col-form-label" disabled="disabled">Authors <em>(From Crossref)</em></label>--%>
-<%--            <input class="form-control" id="author-list" size="50" type="text"/>--%>
-<%--          </div>--%>
+          <%-- Authors--%>
+          <div class="control-group" disabled="disabled">
+            <label for="article-author-short" class="col-form-label" disabled="disabled">Authors <em>(fill from
+              Crossref)</em></label>
+            <input class="form-control" id="article-author-short" size="50" type="text" disabled/>
+          </div>
+          <%-- Journal Issue --%>
+          <div class="control-group">
+            <label for="journal-issue" class="col-form-label">Journal Issue</label>
+            <input class="form-control" id="journal-issue" size="50" maxlength="32" type="text"/>
+          </div>
+          <%-- Journal Volume --%>
+          <div class="control-group">
+            <label for="journal-volume" class="col-form-label">Journal Volume</label>
+            <input class="form-control" id="journal-volume" size="50" maxlength="32" type="text"/>
+          </div>
+          <%-- Article Pages --%>
+          <div class="control-group">
+            <label for="article-pages" class="col-form-label">Article Pages</label>
+            <input class="form-control" id="article-pages" size="50" maxlength="32" type="text"/>
+          </div>
         </form>
       </div>
       <div class="modal-footer">

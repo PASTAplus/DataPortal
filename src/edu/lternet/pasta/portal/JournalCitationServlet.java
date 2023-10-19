@@ -58,6 +58,33 @@ public class JournalCitationServlet extends DataPortalServlet {
     PropertiesConfiguration options = ConfigurationListener.getOptions();
   }
 
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws IOException
+  {
+    request.setCharacterEncoding("UTF-8");
+    // Method can only be called by authenticated users
+    HttpSession httpSession = request.getSession();
+    String uid = (String) httpSession.getAttribute("uid");
+    if (uid == null || uid.isEmpty()) {
+      plainTextError(response, HttpServletResponse.SC_FORBIDDEN, "Access denied");
+      return;
+    }
+    String journalCitationId = request.getParameter("journalCitationId");
+    try {
+      JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
+      String journalCitationXml = journalCitationsClient.getCitationWithId(journalCitationId);
+      JournalCitation journalCitation = new JournalCitation(journalCitationXml);
+      String journalCitationJson = journalCitation.toJson().toString();
+      response.getWriter().write(journalCitationJson);
+    } catch (PastaEventException e) {
+      logger.error(e.getMessage(), e);
+      plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+    } catch (PastaConfigurationException | PastaAuthenticationException e) {
+      plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, "Internal error");
+      throw new RuntimeException(e);
+    }
+  }
+
   // POST: Create a new journal citation
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
@@ -71,8 +98,8 @@ public class JournalCitationServlet extends DataPortalServlet {
     }
     // Decode JSON body
     JSONObject json = getJson(request);
-    // Make sure we're not trying to create a new citation while we already have a citationId.
-    assert Objects.equals(json.getString("citationId"), "");
+    // Make sure we're not trying to create a new citation while we already have a journalCitationId.
+    assert Objects.equals(json.getString("journalCitationId"), "");
     // Validate input
     String validationResult = validateInput(json);
     if (validationResult != null) {
@@ -98,8 +125,8 @@ public class JournalCitationServlet extends DataPortalServlet {
       throw new RuntimeException(e);
     }
     try {
-      Integer citationId = journalCitationsClient.create(journalCitationXML);
-      plainTextSuccess(response, citationId);
+      Integer journalCitationId = journalCitationsClient.create(journalCitationXML);
+      plainTextSuccess(response, journalCitationId);
     } catch (PastaEventException e ) {
       logger.error(e.getMessage(), e);
       plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
@@ -120,8 +147,8 @@ public class JournalCitationServlet extends DataPortalServlet {
     }
     // Decode JSON body
     JSONObject json = getJson(request);
-    // Make sure we have the citationId to update.
-    assert !Objects.equals(json.getString("citationId"), "");
+    // Make sure we have the journalCitationId to update.
+    assert !Objects.equals(json.getString("journalCitationId"), "");
     // Validate input
     String validationResult = validateInput(json);
     if (validationResult != null) {
@@ -146,8 +173,8 @@ public class JournalCitationServlet extends DataPortalServlet {
       throw new RuntimeException(e);
     }
     try {
-      Integer citationId = journalCitationsClient.update(journalCitationXML);
-      plainTextSuccess(response, citationId);
+      Integer journalCitationId = journalCitationsClient.update(journalCitationXML);
+      plainTextSuccess(response, journalCitationId);
     } catch (PastaEventException e) {
       logger.error(e.getMessage(), e);
       plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
@@ -168,13 +195,13 @@ public class JournalCitationServlet extends DataPortalServlet {
     }
     // Decode JSON body
     JSONObject json = getJson(request);
-    // Make sure we received a citationId to delete.
-    String citationId = json.getString("citationId");
-    assert !Objects.equals(citationId, "");
+    // Make sure we received a journalCitationId to delete.
+    String journalCitationId = json.getString("journalCitationId");
+    assert !Objects.equals(journalCitationId, "");
     try {
       JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
-      journalCitationsClient.deleteByJournalCitationId(citationId);
-      plainTextSuccess(response, Integer.parseInt(citationId));
+      journalCitationsClient.deleteByJournalCitationId(journalCitationId);
+      plainTextSuccess(response, Integer.parseInt(journalCitationId));
     } catch (PastaEventException e) {
       logger.error(e.getMessage(), e);
       plainTextError(response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
@@ -186,12 +213,12 @@ public class JournalCitationServlet extends DataPortalServlet {
 
   // Calling response.sendError() causes the response to be wrapped in HTML,
   // so we create a plain text response manually.
-  private void plainTextSuccess(HttpServletResponse response, Integer citationId)
+  private void plainTextSuccess(HttpServletResponse response, Integer journalCitationId)
       throws IOException
   {
     response.setContentType("text/plain");
     response.setStatus(200);
-    String json = "{\"citationId\": " + citationId + "}";
+    String json = "{\"journalCitationId\": " + journalCitationId + "}";
     response.getWriter().write(json);
   }
 
@@ -216,8 +243,8 @@ public class JournalCitationServlet extends DataPortalServlet {
   // validation failed.
   private String validateInput(JSONObject json)
   {
-    String doi = json.getString("doi");
-    String url = json.getString("url");
+    String doi = json.getString("articleDoi");
+    String url = json.getString("articleUrl");
     String relationType = json.getString("relationType");
     StringBuilder msgBuffer = new StringBuilder();
     if (doi.isEmpty() && url.isEmpty()) {
