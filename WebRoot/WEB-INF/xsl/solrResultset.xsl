@@ -82,8 +82,14 @@
         </a>
       </td>
       <td class="nis" align="center">
-        <xsl:apply-templates select="organizations"/>
-        <xsl:apply-templates select="authors"/>
+          <xsl:choose>
+              <xsl:when test="authors/author">
+                <xsl:apply-templates select="authors"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates select="organizations"/>
+              </xsl:otherwise>
+          </xsl:choose>
       </td>
       <td class="nis" align="center">
         <xsl:value-of select="pubdate"/>
