@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 PROPERTIES_PATH = '~/git/DataPortal/WebRoot/WEB-INF/conf/dataportal.properties'
 
 SITE_LIST = [
-    'https://status.crossref.org/history.atom',
+    # 'https://status.crossref.org/history.atom',
     'https://status.datacite.org/history.atom',
 ]
 
