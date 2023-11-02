@@ -2804,26 +2804,30 @@
                     <xsl:text>https://ror.org</xsl:text>
                   </xsl:when>
                   <xsl:when test="matches(@directory, '^(https?|HTTPS?)://')">
-                    <xsl:value-of select="@directory"/>
+                    <xsl:value-of select="normalize-space(@directory)"/>
                   </xsl:when>
                   <xsl:otherwise>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
 
+              <xsl:variable name="relUrl">
+                <xsl:value-of select="normalize-space(text())"/>
+              </xsl:variable>
+
               <xsl:choose>
                 <xsl:when test="$dirBase != ''">
                   <xsl:element name="a">
                     <xsl:attribute name="href">
-                      <xsl:value-of select="resolve-uri(text(), $dirBase)"/>
+                      <xsl:value-of select="resolve-uri($relUrl, $dirBase)"/>
                     </xsl:attribute>
                     <xsl:attribute name="target">_blank</xsl:attribute>
                     <xsl:attribute name="class">dataseteml</xsl:attribute>
-                    <xsl:value-of select="resolve-uri(text(), $dirBase)"/>
+                    <xsl:value-of select="resolve-uri($relUrl, $dirBase)"/>
                   </xsl:element>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="text()"/>
+                  <xsl:value-of select="$relUrl"/>
                 </xsl:otherwise>
               </xsl:choose>
             </td>
