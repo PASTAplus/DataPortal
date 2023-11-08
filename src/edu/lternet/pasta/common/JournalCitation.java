@@ -159,7 +159,9 @@ public class JournalCitation {
         this.journalTitle = json.getString("journalTitle");
         this.relationType = json.getString("relationType");
         setJournalPubYear(json.getString("journalPubYear"));
-        setArticleAuthorList(json.getJSONArray("articleAuthorList"));
+        if (!json.isNull("articleAuthorList")) {
+            setArticleAuthorList(json.getJSONArray("articleAuthorList"));
+        }
         setJournalIssue(json.getString("journalIssue"));
         setJournalVolume(json.getString("journalVolume"));
         setArticlePages(json.getString("articlePages"));
