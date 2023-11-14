@@ -40,6 +40,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import edu.lternet.pasta.common.eml.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
@@ -833,8 +834,14 @@ public class MapBrowseServlet extends DataPortalServlet {
 									DataPackage dp = emlObject.getDataPackage();
 									ArrayList<Entity> entities = dp.getEntityList();
 									Entity.EntityType entityType = null;
+
+									String realEntityId = "";
+									if (entityName != null) {
+										realEntityId = DigestUtils.md5Hex(entityName);
+									}
+
 									for (Entity entity : entities) {
-										if (entity.getEntityId().equals(entityId)) {
+										if (entity.getEntityId().equals(realEntityId)) {
 											entityType = entity.getEntityType();
 											break;
 										}
