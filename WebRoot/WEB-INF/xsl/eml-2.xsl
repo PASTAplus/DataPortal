@@ -23,7 +23,7 @@
 
 <xsl:stylesheet 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  version="2.0"
+  version="3.0"
 >
   
   <!-- mob: 2010-03-19 
@@ -127,7 +127,11 @@
   <!-- the first column width of attribute table-->
   <xsl:param name="attributefirstColWidth" select="'15%'"/>
   <xsl:param name="subgroupBorder" select="subgroupBorder" />
-  
+
+  <xsl:variable name="VALID_URL_RX">
+    <xsl:text>^https?://[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,24}\b([-a-zA-Z0-9@:%_\+.~#?&amp;//=]*)$</xsl:text>
+  </xsl:variable>
+
   <xsl:template match="/">
     <xsl:param name="docid" select="$docid"></xsl:param>
     <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: /</xsl:text></xsl:message></xsl:if>
@@ -2791,6 +2795,7 @@
         </xsl:if> -->
       </xsl:when>
       <xsl:otherwise>
+
         <xsl:if test="normalize-space(.) != ''">
           <tr>
             <td class="{$partyfirstColStyle}" >Id:</td>
@@ -2815,21 +2820,35 @@
                 <xsl:value-of select="normalize-space(text())"/>
               </xsl:variable>
 
+              <xsl:variable name="absUrl">
+                <xsl:choose>
+                  <xsl:when test="$dirBase != ''">
+                    <xsl:try>
+                      <xsl:value-of select="resolve-uri($relUrl, $dirBase)"/>
+                      <xsl:catch>
+                        <xsl:value-of select="$relUrl"/>
+                      </xsl:catch>
+                    </xsl:try>
+                  </xsl:when>
+                </xsl:choose>
+              </xsl:variable>
+
               <xsl:choose>
-                <xsl:when test="$dirBase != ''">
+                <xsl:when test="matches($absUrl, $VALID_URL_RX, 'i;j')">
                   <xsl:element name="a">
                     <xsl:attribute name="href">
-                      <xsl:value-of select="resolve-uri($relUrl, $dirBase)"/>
+                      <xsl:value-of select="$absUrl"/>
                     </xsl:attribute>
                     <xsl:attribute name="target">_blank</xsl:attribute>
                     <xsl:attribute name="class">dataseteml</xsl:attribute>
-                    <xsl:value-of select="resolve-uri($relUrl, $dirBase)"/>
+                    <xsl:value-of select="$absUrl"/>
                   </xsl:element>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="$relUrl"/>
+                  <xsl:value-of select="$absUrl"/>
                 </xsl:otherwise>
               </xsl:choose>
+
             </td>
           </tr>
         </xsl:if>
