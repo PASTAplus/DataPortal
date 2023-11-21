@@ -464,4 +464,14 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  <!-- Token refresh -->
+  <filter>
+    <filter-name>TokenRefreshFilter</filter-name>
+    <filter-class>edu.lternet.pasta.portal.TokenRefreshFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TokenRefreshFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
 </web-app>
