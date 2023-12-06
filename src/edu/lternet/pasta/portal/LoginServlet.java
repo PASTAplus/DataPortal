@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,8 +60,7 @@ public class LoginServlet extends DataPortalServlet {
   private static final Logger logger = Logger
       .getLogger(edu.lternet.pasta.portal.LoginServlet.class);
   private static final long serialVersionUID = 1L;
-
-  
+  private Integer maxInactiveIntervalMinutes;
   /**
    * Class methods
    */
@@ -257,8 +255,12 @@ public class LoginServlet extends DataPortalServlet {
         httpSession.setAttribute("uid", distinguishedName);
         httpSession.setAttribute("cname", cname);
 
-        httpSession.setMaxInactiveInterval(60 * 60 * 12);
-        logger.info(String.format("Session %s: Logged in session MaxInactiveInterval set to 12 hours", httpSession.getId()));
+        httpSession.setMaxInactiveInterval(maxInactiveIntervalMinutes * 60);
+        logger.info(
+            String.format("Session %s: Logged in session MaxInactiveInterval set to %d minutes",
+                httpSession.getId(), maxInactiveIntervalMinutes
+            )
+        );
     }
 
     /* Allows redirect back to page that forced a login action */
@@ -304,9 +306,7 @@ public class LoginServlet extends DataPortalServlet {
    */
   @Override
   public void init() throws ServletException {
-
     PropertiesConfiguration options = ConfigurationListener.getOptions();
-
+    this.maxInactiveIntervalMinutes = options.getInt("dataportal.session.timeout");
   }
-
 }

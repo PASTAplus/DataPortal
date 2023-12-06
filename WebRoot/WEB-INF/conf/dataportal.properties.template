@@ -22,6 +22,12 @@ dataportal.hostname=portal.edirepository.org
 dataportal.protocol=https
 dataportal.port=443
 dataportal.context=nis
+# Amount of idle time (in minutes) before a logged-in session times out.
+# This value correlates to the token TTL value in the authentication service.
+# As we want the session to time out before the token expires, this value
+# should be set to a value slightly lower than the token TTL value.
+# 8 hours = 60 * 8 = 480
+dataportal.session.timeout=480
 
 # Junit test properties
 dataportal.test.emlFileName=NoneSuchBugCount.xml
