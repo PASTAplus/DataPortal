@@ -467,6 +467,7 @@
                       </div>
                     </div>
 
+                    <!--
                     <div class="table-row">
                       <div class="table-cell text-align-right">
                         <label class="labelBold">PASTA Identifier:</label>
@@ -478,6 +479,7 @@
                         </ul>
                       </div>
                     </div>
+                    -->
 
                     <!--
                     <div class="table-row">
