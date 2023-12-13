@@ -1004,7 +1004,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 
 				if (doiId != null) {
-					digitalObjectIdentifier = doiId;
+					digitalObjectIdentifier = doiId.replaceFirst("doi:", DoiOrg);
 				}
 
 				citationHTMLBuilder
