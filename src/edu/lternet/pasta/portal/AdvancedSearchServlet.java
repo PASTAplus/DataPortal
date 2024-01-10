@@ -171,6 +171,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     String[] siteValues = request.getParameterValues("siteValues");
     String subjectField = request.getParameter("subjectField");
     String subjectValue = request.getParameter("subjectValue");
+    String subjectCondOR = request.getParameter("subjectCondOR");
     String specific = request.getParameter("specific");
     String related = request.getParameter("related");
     String relatedSpecific = request.getParameter("relatedSpecific");
@@ -186,6 +187,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     String eastBound = request.getParameter("eastBound");
     String westBound = request.getParameter("westBound");
 
+    boolean isSubjectCondOR = subjectCondOR.equals("OR");
     boolean isBoundaryContainedChecked = (boundaryContained != null);
     boolean isDatesContainedChecked = (datesContained != null);
     boolean isIncludeEcotrendsChecked = (ecotrends != null);
@@ -194,10 +196,11 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     boolean isRelatedChecked = (related != null);
     boolean isRelatedSpecificChecked = (relatedSpecific != null);
 
-    SolrAdvancedSearch solrAdvancedSearch =
+
+      SolrAdvancedSearch solrAdvancedSearch =
         new SolrAdvancedSearch(creatorName, creatorOrganization, dateField, startDate,
             endDate, yearsMin, yearsMax, namedTimescale, siteValues, subjectField,
-            subjectValue, isIncludeEcotrendsChecked, isIncludeLandsat5Checked,
+            subjectValue, isSubjectCondOR, isIncludeEcotrendsChecked, isIncludeLandsat5Checked,
             isDatesContainedChecked, isSpecificChecked, isRelatedChecked,
             isRelatedSpecificChecked, taxon, identifier, projectTitle, funding,
             isBoundaryContainedChecked, boundsChangedCount, northBound, southBound,

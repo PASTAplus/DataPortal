@@ -42,7 +42,6 @@ import edu.lternet.pasta.umbra.UmbraClient;
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.PastaClient;
 import edu.lternet.pasta.common.ISO8601Utility;
-import edu.lternet.pasta.portal.search.LTERSite;
 
 
 /**
@@ -66,7 +65,8 @@ public class SolrAdvancedSearch extends Search  {
   /*
    * Form parameters
    */
-	
+
+  private final boolean isSubjectCondOR;
   private final String creatorOrganization;
   private final String creatorName;
   private final String dateField;
@@ -126,6 +126,7 @@ public class SolrAdvancedSearch extends Search  {
       String[] siteValues,
       String subjectField,
       String subjectValue,
+      boolean isSubjectCondOR,
       boolean isIncludeEcotrendsChecked,
       boolean isIncludeLandsat5Checked,
       boolean isDatesContainedChecked,
@@ -145,6 +146,7 @@ public class SolrAdvancedSearch extends Search  {
       String locationName
                        ) {
 	super();
+    this.isSubjectCondOR = isSubjectCondOR;
     this.creatorName = creatorName;
     this.creatorOrganization = creatorOrganization;
     this.dateField = dateField;
@@ -216,7 +218,7 @@ public class SolrAdvancedSearch extends Search  {
    * A full subject query searches the title, abstract, and keyword sections of
    * the document. Individual searches on these sections is also supported.
    */
-	private void buildQuerySubject(TermsList termsList) 
+	private void buildQuerySubject(TermsList termsList, boolean isSubjectCondOR)
 		 throws UnsupportedEncodingException {
 		List<String> terms;
 		String field = "subject";
@@ -248,12 +250,17 @@ public class SolrAdvancedSearch extends Search  {
 				}
 			}
 
+            String conditional = "OR";
+            if (!isSubjectCondOR) {
+                conditional = "AND";
+            }
+
 			String subjectQuery = "";
 			boolean firstTerm = true;
 			for (String derivedTerm : derivedTerms) {
 				termsList.addTerm(derivedTerm);
 				if (!firstTerm) {
-					subjectQuery += "%20OR%20";
+					subjectQuery += String.format("%%20%s%%20", conditional);
 				}
 				else {
 					firstTerm = false;
@@ -823,7 +830,7 @@ public class SolrAdvancedSearch extends Search  {
 	 */
 	public String executeSearch(final String uid) 
 			throws Exception {
-		buildQuerySubject(this.termsList);
+		buildQuerySubject(this.termsList, this.isSubjectCondOR);
 		buildQueryAuthor(this.termsList); 
 		buildQueryTaxon(this.termsList);
 		buildQueryIdentifier(this.termsList);

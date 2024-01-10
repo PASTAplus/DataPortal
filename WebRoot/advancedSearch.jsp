@@ -377,6 +377,21 @@
 																<tr>
 																</tr>
 																<tr>
+																	<td>
+																		<label class="labelBold">Select for multiple terms:</label>
+																	</td>
+																	<td class="spacerwd"></td>
+																	<td>
+																		<input checked="checked" name="subjectCondOR" type="radio" value="OR"/>
+																		OR
+																	</td>
+																	<td class="spacerwd"></td>
+																	<td>
+																		<input name="subjectCondOR" type="radio" value="AND"/>
+																		AND
+																	</td>
+																</tr>
+																<tr>
 																</tr>
 																<tr>
 																	<td class="spacersmh"></td>
