@@ -129,7 +129,7 @@ public class ControlledVocabularyClient {
     
     if (searchValue != null && !searchValue.equals("")) {
       try {
-        String encodedValue = URLEncoder.encode(searchValue, "UTF-8");
+        String encodedValue = URLEncoder.encode(searchValue.replaceAll("^\"|\"$", ""), "UTF-8");
         exactServiceURL += "/" + encodedValue;
         narrowServiceURL += "/" + encodedValue;
         relatedServiceURL += "/" + encodedValue;
