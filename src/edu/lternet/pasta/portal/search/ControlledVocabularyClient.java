@@ -120,6 +120,11 @@ public class ControlledVocabularyClient {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     String format = "list";
     TreeSet<String> searchValues = new TreeSet<String>();
+
+    // Map both narrow and related selection to all
+    if (hasNarrowRelated) {
+        hasAll = true;
+      }
     
     String exactServiceURL = BASE_SERVICE_URL + "exact" + "/" + format;
     String narrowServiceURL = BASE_SERVICE_URL + "narrow" + "/" + format;
@@ -129,7 +134,7 @@ public class ControlledVocabularyClient {
     
     if (searchValue != null && !searchValue.equals("")) {
       try {
-        String encodedValue = URLEncoder.encode(searchValue.replaceAll("^\"|\"$", ""), "UTF-8");
+        String encodedValue = URLEncoder.encode(searchValue, "UTF-8");
         exactServiceURL += "/" + encodedValue;
         narrowServiceURL += "/" + encodedValue;
         relatedServiceURL += "/" + encodedValue;

@@ -237,16 +237,17 @@ public class SolrAdvancedSearch extends Search  {
 			terms = parseTerms(this.subjectValue);
 
 			TreeSet<String> derivedTerms = new TreeSet<String>();
-			
+
+            String vocabTerm;
 			for (String term : terms) {
-				derivedTerms.add(term);
-				
+				//derivedTerms.add(term);
+				vocabTerm = term.replaceAll("\"", "").replaceAll("'", "");
 				TreeSet<String> webTerms = 
 						ControlledVocabularyClient.webServiceSearchValues(
-								term, hasExact, hasNarrow, hasRelated, hasNarrowRelated, hasAll);
+								vocabTerm, hasExact, hasNarrow, hasRelated, hasNarrowRelated, hasAll);
 
 				for (String webTerm : webTerms) {
-					derivedTerms.add(webTerm);
+					derivedTerms.add(String.format("\"%s\"", webTerm));
 				}
 			}
 

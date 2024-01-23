@@ -39,7 +39,7 @@ public class Tooltip {
 	        "for every data entity in the package.";
 
 	public static final String SEARCH_TERMS = 
-			"Enclose terms containing spaces within quotes, e.g., \"Puerto Rico\"";
+			"Enclose terms containing spaces within double quotes, e.g., \"Puerto Rico\"";
 
 	public static final String USE_CHECKSUM = 
 			"When selecting this option, you allow PASTA to skip data upload of a data entity if PASTA " +
