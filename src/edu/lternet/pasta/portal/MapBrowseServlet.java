@@ -254,6 +254,13 @@ public class MapBrowseServlet extends DataPortalServlet {
   								}
   							}
 
+							// There will be only one resource type of 'archive' in the resourceReads XML doc, so we set the
+							// resourceId to 'archive' for the 'archive' resource type in order to make it easier to look up.
+  							Node resourceTypeNode = xpathapi.selectSingleNode(resourceNode, "resourceType");
+  							if (resourceTypeNode != null && resourceTypeNode.getTextContent().equals("archive")) {
+  								resourceId = "archive";
+  							}
+
   							if (resourceId != null && nonRobotReads != null) {
   								resourceReadsMap.put(resourceId, nonRobotReads);
   							}
@@ -965,14 +972,28 @@ public class MapBrowseServlet extends DataPortalServlet {
 					data += String.format("<li>%s</li>\n", offlineMsg);
 				}
 
+				// Full Data Package (Zip) download button
+
 				resourcesHTMLBuilder.append("<li>\n");
 				resourcesHTMLBuilder.append("<div>\n");
 				resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
 				resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
 				resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\" >\n");
+
+				Integer nonRobotZipDownloads = resourceReadsMap.get("archive");
+				if (nonRobotZipDownloads != null) {
+					if (nonRobotZipDownloads > 0) {
+						String downloadsStr = nonRobotZipDownloads > 1 ? "downloads" : "download";
+						String nonRobotZipDownloadsStr = String.format("&nbsp;<em>(%d %s)</em>&nbsp;", nonRobotZipDownloads, downloadsStr);
+						resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
+					}
+				}
+
 				resourcesHTMLBuilder.append("</form>\n");
 				resourcesHTMLBuilder.append("</div>\n");
 				resourcesHTMLBuilder.append("</li>\n");
+
+				//
 
 				String listOrder = "ol";
 //				String downloadStr = downloadableData ? "Download Data" : "Data";
