@@ -240,15 +240,19 @@ public class SolrAdvancedSearch extends Search  {
 
             String vocabTerm;
 			for (String term : terms) {
-				//derivedTerms.add(term);
 				vocabTerm = term.replaceAll("\"", "").replaceAll("'", "");
 				TreeSet<String> webTerms = 
 						ControlledVocabularyClient.webServiceSearchValues(
 								vocabTerm, hasExact, hasNarrow, hasRelated, hasNarrowRelated, hasAll);
 
-				for (String webTerm : webTerms) {
-					derivedTerms.add(String.format("\"%s\"", webTerm));
-				}
+                if (webTerms.isEmpty()) {
+                    derivedTerms.add(String.format("\"%s\"", vocabTerm));
+                }
+                else {
+                    for (String webTerm : webTerms) {
+                        derivedTerms.add(String.format("\"%s\"", webTerm));
+                    }
+                }
 			}
 
             String conditional = "OR";

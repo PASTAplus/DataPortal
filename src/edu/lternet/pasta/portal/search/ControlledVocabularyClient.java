@@ -151,6 +151,7 @@ public class ControlledVocabularyClient {
           httpGet = new HttpGet(allServiceURL);
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
+          String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
           if (statusCode == HttpStatus.SC_OK) {
             HttpEntity httpEntity = httpResponse.getEntity();
             String entityString = EntityUtils.toString(httpEntity);
@@ -163,12 +164,18 @@ public class ControlledVocabularyClient {
               }
             }
           }
+          else {
+              String msg = String.format("Non-OK response from controlled vocabulary service with HTTP status" +
+                              "code: %d, reason phrase: %s", statusCode, reasonPhrase);
+              logger.error(msg);
+          }
         }
         
         if (hasExact) {
           httpGet = new HttpGet(exactServiceURL);
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
+          String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
           if (statusCode == HttpStatus.SC_OK) {
             HttpEntity httpEntity = httpResponse.getEntity();
             String entityString = EntityUtils.toString(httpEntity);
@@ -181,12 +188,18 @@ public class ControlledVocabularyClient {
               }
             }
           }
+          else {
+              String msg = String.format("Non-OK response from controlled vocabulary service with HTTP status" +
+                      "code: %d, reason phrase: %s", statusCode, reasonPhrase);
+              logger.error(msg);
+          }
         }
         
         if (hasNarrow) {
           httpGet = new HttpGet(narrowServiceURL);
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
+          String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
           if (statusCode == HttpStatus.SC_OK) {
             HttpEntity httpEntity = httpResponse.getEntity();
             String entityString = EntityUtils.toString(httpEntity);
@@ -199,12 +212,18 @@ public class ControlledVocabularyClient {
               }
             }
           }
+          else {
+              String msg = String.format("Non-OK response from controlled vocabulary service with HTTP status" +
+                      "code: %d, reason phrase: %s", statusCode, reasonPhrase);
+              logger.error(msg);
+          }
         }
         
         if (hasRelated) {
           httpGet = new HttpGet(relatedServiceURL);
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
+          String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
           if (statusCode == HttpStatus.SC_OK) {
             HttpEntity httpEntity = httpResponse.getEntity();
             String entityString = EntityUtils.toString(httpEntity);
@@ -217,12 +236,18 @@ public class ControlledVocabularyClient {
               }
             }
           }
+          else {
+              String msg = String.format("Non-OK response from controlled vocabulary service with HTTP status" +
+                      "code: %d, reason phrase: %s", statusCode, reasonPhrase);
+              logger.error(msg);
+          }
         }
           
         if (hasRelated) {
           httpGet = new HttpGet(narrowRelatedServiceURL);
           HttpResponse httpResponse = httpClient.execute(httpGet);
           int statusCode = httpResponse.getStatusLine().getStatusCode();
+          String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
           if (statusCode == HttpStatus.SC_OK) {
             HttpEntity httpEntity = httpResponse.getEntity();
             String entityString = EntityUtils.toString(httpEntity);
@@ -234,6 +259,11 @@ public class ControlledVocabularyClient {
                 }
               }
             }
+          }
+          else {
+              String msg = String.format("Non-OK response from controlled vocabulary service with HTTP status" +
+                      "code: %d, reason phrase: %s", statusCode, reasonPhrase);
+              logger.error(msg);
           }
         }
    
