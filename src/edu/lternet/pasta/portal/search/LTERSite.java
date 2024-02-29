@@ -45,6 +45,7 @@ public class LTERSite {
     "CCE",
     "CDR",
     "CAP",
+    "COS",
     "CWT",
     "FCE",
     "GCE",
@@ -79,6 +80,7 @@ public static final String[] siteNames = {
     "California Current Ecosystem",
     "Cedar Creek Ecosystem Science Reserve",
     "Central Arizona - Phoenix Urban LTER",
+    "City of Seattle - Public Utilities",
     "Coweeta LTER",
     "Florida Coastal Everglades LTER",
     "Georgia Coastal Ecosystems LTER",
@@ -290,6 +292,9 @@ public static final String[] siteNames = {
 
     if (site == null) {
       packageId = "";
+    }
+    else if (site.equals("COS")) {
+      packageId = "cos-spu";
     }
     else {
       packageId = "knb-lter-" + site.toLowerCase();
