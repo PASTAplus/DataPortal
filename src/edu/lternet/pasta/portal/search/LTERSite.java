@@ -80,7 +80,7 @@ public static final String[] siteNames = {
     "California Current Ecosystem",
     "Cedar Creek Ecosystem Science Reserve",
     "Central Arizona - Phoenix Urban LTER",
-    "City of Seattle - Public Utilities",
+    "City of Seattle - Seattle Public Utilities",
     "Coweeta LTER",
     "Florida Coastal Everglades LTER",
     "Georgia Coastal Ecosystems LTER",
