@@ -59,6 +59,10 @@ public class TokenRefreshFilter implements Filter {
 
     private void refreshToken(String uid) throws Exception {
         String extToken = getExtToken(uid);
+        if (extToken == null) {
+            logger.error("Token not found for user: " + uid);
+            return;
+        }
         String refreshedExtToken = fetchRefreshedToken(extToken);
         if (refreshedExtToken != null) {
             setExtToken(refreshedExtToken);
@@ -66,8 +70,12 @@ public class TokenRefreshFilter implements Filter {
         }
     }
 
-    public String getExtToken(String uid) throws SQLException, ClassNotFoundException {
-        return TokenManager.getExtToken(uid);
+    public String getExtToken(String uid) throws ClassNotFoundException {
+        try {
+            return TokenManager.getExtToken(uid);
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     public void setExtToken(String extToken) throws SQLException, ClassNotFoundException {

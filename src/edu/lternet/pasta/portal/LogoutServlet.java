@@ -107,7 +107,9 @@ public class LogoutServlet extends DataPortalServlet {
     } 
     else {
       try {
-        TokenManager.deleteToken(username);
+		// While we allow multiple sessions to be logged in as the same user, we cannot delete the PASTA token when
+		// one of them logs out. See ticket https://github.com/PASTAplus/DataPortal/issues/126
+        // TokenManager.deleteToken(username);
       }
       catch (Exception e) {
         handleDataPortalError(logger, e);
