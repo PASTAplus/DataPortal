@@ -28,7 +28,8 @@
   DataPackageManagerClient dpmc = null;
   String pastaHost = null;
   String target = "portal-d.edirepository.org";
-  String auth = "auth-d";
+  // String auth = "auth-d";
+  String auth = null;
 
     try {
         dpmc = new DataPackageManagerClient(uid);
@@ -39,18 +40,18 @@
 
     if (pastaHost != null) {
  		if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
-            target = "portal-d.edirepository.org";
-            auth = "auth-d";
+            // target = "portal-d.edirepository.org";
+            // auth = "auth-d";
+            target = "localhost:8080";
+            auth = "localhost:5000";
         } else if (pastaHost.startsWith("pasta-s")){
             target = "portal-s.edirepository.org";
-            auth = "auth"; // uses production auth service
+            auth = "auth.edirepository.org"; // uses production auth service
         } else {
 			target = "portal.edirepository.org";
-			auth = "auth";
+			auth = "auth.edirepository.org";
 		}
     }
-
-
 
 %>
 
@@ -155,9 +156,10 @@
 						</div>
 					</form>
 								<h3>Or use an alternate identity provider to access data requiring user authentication:</h3>
-								<p><a href="https://<%=auth%>.edirepository.org/auth/login/google?target=<%=target%>"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
-								   <a href="https://<%=auth%>.edirepository.org/auth/login/github?target=<%=target%>"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
-								   <a href="https://<%=auth%>.edirepository.org/auth/login/orcid?target=<%=target%>"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
+								<p><a href="https://<%=auth%>/auth/login/google?target=<%=target%>"><img src="./images/btn_google_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://<%=auth%>/auth/login/github?target=<%=target%>"><img src="./images/btn_github_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://<%=auth%>/auth/login/microsoft?target=<%=target%>"><img src="./images/btn_microsoft_signin_light_normal_web.png"/></a>&nbsp;&nbsp;
+								   <a href="https://<%=auth%>/auth/login/orcid?target=<%=target%>"><img src="./images/btn_orcid_signin_light_normal_web.png"/></a></p>
 								<br/><br/><br/>
 								<p>Please read our
 									<a class="searchsubcat" href="https://edirepository.org/about/edi-policy#privacy-policy">privacy policy</a>
