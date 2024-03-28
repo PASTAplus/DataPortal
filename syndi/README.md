@@ -44,6 +44,8 @@ $ ./resolve.py 123
 
 ## Install
 
+### Python
+
 ```shell
 sudo apt update
 sudo apt install libpq-dev
@@ -54,14 +56,23 @@ sh Miniconda3-latest-Linux-x86_64.sh
 conda update -n base -c defaults conda
 conda env create -f environment-min.yml
 conda activate syndi
+```
 
+### Crontab
+
+```shell
 crontab -e
+```
 
 # For running every 5 minutes WITHOUT logging:
 
-*/5 * * * * . ~/miniconda3/etc/profile.d/conda.sh && conda activate syndi && python ~/git/DataPortal/syndi/syndi.py > /dev/null 2>&1
+    */5 * * * * . ~/miniconda3/etc/profile.d/conda.sh && conda activate syndi && python ~/git/DataPortal/syndi/syndi.py > /dev/null 2>&1
 
 # For running every 5 minutes WITH logging:
 
-*/5 * * * * . ~/miniconda3/etc/profile.d/conda.sh && conda activate syndi && python ~/git/DataPortal/syndi/syndi.py > ~/git/DataPortal/syndi/syndi.log 2>&1
-```
+    */5 * * * * . ~/miniconda3/etc/profile.d/conda.sh && conda activate syndi && python ~/git/DataPortal/syndi/syndi.py > ~/git/DataPortal/syndi/syndi.log 2>&1
+
+
+### Database
+
+Refer to the DataPortal `create_schemas.sql` file for creating the table required by Syndi.
