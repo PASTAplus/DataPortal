@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   
- $Date$
- $Author$
- $Revision$
+ $Date: 2012-05-17 09:52:27 -0700 (Thu, 17 May 2012) $
+ $Author: mservilla $
+ $Revision: 2213 $
  
  Copyright 2011,2012 the University of New Mexico.
  
@@ -23,10 +23,20 @@
  
 -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+>
 
-  <xsl:output method="xml"/>
-
+<!--
+  Change encoding from UTF-8 to UTF-16 to prevent the generation
+  of UTF-8 surrogate pairs for unicode code points greater than
+  16-bit. MSS 2024-04-10
+-->
+  <xsl:output method="xml"
+              omit-xml-declaration="no"
+              encoding="UTF-16"
+              indent="yes"
+  />
 
   <!-- Match all nodes and attributes -->
   <xsl:template match="@*|node()">
