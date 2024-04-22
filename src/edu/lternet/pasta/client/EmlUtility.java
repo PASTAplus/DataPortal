@@ -75,8 +75,6 @@ public class EmlUtility {
       throw new ParseException("EML is empty", 0);
     }
 
-    this.eml = HTMLUtility.stripNonValidHTMLCharacters(eml);
-
     // Properties configuration for local XSLT path and current working
     // directory.
     PropertiesConfiguration options = ConfigurationListener.getOptions();
@@ -84,7 +82,7 @@ public class EmlUtility {
     String cwd = options.getString("system.cwd");
 
     // Expand EML references into full canonical form.
-    this.eml = this.emlReferenceExpander(cwd + idref);
+    this.eml = this.emlReferenceExpander(cwd + idref, eml);
 
   }
 
@@ -92,13 +90,13 @@ public class EmlUtility {
    * Methods
    */
   
-  private String emlReferenceExpander(String xslPath) throws ParseException {
+  private String emlReferenceExpander(String xslPath, String eml) throws ParseException {
 
     String xml = null;
 
     File styleSheet = new File(xslPath);
 
-    StringReader stringReader = new StringReader(this.eml);
+    StringReader stringReader = new StringReader(eml);
     StringWriter stringWriter = new StringWriter();
     StreamSource styleSource = new StreamSource(styleSheet);
     Result result = new StreamResult(stringWriter);
