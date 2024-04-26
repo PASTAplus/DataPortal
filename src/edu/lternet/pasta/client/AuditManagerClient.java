@@ -724,7 +724,8 @@ public class AuditManagerClient extends PastaClient {
 			               "' and message '" +
 			               entity +
 			               "'\n";
-			throw new PastaEventException(gripe);
+			logger.error(gripe);
+//			throw new PastaEventException(gripe);
 
 		}
 

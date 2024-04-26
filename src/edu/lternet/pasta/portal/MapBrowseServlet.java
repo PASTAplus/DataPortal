@@ -749,9 +749,10 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 					if (resourceReadsMap != null) {
 						nonRobotReads = resourceReadsMap.get(resource);
-						if (nonRobotReads == null) {
-							nonRobotReads = new Integer(0);
-						}
+					}
+
+					if (nonRobotReads == null) {
+						nonRobotReads = new Integer(0);
 					}
 
 					if (resource.contains(metadataUri)) {
