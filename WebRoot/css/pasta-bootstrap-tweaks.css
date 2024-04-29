@@ -25,6 +25,10 @@ table {
     margin-top: 2rem;
 }
 
+.pasta-error-box {
+    margin: 1rem 0 2rem 0;
+}
+
 /*
     Citations table
 */

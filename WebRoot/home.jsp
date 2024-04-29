@@ -130,6 +130,11 @@
 
     String googleAnalyticsScript = googleAnalyticsScriptBuffer.toString();
 
+    // Commented out until we determine if we want to display a message to sign out at the identity provider level.
+    // String logoutMessage = (String) request.getAttribute("logoutMessage");
+    // if (logoutMessage != null) {
+    //     request.removeAttribute("logoutMessage");
+    // }
 %>
 
 <!DOCTYPE html>
@@ -222,6 +227,13 @@
                             <% } %>
 
                             <%@ include file="statusNotices.jsp" %>
+
+<%--                            Commented out until we determine if we want to display this message--%>
+<%--                            <% if (logoutMessage != null) { %>--%>
+<%--                            <div class="alert alert-danger">--%>
+<%--                                <%= logoutMessage %>--%>
+<%--                            </div>--%>
+<%--                            <% } %>--%>
 
                             <div class="recent_title">
                                 <h2>Welcome to the EDI Data Portal</h2>

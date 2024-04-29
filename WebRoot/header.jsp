@@ -13,13 +13,13 @@
 	String welcomeBack = null;
 	
 	if ((uid == null) || (uid.equals(""))) {
-		identity = "<a href='./login.jsp'>Login</a>";
+		identity = "<a href='./login.jsp'>Sign in</a>";
 		uname = "";
 		welcomeBack = "";
 		uid = "public";
 	} 
 	else {
-        identity = "<a id=\"login\" href=\"./logout\">Log Out</a>";
+        identity = "<a id=\"login\" href=\"./logout\">Sign out</a>";
 		uname = cname;
 		welcomeBack = "Welcome Back";
 	}

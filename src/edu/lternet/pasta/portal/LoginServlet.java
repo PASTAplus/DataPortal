@@ -182,6 +182,15 @@ public class LoginServlet extends DataPortalServlet {
 
     String extToken = request.getParameter("token");
     String cname = request.getParameter("cname");
+    String idProvider = request.getParameter("idp");
+    String idProviderToken = request.getParameter("idp_token");
+    String errorMsg = request.getParameter("error");
+
+    if (errorMsg != null) {
+        httpSession.setAttribute("message", errorMsg);
+        response.sendRedirect("./login.jsp");
+        return;
+    }
 
     if (extToken != null && cname != null) { // Other 3rd party login
         tokenManager = new TokenManager(extToken);
@@ -254,6 +263,8 @@ public class LoginServlet extends DataPortalServlet {
         httpSession.setAttribute("vetted", vetted);
         httpSession.setAttribute("uid", distinguishedName);
         httpSession.setAttribute("cname", cname);
+        httpSession.setAttribute("idProvider", idProvider);
+        httpSession.setAttribute("idProviderToken", idProviderToken);
 
         httpSession.setMaxInactiveInterval(maxInactiveIntervalMinutes * 60);
         logger.info(

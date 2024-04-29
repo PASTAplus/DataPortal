@@ -24,117 +24,117 @@
 
 package edu.lternet.pasta.portal;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import edu.lternet.pasta.token.TokenManager;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
-import org.apache.log4j.Logger;
-import org.apache.commons.configuration.PropertiesConfiguration;
+public class LogoutServlet extends DataPortalServlet
+{
 
-import edu.lternet.pasta.token.TokenManager;
+    /**
+     * Class variables
+     */
 
-public class LogoutServlet extends DataPortalServlet {
-	
-	/**
-	 * Class variables
-	 */
-	
     private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.LogoutServlet.class);
     private static final long serialVersionUID = 1L;
+    private PropertiesConfiguration options;
 
-
-	/**
-	 * Constructor of the object.
-	 */
-	public LogoutServlet() {
-		super();
-	}
-
-	/**
-	 * Destruction of the servlet. <br>
-	 */
-	@Override
-	public void destroy() {
-		super.destroy(); // Just puts "destroy" string in log
-		// Put your code here
-	}
-
-	/**
-	 * The doGet method of the servlet. <br>
-	 *
-	 * This method is called when a form has its tag value method equals to get.
-	 * 
-	 * @param request the request send by the client to the server
-	 * @param response the response send by the server to the client
-	 * @throws ServletException if an error occurred
-	 * @throws IOException if an error occurred
-	 */
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		// Pass request onto "doPost".
-		doPost(request, response);
-		
-	}
-
-	/**
-	 * The doPost method of the servlet. <br>
-	 *
-	 * This method is called when a form has its tag value method equals to post.
-	 * 
-	 * @param request the request send by the client to the server
-	 * @param response the response send by the server to the client
-	 * @throws ServletException if an error occurred
-	 * @throws IOException if an error occurred
-	 */
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
-		HttpSession httpSession = request.getSession();
-		String username = (String) httpSession.getAttribute("uid");
-
-    if (username == null) {
-      logger.error("User distinguished name is null\n");
-      httpSession.invalidate();
-    } 
-    else {
-      try {
-		// While we allow multiple sessions to be logged in as the same user, we cannot delete the PASTA token when
-		// one of them logs out. See ticket https://github.com/PASTAplus/DataPortal/issues/126
-        // TokenManager.deleteToken(username);
-      }
-      catch (Exception e) {
-        handleDataPortalError(logger, e);
-      }
-      finally {
-        httpSession.invalidate();
-      }
+    /**
+     * Constructor of the object.
+     */
+    public LogoutServlet()
+    {
+        super();
     }
 
-    RequestDispatcher requestDispatcher = request.getRequestDispatcher("./home.jsp");
-    requestDispatcher.forward(request, response);
+    /**
+     * Destruction of the servlet. <br>
+     */
+    @Override
+    public void destroy()
+    {
+        super.destroy(); // Just puts "destroy" string in log
+        // Put your code here
+    }
 
-  }
+    /**
+     * The doGet method of the servlet. <br>
+     * <p>
+     * This method is called when a form has its tag value method equals to get.
+     *
+     * @param request  the request send by the client to the server
+     * @param response the response send by the server to the client
+     * @throws ServletException if an error occurred
+     * @throws IOException      if an error occurred
+     */
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        // Pass request onto "doPost".
+        doPost(request, response);
+    }
+
+    /**
+     * The doPost method of the servlet. <br>
+     * <p>
+     * This method is called when a form has its tag value method equals to post.
+     *
+     * @param request  the request send by the client to the server
+     * @param response the response send by the server to the client
+     * @throws ServletException if an error occurred
+     * @throws IOException      if an error occurred
+     */
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        HttpSession httpSession = request.getSession();
+        String idProvider = (String) httpSession.getAttribute("idProvider");
+        try {
+            if (idProvider != null) {
+                request.setAttribute("logoutMessage", getLogoutMessage(idProvider));
+            }
+            // While we allow multiple sessions to be logged in as the same user, we cannot delete the PASTA token when
+            // one of them logs out. See ticket https://github.com/PASTAplus/DataPortal/issues/126
+            // String uid = (String) httpSession.getAttribute("uid");
+            // TokenManager.deleteToken(uid);
+        } catch (Exception e) {
+            handleDataPortalError(logger, e);
+        } finally {
+            httpSession.invalidate();
+        }
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("./home.jsp");
+        requestDispatcher.forward(request, response);
+    }
 
 
-	/**
-	 * Initialization of the servlet. <br>
-	 *
-	 * @throws ServletException if an error occurs
-	 */
-	@Override
-	public void init() throws ServletException {
-		
-	  PropertiesConfiguration options = ConfigurationListener.getOptions();
-		
-	}
+    public String getLogoutMessage(String idProvider)
+    {
+        String providerMsg = options.getString("sso.logout." + idProvider);
+        if (providerMsg != null) {
+            return String.format("%s %s", options.getString("sso.logout.msg"), providerMsg);
+        }
+        return null;
+    }
 
+
+    /**
+     * Initialization of the servlet. <br>
+     *
+     * @throws ServletException if an error occurs
+     */
+    @Override
+    public void init() throws ServletException
+    {
+        this.options = ConfigurationListener.getOptions();
+    }
 }

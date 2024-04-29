@@ -101,3 +101,11 @@ seo.url=https://seo.edirepository.org/seo/schema
 
 # Crossref API service
 crossref.url=http://dx.doi.org
+
+# Single Sign-On services
+# These are currently not in use, as the code for displaying these messages is commented out until we decide if we want to display them.
+#sso.logout.msg=You are now signed out of the EDI Data Portal\, but you are still signed in with your identity provider. To completely sign out\, go to
+#sso.logout.orcid.=<a href="https://orcid.org/" target="_blank">your ORCID account</a>\, click on your name in the upper right corner then click <b>Logout</b>
+#sso.logout.google=<a href="https://myaccount.google.com/" target="_blank">your Google account</a>\, click on your profile picture in the upper right corner then click <b>Sign out of all accounts</b>
+#sso.logout.github=<a href="https://github.com/" target="_blank">your GitHub account</a>\, click on your profile picture in the upper right corner then click <b>Sign out</b>
+#sso.logout.microsoft=<a href="https://account.microsoft.com/" target="_blank">your Microsoft account</a>\, click on your profile picture in the upper right corner then click <b>Sign out</b>
