@@ -1,16 +1,23 @@
+<%@ page import="edu.lternet.pasta.portal.ConfigurationListener"%>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
 <%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
 <%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
+<%@ page import="org.apache.commons.configuration.PropertiesConfiguration" %>
 
 <%!
     // Generate the URL that the final redirect will go to. This is the page
     // that the user ends up on after logging in.
     public String getTarget(HttpServletRequest request) {
-        String scheme = request.getScheme();             // http
-        String serverName = request.getServerName();     // hostname.com
-        int serverPort = request.getServerPort();        // 80
-        return String.format("%s://%s:%d/nis/login", scheme, serverName, serverPort);
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        int port = options.getInt("dataportal.port");
+        return String.format(
+            "%s://%s%s/%s/login",
+                options.getString("dataportal.protocol"),
+                options.getString("dataportal.hostname"),
+                (port == 80 || port == 443) ? "" : ":" + port,
+                options.getString("dataportal.context")
+        );
     }
 %>
 <%
