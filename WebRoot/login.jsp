@@ -21,7 +21,7 @@
     }
 %>
 <%
-    final String pageTitle = "Login";
+    final String pageTitle = "Sign in";
     final String titleText = DataPortalServlet.getTitleText(pageTitle);
     HttpSession httpSession = request.getSession();
 
@@ -113,7 +113,7 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="recent_title">
-                                <h2>Login</h2>
+                                <h2>Sign in</h2>
                             </div>
                             <span class="row-fluid separator_border"></span>
                             <h3>
@@ -167,7 +167,7 @@
                                             </div>
                                             <div class="table-cell">
                                                 <input class="btn btn-info btn-default" name="login" type="submit"
-                                                       value="Login"/>
+                                                       value="Sign in"/>
                                                 <input class="btn btn-info btn-default" name="reset" type="reset"
                                                        value="Clear"/>
                                             </div>
