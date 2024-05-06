@@ -4,8 +4,10 @@ channels:
   - defaults
 dependencies:
   - python=3.11
+  - daiquiri
   - feedparser
   - psycopg2
+  - requests
   - pip
   - pip:
     - jproperties

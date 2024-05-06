@@ -1,36 +1,38 @@
 #!/usr/bin/env python
 
-import contextlib
 import datetime
 import logging
-import pathlib
 import re
 import sys
 import time
 
 import feedparser
-import jproperties
-import psycopg2
+
+import db
+import audit_monitor
+import config
 
 log = logging.getLogger(__name__)
 
-PROPERTIES_PATH = '~/git/DataPortal/WebRoot/WEB-INF/conf/dataportal.properties'
-
-SITE_LIST = [
-    # 'https://status.crossref.org/history.atom',
-    'https://status.datacite.org/history.atom',
-]
-
+# Sample feed record:
+# id        | 2
+# feed_id   | tag:status.datacite.org,2005:Incident/19658784
+# published | 2024-01-10 09:44:07
+# updated   | 2024-01-10 09:44:07
+# resolved  | t
+# site      | DataCite
+# title     | ElasticSearch upgrade
+# url       | https://status.datacite.org/incidents/t7xqzzs55mdf
 
 def main():
-    # clear_db()
+    with db.connect() as conn:
+        audit_monitor.update_status(conn)
 
-    with connect() as conn:
         with conn.cursor() as cur:
-            for site_url in SITE_LIST:
+            for feed_url in config.FEED_LIST:
                 # print('#' * 100)
-                # print(site_url)
-                d = feedparser.parse(site_url)
+                # print(feed_url)
+                d = feedparser.parse(feed_url)
                 # pprint.pp(d)
                 # print(json.dumps(d))
                 for entry_dict in d['entries']:
@@ -97,31 +99,10 @@ def process_entry(conn, cur, site_str, entry_dict):
     conn.commit()
 
 
-def clear_db():
-    with connect() as conn:
-        with conn.cursor() as cur:
-            cur.execute('delete from authtoken.rss_feed')
 
 
 def is_resolved(content_str):
     return bool(re.search(r'<strong>(Completed|Resolved)</strong>', content_str))
-
-
-@contextlib.contextmanager
-def connect():
-    prop = jproperties.Properties()
-    prop_path = pathlib.Path(PROPERTIES_PATH).expanduser()
-    with prop_path.open('rb') as prop_file:
-        prop.load(prop_file)
-
-    with psycopg2.connect(
-        dbname=prop.get('db.Name').data,
-        user=prop.get('db.User').data,
-        password=prop.get('db.Password').data,
-        port=5432,
-        host=prop.get('db.ServerName').data,
-    ) as conn:
-        yield conn
 
 
 if __name__ == '__main__':

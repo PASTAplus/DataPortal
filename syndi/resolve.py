@@ -10,7 +10,6 @@ To get a list unresolved notices, run without providing an identifier.
 
 import argparse
 import contextlib
-import datetime
 import logging
 import pathlib
 import sys

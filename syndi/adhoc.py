@@ -9,22 +9,18 @@ E.g.: ./adhoc.py 2023-05-03 07:30 2023-05-04 15:00 'The message to display'
 """
 
 import argparse
-import contextlib
 import datetime
 import logging
-import pathlib
 import re
 import sys
 
-import jproperties
-import psycopg2
+import db
 
 log = logging.getLogger(__name__)
 
-PROPERTIES_PATH = '~/git/DataPortal/WebRoot/WEB-INF/conf/dataportal.properties'
-
 DATE_RX = re.compile(r'(\d{4})-(\d{2})-(\d{2})')
 TIME_RX = re.compile(r'(\d{2}):(\d{2})')
+
 
 def main():
     parser = FullHelpArgumentParser()
@@ -35,7 +31,8 @@ def main():
     parser.add_argument('message', help='Notice to display (up to 256 characters)')
     args = parser.parse_args()
 
-    if (not DATE_RX.match(args.start_date)
+    if (
+        not DATE_RX.match(args.start_date)
         or not TIME_RX.match(args.start_time)
         or not DATE_RX.match(args.end_date)
         or not TIME_RX.match(args.end_time)
@@ -44,7 +41,9 @@ def main():
         parser.print_help()
         return 1
 
-    start_dt = datetime.datetime.fromisoformat(f'{args.start_date}T{args.start_time}:00')
+    start_dt = datetime.datetime.fromisoformat(
+        f'{args.start_date}T{args.start_time}:00'
+    )
     end_dt = datetime.datetime.fromisoformat(f'{args.end_date}T{args.end_time}:00')
 
     if start_dt >= end_dt:
@@ -65,7 +64,7 @@ def main():
         print('Cancelled')
         return 0
 
-    with connect() as conn:
+    with db.connect() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 '''
@@ -79,24 +78,10 @@ def main():
             notice_id = cur.fetchone()[0]
             print(f'Inserted notice with ID: {notice_id}')
             print()
-            print('To stop displaying this message before the specified end datetime:\n')
+            print(
+                'To stop displaying this message before the specified end datetime:\n'
+            )
             print(f'$ ./resolve.py {notice_id}')
-
-@contextlib.contextmanager
-def connect():
-    prop = jproperties.Properties()
-    prop_path = pathlib.Path(PROPERTIES_PATH).expanduser()
-    with prop_path.open('rb') as prop_file:
-        prop.load(prop_file)
-
-    with psycopg2.connect(
-        dbname=prop.get('db.Name').data,
-        user=prop.get('db.User').data,
-        password=prop.get('db.Password').data,
-        port=5432,
-        host=prop.get('db.ServerName').data,
-    ) as conn:
-        yield conn
 
 
 # Print full help instead of short help on errors.
