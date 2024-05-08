@@ -221,4 +221,3 @@ class Db:
                     'key': key_str,
                 },
             )
-

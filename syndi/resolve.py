@@ -28,6 +28,7 @@ def main():
         if not notice_id:
             print(__doc__, file=sys.stderr)
             parser.print_help()
+            print()
             db.print_unresolved_adhoc()
             return 1
 
