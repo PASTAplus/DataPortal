@@ -39,70 +39,32 @@ Display 3rd-party service status notices.
     String dbPassword = options.getString("db.Password");
     DatabaseClient databaseClient = new DatabaseClient(dbDriver, dbUrl, dbUser, dbPassword);
     Connection conn = databaseClient.getConnection();
-    Result statusNotices;
-    Result adhocNotices;
+    Result notifications;
 
     try {
         Statement stmt = conn.createStatement();
-        // Automatic, RSS/Atom based notifications.
         ResultSet rs = stmt.executeQuery(
-                "select site, (\n" +
-                        "    select url\n" +
-                        "    from pasta.authtoken.rss_feed\n" +
-                        "    where greatest(published, updated) = (\n" +
-                        "         select max(greatest(published, updated))\n" +
-                        "         from pasta.authtoken.rss_feed\n" +
-                        "         where site = a.site\n" +
-                        "         limit 1\n" +
-                        "    )\n" +
-                        ")\n" +
-                        "from pasta.authtoken.rss_feed a\n" +
-                        "where resolved is false\n" +
-                        "and site != 'adhoc'" +
-                        "and now() >= greatest(published, updated)\n" +
-                        "and now() <  greatest(published, updated) + interval '8 hours'\n" +
-                        "group by site\n" +
-                        "order by site\n" +
-                        ";\n"
-        );
-        statusNotices = ResultSupport.toResult(rs);
-        // Ad-hoc / manually created notifications.
-        rs = stmt.executeQuery(
-                "select title from pasta.authtoken.rss_feed\n" +
+                "select message from pasta.authtoken.notification\n" +
                         "where resolved = false\n" +
-                        "    and site = 'adhoc'\n" +
-                        "    and now() between published and updated\n" +
-                        "order by published, updated\n" +
+                        "    and now() between start and stop\n" +
+                        "order by start, stop\n" +
                         ";\n"
         );
-        adhocNotices = ResultSupport.toResult(rs);
+        notifications = ResultSupport.toResult(rs);
     } catch (SQLException e) {
         throw new RuntimeException(e);
     }
 %>
 
-<% if (statusNotices.getRowCount() > 0 || adhocNotices.getRowCount() > 0) { %>
-<link href="./css/pasta-status-notices.css" rel="stylesheet" type="text/css" />
+<% if (notifications.getRowCount() > 0) { %>
+<link href="./css/pasta-status-notices.css" rel="stylesheet" type="text/css"/>
 <div class="alert-block">
     <div class="alert alert-warning status-notices">
-    <% if (statusNotices.getRowCount() > 0) { %>
-            <p>
-                The following 3rd-party service<%= statusNotices.getRowCount() > 1 ? "s " : " " %>
-                may be experiencing technical issues which can impact the Data Portal:
-                <% for (SortedMap entry : statusNotices.getRows()) { %>
-                <a href="<%= entry.get("url") %>" target="_blank" rel="noopener noreferrer" class="alert-link">
-                    <%= entry.get("site") %>
-                </a>
-                <% } %>
-            </p>
-    <% } %>
-    <% if (adhocNotices.getRowCount() > 0) { %>
-            <% for (SortedMap entry : adhocNotices.getRows()) { %>
-            <p>
-                <%= entry.get("title") %>
-            </p>
-            <% } %>
-    <% } %>
+        <% for (SortedMap entry : notifications.getRows()) { %>
+        <p>
+            <%= entry.get("message") %>
+        </p>
+        <% } %>
     </div>
 </div>
 <% } %>

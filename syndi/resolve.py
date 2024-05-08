@@ -9,18 +9,12 @@ To get a list unresolved notices, run without providing an identifier.
 """
 
 import argparse
-import contextlib
-import datetime
 import logging
-import pathlib
 import sys
 
-import jproperties
-import psycopg2
+import db as db_
 
 log = logging.getLogger(__name__)
-
-PROPERTIES_PATH = '~/git/DataPortal/WebRoot/WEB-INF/conf/dataportal.properties'
 
 
 def main():
@@ -30,102 +24,24 @@ def main():
 
     notice_id = args.id
 
-    if not notice_id:
-        print(__doc__, file=sys.stderr)
-        parser.print_help()
-        print_unresolved()
-    else:
-        if not is_valid_notice_id(notice_id):
+    with db_.Db() as db:
+        if not notice_id:
+            print(__doc__, file=sys.stderr)
+            parser.print_help()
+            print()
+            db.print_unresolved_adhoc()
+            return 1
+
+        if not db.is_valid_adhoc_id(notice_id):
             print(f'Error: Unknown NoticeID: {notice_id}')
-            sys.exit(1)
-        if is_resolved(notice_id):
+            return 1
+        if db.is_adhoc_resolved(notice_id):
             print(f'Error: Notice is already resolved: {notice_id}')
-            sys.exit(1)
-        set_as_resolved(notice_id)
+            return 1
+
+        db.set_as_resolved(notice_id)
 
 
-def print_unresolved():
-    with connect() as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                '''
-                select id, published, updated, title
-                from authtoken.rss_feed
-                where resolved = false
-                ''',
-            )
-
-            row_list = cur.fetchall()
-            if row_list:
-                print('\nUnresolved notices:\n')
-                for notice_id, published, updated, title in row_list:
-                    print(f'NoticeID {notice_id}: {published} - {updated}: {title.strip()}')
-            else:
-                print('There are no unresolved notices')
-
-
-def is_valid_notice_id(notice_id):
-    with connect() as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                '''
-                select exists (
-                    select * 
-                    from authtoken.rss_feed 
-                    where id = %s
-                )
-                ''',
-                (notice_id,),
-            )
-            return bool(cur.fetchone()[0])
-
-
-def is_resolved(notice_id):
-    with connect() as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                '''
-                select resolved
-                from authtoken.rss_feed
-                where id = %s
-                ''',
-                (notice_id,),
-            )
-            return bool(cur.fetchone()[0])
-
-
-def set_as_resolved(notice_id):
-    with connect() as conn:
-        with conn.cursor() as cur:
-            cur.execute(
-                '''
-                update authtoken.rss_feed
-                set resolved = true
-                where id = %s
-                returning 1
-                ''',
-                (notice_id,),
-            )
-
-            if not len(cur.fetchall()):
-                print('Error: No rows changed', file=sys.stderr)
-
-
-@contextlib.contextmanager
-def connect():
-    prop = jproperties.Properties()
-    prop_path = pathlib.Path(PROPERTIES_PATH).expanduser()
-    with prop_path.open('rb') as prop_file:
-        prop.load(prop_file)
-
-    with psycopg2.connect(
-        dbname=prop.get('db.Name').data,
-        user=prop.get('db.User').data,
-        password=prop.get('db.Password').data,
-        port=5432,
-        host=prop.get('db.ServerName').data,
-    ) as conn:
-        yield conn
 
 
 # Print full help instead of short help on errors.
@@ -134,7 +50,7 @@ class FullHelpArgumentParser(argparse.ArgumentParser):
         print(__doc__, file=sys.stderr)
         print(f'\nerror: {message}\n', file=sys.stderr)
         self.print_help()
-        sys.exit(1)
+        return 1
 
 
 if __name__ == '__main__':
