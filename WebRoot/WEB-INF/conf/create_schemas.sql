@@ -17,35 +17,32 @@ CREATE TABLE authtoken.saved_data (
   date_created TIMESTAMP DEFAULT now()    -- insertion date/time
 );
 
--- Syndi RSS feed table
+-- Notification table
 
 drop table if exists authtoken.rss_feed;
+drop table if exists authtoken.notification;
 
-create table authtoken.rss_feed
+create table authtoken.notification
 (
-    id serial primary key,
-    feed_id char(256) not null constraint feed_id_key unique,
-    published timestamp not null,
-    updated   timestamp,
-    resolved  boolean,
-    site      char(32),
-    title     char(256),
-    url       char(256)
+    id          serial primary key,
+    key         char(256) not null constraint notice_key unique,
+    start       timestamp not null,
+    stop        timestamp not null,
+    resolved    boolean,
+    message     text
 );
 
-alter table authtoken.rss_feed
+alter table authtoken.notification
     owner to pasta;
 
-create index rss_feed_published_index
-    on authtoken.rss_feed (published);
+create index notification_key_index
+    on authtoken.notification (key);
 
-create index rss_feed_updated_index
-    on authtoken.rss_feed (updated);
+create index notification_start_index
+    on authtoken.notification (start);
 
-create index rss_feed_resolved_index
-    on authtoken.rss_feed (resolved);
+create index notification_stop_index
+    on authtoken.notification (stop);
 
-create index rss_feed_site_index
-    on authtoken.rss_feed (site);
-
-
+create index notification_resolved_index
+    on authtoken.notification (resolved);
