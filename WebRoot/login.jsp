@@ -8,7 +8,7 @@
 <%!
     // Generate the URL that the final redirect will go to. This is the page
     // that the user ends up on after logging in.
-    public String getTarget(HttpServletRequest request) {
+    public String getTargetUrl() {
         PropertiesConfiguration options = ConfigurationListener.getOptions();
         int port = options.getInt("dataportal.port");
         return String.format(
@@ -17,6 +17,18 @@
                 options.getString("dataportal.hostname"),
                 (port == 80 || port == 443) ? "" : ":" + port,
                 options.getString("dataportal.context")
+        );
+    }
+
+    // Generate the URL to the PASTA auth service.
+    public String getAuthLoginUrl() {
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        int port = options.getInt("auth.port");
+        return String.format(
+            "%s://%s%s/auth/login",
+                options.getString("auth.protocol"),
+                options.getString("auth.hostname"),
+                (port == 80 || port == 443) ? "" : ":" + port
         );
     }
 %>
@@ -49,20 +61,8 @@
         return;
     }
 
-
-    String auth = null;
-    if (pastaHost != null) {
-        if (pastaHost.startsWith("localhost")) {
-            auth = "https://localhost:5000";
-        } else if (pastaHost.startsWith("pasta-d")) {
-            auth = "https://auth-d.edirepository.org";
-        } else if (pastaHost.startsWith("pasta-s")) {
-            // uses production auth service
-            auth = "https://auth-d.edirepository.org"; // normally uses prod. now uses -d
-        } else {
-            auth = "https://auth.edirepository.org";
-        }
-    }
+    String authLoginUrl = getAuthLoginUrl();
+    String targetUrl = getTargetUrl();
 %>
 
 <!DOCTYPE html>
@@ -179,19 +179,19 @@
                                 <h3>Or use an alternate identity provider to access data requiring user
                                     authentication:</h3>
                                 <p>
-                                    <a href="<%=auth%>/auth/login/google?target=<%= getTarget(request) %>">
+                                    <a href="<%= authLoginUrl %>/google?target=<%= targetUrl %>">
                                         <img src="./images/btn_google_signin_light_normal_web.png"
                                              alt="Log in with Google"/></a>
                                     &nbsp;&nbsp;
-                                    <a href="<%=auth%>/auth/login/github?target=<%= getTarget(request) %>">
+                                    <a href="<%= authLoginUrl %>/github?target=<%= targetUrl %>">
                                         <img src="./images/btn_github_signin_light_normal_web.png"
                                              alt="Log in with GitHub"/></a>
                                     &nbsp;&nbsp;
-                                    <a href="<%=auth%>/auth/login/microsoft?target=<%= getTarget(request) %>">
+                                    <a href="<<%= authLoginUrl %>/microsoft?target=<%= targetUrl %>">
                                         <img src="./images/btn_microsoft_signin_light_normal_web.png"
                                              alt="Log in with Microsoft"/></a>
                                     &nbsp;&nbsp;
-                                    <a href="<%=auth%>/auth/login/orcid?target=<%= getTarget(request) %>">
+                                    <a href="<%= authLoginUrl %>/orcid?target=<%= targetUrl %>">
                                         <img src="./images/btn_orcid_signin_light_normal_web.png"
                                              alt="Log in with ORCID"/></a>
                                 </p>
