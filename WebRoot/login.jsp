@@ -21,7 +21,7 @@
     }
 %>
 <%
-    final String pageTitle = "Sign in";
+    final String pageTitle = "Login";
     final String titleText = DataPortalServlet.getTitleText(pageTitle);
     HttpSession httpSession = request.getSession();
 
@@ -49,6 +49,7 @@
         return;
     }
 
+
     String auth = null;
     if (pastaHost != null) {
         if (pastaHost.startsWith("localhost")) {
@@ -56,7 +57,8 @@
         } else if (pastaHost.startsWith("pasta-d")) {
             auth = "https://auth-d.edirepository.org";
         } else if (pastaHost.startsWith("pasta-s")) {
-            auth = "https://auth.edirepository.org"; // uses production auth service
+            // uses production auth service
+            auth = "https://auth-d.edirepository.org"; // normally uses prod. now uses -d
         } else {
             auth = "https://auth.edirepository.org";
         }
@@ -113,7 +115,7 @@
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="recent_title">
-                                <h2>Sign in</h2>
+                                <h2>Login</h2>
                             </div>
                             <span class="row-fluid separator_border"></span>
                             <h3>
@@ -167,7 +169,7 @@
                                             </div>
                                             <div class="table-cell">
                                                 <input class="btn btn-info btn-default" name="login" type="submit"
-                                                       value="Sign in"/>
+                                                       value="Login"/>
                                                 <input class="btn btn-info btn-default" name="reset" type="reset"
                                                        value="Clear"/>
                                             </div>

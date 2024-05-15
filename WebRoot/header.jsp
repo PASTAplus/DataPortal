@@ -13,7 +13,7 @@
 	String welcomeBack = null;
 	
 	if ((uid == null) || (uid.equals(""))) {
-		identity = "<a href='./login.jsp'>Sign in</a>";
+		identity = "<a href='./login.jsp'>Login</a>";
 		uname = "";
 		welcomeBack = "";
 		uid = "public";
