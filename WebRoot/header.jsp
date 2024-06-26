@@ -19,7 +19,7 @@
 		uid = "public";
 	} 
 	else {
-        identity = "<a id=\"login\" href=\"./logout\">Sign out</a>";
+        identity = "<a id=\"login\" href=\"./logout\">Logout</a>";
 		uname = cname;
 		welcomeBack = "Welcome Back";
 	}
