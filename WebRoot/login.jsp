@@ -57,8 +57,7 @@
         } else if (pastaHost.startsWith("pasta-d")) {
             auth = "https://auth-d.edirepository.org";
         } else if (pastaHost.startsWith("pasta-s")) {
-            // uses production auth service
-            auth = "https://auth-d.edirepository.org"; // normally uses prod. now uses -d
+            auth = "https://auth.edirepository.org";
         } else {
             auth = "https://auth.edirepository.org";
         }
