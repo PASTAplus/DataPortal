@@ -7,9 +7,14 @@
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
   String metadataHtml = (String) request.getAttribute("metadataHtml");
   String packageId = (String) request.getAttribute("packageId");
+  String dataPackageSummary = String.format("href=\"./mapbrowse?packageid=%s\"", packageId);
+  String asXML = String.format("target=\"_blank\" href=\"./metadataviewer?packageid=%s&amp;contentType=application/xml\"", packageId);
+  String title = "Data Package Metadata&#160;&#160";
 
   if (packageId == null || packageId.isEmpty()) {
-    packageId = "unknown";
+    title = "Data Package Metadata (Preview)&#160;&#160";
+	dataPackageSummary = "";
+	asXML = "";
   }
 
 %>
@@ -79,17 +84,19 @@
 					<div class="row-fluid">
 						<div class="row-fluid">
 							<div class="span12">
-								<h1>Data Package Metadata&#160;&#160;
+								<h1><%= title %>
 									<small><small>
-										<a class="searchsubcat" href="./mapbrowse?packageid=<%= packageId %>">
+										<a class="searchsubcat" <%= dataPackageSummary %>>
 											View Summary
 										</a>
 									</small></small>
 								</h1>
 								<!-- Content -->
-                  <%= metadataHtml %>																
+                  					<%= metadataHtml %>
 							  <!-- /Content -->
-							  
+								<br><button class="btn btn-info btn-default">
+								    <a <%= asXML %>>View EML as XML</a>
+							    </button>
 						  </div>
 					</div>
 				</div>

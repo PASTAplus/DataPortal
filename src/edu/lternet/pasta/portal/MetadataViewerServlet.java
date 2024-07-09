@@ -203,6 +203,7 @@ public class MetadataViewerServlet extends DataPortalServlet {
           // Pass the resourceId as a parameter to the XSLT
           if (resourceId != null && !resourceId.equals("")) {
             parameterMap.put("resourceId", resourceId);
+            parameterMap.put("withEntityLinks", "1");
           }
           // Pass the data package DOI as a parameter to the XSLT
           try {

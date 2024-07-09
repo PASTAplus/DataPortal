@@ -52,7 +52,7 @@
   
   <!-- *** Parameters ***
        Note that the default values specified below may be overridden by passing parameters to
-       the XSLT processor programatically, although the procedure for doing so is vendor-specific.
+       the XSLT processor programmatically, although the procedure for doing so is vendor-specific.
   -->
   <!-- change debugmessages value to 1 to enable debugging output -->
   <xsl:param name="debugmessages">0</xsl:param>
@@ -62,7 +62,7 @@
   <xsl:param name="dataPackageDOI"></xsl:param>
   <xsl:param name="cgi-prefix"></xsl:param>  
   <!-- To show the links for the Entities in the dataset display module -->
-  <xsl:param name="withEntityLinks">1</xsl:param>
+  <xsl:param name="withEntityLinks">0</xsl:param>
   <!-- To show the link for the Original XML in the dataset display module -->
   <xsl:param name="withOriginalXMLLink">1</xsl:param>
   <!-- To show the Attributes table in the entity display -->
@@ -184,9 +184,6 @@
         <xsl:call-template name="additionalmetadata"/>
       </xsl:for-each> 
     </fieldset>
-    <xsl:if test="$withOriginalXMLLink='1'">
-      <xsl:call-template name="xml"/>
-    </xsl:if>
   </xsl:template>
 
   <!-- dataset part -->
@@ -1868,12 +1865,6 @@
         </table>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-  
-  <!-- download XML part -->
-  <xsl:template name="xml">
-    <xsl:if test="boolean(number($debugmessages))"><xsl:message><xsl:text>TEMPLATE: xml</xsl:text></xsl:message></xsl:if>
-    <br/><button class="btn btn-info btn-default"><a target="_blank" href="./metadataviewer?packageid={$packageID}&#38;contentType=application/xml">View EML as XML</a></button>
   </xsl:template>
   
   <!-- This module is for dataset -->
@@ -6268,17 +6259,19 @@
     <xsl:choose>
       <!-- Assume a PASTA data entity if ancestor path stems from "physical" -->
       <xsl:when test="ancestor::physical/distribution/online/url">
-        <tr>
-          <td class="{$firstColStyle}">Data:</td>
-          <td class="{$secondColStyle}">
-            <a>
-              <xsl:attribute name="class">dataseteml</xsl:attribute>
-              <xsl:attribute name="href">/nis/dataviewer?packageid=<xsl:value-of select="$packageID" />&amp;entityid=<xsl:value-of select="$entity_identifier_encd" /></xsl:attribute>
-              <xsl:attribute name="target">_blank</xsl:attribute>
-              <xsl:value-of select="."/>
-            </a>
-          </td>
-        </tr>         
+        <xsl:if test="$withEntityLinks='1'">
+          <tr>
+            <td class="{$firstColStyle}">Data:</td>
+            <td class="{$secondColStyle}">
+              <a>
+                <xsl:attribute name="class">dataseteml</xsl:attribute>
+                <xsl:attribute name="href">/nis/dataviewer?packageid=<xsl:value-of select="$packageID" />&amp;entityid=<xsl:value-of select="$entity_identifier_encd" /></xsl:attribute>
+                <xsl:attribute name="target">_blank</xsl:attribute>
+                <xsl:value-of select="."/>
+              </a>
+            </td>
+          </tr>
+        </xsl:if>
       </xsl:when>
       <xsl:otherwise>
         <tr>
