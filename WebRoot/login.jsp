@@ -187,7 +187,7 @@
                                         <img src="./images/btn_github_signin_light_normal_web.png"
                                              alt="Log in with GitHub"/></a>
                                     &nbsp;&nbsp;
-                                    <a href="<<%= authLoginUrl %>/microsoft?target=<%= targetUrl %>">
+                                    <a href="<%= authLoginUrl %>/microsoft?target=<%= targetUrl %>">
                                         <img src="./images/btn_microsoft_signin_light_normal_web.png"
                                              alt="Log in with Microsoft"/></a>
                                     &nbsp;&nbsp;
