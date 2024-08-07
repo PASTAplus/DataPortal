@@ -26,7 +26,9 @@ package edu.lternet.pasta.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpCookie;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -261,25 +263,14 @@ public class LoginClient {
    * 
    * @return The "auth-token" value as a String object.
    */
-  private String getAuthToken(String setCookieHeader) {
-
-    String authToken = null;
-
-    String[] headerParts = setCookieHeader.split(";");
-
-    for (int i = 0; i < headerParts.length; i++) {
-
-      // Extract token value from the key-value pair.
-      if (headerParts[i].startsWith("auth-token=")) {
-        int start = "auth-token=".length();
-        int end = headerParts[i].length();
-        authToken = headerParts[i].substring(start, end);
+  private String getAuthToken(String setCookieHeader)
+  {
+    List<HttpCookie> cookies = HttpCookie.parse(setCookieHeader);
+    for (HttpCookie cookie : cookies) {
+      if ("auth-token".equals(cookie.getName())) {
+        return cookie.getValue();
       }
-
     }
-
-    return authToken;
-
+    return null;
   }
-
 }
