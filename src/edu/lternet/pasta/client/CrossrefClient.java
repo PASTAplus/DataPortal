@@ -30,6 +30,10 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 
 public class CrossrefClient extends PastaClient {
     private static final Logger logger = Logger.getLogger(CrossrefClient.class);
@@ -49,9 +53,10 @@ public class CrossrefClient extends PastaClient {
      *
      * @return DOI metadata as JSON.
      */
-    public JSONObject fetchByDoi(String doi) throws CrossrefClientException {
+    public JSONObject fetchByDoi(String doi) throws CrossrefClientException, UnsupportedEncodingException
+    {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        String serviceURL = String.format("%s/%s", crossrefUrl, doi);
+        String serviceURL = String.format("%s/%s", crossrefUrl, URLEncoder.encode(doi, "UTF-8"));
         HttpGet httpGet = new HttpGet(serviceURL);
         httpGet.setHeader(HttpHeaders.ACCEPT, "application/json");
 
