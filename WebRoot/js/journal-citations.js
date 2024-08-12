@@ -1,5 +1,5 @@
 const VALID_PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
-const VALID_DOI_RX = /^(https?:\/\/doi.org\/)?10\.\d{4,9}\/.+$/;
+const VALID_DOI_RX = /^(https?:\/\/doi\.org\/)?10\.\d{4,9}\/.+$/;
 const VALID_URL_RX = /^(ftp|http|https):\/\/[^ "]+$/;
 const VALID_YEAR_RX = /^(\d{4}$)/;
 const VALID_MAX_32_CHAR_RX = /^.{0,32}$/;
@@ -484,6 +484,6 @@ $(document).ready(function () {
     }
 
     function getDoi() {
-        return articleDoiInput.val().replace(/https?:\/\/doi.org\//, '');
+        return articleDoiInput.val().replace(/https?:\/\/doi\.org\//, '');
     }
 });
