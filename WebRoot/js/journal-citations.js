@@ -27,6 +27,8 @@ $(document).ready(function () {
     const articlePagesInput = $('#article-pages');
     let articleAuthorList = null;
 
+    const packageId = document.querySelector('.parameters').dataset.packageId;
+
     // Prevent accidental click outside the dialog from closing the modal.
     citationsModal.modal({
         show: false,
@@ -147,7 +149,14 @@ $(document).ready(function () {
     function createCitation(citationMap) {
         showSpinner();
         myFetch('POST', 'journal-citation-crud', citationMap).then(responseMap => {
-            location.reload();
+            // Could not dynamically add the new row to the DataTable, so we reload the page. If the page was originally
+            // opened with a packageId, we clear the query params to prevent the modal from opening again.
+            const currentUrl = new URL(window.location.href);
+            currentUrl.search = '';
+            window.location.replace(currentUrl.toString());
+            // If we want the modal to reopen with the same packageId, we can just reload the page without clearing the
+            // query params.
+            // location.reload();
         }).catch(() => {
             hideSpinner();
         });

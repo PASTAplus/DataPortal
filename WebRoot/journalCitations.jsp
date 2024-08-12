@@ -3,6 +3,8 @@
 <%@ page import="edu.lternet.pasta.client.JournalCitationsClient" %>
 <%@ page import="edu.lternet.pasta.portal.LoginServlet" %>
 <%@ page import="edu.lternet.pasta.portal.Tooltip" %>
+<%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
+<%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
 
 <%
   final String pageTitle = "Journal Citations";
@@ -14,7 +16,12 @@
   String uid = (String) httpSession.getAttribute("uid");
   Boolean vetted = (Boolean) httpSession.getAttribute("vetted");
   if (vetted == null || !vetted) {
-    request.setAttribute("from", "./journalCitations.jsp");
+    String packageId = request.getParameter("packageid");
+    String fromUrl = "./journalCitations.jsp";
+    if (packageId != null) {
+        fromUrl += "?packageid=" + packageId;
+    }
+    request.setAttribute("from", fromUrl);
     String loginWarning = DataPortalServlet.getLoginWarning();
     request.setAttribute("message", loginWarning);
     RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
@@ -22,8 +29,19 @@
   }
   else {
     uname = LoginServlet.uidFromDistinguishedName(uid);
-    JournalCitationsClient jcc = new JournalCitationsClient(uid);
-    journalCitationsHTML = jcc.citationsTableHTML();
+      JournalCitationsClient jcc = null;
+      try {
+          jcc = new JournalCitationsClient(uid);
+      } catch (PastaAuthenticationException e) {
+          throw new RuntimeException(e);
+      } catch (PastaConfigurationException e) {
+          throw new RuntimeException(e);
+      }
+      try {
+          journalCitationsHTML = jcc.citationsTableHTML();
+      } catch (Exception e) {
+          throw new RuntimeException(e);
+      }
   }
 
   String packageId = request.getParameter("packageid");
@@ -77,6 +95,11 @@
 
 <jsp:include page="header.jsp"/>
 
+<!-- Make packageId available to the JS -->
+<div class="parameters"
+  data-package-id="<%= packageId %>"
+>
+</div>
 
 <div class="container">
   <div class="row distance_1">
@@ -145,11 +168,6 @@
 <jsp:include page="footer.jsp"/>
 
 <!-- Modal dialog for creating and editing citations -->
-
-<script>
-  let packageId = "<%= packageId %>";
-</script>
-
 <div class="modal fade" id="citations-modal" tabindex="-1" role="dialog" aria-labelledby="citations-modalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
