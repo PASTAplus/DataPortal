@@ -1,5 +1,5 @@
 const VALID_PACKAGE_ID_RX = /^[a-z-]{3,}\.\d+\.\d+$/;
-const VALID_DOI_RX = /^10\.\d{4,9}\/.+$/;
+const VALID_DOI_RX = /^(https?:\/\/doi.org\/)?10\.\d{4,9}\/.+$/;
 const VALID_URL_RX = /^(ftp|http|https):\/\/[^ "]+$/;
 const VALID_YEAR_RX = /^(\d{4}$)/;
 const VALID_MAX_32_CHAR_RX = /^.{0,32}$/;
@@ -232,7 +232,7 @@ $(document).ready(function () {
     // Fill the modal article URL and titles with values fetched by DOI lookup.
 
     fillButton.on('click', function (_event) {
-        let doi = articleDoiInput.val();
+        let doi = getDoi();
         showFillSpinner();
         myFetch('POST', 'doi', {doi: doi}).then(responseMap => {
             setModalDoiValues(responseMap);
@@ -320,7 +320,7 @@ $(document).ready(function () {
             journalCitationId: $('#citation-id').val(),
             packageId: packageInput.val(),
             relationType: $('#relation-type').val(),
-            articleDoi: articleDoiInput.val(),
+            articleDoi: getDoi(),
             articleUrl: articleUrlInput.val(),
             articleTitle: articleTitleInput.val(),
             journalTitle: journalTitleInput.val(),
@@ -481,5 +481,9 @@ $(document).ready(function () {
             }
         }
         return authorMap;
+    }
+
+    function getDoi() {
+        return articleDoiInput.val().replace(/https?:\/\/doi.org\//, '');
     }
 });
