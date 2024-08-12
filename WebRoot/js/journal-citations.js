@@ -34,6 +34,7 @@ $(document).ready(function () {
         show: false,
         backdrop: 'static',
         keyboard: false,
+
     });
 
     const citationsDataTable = citationsTable.removeAttr('width').DataTable({
@@ -80,8 +81,8 @@ $(document).ready(function () {
 
     citationsModal.on('shown.bs.modal', function (_event) {
         console.debug('shown.bs.modal');
-        // Scroll to top of modal body. Unfortunately, this doesn't if the dialog is hidden, so this causes a
-        // jump when the dialog is shown.
+        // Scroll to top of modal body. Unfortunately, this doesn't work in the show.bs.modal handler, so we scroll
+        // here, which may cause the scrolling to be visible.
         $('.modal-body').scrollTop(0);
     });
 

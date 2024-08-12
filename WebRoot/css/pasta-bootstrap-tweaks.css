@@ -142,8 +142,6 @@ table {
 }
 
 .modal {
-    width: 35rem;
-    /*height: 50rem;*/
     z-index: -1;
 }
 
@@ -167,7 +165,9 @@ table {
 
 .modal-body {
     /*overflow: hidden; !* Hide scrollbars *!*/
-    min-height: 35rem;
+    /* Setting a fixed height here causes the modal to be too tall for some small screens. Also causes the modal to be
+     * vertically misaligned . */
+    /*min-height: 35rem;*/
 }
 
 .modal-body form {
