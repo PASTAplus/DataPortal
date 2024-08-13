@@ -121,7 +121,8 @@ public class DatabaseClient {
 			}
 		}
 		catch (SQLException e) {
-			logger.error("Database access failed " + e.getMessage());
+			String gripe = String.format("Database access failed for %s: %s", dbURL, e.getMessage());
+			logger.error(gripe);
 		}
 
 		return conn;
