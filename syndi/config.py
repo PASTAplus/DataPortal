@@ -40,7 +40,9 @@ SERVICE_LIST = [
         # This key is used to identify the service in the DB
         'key': 'audit',
         # A simple GET request is made to this URL to check if the service is up.
-        'check_url': 'https://pasta-d.lternet.edu/audit/',
+        #'check_url': 'https://pasta.lternet.edu/audit/',
+        #'check_url': 'https://pasta-s.lternet.edu/audit/',
+        #'check_url': 'https://pasta-d.lternet.edu/audit/',
         'down_message': (
             "The EDI data repository audit service is currently unavailable. The Data "
             "Portal web pages Data Package Summary (incorrect download statistics) and "
