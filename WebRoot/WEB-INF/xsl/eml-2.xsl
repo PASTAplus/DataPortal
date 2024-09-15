@@ -11489,8 +11489,6 @@
       <xsl:text> </xsl:text>
       <xsl:value-of select="propertyURI/@label"/>
       <xsl:text> </xsl:text>
-      <xsl:choose>
-        <xsl:when test="contains(valueURI, 'purl')">
           <xsl:element name="a">
             <xsl:attribute name="class">dataseteml</xsl:attribute>
             <xsl:attribute name="href">     
@@ -11501,12 +11499,7 @@
             </xsl:attribute>
             <xsl:value-of select="valueURI/@label"/>
           </xsl:element>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="valueURI/@label"/>
-        </xsl:otherwise>
-      </xsl:choose>
-   </xsl:template>
+    </xsl:template>
   
   <xsl:template match="markdown" mode="text">
     <div id="markdown">
