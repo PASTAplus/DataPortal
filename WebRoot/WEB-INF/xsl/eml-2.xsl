@@ -11487,7 +11487,16 @@
       if URI contains a purl, property is not (usually a default) -->
     <xsl:template name="annotationMinimum">
       <xsl:text> </xsl:text>
-      <xsl:value-of select="propertyURI/@label"/>
+      <xsl:element name="a">
+        <xsl:attribute name="class">dataseteml</xsl:attribute>
+        <xsl:attribute name="href">
+          <xsl:value-of select="propertyURI"/>
+        </xsl:attribute>
+        <xsl:attribute name="target">
+          <xsl:text>_blank</xsl:text>
+        </xsl:attribute>
+        <xsl:value-of select="propertyURI/@label"/>
+      </xsl:element>
       <xsl:text> </xsl:text>
           <xsl:element name="a">
             <xsl:attribute name="class">dataseteml</xsl:attribute>
