@@ -271,7 +271,7 @@ $(document).ready(function () {
 
             fetch(path, {
                 method: method, headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json; charset=UTF-8',
                 }, body: valueJson,
             }).then(response => {
                 isOk = response.ok;
