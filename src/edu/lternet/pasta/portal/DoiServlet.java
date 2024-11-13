@@ -80,7 +80,7 @@ public class DoiServlet extends DataPortalServlet {
     }
     try {
       JSONObject doiJson = crossrefClient.fetchByDoi(json.getString("doi"));
-      response.setContentType("application/json");
+      response.setContentType("application/json; charset=UTF-8");
       response.setStatus(HttpStatus.SC_OK);
       response.getWriter().write(doiJson.toString());
     } catch (CrossrefClientException e) {
