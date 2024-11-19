@@ -58,7 +58,7 @@ public class CrossrefClient extends PastaClient {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String serviceURL = String.format("%s/%s", crossrefUrl, URLEncoder.encode(doi, "UTF-8"));
         HttpGet httpGet = new HttpGet(serviceURL);
-        httpGet.setHeader(HttpHeaders.ACCEPT, "application/json");
+        httpGet.setHeader(HttpHeaders.ACCEPT, "application/json; charset=UTF-8");
 
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
