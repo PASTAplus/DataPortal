@@ -174,14 +174,14 @@ int year = ld.getYear();
     	<div class="row-fluid">
 			<div class="span12">
 				<div class="container nis-logos-div">
-						EDI is proud to be affiliated with the following organizations:
-                        <a href="https://www.datacite.org/"><img id="datacite-img" class="nis-logos-img" alt="DataCite logo" src="images/DataCite-Logo.png" title="DataCite logo"></a>
-						<a href="https://www.dataone.org/"><img id="dataone-img" class="nis-logos-img" alt="DataONE logo" src="images/DataONE_LOGO.jpg" title="DataONE logo"></a>
-						<a href="http://www.esipfed.org/"><img id="esip-img" class="nis-logos-img" alt="ESIP logo" src="images/ESIP-logo.jpg" title="ESIP logo"></a>
-						<a href="https://www.re3data.org/"><img id="re3data-img" alt="re3data logo" class="nis-logos-img" src="images/re3data_Logo_CMYK_72dpi.png" title="re3data logo"></a>
-				</div>
+                    EDI is a collaboration between the University of New Mexico and the University of Wisconsin – Madison, Center for Limnology:
+                    <a href="https://unm.edu"><img id="unm-img" class="nis-logos-img" alt="UNM logo" src="images/unm-logo.png" title="UNM logo"></a>
+					<a href="https://wisc.edu/"><img id="uwm-img" class="nis-logos-img" alt="UW-M logo" src="images/uwm-logo.png" title="UW-M logo"></a>
+                    <p>This material is based upon work funded by the U.S. National Science Foundation under Award Numbers
+                    <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2223103&HistoricalAwards=false">#2223103</a> and
+                        <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2223104&HistoricalAwards=false">#2223104</a>.</p>
+                </div>
 			</div>
 		</div>
 	</div>
   <!-- /Divider -->
-		

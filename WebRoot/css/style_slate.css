@@ -2988,6 +2988,16 @@ p.cite cite {
 	width: 111px;
 }
 
+#unm-img {
+    width: 25%;
+    height: auto;
+}
+
+#uwm-img {
+    width: 20%;
+    height: auto;
+}
+
 #map-canvas {
   margin: 0 auto; 
   width: 400px; 
@@ -3098,6 +3108,7 @@ table#nis-coordinates input {
 .nis-logos-div {
 	margin-top:    15px;
 	margin-bottom: 15px;
+    text-align: center;
 }
 
 .nis-logos-img {
