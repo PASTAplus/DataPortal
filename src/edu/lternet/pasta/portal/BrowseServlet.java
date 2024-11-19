@@ -155,7 +155,7 @@ public class BrowseServlet extends DataPortalServlet {
       
       termsList = browseTerm.getTermsList();
       if (termsList != null) {
-        termsListHTML = termsList.toHTML();
+        termsListHTML = termsList.toHTML("browse");
       }
       
       String queryText = browseTerm.getQueryString();

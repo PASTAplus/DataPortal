@@ -214,7 +214,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
       SimpleSearch simpleSearch = new SimpleSearch();
       String queryText = simpleSearch.buildSolrQuery(termsParam, false);
       TermsList termsList = simpleSearch.getTermsList();
-      termsListHTML = termsList.toHTML();
+      termsListHTML = termsList.toHTML("simpleSearch");
       httpSession.setAttribute("termsListHTML", termsListHTML);
       httpSession.setAttribute("queryText", queryText);
       queryText = String.format("%s&start=%d&rows=%d&sort=%s", queryText, 0,

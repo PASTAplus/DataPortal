@@ -87,10 +87,15 @@ public class TermsList {
   /**
    * Returns an HTML string for presentation of the terms list
    */
-  public String toHTML() {
+  public String toHTML(String source) {
     String termsListHTML = null;
-    StringBuilder stringBuilder = new StringBuilder("");
-    stringBuilder.append("<p>Terms used in this search: ");
+    StringBuilder stringBuilder = new StringBuilder();
+    if (source != null && source.equals("advancedSearch")) {
+      stringBuilder.append("<p>Terms used in this search (<a href=\"javascript:history.back()\">edit</a>): ");
+    }
+    else {
+      stringBuilder.append("<p>Terms used in this search: ");
+    }
     for (String term : terms) {
       stringBuilder.append("<b>" + term + "</b>, ");
     }
