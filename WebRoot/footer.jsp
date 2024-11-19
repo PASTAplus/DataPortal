@@ -156,8 +156,10 @@ int year = ld.getYear();
 					<div class="row-fluid">
 						<div class="span12 ">
 							Copyright <%= year %> <a href="http://edirepository.org/">Environmental Data Initiative</a>.
-							This material is based upon work supported by the National Science Foundation under grants 
-							#2223103 and #2223104. Any opinions, findings, conclusions, or recommendations
+							This material is based upon work supported by the National Science Foundation under grants
+                            <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2223103&HistoricalAwards=false">#2223103</a>
+                            and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2223104&HistoricalAwards=false">#2223104</a>.
+                            Any opinions, findings, conclusions, or recommendations
 							expressed in the material are those of the author(s) and do not necessarily reflect the views of 
 							the National Science Foundation. Please
 							<a href="mailto:info@edirepository.org">contact us</a>
@@ -174,12 +176,9 @@ int year = ld.getYear();
     	<div class="row-fluid">
 			<div class="span12">
 				<div class="container nis-logos-div">
-                    EDI is a collaboration between the University of New Mexico and the University of Wisconsin – Madison, Center for Limnology:
+                    <p>EDI is a collaboration between the University of New Mexico and the University of Wisconsin – Madison, Center for Limnology:</p>
                     <a href="https://unm.edu"><img id="unm-img" class="nis-logos-img" alt="UNM logo" src="images/unm-logo.png" title="UNM logo"></a>
 					<a href="https://wisc.edu/"><img id="uwm-img" class="nis-logos-img" alt="UW-M logo" src="images/uwm-logo.png" title="UW-M logo"></a>
-                    <p>This material is based upon work funded by the U.S. National Science Foundation under Award Numbers
-                    <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2223103&HistoricalAwards=false">#2223103</a> and
-                        <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2223104&HistoricalAwards=false">#2223104</a>.</p>
                 </div>
 			</div>
 		</div>
