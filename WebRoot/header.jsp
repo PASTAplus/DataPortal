@@ -191,6 +191,7 @@
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
 					Resources:</p>
 				  <li><a href="https://edirepository.org/data/publish-data">How to Submit Data</a></li>
+				  <li><a href="https://edirepository.org/resources/finding-data">How to Find Data</a></li>
 				  <li><a href="resources.jsp">Additional Resources</a></li>
 					<p class="smallmenu pull-left nis-navigation-submenu">
 					<img alt="" src="images/mini_arrow.png" class="mini-arrow-margin" title="EDI"> 
