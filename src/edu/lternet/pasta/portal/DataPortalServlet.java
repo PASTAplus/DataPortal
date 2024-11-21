@@ -146,10 +146,9 @@ public class DataPortalServlet extends HttpServlet {
       e.printStackTrace();
       
       // If user not logged in, add suggestion for user to log in
-      if (errorMessage.contains("User public does not have permission")) {
-    	  String suggestion = 
-    			  String.format(
-                      " <a href='./login.jsp'>Logging into the LTER Data Portal</a> <em>may</em> let you read this resource.");
+      if (errorMessage.contains("You may need to log in before you can access the data entity")) {
+    	  String suggestion =
+                  " <a href='./login.jsp'>Logging into the LTER Data Portal</a> <em>may</em> let you read this resource.";
     	  errorMessage = errorMessage + suggestion;
       }
     	  
