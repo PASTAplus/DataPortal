@@ -63,6 +63,7 @@
 									<li><a class="searchsubcat" href="http://edirepository.org">Environmental Data Initiative</a></li>
                                     <li><a class="searchsubcat" href="https://dashboard.edirepository.org/dashboard">EDI Dashboard</a></li>
                                     <li><a class="searchsubcat" href="https://edirepository.org/data/publish-data">How to Submit Data</a></li>
+                                    <li><a class="searchsubcat" href="https://edirepository.org/resources/finding-data">How to Find Data</a></li>
 								</ul>
 								<h3 style="text-align: left">LTER Resources</h3>
 								<ul>
