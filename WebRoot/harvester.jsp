@@ -15,7 +15,7 @@
         String today = CalendarUtility.todaysDayOfWeek();
         if (today != null && today.equalsIgnoreCase(downtime)) {
             StringBuilder sb = new StringBuilder();
-			sb.append(String.format("Reminder: The Data Portal and PASTA+ services will be unavailable on %s " +
+			sb.append(String.format("Reminder: The EDI Data Portal and EDI data repository services will be unavailable on %s " +
 					"evening from 7-9 pm Mountain Time for scheduled weekly maintenance. ", downtime));
             sb.append("The processing of data packages submitted just prior to this time may be interrupted.");
 			downtimeHTML = sb.toString();
