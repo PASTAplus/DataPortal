@@ -587,6 +587,15 @@ public class JournalCitation {
         }
         String packageId = getPackageId();
         sb.append(String.format(" <em>(%s)</em>", packageId));
+        // Link to related packages (shared citation DOI)
+        sb.append(" <span name='Find related packages' class='tooltip'>");
+        sb.append(
+            String.format(
+                " <a class='searchsubcat' href='journalCitationsCitedBy?journalDoi=%s'>→</a>",
+                articleUrl
+            )
+        );
+        sb.append("</span>");
 
         return sb.toString();
     }

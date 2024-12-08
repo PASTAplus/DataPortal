@@ -31,7 +31,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.StringReader;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -88,29 +95,56 @@ public class RidareClient extends PastaClient {
 
 
   /**
-   * Calls the Ridare web service that returns a string
+   * Calls the Ridare web service that returns an HTML formatted TextType element.
    *
-   * @return A string to be inserted into the citation element of
-   * the landing page HTML.
+   * @return A String with an HTML fragment.
    */
   public String fetchTextType(String packageId, String textTypeXpath) throws Exception
   {
-    // Force a package ID that is not available locally. This allows testing of more
-    // complex TextType elements.
-    // packageId = "knb-lter-cap.633.4";
+    return fetch(packageId, textTypeXpath, false);
+  }
 
+  /**
+   * Calls the Ridare web service that returns an XML fragment rooted in any element.
+   *
+   * @return A XML DOM Document object.
+   */
+  public Document fetchXml(String packageId, String xpath) throws Exception
+  {
+    String xml = fetch(packageId, xpath, true);
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    try (StringReader stringReader = new StringReader(xml)) {
+        InputSource inputSource = new InputSource(stringReader);
+        return builder.parse(inputSource);
+    }
+  }
+
+  /**
+   * Calls the Ridare web service.
+   *
+   * @param packageId The package identifier.
+   *                  Example: "knb-lter-lno.1.1"
+   * @param xpath     The XPath expression.
+   *                  Example: "//dataset"
+   * @param isXml     A boolean, true if the result should be XML, false if it should be HTML.
+   * @return A String with an HTML or XML fragment.
+   */
+  public String fetch(String packageId, String xpath, Boolean isXml) throws Exception
+  {
     HttpGet httpGet;
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-    String htmlStr;
 
     String serviceURL = String.format(
-        "%s/%s/%s?env=%s",
+        "%s/%s%s/%s?env=%s",
         ridareUrl,
+        isXml ? "raw/" : "",
         packageId,
-        URLEncoder.encode(textTypeXpath, "UTF-8"),
+        URLEncoder.encode(xpath, "UTF-8"),
         this.tier
     );
 
+    String htmlStr;
     try {
       httpGet = new HttpGet(serviceURL);
       httpGet.setHeader(HttpHeaders.ACCEPT, "text/plain");
@@ -119,8 +153,7 @@ public class RidareClient extends PastaClient {
       if (statusCode == HttpStatus.SC_OK) {
         HttpEntity httpEntity = httpResponse.getEntity();
         htmlStr = EntityUtils.toString(httpEntity, "UTF-8").trim();
-      }
-      else {
+      } else {
         String msg =
             String.format("Ridare server URL '%s' returned status code %d", serviceURL,
                 statusCode);

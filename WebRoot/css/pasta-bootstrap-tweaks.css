@@ -34,61 +34,66 @@ table {
 */
 
 /* The whole table */
-.dataTables_wrapper {
+#citations-table {
 }
 
+/* Journal Citation ID */
+#citations-table tbody td:nth-child(1) {
+    width: 5%;
+    white-space: nowrap;
+}
 /* Package ID */
-.dataTables_wrapper tbody td:nth-child(2) {
+#citations-table tbody td:nth-child(2) {
     width: 10%;
     white-space: nowrap;
 }
 /* Relation Type */
-.dataTables_wrapper tbody td:nth-child(3) {
+#citations-table tbody td:nth-child(3) {
     width: 5%;
     white-space: nowrap;
 }
 /* Journal Article DOI */
-.dataTables_wrapper tbody td:nth-child(4) {
+#citations-table tbody td:nth-child(4) {
     width: 10%;
     white-space: normal;
     line-break: anywhere;
 }
 /* Journal Article URL */
-.dataTables_wrapper tbody td:nth-child(5) {
+#citations-table tbody td:nth-child(5) {
 /*     width: 20rem; */
     width: 25%;
     white-space: normal;
     line-break: anywhere;
 }
 /* Journal Article Title */
-.dataTables_wrapper tbody td:nth-child(6) {
+#citations-table tbody td:nth-child(6) {
     width: 25%;
     white-space: break-spaces;
 }
 /* Journal Title */
-.dataTables_wrapper tbody td:nth-child(7) {
-    width: 25%;
+#citations-table tbody td:nth-child(7) {
+    width: 20%;
     white-space: break-spaces;
 }
 
 /* Highlight rows on hover */
 
-.dataTables_wrapper tr {
+#citations-table tr {
     transition: background-color .25s;
 }
 
-.dataTables_wrapper tr:hover {
+#citations-table tr:hover {
     background-color: #9cadb5;
 }
 
-.dataTables_wrapper tr td {
+#citations-table tr td {
 /*     white-space: nowrap; */
 }
 
-.dataTables_wrapper th:first-child,
-.dataTables_wrapper td:first-child {
-    display: none;
-}
+/*#citations-table th:first-child,*/
+/*#citations-table td:first-child {*/
+/*    display: none;*/
+/*}*/
 
 /* Show N entries */
 
@@ -128,6 +133,38 @@ table {
     float: left;
     margin: 0 0 0 1rem;
 }
+
+/* Cited by table */
+
+/*
+    Citations table
+*/
+
+/* Journal Citation ID */
+#cited-by-table tbody td:nth-child(1) {
+    width: 5%;
+}
+/* PackageId */
+#cited-by-table tbody td:nth-child(2) {
+    width: 20%;
+}
+/* Title */
+#cited-by-table tbody td:nth-child(3) {
+    width: 40%;
+}
+/* Creators */
+#cited-by-table tbody td:nth-child(4) {
+    width: 25%;
+    white-space: normal;
+    line-break: anywhere;
+}
+/* PubDate */
+#cited-by-table tbody td:nth-child(5) {
+    width: 10%;
+    white-space: normal;
+    line-break: anywhere;
+}
+
 
 /**/
 

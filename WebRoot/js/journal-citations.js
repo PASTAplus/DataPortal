@@ -51,12 +51,12 @@ $(document).ready(function () {
         // p - pagination control
         // r - processing display element
         dom: 'Plftipr',
-        // Attempt at controlling column widths. Couldn't get it working, maybe due to old jQuery.
         autoWidth: true,
         // columns: [
         // The Citation ID column is hidden with CSS.
         // null, null, null, null, null, null, null,
         // ],
+        // Attempt at controlling column widths. Couldn't get it working, maybe due to old jQuery.
         // fixedColumns: true,
         // columns: [
         //   { width: 10, targets: 0 },

@@ -26,6 +26,9 @@ package edu.lternet.pasta.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,6 +44,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -76,6 +80,7 @@ public class JournalCitationsClient extends PastaClient {
   private final String BASE_URL;
   private final String BASE_URL_ONE_CITATION;
   private final String BASE_URL_LIST_OF_CITATIONS;
+  private final String BASE_URL_CITED_BY;
 
   /*
    * Constructors
@@ -99,6 +104,7 @@ public class JournalCitationsClient extends PastaClient {
     this.BASE_URL = pastaUrl + "/package";
     this.BASE_URL_ONE_CITATION = this.BASE_URL + "/citation/eml";
     this.BASE_URL_LIST_OF_CITATIONS = this.BASE_URL + "/citations/eml";
+    this.BASE_URL_CITED_BY = this.BASE_URL + "/citedby/eml";
   }
 
   
@@ -322,7 +328,46 @@ public class JournalCitationsClient extends PastaClient {
       return entityString;
   }
 
-  
+  /**
+   * Executes the 'listDataPackagesCitedBy' web service method.
+   *
+   * @param articleDoi
+   *          The DOI of the article that cites the data packages, e.g., "10.1002/2017JC013515"
+   *          Notes:
+   *            - The DOI must not be on URL form, e.g., "https://doi.org/10.1002/2017JC013515"
+   * @return an XML string containing a list of <packageId> elements encapsulated within a
+   *         <packageIds> element.
+   */
+  public String listDataPackagesCitedBy(String articleDoi) throws Exception
+  {
+      CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+      URIBuilder uriBuilder = new URIBuilder(BASE_URL_CITED_BY);
+      uriBuilder.addParameter("articleDoi", articleDoi);
+      URI uri = uriBuilder.build();
+      HttpGet httpGet = new HttpGet(uri);
+
+      if (this.token != null) {
+          httpGet.setHeader("Cookie", "auth-token=" + this.token);
+      }
+
+      String entityString;
+      try {
+          HttpResponse httpResponse = httpClient.execute(httpGet);
+          int statusCode = httpResponse.getStatusLine().getStatusCode();
+          HttpEntity httpEntity = httpResponse.getEntity();
+          entityString = EntityUtils.toString(httpEntity, "utf-8");
+          if (statusCode != HttpStatus.SC_OK) {
+              handleStatusCode(statusCode, entityString);
+          }
+      } finally {
+          closeHttpClient(httpClient);
+      }
+
+      return entityString;
+  }
+
+
   /**
    * Executes the 'listPrincipalOwnerCitations' web service method.
    * 
