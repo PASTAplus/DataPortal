@@ -145,7 +145,7 @@
                 <tr>
                     <td class="nis"><c:out value="<%= articleCitationId %>"/></td>
                     <td class="nis">
-                        <a href="mapbrowse?packageid=<c:out value='<%= packageId %>'/>">
+                        <a href="mapbrowse?packageid=<c:out value='<%= packageId %>'/>" class="searchsubcat">
                             <c:out value='<%= packageId %>'/>
                         </a>
                     </td>

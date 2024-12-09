@@ -199,6 +199,13 @@
   </style>
   <% } %>
 
+  <style>
+    .inline-svg {
+      height: 1em;
+      vertical-align: middle;
+    }
+  </style>
+
 </head>
 
 <body>

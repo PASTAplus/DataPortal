@@ -591,7 +591,9 @@ public class JournalCitation {
         sb.append(" <span name='Find related packages' class='tooltip'>");
         sb.append(
             String.format(
-                " <a class='searchsubcat' href='journalCitationsCitedBy?journalDoi=%s'>→</a>",
+                " <a class='searchsubcat' href='journalCitationsCitedBy?journalDoi=%s'>" +
+                    "<image src='images/objects-column.svg' class='inline-svg'>" +
+                    "</a>",
                 articleUrl
             )
         );

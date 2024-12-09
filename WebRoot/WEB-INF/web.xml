@@ -76,6 +76,14 @@
     <servlet-name>JournalCitationServlet</servlet-name>
     <servlet-class>edu.lternet.pasta.portal.JournalCitationServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>journalCitationsCitedBy</servlet-name>
+    <jsp-file>/journalCitationsCitedBy.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>journalCitationsCitedBy</servlet-name>
+    <url-pattern>/journalCitationsCitedBy</url-pattern>
+  </servlet-mapping>
   <!-- / Journal Citations -->
   <servlet>
     <description>Event Subscribe Servlet</description>
