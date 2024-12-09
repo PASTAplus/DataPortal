@@ -29,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.TreeSet;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -38,6 +39,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import edu.lternet.pasta.portal.ConfigurationListener;
 
 public class ControlledVocabularyClient {
 
@@ -47,22 +49,18 @@ public class ControlledVocabularyClient {
 
 	private static final Logger logger = Logger
 	    .getLogger(edu.lternet.pasta.portal.search.ControlledVocabularyClient.class);
+
+    private final static Configuration options = ConfigurationListener.getOptions();
+
+    private final static String host = options.getString("vocab.host");
+    private final static Boolean ignore = options.getBoolean("vocab.ignore");
 	
   // Controlled vocabulary settings
-  private static final String BASE_SERVICE_URL = 
-      "http://vocab.lternet.edu/webservice/keywordlist.php/"; 
-
-  private static final String FETCH_DOWN_SERVICE_URL = 
-	  "http://vocab.lternet.edu/vocab/vocab/services.php?task=fetchDown&arg=";
-	  
-  private static final String FETCH_TOP_TERMS_SERVICE_URL = 
-      "http://vocab.lternet.edu/vocab/vocab/services.php?task=fetchTopTerms"; 
-  
-  private static final String PREFERRED_TERMS_SERVICE_URL = 
-      "http://vocab.lternet.edu/webservice/preferredterms.php";
-  
+  private final static String BASE_SERVICE_URL = String.format("http://%s/webservice/keywordlist.php/", host);
+  private final static String FETCH_DOWN_SERVICE_URL = String.format("http://%s/vocab/vocab/services.php?task=fetchDown&arg=", host);
+  private final static String FETCH_TOP_TERMS_SERVICE_URL = String.format("http://%s/vocab/vocab/services.php?task=fetchTopTerms", host);
+  private final static String PREFERRED_TERMS_SERVICE_URL = String.format("http://%s/webservice/preferredterms.php", host);
   private static String[] PREFERRED_TERMS_ARRAY = null;
-
 
  
 	/*
@@ -120,6 +118,10 @@ public class ControlledVocabularyClient {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     String format = "list";
     TreeSet<String> searchValues = new TreeSet<String>();
+
+    if (ignore) {
+        return searchValues;
+    }
 
     // Map both narrow and related selection to all
     if (hasNarrowRelated) {
@@ -291,6 +293,10 @@ public class ControlledVocabularyClient {
     HttpGet httpGet = null;
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
     String[] preferredTerms = null;
+
+    if (ignore) {
+        return preferredTerms;
+    }
     
     if (PREFERRED_TERMS_ARRAY != null) {
       preferredTerms = PREFERRED_TERMS_ARRAY;
@@ -343,6 +349,10 @@ public class ControlledVocabularyClient {
 	    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String xmlString = null;
 
+        if (ignore) {
+            return xmlString;
+        }
+
 		try {
 			String serviceURL = FETCH_DOWN_SERVICE_URL + termId;
 			httpGet = new HttpGet(serviceURL);
@@ -390,6 +400,10 @@ public class ControlledVocabularyClient {
 		HttpGet httpGet = null;
 	    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String xmlString = null;
+
+        if (ignore) {
+            return xmlString;
+        }
 
 		try {
 			httpGet = new HttpGet(FETCH_TOP_TERMS_SERVICE_URL);

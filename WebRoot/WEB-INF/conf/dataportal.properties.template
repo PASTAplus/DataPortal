@@ -102,6 +102,11 @@ seo.url=https://seo.edirepository.org/seo/schema
 # Crossref API service
 crossref.url=http://dx.doi.org
 
+# Vocabulary service
+vocab.host=vocab.lternet.edu
+vocab.ignore=false
+
+
 # Single Sign-On services
 # These are currently not in use, as the code for displaying these messages is commented out until we decide if we want to display them.
 #sso.logout.msg=You are now signed out of the EDI Data Portal\, but you are still signed in with your identity provider. To completely sign out\, go to

@@ -88,36 +88,36 @@ public class UmbraClient {
      */
 
     public String[] getNameVariants(String name) throws UmbraClientException, IOException {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		String url = this.umbraCreatorsUrlHead + "/name_variants/" + Encode.forUriComponent(name);
-		HttpGet httpGet = new HttpGet(url);
-		String[] names = null;
+        String[] names = null;
 
-		try {
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode == HttpStatus.SC_OK) {
-                HttpEntity httpEntity = httpResponse.getEntity();
-                String entityString = EntityUtils.toString(httpEntity);
-                JSONArray jsonArray = new JSONArray(entityString);
-                int jsonArrayLength = jsonArray.length();
-                names = new String[jsonArrayLength];
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    names[i] = jsonArray.getString(i);
+        if (name != null && !name.isEmpty()) {
+            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+            String url = this.umbraCreatorsUrlHead + "/name_variants/" + Encode.forUriComponent(name);
+            HttpGet httpGet = new HttpGet(url);
+            try {
+                HttpResponse httpResponse = httpClient.execute(httpGet);
+                int statusCode = httpResponse.getStatusLine().getStatusCode();
+                if (statusCode == HttpStatus.SC_OK) {
+                    HttpEntity httpEntity = httpResponse.getEntity();
+                    String entityString = EntityUtils.toString(httpEntity);
+                    JSONArray jsonArray = new JSONArray(entityString);
+                    int jsonArrayLength = jsonArray.length();
+                    names = new String[jsonArrayLength];
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        names[i] = jsonArray.getString(i);
+                    }
                 }
+                else {
+                    String gripe = String.format("Error occurred when retrieving names - host: %s, status: %s",
+                            url, statusCode);
+                    throw new UmbraClientException(gripe);
+                }
+            } finally {
+                httpClient.close();
             }
-            else {
-                String gripe = String.format("Error occurred when retrieving names - host: %s, status: %s",
-                        url, statusCode);
-                throw new UmbraClientException(gripe);
-            }
-		} finally {
-			httpClient.close();
-		}
+        }
 
         return names;
 
     }
-
-
 }
