@@ -17,6 +17,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class JournalCitation {
     public static class ArticleAuthor {
@@ -588,20 +589,27 @@ public class JournalCitation {
         String packageId = getPackageId();
         sb.append(String.format(" <em>(%s)</em>", packageId));
         // Link to related packages (shared citation DOI)
-        sb.append(" <span name='Find related packages' class='tooltip'>");
-        sb.append(
-            String.format(
-                " <a class='searchsubcat' href='journalCitationsCitedBy?journalDoi=%s'>" +
-                    "<image src='images/objects-column.svg' class='inline-svg'>" +
-                    "</a>",
-                articleUrl
-            )
-        );
-        sb.append("</span>");
-
+        String escArticleDoi = null;
+        try {
+            escArticleDoi = new URI(null, null, articleDoi, null).toString();
+        }
+        catch (URISyntaxException e) {
+            logger.error("Error creating URI for articleDoi: " + e.getMessage());
+        }
+        if (escArticleDoi != null) {
+            sb.append(" <span name='Find related packages' class='tooltip'>");
+            sb.append(
+                String.format(
+                    "<a class='searchsubcat' href='journalCitationsCitedBy?journalDoi=%s'>" +
+                        "<image src='images/objects-column.svg' class='inline-svg'>" +
+                        "</a>",
+                    escArticleDoi
+                )
+            );
+            sb.append("</span>");
+        }
         return sb.toString();
     }
-
 
     private String getDateCreatedStr() {
         String dateCreatedStr = "";
