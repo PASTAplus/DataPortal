@@ -127,24 +127,6 @@
 										<input accept="application/xml" name="emlfile" required="required" size="60" type="file" />
 									</div>
 								</div>
-                                <div class="table-row">
-									<div class="table-cell">
-                                        <label class="labelBold">Data Upload Options:</label>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                        <input name="useChecksum" type="checkbox" value="useChecksum" />
-                                        Allow PASTA+ to skip the upload of a data entity if it has a matching copy
-                                    </div>
-                                    <div class="table-cell">
-                                    <span name='<%= Tooltip.USE_CHECKSUM %>'
-                                          class="tooltip">
-                                        <img src="images/hand.png" />
-                                        <dfn>Please note</dfn>
-                                    </span>
-                                    </div>
-                                </div>
 								<div class="table-row">
 									<div class="table-cell">
 								    	<input name="desktopUpload" type="checkbox" value="desktopUpload" /> 
@@ -192,22 +174,6 @@
 										<textarea id="urlTextArea" cols="80" name="urlTextArea" required="required" rows="8"></textarea>
 								    </div>
 								</div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                        <label class="labelBold">Data Upload Options:</label>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell">
-                                        <input name="useChecksum" type="checkbox" value="useChecksum" />
-                                        Allow PASTA to skip upload of a data entity if it has a matching copy&nbsp;&nbsp;
-                                    <span name='<%= Tooltip.USE_CHECKSUM %>'
-                                          class="tooltip">
-                                        <img src="images/hand.png" />
-                                        <dfn>Please note</dfn>
-                                    </span>
-                                    </div>
-                                </div>
                                 <div class="table-row">
                                     <div class="table-cell"><br/></div>
                                 </div>
@@ -269,22 +235,6 @@
 													<input name="harvestListURL" required="required" size="80" type="url" />
 												</div>
 											</div>
-											<div class="table-row">
-											    <div class="table-cell">
-                                                    <label class="labelBold">Data Upload Options:</label>
-                                                </div>
-                                            </div>
-                                            <div class="table-row">
-                                                <div class="table-cell">
-                                                     <input name="useChecksum" type="checkbox" value="useChecksum" />
-                                                     Allow PASTA to skip upload of a data entity if it has a matching copy&nbsp;&nbsp;
-                                                     <span name='<%= Tooltip.USE_CHECKSUM %>'
-                                                         class="tooltip">
-                                                         <img src="images/hand.png" />
-                                                         <dfn>Please note</dfn>
-                                                    </span>
-                                                </div>
-                                            </div>
                                             <div class="table-row">
                                                 <div class="table-cell"><br/></div>
                                             </div>
