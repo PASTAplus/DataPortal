@@ -992,24 +992,19 @@ public class MapBrowseServlet extends DataPortalServlet {
                     }
                 }
 
-                if (uid.equals("public")) { // Disable resource access
-                    resourcesHTMLBuilder.append("<li>\n");
-                    resourcesHTMLBuilder.append("<div style=\"margin-top: 0.5em; margin-bottom: 0.5em;\">\n");
-                    resourcesHTMLBuilder.append("<span><button class=\"btn btn-info btn-default\" style=\"background-color: #D3D3D3; border-color: #D3D3D3\"><a>Full Data Package (Zip)</a></button></span>");
-                    resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
-                    resourcesHTMLBuilder.append("</div>\n");
-                    resourcesHTMLBuilder.append("</li>\n");
-                } else {
-                    resourcesHTMLBuilder.append("<li>\n");
-                    resourcesHTMLBuilder.append("<div>\n");
-                    resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
-                    resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
-                    resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\" >\n");
-                    resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
-                    resourcesHTMLBuilder.append("</form>\n");
-                    resourcesHTMLBuilder.append("</div>\n");
-                    resourcesHTMLBuilder.append("</li>\n");
-                }
+				resourcesHTMLBuilder.append("<li>\n");
+				resourcesHTMLBuilder.append("<div>\n");
+				resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
+				resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
+				if (uid.equals("public")) { // Disable resource access
+					resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\" disabled>\n");
+				} else {
+					resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\">\n");
+				}
+				resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
+				resourcesHTMLBuilder.append("</form>\n");
+				resourcesHTMLBuilder.append("</div>\n");
+				resourcesHTMLBuilder.append("</li>\n");
 
 				String listOrder = "ol";
 				resourcesHTMLBuilder.append("<li>Data Entities:\n");
