@@ -482,15 +482,13 @@ public class MapBrowseServlet extends DataPortalServlet {
 			            seoHTML = seoClient.fetchDatasetJSON(packageId) + "\n" + seoClient.fetchRepositoryJSON();
 			        }
 			        catch (Exception e) {
-			            String msg = String.format("Error fetching JSON from SEO server for %s: %s",
-			                                       packageId, e.getMessage());
+			            String msg = String.format("Error fetching JSON from SEO server for %s: %s", packageId, e.getMessage());
 			            logger.error(msg);
 			            e.printStackTrace();
 			        }
 
 
 					// Retrieve abstract from Ridare
-
 					RidareClient ridareClient = new RidareClient(uid);
 					ArrayList<String> xpathList = new ArrayList<>(
 							Arrays.asList(
@@ -508,7 +506,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 					}
 
 					// Cite
-
 					try {
 						CiteClient citeClient = new CiteClient(uid);
 						String citation = citeClient.fetchCitation(packageId);
@@ -820,7 +817,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 									isAuthorized = true;
 								}
 
-								if (isAuthorized) {
+								if (isAuthorized && !uid.equals("public")) {
 									downloadableData = true;
 									String objectName = emlObject.getDataPackage().findObjectName(entityName);
 									String fileInfo = (objectName == null) ? entityName : objectName;
@@ -953,12 +950,23 @@ public class MapBrowseServlet extends DataPortalServlet {
 				resourcesHTMLBuilder.append("<ul class=\"no-list-style\">\n");
 				resourcesHTMLBuilder.append(metadata);
 				resourcesHTMLBuilder.append(report);
-				/*resourcesHTMLBuilder
-						.append("<li>Data <sup><strong>*</strong></sup>\n");*/
 
-				/*
-				 * Check for offline entities
-				 */
+                // Display required sign-on message for public users
+
+                if (uid.equals("public")) {
+                    resourcesHTMLBuilder.append("<div style=\"margin-top: 0.75em; margin-bottom: 0.75em;\">\n");
+                    String moreInfoAnchor = "[<a href=\"https://edirepository.org\" class=\"searchsubcat\"><em>more info</em></a>]";
+                    String loginAnchor = "<a href=\"./login.jsp\" class=\"searchsubcat\">login</a>";
+                    resourcesHTMLBuilder.append(String.format("<li><strong><em>Please %s to access data</em></strong> %s</li>\n", loginAnchor, moreInfoAnchor));
+                    resourcesHTMLBuilder.append("</div>\n");
+
+                    // Set to redirect back to this page after login
+                    String from = String.format("./mapbrowse?scope=%s&identifier=%s&revision=%s", scope, identifier, revision);
+                    httpSession.setAttribute("from",from);
+                }
+
+				// Check for offline entities
+
 				ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
 				for (Entity entity : entityList) {
 					String offlineText = entity.getOfflineText();
@@ -975,55 +983,42 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 				// Full Data Package (Zip) download button
 
-				resourcesHTMLBuilder.append("<li>\n");
-				resourcesHTMLBuilder.append("<div>\n");
-				resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
-				resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
-				resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\" >\n");
+                Integer nonRobotZipDownloads = resourceReadsMap.get("archive");
+                String nonRobotZipDownloadsStr = "";
+                if (nonRobotZipDownloads != null) {
+                    if (nonRobotZipDownloads > 0) {
+                        String downloadsStr = nonRobotZipDownloads > 1 ? "downloads" : "download";
+                        nonRobotZipDownloadsStr = String.format("&nbsp;<em>(%d %s)</em>&nbsp;", nonRobotZipDownloads, downloadsStr);
+                    }
+                }
 
-				Integer nonRobotZipDownloads = resourceReadsMap.get("archive");
-				if (nonRobotZipDownloads != null) {
-					if (nonRobotZipDownloads > 0) {
-						String downloadsStr = nonRobotZipDownloads > 1 ? "downloads" : "download";
-						String nonRobotZipDownloadsStr = String.format("&nbsp;<em>(%d %s)</em>&nbsp;", nonRobotZipDownloads, downloadsStr);
-						resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
-					}
-				}
-
-				resourcesHTMLBuilder.append("</form>\n");
-				resourcesHTMLBuilder.append("</div>\n");
-				resourcesHTMLBuilder.append("</li>\n");
-
-				//
+                if (uid.equals("public")) { // Disable resource access
+                    resourcesHTMLBuilder.append("<li>\n");
+                    resourcesHTMLBuilder.append("<div style=\"margin-top: 0.5em; margin-bottom: 0.5em;\">\n");
+                    resourcesHTMLBuilder.append("<span><button class=\"btn btn-info btn-default\" style=\"background-color: #D3D3D3; border-color: #D3D3D3\"><a>Full Data Package (Zip)</a></button></span>");
+                    resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
+                    resourcesHTMLBuilder.append("</div>\n");
+                    resourcesHTMLBuilder.append("</li>\n");
+                } else {
+                    resourcesHTMLBuilder.append("<li>\n");
+                    resourcesHTMLBuilder.append("<div>\n");
+                    resourcesHTMLBuilder.append("<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"archiveform\" method=\"post\" action=\"./archiveDownload\"	target=\"_top\">\n");
+                    resourcesHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" value=\"" + packageId + "\" >\n");
+                    resourcesHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"archive\" value=\"Full Data Package (Zip)\" >\n");
+                    resourcesHTMLBuilder.append(nonRobotZipDownloadsStr);
+                    resourcesHTMLBuilder.append("</form>\n");
+                    resourcesHTMLBuilder.append("</div>\n");
+                    resourcesHTMLBuilder.append("</li>\n");
+                }
 
 				String listOrder = "ol";
-//				String downloadStr = downloadableData ? "Download Data" : "Data";
-//				resourcesHTMLBuilder.append(String.format("<li>%s\n", downloadStr));
 				resourcesHTMLBuilder.append("<li>Data Entities:\n");
 				resourcesHTMLBuilder.append(String.format("<%s>\n", listOrder));
 				resourcesHTMLBuilder.append(data);
 				resourcesHTMLBuilder.append(String.format("</%s>\n", listOrder));
 				resourcesHTMLBuilder.append("</li>\n");
 
-//				resourcesHTMLBuilder.append("<li>&nbsp;</li>\n");
-//
-
-				/*
-				hasIntellectualRights = emlObject.hasIntellectualRights();
-				if (hasIntellectualRights) {
-				resourcesHTMLBuilder.append("<li>\n");
-				resourcesHTMLBuilder
-						.append("<sup><strong>*</strong></sup> <em>By downloading any data you implicitly acknowledge the "
-								+ "<a class=\"searchsubcat\" href=\"./metadataviewer?packageid="
-								+ packageId + "#toggleDataSetUsageRights\">Data Package Usage Rights</a> detailed in the accompanying metadata.</em>");
-				resourcesHTMLBuilder.append("</li>\n");
-
-				resourcesHTMLBuilder.append("</ul>\n");
-				}
-				*/
-
 				resourcesHTML = resourcesHTMLBuilder.toString();
-
 
 				if (doiId != null) {
 					digitalObjectIdentifier = doiId.replaceFirst("doi:", DoiOrg);
