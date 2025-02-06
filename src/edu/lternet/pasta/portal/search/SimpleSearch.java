@@ -79,8 +79,12 @@ public class SimpleSearch extends Search {
 			
 			try {
 				if (isSiteQuery) {
-					siteFilter = String.format("&fq=scope:(knb-lter-%s)", userInput.toLowerCase());
-				}
+                    if (userInput.equals("cos")) {
+                        siteFilter = String.format("&fq=scope:(cos-spu)", userInput.toLowerCase());
+                    } else {
+                        siteFilter = String.format("&fq=scope:(knb-lter-%s)", userInput.toLowerCase());
+                    }
+                }
 				else {
 					String escapedInput = Search.escapeQueryChars(userInput);
 					qString = URLEncoder.encode(escapedInput, "UTF-8");

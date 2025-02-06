@@ -235,7 +235,7 @@ public class BrowseGroup {
   
   
 	public static BrowseGroup generateLterSiteCache() {
-		BrowseGroup topGroup = new LTERSiteBrowseGroup("LTER Sites");
+		BrowseGroup topGroup = new LTERSiteBrowseGroup("Research Sites");
 		topGroup.setLevel(1);
 
 		String[] lterSiteTerms = LTERSite.sites;
@@ -427,7 +427,7 @@ public class BrowseGroup {
   
   
   private boolean isBlacklistedTerm(String value) {
-	  if (value.equals("LTER Sites")) return true;
+	  if (value.equals("Research Sites")) return true;
 	  return false;
   }
 
