@@ -821,13 +821,18 @@ public class MapBrowseServlet extends DataPortalServlet {
 									downloadableData = true;
 									String objectName = emlObject.getDataPackage().findObjectName(entityName);
 									String fileInfo = (objectName == null) ? entityName : objectName;
-									String href = String.format("./dataviewer?packageid=%s&entityid=%s",
-											                    packageId, entityId);
-									String onClick = "onclick=\"return alert('To use these data with confidence, " +
-										"contact the data creator for information on context and fitness of use.')\"";
-									String downloadLink =
-											String.format("<span name='%s' class='tooltip'><button class=\"btn btn-info btn-default\"><a href='%s' %s />Download</a></button></span>",
-													fileInfo, href, onClick);
+
+                                    String onClick = "onclick=\"return alert('To use these data with confidence, " +
+                                            "contact the data creator for information on context and fitness of use.')\"";
+
+                                    String downloadform = "\n";
+                                    downloadform += "<form style=\"margin-top: 0.5em; margin-bottom: 0.5em;\" id=\"archive\" name=\"dataviewerform\" method=\"post\" action=\"./dataviewer\" target=\"_top\">\n";
+                                    downloadform += String.format("  <input type=\"hidden\" name=\"packageid\" value=\"%s\" >\n", packageId);
+                                    downloadform += String.format("  <input type=\"hidden\" name=\"entityid\" value=\"%s\" >\n", entityId);
+                                    downloadform += String.format("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"download\" value=\"Download\" %s>\n", onClick);
+                                    downloadform += "</form>\n";
+
+									String downloadLink = String.format("<span name='%s' class='tooltip'>%s</span>", fileInfo, downloadform);
 									ArrayList<Entity> entityList = emlObject.getDataPackage().getEntityList();
 									ArrayList<Annotation> entityAnnotations = getEntityAnnotations(entityId, entityList);
 									String annotationsHTMLList = "";
