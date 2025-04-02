@@ -73,9 +73,9 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
 
   /**
    * The doGet method of the servlet. <br>
-   * 
+   *
    * This method is called when a form has its tag value method equals to get.
-   * 
+   *
    * @param request
    *          the request send by the client to the server
    * @param response
@@ -94,9 +94,9 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
 
   /**
    * The doPost method of the servlet. <br>
-   * 
+   *
    * This method is called when a form has its tag value method equals to post.
-   * 
+   *
    * @param request
    *          the request send by the client to the server
    * @param response
@@ -119,7 +119,7 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
     String scope = request.getParameter("scope");
 
     String text = null;
-    String html = null;
+    StringBuilder html = null;
     Integer count = 0;
 
     if (scope != null && !(scope.isEmpty())) {
@@ -131,39 +131,37 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
 
         StrTokenizer tokens = new StrTokenizer(text);
 
-        html = "<ol>\n";
+        html = new StringBuilder("<ol>\n");
 
         ArrayList<String> arrayList = new ArrayList<String>();
-        
+
         // Add scope/identifier values to a sorted set
         while (tokens.hasNext()) {
           arrayList.add(tokens.nextToken());
           count++;
         }
-        
-				// Output sorted set of scope/identifier values
-				for (String identifier : arrayList) {
+          // Output sorted set of scope/identifier values
+          for (String identifier : arrayList) {
+            html.append("<li><span class=\"searchsubcat pasta-link\" data-scope=\"")
+                  .append(scope).append("\" data-id=\"").append(identifier).append("\">")
+                  .append(scope).append(".").append(identifier)
+                  .append("</span></li>\n");
+          }
 
-					html += "<li><a class=\"searchsubcat\" href=\"./mapbrowse?scope=" + scope + "&identifier="
-					    + identifier + "\">" + scope + "." + identifier
-					    + "</a></li>\n";
+        html.append("</ol>\n");
 
-				}
-
-        html += "</ol>\n";
-
-      } 
+      }
       catch (Exception e) {
     	  handleDataPortalError(logger, e);
-      }    
+      }
 
-    } 
+    }
     else {
-      html = "<p class=\"warning\"> Error: \"scope\" field empty</p>\n";
+      html = new StringBuilder("<p class=\"warning\"> Error: \"scope\" field empty</p>\n");
     }
 
     request.setAttribute("browsemessage", browseMessage);
-    request.setAttribute("html", html);
+    request.setAttribute("html", html.toString());
     request.setAttribute("count", count.toString());
     RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
     requestDispatcher.forward(request, response);
@@ -172,7 +170,7 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
 
   /**
    * Initialization of the servlet. <br>
-   * 
+   *
    * @throws ServletException
    *           if an error occurs
    */
