@@ -76,10 +76,10 @@ public class DataViewerServlet extends DataPortalServlet {
    *           if an error occurred
    */
   public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-
-    doPost(request, response);
-
+	  throws ServletException, IOException
+  {
+	  // Prevent GET method for from being handled as POST for this servlet.
+	  response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "HTTP method not supported.");
   }
 
   /**
