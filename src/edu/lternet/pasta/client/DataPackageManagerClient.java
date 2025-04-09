@@ -461,7 +461,7 @@ public class DataPackageManagerClient extends PastaClient {
 				// Suggest name for downloaded file
 				servletResponse.setHeader("Content-Type", "application/zip");
 				String filename = String.format("%s.%d.%d.zip", scope, identifier, revision);
-				servletResponse.setHeader("Content-Disposition", "attachment; filename=" + filename);
+				servletResponse.setHeader("Content-Disposition", "inline; filename=" + filename);
 				// Stream output
 				httpEntity.writeTo(servletResponse.getOutputStream());
 			}
