@@ -6265,8 +6265,7 @@
             <td class="{$secondColStyle}">
               <a>
                 <xsl:attribute name="class">dataseteml</xsl:attribute>
-                <xsl:attribute name="href">/nis/dataviewer?packageid=<xsl:value-of select="$packageID" />&amp;entityid=<xsl:value-of select="$entity_identifier_encd" /></xsl:attribute>
-                <xsl:attribute name="target">_blank</xsl:attribute>
+                <xsl:attribute name="href">/nis/mapbrowse?packageid=<xsl:value-of select="$packageID" /></xsl:attribute>
                 <xsl:value-of select="."/>
               </a>
             </td>

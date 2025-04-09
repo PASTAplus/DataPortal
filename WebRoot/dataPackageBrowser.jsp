@@ -50,6 +50,25 @@
 <link href="bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
 <link href="bootstrap/css/bootstrap-responsive.css" media="screen" rel="stylesheet" type="text/css">
 
+	<style>
+		.pasta-link {
+			cursor: pointer;
+			color: #5990bd;
+		}
+		.pasta-link:hover {
+			text-decoration: underline;
+		}
+	</style>
+
+	<script>
+		document.addEventListener('click', function (ev) {
+			const linkEl = ev.target.closest('.pasta-link');
+			if (linkEl) {
+				window.location.href = "./mapbrowse?scope=" + linkEl.dataset.scope + "&identifier=" + linkEl.dataset.id;
+			}
+		});
+	</script>
+
 </head>
 
 <body>
