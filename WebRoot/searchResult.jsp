@@ -85,16 +85,33 @@
 
 <jsp:include page="header.jsp"/>
 
+<style>
+    .pasta-link {
+        cursor: pointer;
+        color: #5990bd;
+    }
+    .pasta-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
 <script>
-var clipboard = new Clipboard('.btn');
+  var clipboard = new Clipboard('.btn');
 
-clipboard.on('success', function (e) {
-  console.log(e);
-});
+  clipboard.on('success', function (e) {
+    console.log(e);
+  });
 
-clipboard.on('error', function (e) {
-  console.log(e);
-});
+  clipboard.on('error', function (e) {
+    console.log(e);
+  });
+
+  document.addEventListener('click', function (ev) {
+    const linkEl = ev.target.closest('.pasta-link');
+    if (linkEl) {
+      window.location.href = "./mapbrowse?packageid=" + linkEl.dataset.packageId;
+    }
+  });
 </script>
 
 <div class="row-fluid ">

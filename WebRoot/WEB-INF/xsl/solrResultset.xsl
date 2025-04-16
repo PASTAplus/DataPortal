@@ -21,7 +21,8 @@
 	language governing permissions and limitations under the License.
 -->
 
-<xsl:stylesheet 
+<!--suppress ALL -->
+<xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   version="2.0"
 >
@@ -77,9 +78,12 @@
 	
     <tr>
       <td class="nis" align="left">
-        <a class="searchsubcat" href="./mapbrowse?packageid={$pid}">
-        <xsl:value-of select="title"/>
-        </a>
+        <!-- To help prevent scrapers from reaching the resource heavy data package landing page,
+        we link via JavaScript -->
+        <div class="searchsubcat pasta-link" data-package-id="{$pid}">
+            <xsl:value-of select="title"/>
+        </div>
+
       </td>
       <td class="nis" align="center">
           <xsl:choose>
@@ -95,9 +99,10 @@
         <xsl:value-of select="pubdate"/>
       </td>
       <td class="nis" align="center">
-        <a class="searchsubcat" href="./mapbrowse?packageid={$pid}">
-        <xsl:value-of select="$pid"/>
-        </a>
+        <div class="searchsubcat pasta-link" data-package-id="{$pid}">
+            <xsl:value-of select="$pid"/>
+        </div>
+
 	  </td>
 	  <xsl:if test="$showSaved">
 			<td id ="td-{$pid}" class="nis" align="center">
