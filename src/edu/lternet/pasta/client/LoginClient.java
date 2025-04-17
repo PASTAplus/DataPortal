@@ -241,10 +241,13 @@ public class LoginClient {
       String headerName = null;
       String headerValue = null;
 
-      Header cookie = response.getFirstHeader("Set-Cookie");
-      if (cookie != null) {
-        headerValue = cookie.getValue();
-        token = this.getAuthToken(headerValue);
+      Header[] cookies = response.getHeaders("Set-Cookie");
+      for (Header cookieHeader : cookies) {
+          headerValue = cookieHeader.getValue();
+          token = this.getAuthToken(headerValue);
+          if (token != null) {
+            break;
+          }
       }
 
     } else if (statusCode == TEAPOT) {
