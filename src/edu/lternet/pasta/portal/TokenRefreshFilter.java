@@ -43,7 +43,7 @@ public class TokenRefreshFilter implements Filter {
         String uid = (String) httpSession.getAttribute("uid");
         if (uid == null || uid.isEmpty()) {
             uid = "public";
-            logger.info("Skipped token refresh for public user");
+            // logger.debug("Skipped token refresh for public user");
         }
 
         if (!uid.equals("public")) {

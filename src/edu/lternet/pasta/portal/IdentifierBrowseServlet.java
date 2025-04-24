@@ -140,13 +140,14 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
           arrayList.add(tokens.nextToken());
           count++;
         }
-          // Output sorted set of scope/identifier values
-          for (String identifier : arrayList) {
-            html.append("<li><span class=\"searchsubcat pasta-link\" data-scope=\"")
-                  .append(scope).append("\" data-id=\"").append(identifier).append("\">")
-                  .append(scope).append(".").append(identifier)
-                  .append("</span></li>\n");
-          }
+
+        // Output sorted set of scope/identifier values
+        for (String identifier : arrayList) {
+          html.append(String.format(
+              "<li><span class=\"searchsubcat pasta-link\" data-scope=\"%s\" data-id=\"%s\">%s.%s</span></li>\n",
+              scope, identifier, scope, identifier)
+          );
+        }
 
         html.append("</ol>\n");
 
