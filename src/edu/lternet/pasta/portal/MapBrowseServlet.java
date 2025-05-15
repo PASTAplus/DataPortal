@@ -862,7 +862,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
 									if (entityType != null && entityType.equals(Entity.EntityType.dataTable)) {
 										String dataUrl = Encode.forUriComponent(String.format("%s/%s/%s/%s/%s", dataUri, scope, identifier, revision, entityId));
-										dex = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s/%s\" target=\"_blank\">Explore Data</a></button>", dexUrl, dataUrl);
+										dex = String.format("<button class=\"btn btn-info btn-default pasta-link\" data-dex-base-url=\"%s\" data-entity-url=\"%s\">Explore Data</button>", dexUrl, dataUrl);
 									}
 
 									data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s<br/>%s %s</li>",

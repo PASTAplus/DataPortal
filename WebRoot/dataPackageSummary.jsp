@@ -206,6 +206,15 @@
     }
   </style>
 
+  <script>
+  document.addEventListener('click', function (ev) {
+    const linkEl = ev.target.closest('.pasta-link');
+    if (linkEl) {
+      window.open(linkEl.dataset.dexBaseUrl + "/" + linkEl.dataset.entityUrl, "_blank");
+    }
+  });
+  </script>
+
 </head>
 
 <body>
