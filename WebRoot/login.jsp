@@ -12,7 +12,7 @@
         PropertiesConfiguration options = ConfigurationListener.getOptions();
         int port = options.getInt("dataportal.port");
         return String.format(
-            "%s://%s%s/%s/login",
+                "%s://%s%s/%s/login",
                 options.getString("dataportal.protocol"),
                 options.getString("dataportal.hostname"),
                 (port == 80 || port == 443) ? "" : ":" + port,
@@ -20,12 +20,12 @@
         );
     }
 
-    // Generate the URL to the PASTA auth service.
+    // Generate the URL to the EDI auth service.
     public String getAuthLoginUrl() {
         PropertiesConfiguration options = ConfigurationListener.getOptions();
         int port = options.getInt("auth.port");
         return String.format(
-            "%s://%s%s/auth/login",
+                "%s://%s%s/auth/login",
                 options.getString("auth.protocol"),
                 options.getString("auth.hostname"),
                 (port == 80 || port == 443) ? "" : ":" + port
