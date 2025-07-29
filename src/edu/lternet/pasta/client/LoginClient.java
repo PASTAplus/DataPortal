@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpCookie;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
@@ -94,15 +95,14 @@ public class LoginClient {
    * user's authentication is successful, place the user's authentication token
    * into the "tokenstore" for future use.
    * 
-   * @param distinguishedName
-   *          The user distinguished name, e.g. "uid=EDI,o=EDI,dc=edirepository,dc=org"
-   * @param password
-   *          The user password.
-   * 
-   * @throws PastaAuthenticationException
+   * @param distinguishedName The user distinguished name, e.g. "uid=EDI,o=EDI,dc=edirepository,dc=org"
+   * @param password The user password.
+   * @throws PastaAuthenticationException, PastaImATeapotException
    */
-  public LoginClient(String distinguishedName, String password)
-          throws PastaAuthenticationException, PastaImATeapotException {
+  public LoginClient(
+          String distinguishedName,
+          String password
+  ) throws PastaAuthenticationException, PastaImATeapotException {
 
     Configuration options = ConfigurationListener.getOptions();
 
@@ -114,58 +114,33 @@ public class LoginClient {
     String pastaUrl = PastaClient.composePastaUrl(this.authProtocol, this.authHost, this.authPort);
     this.LOGIN_URL = pastaUrl + this.authUri;
 
-    String token = this.login(distinguishedName, password);
+    HashMap<String, String> tokenSet = this.login(distinguishedName, password);
 
-    if (token == null) {
+    if (tokenSet.size() != 2 ) {
       String gripe = "User '" + distinguishedName + "' did not successfully authenticate.";
       throw new PastaAuthenticationException(gripe);
-    } else if (token.equals(String.valueOf(TEAPOT))){
-      String gripe = "I'm a teapot, coffee is ready!";
-      throw new PastaImATeapotException(gripe);
     } else {
-      TokenManager tokenManager = new TokenManager(token);
+      TokenManager tokenManager = new TokenManager(tokenSet);
       try {
         tokenManager.storeToken();
-      } catch (SQLException e) {
+      } catch (SQLException | ClassNotFoundException e) {
         logger.error(e);
-        e.printStackTrace();
-      } catch (ClassNotFoundException e) {
-        logger.error(e);
-        e.printStackTrace();
       }
     }
 
   }
 
-  
-  /*
-   * Class methods
-   */
+  private static void closeHttpClient(CloseableHttpClient httpClient) {
+    try {
+        httpClient.close();
+    }
+    catch (IOException e) {
+        logger.error(e.getMessage());
+    }
+  }
 
-	/*
-	 * Closes the HTTP client
-	 */
-	private static void closeHttpClient(CloseableHttpClient httpClient) {
-		try {
-			httpClient.close();
-		}
-		catch (IOException e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-
-  /*
-   * Instance methods
-   */
-
-  /**
-   * Perform a PASTA login operation using the user's credentials. Because there
-   * is not a formal PASTA login method, we will use a simple query for the Data
-   * Package Manager service, which will perform the necessary user
-   * authentication (this step should be replaced with a formal PASTA
-   * "login service method").
+   /**
+   * Perform a PASTA login operation using the user's credentials.
    * 
    * @param username
    *          The user distinguished name, e.g. "uid=EDI,o=EDI,dc=edirepository,dc=org"
@@ -175,16 +150,17 @@ public class LoginClient {
    * @return The authentication token as a String object if the login is
    *         successful.
    */
-  private String login(String username, String password) {
+  private HashMap<String, String> login(
+          String username,
+          String password
+  ) throws PastaImATeapotException, PastaAuthenticationException {
 
     String token = null;
 
     /*
-     * The following set of code sets up Preemptive Authentication for the HTTP
-     * CLIENT and is done so at the warning stated within the Apache
-     * Http-Components Client tutorial here:
-     * http://hc.apache.org/httpcomponents-
-     * client-ga/tutorial/html/authentication.html#d5e1031
+     * The following set of code sets up Preemptive Authentication for the HTTP CLIENT and is done so
+     * at the warning stated within the Apache Http-Components Client tutorial here:
+     * http://hc.apache.org/httpcomponents-client-ga/tutorial/html/authentication.html#d5e1031
      */
 
     // Define host parameters
@@ -192,10 +168,8 @@ public class LoginClient {
     CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
     // Define user authentication credentials that will be used with the host
-    AuthScope authScope = new AuthScope(httpHost.getHostName(),
-        httpHost.getPort());
-    UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(
-        username, password);
+    AuthScope authScope = new AuthScope(httpHost.getHostName(), httpHost.getPort());
+    UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
     CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
     credentialsProvider.setCredentials(authScope, credentials);
     
@@ -213,48 +187,46 @@ public class LoginClient {
 
     HttpGet httpGet = new HttpGet(this.LOGIN_URL);
     HttpResponse response = null;
-    Header[] headers = null;
     Integer statusCode = null;
 
     try {
 
       response = httpClient.execute(httpHost, httpGet, context);
-      headers = response.getAllHeaders();
-      statusCode = (Integer) response.getStatusLine().getStatusCode();
-      logger.info("STATUS: " + statusCode.toString());
+      statusCode = response.getStatusLine().getStatusCode();
+      logger.info("STATUS: " + statusCode);
 
-    } catch (UnsupportedEncodingException e) {
-      logger.error(e);
-      e.printStackTrace();
-    } catch (ClientProtocolException e) {
-      logger.error(e);
-      e.printStackTrace();
     } catch (IOException e) {
       logger.error(e);
-      e.printStackTrace();
     } finally {
 		closeHttpClient(httpClient);
     }
 
-    if (statusCode == HttpStatus.SC_OK) {
+    /*
+     * Extract PASTA and EDI tokens from the "Set-Cookie" header
+     */
+    HashMap<String, String> tokenSet = new HashMap<>(2);  // Slots for PASTA and EDI tokens
 
-      String headerName = null;
-      String headerValue = null;
-
-      Header[] cookies = response.getHeaders("Set-Cookie");
-      for (Header cookieHeader : cookies) {
-          headerValue = cookieHeader.getValue();
-          token = this.getAuthToken(headerValue);
-          if (token != null) {
-            break;
-          }
-      }
-
-    } else if (statusCode == TEAPOT) {
-      token = String.valueOf(TEAPOT);
+    if (statusCode != null && statusCode == HttpStatus.SC_OK) {
+        String headerValue;
+        Header[] setCookie = response.getHeaders("Set-Cookie");
+        for (Header setCookieHeader : setCookie) {
+            headerValue = setCookieHeader.getValue();
+            if (headerValue != null) {
+                List<HttpCookie> cookies = HttpCookie.parse(headerValue);
+                for (HttpCookie cookie : cookies) {
+                    tokenSet.put(cookie.getName(), cookie.getValue());
+                }
+            }
+        }
+    } else if (statusCode != null && statusCode == TEAPOT) {
+        String gripe = "I'm a teapot, coffee is ready!";
+        throw new PastaImATeapotException(gripe);
+    } else {
+        String msg = String.format("Authentication failed with '%s' response status code", statusCode);
+        throw new PastaAuthenticationException(msg);
     }
 
-    return token;
+      return tokenSet;
   }
 
   /**

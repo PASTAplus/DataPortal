@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.lternet.pasta.common.SqlEscape;
 import edu.lternet.pasta.portal.ConfigurationListener;
@@ -70,15 +71,15 @@ public class TokenManager {
     private String authSystem = null;
     private Long ttl;
     private ArrayList<String> groups;
+    private String ediToken = null;
 
     /*
      * Constructors
      */
 
-    public TokenManager(String extToken) {
-
+    public TokenManager(HashMap<String, String> tokenSet) {
+        this.extToken = tokenSet.get("auth-token");
         if (extToken != null) {
-            this.extToken = extToken;
             this.b64Token = extToken.split("-")[0];
             this.token = new String(Base64.decodeBase64(this.b64Token));
             this.signature = extToken.split("-")[1];
@@ -89,6 +90,7 @@ public class TokenManager {
             this.groups = this.getGroups(token);
         }
 
+        this.ediToken = tokenSet.get("edi-token");
     }
     
     /*
@@ -186,68 +188,58 @@ public class TokenManager {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public void storeToken() throws SQLException,
-                                                              ClassNotFoundException {
+    public void storeToken() throws SQLException, ClassNotFoundException {
 
         String sql = String.format(
-            "SELECT authtoken.tokenstore.token " +
-                "FROM authtoken.tokenstore " +
-                "WHERE authtoken.tokenstore.user_id=%s",
-            SqlEscape.str(this.uid));
-
+                "SELECT authtoken.tokenstore.token FROM authtoken.tokenstore WHERE authtoken.tokenstore.user_id=%s",
+                SqlEscape.str(this.uid)
+        );
         logger.info(String.format("sql=%s", sql));
 
         Connection dbConn = null; // database connection object
-
         try {
             dbConn = getConnection();
             try {
                 Statement stmt = dbConn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
-
                 if (rs.next()) {
-
                     // uid already in token store, perform "update".
                     sql = String.format(
-                        "UPDATE authtoken.tokenstore " +
-                            "SET token=%s, date_created=now() " +
-                            "WHERE authtoken.tokenstore.user_id=%s",
-                        SqlEscape.str(this.extToken),
-                        SqlEscape.str(this.uid)
+                            "UPDATE authtoken.tokenstore SET token=%s, edi_token=%s, date_created=now()" +
+                                    " WHERE authtoken.tokenstore.user_id=%s",
+                            SqlEscape.str(this.extToken),
+                            SqlEscape.str(this.ediToken),
+                            SqlEscape.str(this.uid)
                     );
-
                     logger.info(String.format("sql=%s", sql));
 
                     if (stmt.executeUpdate(sql) == 0) {
-                        SQLException e = new SQLException(
-                            String.format("setToken: update '%s' failed", sql));
-                        throw (e);
+                        String msg = String.format("setToken: update '%s' failed", sql);
+                        throw new SQLException(msg);
                     }
 
                 } else {
 
                     // uid not in token store, perform "insert".
                     sql = String.format(
-                        "INSERT INTO authtoken.tokenstore VALUES (%s,%s, now())",
-                        SqlEscape.str(this.uid),
-                        SqlEscape.str(this.extToken)
+                            "INSERT INTO authtoken.tokenstore VALUES (%s,%s, %s, now())",
+                            SqlEscape.str(this.uid),
+                            SqlEscape.str(this.extToken),
+                            SqlEscape.str(this.ediToken)
                     );
-
                     logger.info(String.format("sql=%s", sql));
 
                     if (stmt.executeUpdate(sql) == 0) {
-                        SQLException e = new SQLException(
-                            String.format("setToken: insert '%s' failed", sql));
-                        throw (e);
+                        String msg = String.format("setToken: insert '%s' failed", sql);
+                        throw new SQLException(msg);
                     }
 
                 }
 
             }
             catch (SQLException e) {
-                logger.error("setToken: " + e);
+                logger.error("setToken: " + e.getMessage());
                 logger.error(sql);
-                e.printStackTrace();
                 throw (e);
             }
             finally {
@@ -257,7 +249,6 @@ public class TokenManager {
         }
         catch (ClassNotFoundException e) {
             logger.error("setToken: " + e);
-            e.printStackTrace();
             throw (e);
         }
 
@@ -271,37 +262,34 @@ public class TokenManager {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public static String getExtToken(String uid) throws SQLException,
-                                                  ClassNotFoundException {
+    public static HashMap<String, String> getTokenSet(String uid) throws SQLException, ClassNotFoundException {
 
-        String token = null;
         String sql = String.format(
-            "SELECT authtoken.tokenstore.token " +
-                "FROM authtoken.tokenstore " +
-                "WHERE authtoken.tokenstore.user_id=%s",
-            SqlEscape.str(uid)
+                "SELECT authtoken.tokenstore.token, authtoken.tokenstore.edi_token FROM authtoken.tokenstore" +
+                        " WHERE authtoken.tokenstore.user_id=%s",
+                SqlEscape.str(uid)
         );
-
         logger.info(String.format("sql=%s", sql));
 
         Connection dbConn = null; // database connection object
 
+        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
         try {
             dbConn = TokenManager.getConnection();
             try {
                 Statement stmt = dbConn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
-                    token = rs.getString("token");
+                    tokenSet.put("auth-token", rs.getString("token"));
+                    tokenSet.put("edi-token", rs.getString("edi_token"));
                 } else {
-                    SQLException e = new SQLException("getToken: uid '" + uid + "' not in authtoken.tokenstore");
-                    throw (e);
+                    String msg = String.format("getToken: uid '%s' not in authtoken.tokenstore", uid);
+                    throw new SQLException(msg);
                 }
             }
             catch (SQLException e) {
-                logger.error("getToken: " + e);
+                logger.error("getToken: " + e.getMessage());
                 logger.error(sql);
-                e.printStackTrace();
                 throw (e);
             }
             finally {
@@ -310,12 +298,11 @@ public class TokenManager {
             // Will fail if database adapter class not found.
         }
         catch (ClassNotFoundException e) {
-            logger.error("getToken: " + e);
-            e.printStackTrace();
+            logger.error("getToken: " + e.getMessage());
             throw (e);
         }
 
-        return token;
+        return tokenSet;
 
     }
 
@@ -330,11 +317,9 @@ public class TokenManager {
                                                    ClassNotFoundException {
 
         String sql = String.format(
-            "DELETE FROM authtoken.tokenstore " +
-                "WHERE authtoken.tokenstore.user_id=%s",
-            SqlEscape.str(uid)
+                "DELETE FROM authtoken.tokenstore WHERE authtoken.tokenstore.user_id=%s",
+                SqlEscape.str(uid)
         );
-
         logger.info(String.format("sql=%s", sql));
 
         Connection dbConn = null; // database connection object

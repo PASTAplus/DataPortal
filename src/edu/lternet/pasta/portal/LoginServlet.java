@@ -27,6 +27,7 @@ package edu.lternet.pasta.portal;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -193,27 +194,25 @@ public class LoginServlet extends DataPortalServlet {
     }
 
     if (extToken != null && cname != null) { // Other 3rd party login
-        tokenManager = new TokenManager(extToken);
+        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
+        tokenSet.put("auth-token", extToken);
+        tokenSet.put("edi-token", "");
+        tokenManager = new TokenManager(tokenSet);
         try {
             tokenManager.storeToken();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
         }
         distinguishedName = tokenManager.getUid();
 
-    } else { // PASTA login
+    } else { // EDI LDAP login
 
         uid = request.getParameter("uid");
-//        String affiliation = request.getParameter("affiliation");
         String affiliation = "EDI";
 
         if (uid != null) {
             uid = uid.trim();
-            cname = uid;
+            cname = uid;  // Set common name to uid value
         }
 
         String password = request.getParameter("password");
@@ -222,8 +221,8 @@ public class LoginServlet extends DataPortalServlet {
 
           distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
           new LoginClient(distinguishedName, password);
-          extToken = TokenManager.getExtToken(distinguishedName);
-          tokenManager = new TokenManager(extToken);
+          HashMap<String, String> tokenSet = TokenManager.getTokenSet(distinguishedName);
+          tokenManager = new TokenManager(tokenSet);
 
         } catch (PastaAuthenticationException e) {
             String message = "<em>Login failed for user</em> " + uid;
@@ -236,7 +235,6 @@ public class LoginServlet extends DataPortalServlet {
             isTeapot = true;
         } catch (SQLException | ClassNotFoundException e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
         }
 
         if (isTeapot) {
@@ -251,11 +249,11 @@ public class LoginServlet extends DataPortalServlet {
     boolean vetted = false;
     if (tokenManager != null) {
         ArrayList<String> groups = tokenManager.getGroups();
-        for (int i = 0; i < groups.size(); i++) {
-            if (groups.get(i).equals("authenticated")) {
+        for (String group : groups) {
+            if (group.equals("authenticated")) {
                 authenticated = true;
             }
-            if (groups.get(i).equals("vetted")) {
+            if (group.equals("vetted")) {
                 vetted = true;
             }
         }
@@ -280,33 +278,24 @@ public class LoginServlet extends DataPortalServlet {
     }
 
     try {
-        extToken = TokenManager.getExtToken(distinguishedName);
-        TokenManager tm = new TokenManager(extToken);
-        logger.info(tm.getToken());
-        logger.info(tm.getUid());
-        logger.info(tm.getAuthSystem());
-        logger.info(tm.getTtl());
-
-        ArrayList<String> groups = tm.getGroups();
-
+        HashMap<String, String> tokenSet = TokenManager.getTokenSet(distinguishedName);
+        tokenManager = new TokenManager(tokenSet);
+        logger.info(tokenManager.getToken());
+        logger.info(tokenManager.getUid());
+        logger.info(tokenManager.getAuthSystem());
+        logger.info(tokenManager.getTtl());
+        ArrayList<String> groups = tokenManager.getGroups();
         for (String group : groups) {
             logger.info(group);
         }
-
-        logger.info(tm.getSignature());
-
+        logger.info(tokenManager.getSignature());
     }
     catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
+        logger.error(e);
     }
-
-//  TODO: remove following lines once confirmed their removal does not cause unwanted side-effects
-//  RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
-//  requestDispatcher.forward(request, response);
 
     forward = forward.replace("./", this.dataportalTarget + "/");
     response.sendRedirect(forward);
-
   }
 
   /**

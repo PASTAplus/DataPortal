@@ -26,6 +26,7 @@ package edu.lternet.pasta.client;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,8 +61,7 @@ public class PastaClient {
    * Class variables
    */
   
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.client.PastaClient.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.client.PastaClient.class);
   final String SLASH = "/";
   
   /*
@@ -78,6 +78,7 @@ public class PastaClient {
 
   protected String uid = null;
   protected String token = null;
+  protected HashMap<String, String> tokenSet = null;
   
   protected String portalUrlHead = null;
   
@@ -96,29 +97,21 @@ public class PastaClient {
     this.uid = uid;
     String gripe = null;
 
+    this.portalUrlHead = options.getString("dataportal.portalUrlHead");
+
     this.pastaHost = options.getString("pasta.hostname");
     this.pastaProtocol = options.getString("pasta.protocol");
     this.pastaPort = options.getInt("pasta.port");
     this.pastaUriHead = options.getString("pasta.uriHead");
-    
+
     this.maxIdleTime = options.getInt("pastaclient.maxidletime");
     this.idleSleepTime = options.getInt("pastaclient.idlesleeptime");
     this.initialSleepTime = options.getInt("pastaclient.initialsleeptime");
-    
-    /*
-     *  Deriving portalUrlHead from desktopUrlHead is a bit of a kludge, 
-     *  but it avoids needing to add a new property to the properties file
-     */
-    String desktopUrlHead = options.getString("dataportal.desktopUrlHead");
-    if (desktopUrlHead != null && !desktopUrlHead.equals("")) {
-    	int strLength = desktopUrlHead.length();
-    	// Trim off the last five characters, "/data"
-    	this.portalUrlHead = desktopUrlHead.substring(0, (strLength - 5));	
-    }
+
 
     if (this.uid == null) {
 
-      gripe = "User identifier \"uid\" is \"null\"";
+      gripe = "User identifier 'uid' is 'null'";
       throw new PastaAuthenticationException(gripe);
 
     } else {
@@ -127,24 +120,20 @@ public class PastaClient {
 
         try {
 
-          this.token = TokenManager.getExtToken(uid);
+          this.tokenSet = TokenManager.getTokenSet(uid);
+          this.token = this.tokenSet.get("auth-token");
 
-          // Throw exception if user not "public"
-          // and token not in store
+
+          // Throw exception if user not "public" and token not in store
           if (this.token == null) {
-            gripe = "A token for user '" + this.uid
-                + "' does not exist in the \"TokenStore\"";
+            gripe = String.format("A token for user '%s' does not exist in the 'TokenStore'", this.uid);
             throw new PastaAuthenticationException(gripe);
           }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
           logger.error(e);
-          e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-          logger.error(e);
-          e.printStackTrace();
         }
-        
+
       }
 
     }
@@ -165,20 +154,13 @@ public class PastaClient {
    */
 	public static String composeDistinguishedName(String uid, String affiliation) {
 		String uidTrimmed = "";
-		String distinguishedTail = "o=LTER,dc=ecoinformatics,dc=org";
-		
-		if (affiliation != null && affiliation.equalsIgnoreCase("EDI")) {
-			distinguishedTail = "o=EDI,dc=edirepository,dc=org";
-		}
-		
+        String distinguishedTail = "o=EDI,dc=edirepository,dc=org";
+
 		if (uid != null) {
 			uidTrimmed = uid.trim();
 		}
-		
-		String distinguishedName = String.format("uid=%s,%s", 
-				                                 uidTrimmed, distinguishedTail);
 
-		return distinguishedName;
+        return String.format("uid=%s,%s", uidTrimmed, distinguishedTail);
 	}  
   
 	

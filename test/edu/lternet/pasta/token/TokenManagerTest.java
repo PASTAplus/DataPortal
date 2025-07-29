@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -113,8 +114,10 @@ public class TokenManagerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		
-		this.tokenManager = new TokenManager(token);
+        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
+        tokenSet.put("auth-token", token);
+        tokenSet.put("edi-token", "");
+        this.tokenManager = new TokenManager(tokenSet);
 
         try {
             this.tokenManager.storeToken();
@@ -159,9 +162,11 @@ public class TokenManagerTest {
 
 	@Test
 	public void testGetToken() {
-		
+        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
+        tokenSet.put("auth-token", testToken);
+        tokenSet.put("edi-token", "");
 		String extToken = null;
-        this.tokenManager = new TokenManager(testToken);
+        this.tokenManager = new TokenManager(tokenSet);
 		extToken = this.tokenManager.getExtToken();
 		boolean isTokenEqual = testToken.equals(extToken);
 		// Test whether the token returned from the database is equal to the test token.
@@ -240,7 +245,7 @@ public class TokenManagerTest {
 		
 		// Now attempt to read the deleted token from the "tokenstore".
 		try {
-			TokenManager.getExtToken(username);
+			TokenManager.getTokenSet(username);
 		} catch (SQLException e) {
 			// This exception should be caught in this test.
 			logger.error("SQL exception with call to deleteToken: " + e);

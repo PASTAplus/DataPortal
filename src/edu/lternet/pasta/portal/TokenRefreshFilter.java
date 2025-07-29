@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @WebFilter("/TokenRefreshFilter")
 public class TokenRefreshFilter implements Filter {
@@ -59,7 +60,7 @@ public class TokenRefreshFilter implements Filter {
     }
 
     private void refreshToken(String uid) throws Exception {
-        String extToken = getExtToken(uid);
+        String extToken = getExtToken(uid).get("auth-token");
         if (extToken == null) {
             logger.error("Token not found for user: " + uid);
             return;
@@ -71,16 +72,19 @@ public class TokenRefreshFilter implements Filter {
         }
     }
 
-    public String getExtToken(String uid) throws ClassNotFoundException {
+    public HashMap<String, String> getExtToken(String uid) throws ClassNotFoundException {
         try {
-            return TokenManager.getExtToken(uid);
+            return TokenManager.getTokenSet(uid);
         } catch (SQLException e) {
             return null;
         }
     }
 
     public void setExtToken(String extToken) throws SQLException, ClassNotFoundException {
-        TokenManager tokenManager = new TokenManager(extToken);
+        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
+        tokenSet.put("auth-token", extToken);
+        tokenSet.put("edi-token", "");
+        TokenManager tokenManager = new TokenManager(tokenSet);
         tokenManager.storeToken();
     }
 

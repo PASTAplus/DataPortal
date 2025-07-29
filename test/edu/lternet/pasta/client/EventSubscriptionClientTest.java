@@ -37,6 +37,8 @@ import org.junit.Test;
 import edu.lternet.pasta.portal.ConfigurationListener;
 import edu.lternet.pasta.token.TokenManager;
 
+import java.util.HashMap;
+
 /**
  * @author servilla
  * @since Mar 25, 2012
@@ -103,8 +105,10 @@ public class EventSubscriptionClientTest {
    */
   @Before
   public void setUp() throws Exception {
-
-    this.tokenManager = new TokenManager(token);
+    HashMap<String, String> tokenSet = new HashMap<String, String>(2);
+    tokenSet.put("auth-token", token);
+    tokenSet.put("edi-token", "");
+    this.tokenManager = new TokenManager(tokenSet);
     this.tokenManager.storeToken();
 
   }
