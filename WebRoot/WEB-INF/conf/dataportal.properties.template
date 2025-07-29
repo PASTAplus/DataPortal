@@ -16,6 +16,7 @@ db.pkg.User=pasta
 db.pkg.Password=HIDEPASSWORD
 
 # Data Portal properties
+dataportal.portalUrlHead=https://portal.edirepository.org/nis
 dataportal.downtime.dayOfWeek=Wednesday
 dataportal.experimental=false
 dataportal.hostname=portal.edirepository.org
