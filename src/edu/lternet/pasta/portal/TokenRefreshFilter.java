@@ -12,6 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -60,19 +61,21 @@ public class TokenRefreshFilter implements Filter {
     }
 
     private void refreshToken(String uid) throws Exception {
-        String extToken = getExtToken(uid).get("auth-token");
-        if (extToken == null) {
+        HashMap<String, String> tokenSet = getTokenSet(uid);
+        String authToken = tokenSet.get("auth-token");
+        String ediToken = tokenSet.get("edi-token");
+        if (authToken == null) {
             logger.error("Token not found for user: " + uid);
             return;
         }
-        String refreshedExtToken = fetchRefreshedToken(extToken);
-        if (refreshedExtToken != null) {
-            setExtToken(refreshedExtToken);
+        HashMap<String, String> refreshedTokenSet = fetchRefreshedTokenSet(authToken, ediToken);
+        if (refreshedTokenSet != null) {
+            setTokenSet(refreshedTokenSet);
             logger.info("Refreshed token for user: " + uid);
         }
     }
 
-    public HashMap<String, String> getExtToken(String uid) throws ClassNotFoundException {
+    public HashMap<String, String> getTokenSet(String uid) throws ClassNotFoundException {
         try {
             return TokenManager.getTokenSet(uid);
         } catch (SQLException e) {
@@ -80,18 +83,17 @@ public class TokenRefreshFilter implements Filter {
         }
     }
 
-    public void setExtToken(String extToken) throws SQLException, ClassNotFoundException {
-        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
-        tokenSet.put("auth-token", extToken);
-        tokenSet.put("edi-token", "");
+    public void setTokenSet(HashMap<String, String> tokenSet) throws SQLException, ClassNotFoundException {
         TokenManager tokenManager = new TokenManager(tokenSet);
         tokenManager.storeToken();
     }
 
-    public String fetchRefreshedToken(String token) throws Exception {
+    public HashMap<String, String> fetchRefreshedTokenSet(String authToken, String ediToken) throws Exception {
+        String jsonPayload = "{\"pasta-token\":\"" + authToken + "\",\"edi-token\":\"" + ediToken + "\"" + "}";
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(this.tokenRefreshUrl);
-        httpPost.setEntity(new StringEntity(token, "utf-8"));
+        httpPost.setHeader("Content-type", "application/json");
+        httpPost.setEntity(new StringEntity(jsonPayload, "utf-8"));
         try {
             HttpResponse httpResponse = httpClient.execute(httpPost);
             StatusLine statusLine = httpResponse.getStatusLine();
@@ -101,7 +103,7 @@ public class TokenRefreshFilter implements Filter {
                 return null;
             }
             HttpEntity httpEntity = httpResponse.getEntity();
-            return EntityUtils.toString(httpEntity, "utf-8").trim();
+            return json2TokenSet(EntityUtils.toString(httpEntity, "utf-8").trim());
         } catch (Exception e) {
             logger.error("Error fetching refreshed token: " + e.getMessage());
         } finally {
@@ -109,5 +111,17 @@ public class TokenRefreshFilter implements Filter {
         }
 
         return null;
+    }
+
+    private HashMap<String, String> json2TokenSet(String jsonPayload) {
+        JSONObject responsePayload = new JSONObject(jsonPayload);
+        String authToken = responsePayload.getString("pasta-token");
+        String ediToken = responsePayload.getString("edi-token");
+
+        HashMap<String, String> tokenSet = new HashMap<String, String>(2);
+        tokenSet.put("auth-token", authToken);
+        tokenSet.put("edi-token", ediToken);
+
+        return tokenSet;
     }
 }
