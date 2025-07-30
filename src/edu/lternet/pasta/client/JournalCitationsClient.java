@@ -133,8 +133,8 @@ public class JournalCitationsClient extends PastaClient {
         HttpPost httpPost = new HttpPost(BASE_URL_ONE_CITATION);
 
         // Set header content
-        if (this.token != null) {
-            httpPost.setHeader("Cookie", "auth-token=" + this.token);
+        if (this.token != null && this.ediToken != null) {
+            httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
         }
         
         httpPost.setHeader("Content-Type", "application/xml");
@@ -214,8 +214,8 @@ public class JournalCitationsClient extends PastaClient {
     int journalCitationId = journalCitation.getJournalCitationId();
     HttpPut httpPut = new HttpPut(BASE_URL_ONE_CITATION + "/" + journalCitationId);
 
-    if (this.token != null) {
-      httpPut.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpPut.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
     httpPut.setHeader("Content-Type", "application/xml");
 
@@ -309,8 +309,8 @@ public class JournalCitationsClient extends PastaClient {
       String entityString = null;
 
       // Set header content
-      if (this.token != null) {
-          httpGet.setHeader("Cookie", "auth-token=" + this.token);
+      if (this.token != null && this.ediToken != null) {
+          httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
       }
 
       try {
@@ -347,8 +347,8 @@ public class JournalCitationsClient extends PastaClient {
       URI uri = uriBuilder.build();
       HttpGet httpGet = new HttpGet(uri);
 
-      if (this.token != null) {
-          httpGet.setHeader("Cookie", "auth-token=" + this.token);
+      if (this.token != null && this.ediToken != null) {
+          httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
       }
 
       String entityString;
@@ -386,8 +386,8 @@ public class JournalCitationsClient extends PastaClient {
       String entityString = null;
 
       // Set header content
-      if (this.token != null) {
-          httpGet.setHeader("Cookie", "auth-token=" + this.token);
+      if (this.token != null && this.ediToken != null) {
+          httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
       }
 
       try {
@@ -426,8 +426,8 @@ public class JournalCitationsClient extends PastaClient {
         HttpGet httpGet = new HttpGet(BASE_URL_ONE_CITATION + "/" + journalCitationId);
 
         // Set header content
-        if (this.token != null) {
-            httpGet.setHeader("Cookie", "auth-token=" + this.token);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
         }
 
         try {
@@ -479,8 +479,8 @@ public class JournalCitationsClient extends PastaClient {
     HttpDelete httpDelete = new HttpDelete(BASE_URL_ONE_CITATION + "/" + id);
 
     // Set header content
-    if (this.token != null) {
-      httpDelete.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpDelete.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {

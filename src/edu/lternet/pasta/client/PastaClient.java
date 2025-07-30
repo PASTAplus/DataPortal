@@ -68,19 +68,20 @@ public class PastaClient {
    * Instance variables
    */
   
-  protected String pastaHost = null;
-  protected String pastaProtocol = null;
+  protected String pastaHost;
+  protected String pastaProtocol;
   protected int pastaPort;
-  protected String pastaUriHead = null;
-  protected Integer maxIdleTime = null;
-  protected Integer idleSleepTime = null;
-  protected Integer initialSleepTime = null;
+  protected String pastaUriHead;
+  protected Integer maxIdleTime;
+  protected Integer idleSleepTime;
+  protected Integer initialSleepTime;
 
-  protected String uid = null;
+  protected String uid;
   protected String token = null;
+  protected String ediToken = null;
   protected HashMap<String, String> tokenSet = null;
   
-  protected String portalUrlHead = null;
+  protected String portalUrlHead;
   
   /*
    * Constructors
@@ -95,7 +96,7 @@ public class PastaClient {
     }
 
     this.uid = uid;
-    String gripe = null;
+    String gripe;
 
     this.portalUrlHead = options.getString("dataportal.portalUrlHead");
 
@@ -122,6 +123,7 @@ public class PastaClient {
 
           this.tokenSet = TokenManager.getTokenSet(uid);
           this.token = this.tokenSet.get("auth-token");
+          this.ediToken = this.tokenSet.get("edi-token");
 
 
           // Throw exception if user not "public" and token not in store
@@ -138,6 +140,10 @@ public class PastaClient {
 
     }
 
+  }
+
+  protected String makePastaCookie(String authToken, String ediToken) {
+      return String.format("auth-token=%s; edi-token=%s", authToken, ediToken);
   }
   
   

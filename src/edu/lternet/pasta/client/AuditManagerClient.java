@@ -293,8 +293,8 @@ public class AuditManagerClient extends PastaClient {
     HttpGet httpGet = new HttpGet(BASE_URL + "/report/" + oid);
 
     // Set header content
-    if (this.token != null) {
-      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {
@@ -351,8 +351,8 @@ public class AuditManagerClient extends PastaClient {
 		HttpGet httpGet = new HttpGet(url);
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -539,8 +539,8 @@ public class AuditManagerClient extends PastaClient {
     HttpGet httpGet = new HttpGet(BASE_URL + "/report?" + filter);
 
     // Set header content
-    if (this.token != null) {
-      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
 		int firstOidInt = 0;
@@ -608,8 +608,8 @@ public class AuditManagerClient extends PastaClient {
     HttpGet httpGet = new HttpGet(BASE_URL + "/csvreport?" + filter);
 
     // Set header content
-    if (this.token != null) {
-      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {
@@ -692,8 +692,8 @@ public class AuditManagerClient extends PastaClient {
 		HttpGet httpGet = new HttpGet(serviceUrl);
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {

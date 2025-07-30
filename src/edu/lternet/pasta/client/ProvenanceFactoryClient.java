@@ -102,8 +102,8 @@ public class ProvenanceFactoryClient extends PastaClient {
 		HttpGet httpGet = new HttpGet(provenanceURL);
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {

@@ -274,8 +274,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String resourceMap = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpPost.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		httpPost.setHeader("Content-Type", contentType);
@@ -364,8 +364,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String resourceMap = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpPost.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		httpPost.setHeader("Content-Type", contentType);
@@ -440,7 +440,11 @@ public class DataPackageManagerClient extends PastaClient {
 		HttpResponse httpResponse;
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String url = String.format("%s/download/eml/%s/%d/%d", BASE_URL, scope, identifier, revision);
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+		HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
 		try {
 			httpResponse = httpClient.execute(httpGet);
 			getInfo(httpResponse);
@@ -490,8 +494,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpDelete.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpDelete.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -530,8 +534,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpDelete.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpDelete.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -577,8 +581,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String qualityReport = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpPost.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 		httpPost.setHeader("Content-Type", contentType);
 
@@ -726,8 +730,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -772,8 +776,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -809,8 +813,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -861,8 +865,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -895,8 +899,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -939,8 +943,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -983,8 +987,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1019,8 +1023,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1056,8 +1060,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1092,8 +1096,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1131,8 +1135,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1168,8 +1172,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1205,8 +1209,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1245,8 +1249,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpPost.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1284,8 +1288,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1341,7 +1345,11 @@ public class DataPackageManagerClient extends PastaClient {
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, entityId);
 		String url = BASE_URL + "/data/eml" + urlTail;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
 
 		try {
 			httpResponse = httpClient.execute(httpGet);
@@ -1417,8 +1425,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1463,8 +1471,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1518,8 +1526,8 @@ public class DataPackageManagerClient extends PastaClient {
 		Long entitySize = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1570,8 +1578,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1612,8 +1620,12 @@ public class DataPackageManagerClient extends PastaClient {
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		String urlTail = makeUrlTail(scope, identifier.toString(), revision, null);
 		String url = BASE_URL + "/eml" + urlTail;
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
-		String entityString = null;
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
+		String entityString;
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1661,9 +1673,12 @@ public class DataPackageManagerClient extends PastaClient {
 		}
 
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		String url = String.format("%s/archive/eml/%s/%d/%s/%s",  
-				                    BASE_URL, scope, identifier, revision, transaction);
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+		String url = String.format("%s/archive/eml/%s/%d/%s/%s", BASE_URL, scope, identifier, revision, transaction);
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
 
 		try {
 			httpResponse = httpClient.execute(httpGet);
@@ -1719,7 +1734,11 @@ public class DataPackageManagerClient extends PastaClient {
 		String url = BASE_URL + "/report/eml" + urlTail;
 		String entityString = null;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1762,8 +1781,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 		httpGet.setHeader("Accept", contentType);
 
@@ -1805,7 +1824,11 @@ public class DataPackageManagerClient extends PastaClient {
 		String url = BASE_URL + "/metadata/eml" + urlTail;
 		String entityString = null;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
 
 		try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
@@ -1842,8 +1865,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1879,8 +1902,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1919,8 +1942,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -1959,8 +1982,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -2001,8 +2024,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String entityString = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -2045,9 +2068,14 @@ public class DataPackageManagerClient extends PastaClient {
 		String url = BASE_URL + "/rmd/eml" + urlTail;
 		String entityString = null;
 
-		HttpGet httpGet = HttpGetFactory.makeHttpGet(url, this.token, this.userAgent);
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
 
-		try {
+
+        try {
 			HttpResponse httpResponse = httpClient.execute(httpGet);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			HttpEntity httpEntity = httpResponse.getEntity();
@@ -2084,8 +2112,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String resultSetXML = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -2111,8 +2139,8 @@ public class DataPackageManagerClient extends PastaClient {
 		InputStream inputStream = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpGet.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 
 		try {
@@ -2162,8 +2190,8 @@ public class DataPackageManagerClient extends PastaClient {
 		String resourceMap = null;
 
 		// Set header content
-		if (this.token != null) {
-			httpPut.setHeader("Cookie", "auth-token=" + this.token);
+		if (this.token != null && this.ediToken != null) {
+			httpPut.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
 		}
 		httpPut.setHeader("Content-Type", contentType);
 

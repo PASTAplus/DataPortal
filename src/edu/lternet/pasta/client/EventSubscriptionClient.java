@@ -128,8 +128,8 @@ public class EventSubscriptionClient extends PastaClient {
     HttpPost httpPost = new HttpPost(BASE_URL_SUBSCRIPTION);
 
     // Set header content
-    if (this.token != null) {
-      httpPost.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
     httpPost.setHeader("Content-Type", "application/xml");
 
@@ -221,8 +221,8 @@ public class EventSubscriptionClient extends PastaClient {
     HttpGet httpGet = new HttpGet(BASE_URL_SUBSCRIPTION + "/" + sid);
 
     // Set header content
-    if (this.token != null) {
-      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {
@@ -280,8 +280,8 @@ public class EventSubscriptionClient extends PastaClient {
     HttpGet httpGet = new HttpGet(BASE_URL_SUBSCRIPTION + "?" + filter);
 
     // Set header content
-    if (this.token != null) {
-      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {
@@ -336,8 +336,8 @@ public class EventSubscriptionClient extends PastaClient {
     HttpGet httpGet = new HttpGet(BASE_URL_SUBSCRIPTION + "/" + "schema");
 
     // Set header content
-    if (this.token != null) {
-      httpGet.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {
@@ -392,8 +392,8 @@ public class EventSubscriptionClient extends PastaClient {
     HttpDelete httpDelete = new HttpDelete(BASE_URL_SUBSCRIPTION + "/" + sid);
 
     // Set header content
-    if (this.token != null) {
-      httpDelete.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpDelete.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
 
     try {
@@ -447,8 +447,8 @@ public class EventSubscriptionClient extends PastaClient {
     HttpPost httpPost = new HttpPost(subscriptionURL);
 
     // Set header content
-    if (this.token != null) {
-      httpPost.setHeader("Cookie", "auth-token=" + this.token);
+    if (this.token != null && this.ediToken != null) {
+      httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
     }
     httpPost.setHeader("Content-Type", "application/xml");
 
