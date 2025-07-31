@@ -182,7 +182,8 @@ public class LoginServlet extends DataPortalServlet {
     httpSession.removeAttribute("from");
 
     String extToken = request.getParameter("token");
-    String cname = request.getParameter("cname");
+    String ediToken = request.getParameter("edi_token");
+    String cname = request.getParameter("common_name");
     String idProvider = request.getParameter("idp");
     String idProviderToken = request.getParameter("idp_token");
     String errorMsg = request.getParameter("error");
@@ -193,10 +194,10 @@ public class LoginServlet extends DataPortalServlet {
         return;
     }
 
-    if (extToken != null && cname != null) { // Other 3rd party login
+    if (extToken != null && ediToken != null) { // Other 3rd party login
         HashMap<String, String> tokenSet = new HashMap<String, String>(2);
         tokenSet.put("auth-token", extToken);
-        tokenSet.put("edi-token", "");
+        tokenSet.put("edi-token", ediToken);
         tokenManager = new TokenManager(tokenSet);
         try {
             tokenManager.storeToken();
