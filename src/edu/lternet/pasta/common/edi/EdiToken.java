@@ -24,10 +24,13 @@
 
 package edu.lternet.pasta.common.edi;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Provides interface to the EDI Token claims.
@@ -87,5 +90,15 @@ public final class EdiToken {
     public String getCommonName() {
         return jsonPayload.getString("cn");
     }
+
+    public List<String> getPrincipals() {
+        JSONArray principals = jsonPayload.getJSONArray("principals");
+        List<String> principalsList = new ArrayList<>();
+        for (int i = 0; i < principals.length(); i++) {
+            principalsList.add(principals.getString(i));
+        }
+        return principalsList;
+    }
+
 
 }

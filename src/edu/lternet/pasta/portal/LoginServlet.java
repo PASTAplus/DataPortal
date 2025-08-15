@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.lternet.pasta.client.PastaImATeapotException;
+import edu.lternet.pasta.common.edi.EdiToken;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
@@ -71,6 +73,9 @@ public class LoginServlet extends DataPortalServlet {
   private final String authServer;
   private final String authTarget;
   private final String dataportalTarget;
+  private final boolean ediUseAuth;
+  private final String ediAuthenticatedId;
+  private final String ediVettedId;
 
 
     /**
@@ -112,6 +117,9 @@ public class LoginServlet extends DataPortalServlet {
       int authPort = options.getInt("auth.port");
       this.authTarget = options.getString("auth.target");
       this.authServer = PastaClient.composePastaUrl(authProtocol, authHost, authPort);
+      this.ediUseAuth = Boolean.parseBoolean(options.getString("edi.auth.use"));
+      this.ediAuthenticatedId = options.getString("edi.authenticated.id");
+      this.ediVettedId = options.getString("edi.vetted.id");
       String dataportalHostName = options.getString("dataportal.hostname");
       String dataportalProtocol = options.getString("dataportal.protocol");
       int dataportalPort = options.getInt("dataportal.port");
@@ -256,6 +264,20 @@ public class LoginServlet extends DataPortalServlet {
             }
             if (group.equals("vetted")) {
                 vetted = true;
+            }
+        }
+        if (this.ediUseAuth  && ediToken != null) {
+            EdiToken et = new EdiToken(ediToken);
+            List<String> principals = et.getPrincipals();
+            authenticated = false;
+            vetted = false;
+            for (int i=0; i<principals.size(); i++) {
+                if (principals.get(i).equals(ediAuthenticatedId)) {
+                    authenticated = true;
+                }
+                if (principals.get(i).equals(ediVettedId)) {
+                    vetted = true;
+                }
             }
         }
         httpSession.setAttribute("authenticated", authenticated);
