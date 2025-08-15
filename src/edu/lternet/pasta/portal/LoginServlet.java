@@ -231,6 +231,7 @@ public class LoginServlet extends DataPortalServlet {
           distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
           new LoginClient(distinguishedName, password);
           HashMap<String, String> tokenSet = TokenManager.getTokenSet(distinguishedName);
+          ediToken = tokenSet.get("edi-token");
           tokenManager = new TokenManager(tokenSet);
 
         } catch (PastaAuthenticationException e) {
