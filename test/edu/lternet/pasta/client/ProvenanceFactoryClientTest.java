@@ -97,8 +97,9 @@ public class ProvenanceFactoryClientTest {
 		
 		// Authenticate test user
 		try {
-			loginClient = new LoginClient(username, password);
-		} catch (PastaAuthenticationException e) {
+			loginClient = new LoginClient();
+            loginClient.login(username, password);
+        } catch (PastaAuthenticationException e) {
 			fail("User '" + username + "' failed to authenticate.");
 		}
 

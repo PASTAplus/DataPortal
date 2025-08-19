@@ -118,7 +118,8 @@ public class LoginClientTest {
 	public void testLoginClientGoodUser() {
 
 		try {
-			this.loginClient = new LoginClient(username, password);
+			this.loginClient = new LoginClient();
+            this.loginClient.login(username, password);
 		} catch (PastaAuthenticationException | PastaImATeapotException e) {
 			fail("Good user '" + username + "' failed to authenticate.");
 		}
@@ -133,8 +134,9 @@ public class LoginClientTest {
 		password = "badpassword";
 
 		try {
-			this.loginClient = new LoginClient(username, password);
-		} catch (PastaAuthenticationException | PastaImATeapotException e) {
+			this.loginClient = new LoginClient();
+            this.loginClient.login(username, password);
+        } catch (PastaAuthenticationException | PastaImATeapotException e) {
 			// This exception should be caught in this test.
 			logger.error("PastaAuthenticationException with call to LoginService: "
 			    + e);

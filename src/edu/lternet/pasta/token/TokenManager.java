@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.lternet.pasta.common.SqlEscape;
+import edu.lternet.pasta.common.edi.EdiToken;
 import edu.lternet.pasta.portal.ConfigurationListener;
 
 import org.apache.commons.configuration.Configuration;
@@ -72,12 +73,17 @@ public class TokenManager {
     private Long ttl;
     private ArrayList<String> groups;
     private String ediToken = null;
+    private boolean ediUseAuth = false;
 
     /*
      * Constructors
      */
 
     public TokenManager(HashMap<String, String> tokenSet) {
+
+        Configuration options = ConfigurationListener.getOptions();
+        this.ediUseAuth = Boolean.parseBoolean(options.getString("edi.auth.use"));
+
         this.extToken = tokenSet.get("auth-token");
         if (extToken != null) {
             this.b64Token = extToken.split("-")[0];
@@ -91,6 +97,10 @@ public class TokenManager {
         }
 
         this.ediToken = tokenSet.get("edi-token");
+        if (ediUseAuth) {
+            EdiToken et = new EdiToken(ediToken);
+            this.uid = et.getSubject();
+        }
     }
     
     /*

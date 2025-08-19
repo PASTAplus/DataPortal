@@ -229,10 +229,11 @@ public class LoginServlet extends DataPortalServlet {
         try {
 
           distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
-          new LoginClient(distinguishedName, password);
-          HashMap<String, String> tokenSet = TokenManager.getTokenSet(distinguishedName);
+          LoginClient loginClient = new LoginClient();
+          HashMap<String, String> tokenSet = loginClient.login(distinguishedName, password);
           ediToken = tokenSet.get("edi-token");
           tokenManager = new TokenManager(tokenSet);
+          tokenManager.storeToken();
 
         } catch (PastaAuthenticationException e) {
             String message = "<em>Login failed for user</em> " + uid;
@@ -244,7 +245,7 @@ public class LoginServlet extends DataPortalServlet {
             logger.error(gripe);
             isTeapot = true;
         } catch (SQLException | ClassNotFoundException e) {
-            logger.error(e.getMessage());
+            throw new RuntimeException(e);
         }
 
         if (isTeapot) {
@@ -270,6 +271,8 @@ public class LoginServlet extends DataPortalServlet {
         if (this.ediUseAuth  && ediToken != null) {
             EdiToken et = new EdiToken(ediToken);
             List<String> principals = et.getPrincipals();
+            distinguishedName = et.getSubject();
+            cname = et.getCommonName();
             authenticated = false;
             vetted = false;
             for (int i=0; i<principals.size(); i++) {

@@ -95,14 +95,9 @@ public class LoginClient {
    * user's authentication is successful, place the user's authentication token
    * into the "tokenstore" for future use.
    * 
-   * @param distinguishedName The user distinguished name, e.g. "uid=EDI,o=EDI,dc=edirepository,dc=org"
-   * @param password The user password.
    * @throws PastaAuthenticationException, PastaImATeapotException
    */
-  public LoginClient(
-          String distinguishedName,
-          String password
-  ) throws PastaAuthenticationException, PastaImATeapotException {
+  public LoginClient() throws PastaAuthenticationException, PastaImATeapotException {
 
     Configuration options = ConfigurationListener.getOptions();
 
@@ -113,21 +108,6 @@ public class LoginClient {
 
     String pastaUrl = PastaClient.composePastaUrl(this.authProtocol, this.authHost, this.authPort);
     this.LOGIN_URL = pastaUrl + this.authUri;
-
-    HashMap<String, String> tokenSet = this.login(distinguishedName, password);
-
-    if (tokenSet.size() != 2 ) {
-      String gripe = "User '" + distinguishedName + "' did not successfully authenticate.";
-      throw new PastaAuthenticationException(gripe);
-    } else {
-      TokenManager tokenManager = new TokenManager(tokenSet);
-      try {
-        tokenManager.storeToken();
-      } catch (SQLException | ClassNotFoundException e) {
-        logger.error(e);
-      }
-    }
-
   }
 
   private static void closeHttpClient(CloseableHttpClient httpClient) {
@@ -150,7 +130,7 @@ public class LoginClient {
    * @return The authentication token as a String object if the login is
    *         successful.
    */
-  private HashMap<String, String> login(
+  public HashMap<String, String> login(
           String username,
           String password
   ) throws PastaImATeapotException, PastaAuthenticationException {

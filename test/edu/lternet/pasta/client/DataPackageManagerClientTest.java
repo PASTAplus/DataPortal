@@ -153,7 +153,8 @@ public class DataPackageManagerClientTest {
      * Authenticate the test user
      */
     try {
-      LoginClient loginClient = new LoginClient(testUser, password);
+      LoginClient loginClient = new LoginClient();
+      loginClient.login(testUser, password);
       System.err.println("User '" + testUser + "' authenticated.");
     } 
     catch (PastaAuthenticationException | PastaImATeapotException e) {

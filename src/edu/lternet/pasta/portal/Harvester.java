@@ -164,8 +164,9 @@ public class Harvester implements Runnable {
        * Authenticate the test user
        */
       try {
-        LoginClient loginClient = new LoginClient(username, password);
-      } 
+        LoginClient loginClient = new LoginClient();
+        loginClient.login(username, password);
+      }
       catch (PastaAuthenticationException | PastaImATeapotException e) {
         logger.error("User '" + username + "' failed to authenticate.");
       }
