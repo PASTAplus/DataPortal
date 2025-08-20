@@ -106,11 +106,14 @@ public class UserBrowseServlet extends DataPortalServlet {
 		HttpSession httpSession = request.getSession();
 		String uid = (String) httpSession.getAttribute("uid");
 		String distinguishedName = (String) httpSession.getAttribute("uid");
+        boolean vetted = false;
+        if (httpSession.getAttribute("vetted") != null) {
+            vetted = (Boolean) httpSession.getAttribute("vetted");
+        }
 		String forward = null;
 		String browseMessage = "View a data package you have uploaded.";
 
-		if (uid == null || uid.isEmpty() || uid.equals("public") || distinguishedName == null
-				|| !distinguishedName.contains("o=EDI,dc=edirepository,dc=org")) {
+		if (!vetted) {
 			forward = "./login.jsp";
 			request.setAttribute("message", LOGIN_WARNING);
 			request.setAttribute("from", "userBrowseServlet");
