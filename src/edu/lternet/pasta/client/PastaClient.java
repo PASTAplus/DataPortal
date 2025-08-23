@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.lternet.pasta.common.security.access.ForbiddenException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -280,7 +281,7 @@ public class PastaClient {
         throw(e);
            
       case HttpStatus.SC_FORBIDDEN:
-        e = new UnauthorizedException(msg);
+        e = new ForbiddenException(msg);
         throw(e);
       
       case HttpStatus.SC_GONE:
