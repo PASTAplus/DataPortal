@@ -265,7 +265,9 @@ public class PastaClient {
     PolicyFactory policy = Sanitizers.STYLES;
     String cleanMsg = policy.sanitize(entityString);
     
-    String msg = String.format("PASTA returned status code %d - %s", statusCode, cleanMsg);
+//    String msg = String.format("PASTA returned status code %d - %s", statusCode, cleanMsg);
+
+    String msg = String.format("{ \"status\": \"%d\", \"message\": \"%s\"}", statusCode, cleanMsg);
     
     switch (statusCode) {
       case HttpStatus.SC_BAD_REQUEST:
