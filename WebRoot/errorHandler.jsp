@@ -1,10 +1,17 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
+<%@ page import="edu.lternet.pasta.portal.ExceptionFormatter" %>
+<%@ page import="org.json.JSONObject" %>
 <%@ page isErrorPage="true"%>
 
 <%
   final String pageTitle = "Error Handler";
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
+
+  String exceptionMessage = String.valueOf(pageContext.getException().getMessage());
+  ExceptionFormatter exceptionFormatter = new ExceptionFormatter();
+  String message = exceptionFormatter.getMessage(exceptionMessage);
+  String exceptionJSON = exceptionFormatter.getJSONString(exceptionMessage);
 %>
 
 <!DOCTYPE html>
@@ -60,14 +67,16 @@
 						<div class="row-fluid">
 							<div class="span12">							
 								<!-- Content -->
-					      <p><strong>An <em>error</em> has occurred</strong> in the Data Portal:</p>                
-                <p class="nis-error">${pageContext.exception.message}</p>        
-                <p>For further assistance, please contact the
-                    <a href="mailto:support@edirepository.org?Subject=EDI%20Data%20Portal%20error" target="_top">
-                    Environmental Data Initiative</a>. Please copy the error message shown 
-                    above into your email message, along with any other information 
-                    that might help us to assist you more promptly.</p>
-			         </div>									
+    				      <p>We apologize, but an unexpected error occured in the EDI Data Portal or the Data Repository:</p>
+                          <p class="nis-error"><%= message %></p>
+                          <p>
+                              For further assistance, please
+                              <a href="javascript:void(0);" onclick="copyError()"><u><b>copy</b></u></a>
+                              the error message shown above, along with any other information that might help
+                              us to assist you more promptly, and send it to our
+                              <a href="mailto:support@edirepository.org?Subject=EDI%20Data%20Portal%20error" target="_top">
+                              <u>support team</u></a> at the Environmental Data Initiative.</p>
+                         </div>
 								<!-- /Content -->
 							</div>
 						</div>
@@ -77,8 +86,22 @@
 		</div>
 	</div>
 
-		<jsp:include page="footer.jsp" />
-</div>
+<jsp:include page="footer.jsp" />
+
+<script type="text/javascript">
+    function copyError()
+    {
+        var copyErrorText = "<%= exceptionJSON %>";
+        navigator.clipboard.writeText(copyErrorText)
+            .then(() => {
+                alert("Error copied successfully!");
+            })
+            .catch(err => {
+                console.error("Failed to copy error: ", err);
+                alert("Failed to copy error. Please copy and paste the error message.");
+            });
+    }
+</script>
 
 </body>
 
