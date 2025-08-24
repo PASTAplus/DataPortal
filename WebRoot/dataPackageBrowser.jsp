@@ -58,6 +58,10 @@
 		.pasta-link:hover {
 			text-decoration: underline;
 		}
+        .scrollable-list-container {
+            height: 50vh; /* 50% of viewport height */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
 	</style>
 
 	<script>
@@ -94,7 +98,9 @@
 						</div>
 						<div class="row-fluid">
 							<div class="span12">
-				        		<%=html%>
+                                <div class="scrollable-list-container">
+                                    <%=html%>
+                                </div>
 							</div>
 						</div>
 					</div>
