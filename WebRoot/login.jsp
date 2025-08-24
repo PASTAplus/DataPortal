@@ -37,8 +37,8 @@
     final String titleText = DataPortalServlet.getTitleText(pageTitle);
     HttpSession httpSession = request.getSession();
 
-    String message = (String) httpSession.getAttribute("message");
-    httpSession.removeAttribute("message");
+    String message = (String) request.getAttribute("message");
+    request.removeAttribute("message");
 
     String from = (String) request.getAttribute("from");
 
@@ -119,11 +119,8 @@
                             </div>
                             <span class="row-fluid separator_border"></span>
                             <h3>
-                                Use your EDI account to upload data (contact
-                                <a href="mailto:support@edirepository.org">
-                                    support@edirepository.org</a> to create an account
-                                or <a href="https://dashboard.edirepository.org/dashboard/auth/reset_password_init">click
-                                here</a> to reset your password):
+                                Forgot your EDI user account password - <a href="https://dashboard.edirepository.org/dashboard/auth/reset_password_init"><u><b>click
+                                here</b></u></a> to reset it.
                             </h3>
                         </div>
                         <div class="row-fluid">
@@ -176,8 +173,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <h3>Or use an alternate identity provider to access data requiring user
-                                    authentication:</h3>
+                                <h3>Or use an alternate identity provider to access your EDI user account:</h3>
                                 <p>
                                     <a href="<%= authLoginUrl %>/google?target=<%= targetUrl %>">
                                         <img src="./images/btn_google_signin_light_normal_web.png"
