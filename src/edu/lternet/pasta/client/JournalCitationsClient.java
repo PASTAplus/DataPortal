@@ -304,7 +304,7 @@ public class JournalCitationsClient extends PastaClient {
       String revision) throws Exception {
       CloseableHttpClient httpClient = HttpClientBuilder.create().build();
       String urlTail = makeUrlTail(scope, identifier.toString(), revision, null);
-      String url = BASE_URL_LIST_OF_CITATIONS + "/" + urlTail + "?all";
+      String url = BASE_URL_LIST_OF_CITATIONS + urlTail + "?all";
       HttpGet httpGet = new HttpGet(url);
       String entityString = null;
 
