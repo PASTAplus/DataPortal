@@ -41,6 +41,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpDelete;
@@ -2323,5 +2324,39 @@ public class DataPackageManagerClient extends PastaClient {
 		}
 
 	}
+
+    public boolean hasThumbnail(String scope, String identifier, String revision, String entityId) {
+        boolean hasThumbnail = false;
+        String url;
+        if (entityId == null) {
+            url = String.format("%s/thumbnail/eml/%s/%s/%s/", BASE_URL, scope, identifier, revision);
+        }
+        else {
+            url = String.format("%s/thumbnail/eml/%s/%s/%s/%s", BASE_URL, scope, identifier, revision, entityId);
+        }
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpGet httpGet = new HttpGet(url);
+
+        // Set header content
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String entityString = EntityUtils.toString(httpEntity);
+            if (statusCode == HttpStatus.SC_OK) {
+                hasThumbnail = true;
+            } else {
+                logger.warn(entityString);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        } finally {
+            closeHttpClient(httpClient);
+        }
+        return hasThumbnail;
+    }
 
 }

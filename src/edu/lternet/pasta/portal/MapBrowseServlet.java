@@ -552,6 +552,22 @@ public class MapBrowseServlet extends DataPortalServlet {
 						}
 
 						titleHTMLBuilder.append("</ul>\n");
+                        if (dpmClient.hasThumbnail(scope, identifier, revision, null)) {
+                            String style = "style=\"" +
+                                    "max-height: 200px; " +
+                                    "max-width: 400px; " +
+                                    "height: auto; " +
+                                    "width: auto; " +
+                                    "display: block; " +
+                                    "margin-left: auto; " +
+                                    "margin-right: auto; " +
+                                    "border: 2px solid #5990bd; " +
+                                    "\"";
+                            String imageUrl = String.format("%s/thumbnail/eml/%s/%s/%s", dpmClient.getBaseUrl(), scope, identifier, revision);
+                            String alt = String.format("%s-thumbnail", packageid);
+                            String thumbnail = String.format("<p><img %s src=\"%s\" alt=\"%s\"/></p>", style, imageUrl, alt);
+                            titleHTMLBuilder.append(thumbnail);
+                        }
 						titleHTML = titleHTMLBuilder.toString();
 					}
 
