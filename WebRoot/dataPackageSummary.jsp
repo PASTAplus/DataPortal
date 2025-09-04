@@ -595,6 +595,7 @@ $("#jqxExpander").jqxExpander(
 <!-- End jqWidgets JavaScript for jqxTree widget -->
 
 <script src="./js/more.js" type="text/javascript"></script>
+<script src="./js/lightbox.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 function copyCitation()
