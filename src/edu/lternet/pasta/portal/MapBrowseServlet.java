@@ -1155,20 +1155,21 @@ public class MapBrowseServlet extends DataPortalServlet {
 				DataPackage dataPackage = emlObject.getDataPackage();
 				boolean hasDataTableEntity = dataPackage.hasDataTableEntity();
 				if (hasDataTableEntity) {
-					ArrayList<String> programLinks = CodeGenerationServlet
-							.getProgramLinks(packageId);
+					ArrayList<String> programLinks = CodeGenerationServlet.getProgramLinks(packageId);
 					TreeMap<String, String> programDict = CodeGenerationServlet.getProgramDict(packageId);
 					codeGenerationHTMLBuilder.append("Analyze this data package using:&nbsp;");
 					for (String program : programDict.keySet()) {
 						codeGenerationHTMLBuilder.append(
 							String.format(
-                                "<input class=\"btn btn-info btn-default\" type=\"button\" onclick=\"location.href='%s';\" value=\"%s\" />",
-                                programDict.get(program), program));
+                             "<input class=\"btn btn-info btn-default\" type=\"button\" onclick=\"location.href='%s';\" value=\"%s\" />",
+                                programDict.get(program),
+                                program
+                            )
+                        );
 						codeGenerationHTMLBuilder.append("&nbsp;&nbsp;");
 					}
 					codeGenerationHTML = codeGenerationHTMLBuilder.toString();
-					codeGenerationHTML = codeGenerationHTML.substring(0,
-							codeGenerationHTML.length() - 12); // trim the last two character entities
+					codeGenerationHTML = codeGenerationHTML.substring(0, codeGenerationHTML.length() - 12); // trim the last two character entities
 				}
 			}
 
