@@ -69,7 +69,8 @@ public class CodeGenerationClient extends PastaClient {
 	 * Instance variables
 	 */
 
-	private final String BASE_URL = "http://www.vcrlter.virginia.edu/webservice/PASTAprog";
+//	private final String BASE_URL = "http://www.vcrlter.virginia.edu/webservice/PASTAprog";
+	private final String BASE_URL = "https://www.vcrlter.virginia.edu/data/eml2/getStatProgPASTA.php?knb_package=";
 	private String downloadFilename = null;
 	private String statisticalPackageName = null;
 	private String url;
@@ -142,6 +143,7 @@ public class CodeGenerationClient extends PastaClient {
 		
 		String baseUrlSuffix = pastaHost.contains("-s") ? "-S" : "";
 		this.url = String.format("%s%s/%s", BASE_URL, baseUrlSuffix, urlFilename);
+//        this.url = String.format("%s%s&statPackage=%s", BASE_URL, packageId, statisticalFileType);
 	}
 
 
