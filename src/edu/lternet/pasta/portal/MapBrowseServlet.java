@@ -39,6 +39,7 @@ import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import edu.lternet.pasta.client.*;
 import edu.lternet.pasta.common.eml.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.text.StrTokenizer;
@@ -48,22 +49,18 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.xpath.CachedXPathAPI;
+import org.json.JSONObject;
 import org.owasp.encoder.Encode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.lternet.pasta.client.RidareClient;
-import edu.lternet.pasta.client.AuditManagerClient;
-import edu.lternet.pasta.client.CiteClient;
-import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.JournalCitationsClient;
-import edu.lternet.pasta.client.SEOClient;
 import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
 import edu.lternet.pasta.common.JournalCitation;
 import edu.lternet.pasta.common.ScaledNumberFormat;
 import edu.lternet.pasta.common.UserErrorException;
+import edu.lternet.pasta.common.edi.IAM;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet;
 import edu.lternet.pasta.portal.user.SavedData;
 
@@ -92,13 +89,17 @@ public class MapBrowseServlet extends DataPortalServlet {
 	private static final String PUBLISHER = "Environmental Data Initiative. ";
 	private static final String DoiOrg = "https://doi.org/";
 	private static final String wasDeletedMsg =
-	"This data package has been deleted by the metadata provider. It remains accessible for archival purposes only.";
-
+            "This data package has been deleted by the metadata provider." +
+            " It remains accessible for archival purposes only.";
+    private static String authHost;
+    private static String authProtocol;
+    private static Integer authPort;
+    private static String authKey;
 
 	/**
 	 * Constructor of the object.
 	 */
-	public MapBrowseServlet() {
+	public MapBrowseServlet() throws PastaConfigurationException {
 		super();
 	}
 
@@ -304,7 +305,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession httpSession = request.getSession();
+        HttpSession httpSession = request.getSession();
 		String titleHTML = "";
 		String viewFullMetadataHTML = "";
         String moreRecentRevisionHTML = "";
@@ -328,6 +329,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String savedDataHTML = "";
 		String wasDeletedHTML = "";
 		String seoHTML = "";
+        String thumbnailManagementHTML = "";
 		EmlObject emlObject = null;
 		boolean showSaved = false;
 		boolean isSaved = false;
@@ -399,6 +401,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				StringBuilder codeGenerationHTMLBuilder = new StringBuilder();
 				StringBuilder savedDataHTMLBuilder = new StringBuilder();
                 StringBuilder journalCitationsHTMLBuilder = new StringBuilder();
+                StringBuilder thumbnailManagementHTMLBuilder = new StringBuilder();
 
 				String packageId = null;
 
@@ -409,6 +412,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				String next = "";
 				String revisions = "";
 
+                String packageUri = pastaUriHead + "eml";
 				String metadataUri = pastaUriHead + "metadata/eml";
 				String reportUri = pastaUriHead + "report";
 				String dataUri = pastaUriHead + "data/eml";
@@ -1130,7 +1134,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                 }
 
                 journalCitationsHTMLBuilder.append("<div>\n");
-                journalCitationsHTMLBuilder.append("<form id=\"journalcitations\" name=\"journalcitationsform\" method=\"post\" action=\"./journalCitations.jsp\" target=\"_top\">\n");
+                journalCitationsHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"journalcitations\" name=\"journalcitationsform\" method=\"post\" action=\"./journalCitations.jsp\" target=\"_top\">\n");
                 journalCitationsHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
                 journalCitationsHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"journalcitationsbutton\" value=\"Add Journal Citation\" >\n");
                 journalCitationsHTMLBuilder.append("</form>\n");
@@ -1171,8 +1175,35 @@ public class MapBrowseServlet extends DataPortalServlet {
 					codeGenerationHTML = codeGenerationHTMLBuilder.toString();
 					codeGenerationHTML = codeGenerationHTML.substring(0, codeGenerationHTML.length() - 12); // trim the last two character entities
 				}
-			}
 
+                // Thumbnail management
+                String ediToken = (String) httpSession.getAttribute("edi-token");
+                boolean isAuthorized = false;
+                if (ediToken != null && !ediToken.isEmpty()) {
+                    IAM iam = new IAM(authProtocol, authHost, authPort);
+                    iam.setEdiToken(ediToken);
+                    String resourceId = String.format("%s/%s/%s/%s", packageUri, scope, identifier, revision);
+                    try {
+                        JSONObject resp = iam.isAuthorized(resourceId, "write");
+                        isAuthorized = true;
+                    }
+                    catch (Exception e) {
+                        logger.warn(e);
+                    }
+                }
+
+                if (isAuthorized) {
+                    thumbnailManagementHTMLBuilder.append("<div>\n");
+                    thumbnailManagementHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"thumbnailmanagement\" name=\"thumbnailmanagementform\" method=\"post\" action=\"./thumbnailManagement.jsp\" target=\"_top\">\n");
+                    thumbnailManagementHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
+                    thumbnailManagementHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"thumbnailmanagementbutton\" value=\"Manage Thumbnails\" >\n");
+                    thumbnailManagementHTMLBuilder.append("</form>\n");
+                    thumbnailManagementHTMLBuilder.append("</div>\n");
+                    thumbnailManagementHTMLBuilder.append("<br/>");
+                    thumbnailManagementHTML = thumbnailManagementHTMLBuilder.toString();
+                }
+
+			}
 			else {
 				String msg = "The 'scope', 'identifier', or 'revision' field of the packageId is empty.";
 				throw new UserErrorException(msg);
@@ -1204,6 +1235,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("citationHTML", citationHTML);
         request.setAttribute("journalCitationsHTML", journalCitationsHTML);
         request.setAttribute("seoHTML", seoHTML);
+        request.setAttribute("thumbnailManagementHTML", thumbnailManagementHTML);
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
 		requestDispatcher.forward(request, response);
@@ -1467,7 +1499,11 @@ public class MapBrowseServlet extends DataPortalServlet {
 			    "No value defined for 'dataportal.experimental' property.");
 		}
 
-	}
+        authHost = options.getString("auth.hostname");
+        authProtocol = options.getString("auth.protocol");
+        authPort = options.getInt("auth.port");
+
+    }
 
 
 	/**
