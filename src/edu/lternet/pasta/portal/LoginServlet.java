@@ -35,15 +35,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.lternet.pasta.client.PastaImATeapotException;
-import edu.lternet.pasta.common.edi.EdiToken;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
+import edu.lternet.pasta.client.PastaImATeapotException;
 import edu.lternet.pasta.client.LoginClient;
 import edu.lternet.pasta.client.PastaAuthenticationException;
 import edu.lternet.pasta.client.PastaClient;
+import edu.lternet.pasta.common.edi.EdiToken;
 import edu.lternet.pasta.token.TokenManager;
 
 /**
