@@ -194,7 +194,7 @@
   <% if (!tier.equals("production")) { %>
   <style>
       .watermark {
-          background-image: url(/nis/images/watermark.png);
+          background-image: url(./images/watermark.png);
       }
   </style>
   <% } %>
