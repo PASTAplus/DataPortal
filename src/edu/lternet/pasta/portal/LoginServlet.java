@@ -232,6 +232,9 @@ public class LoginServlet extends DataPortalServlet {
           LoginClient loginClient = new LoginClient();
           HashMap<String, String> tokenSet = loginClient.login(distinguishedName, password);
           ediToken = tokenSet.get("edi-token");
+          httpSession.setAttribute("edi-token", ediToken);
+          extToken = tokenSet.get("auth-token");
+          httpSession.setAttribute("auth-token", extToken);
           tokenManager = new TokenManager(tokenSet);
           tokenManager.storeToken();
 
