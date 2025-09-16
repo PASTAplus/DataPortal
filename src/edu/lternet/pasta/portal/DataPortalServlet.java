@@ -151,7 +151,7 @@ public class DataPortalServlet extends HttpServlet {
       // If user not logged in, add suggestion for user to log in
       if (errorMessage.contains("You may need to log in before you can access the data entity")) {
     	  String suggestion =
-                  " <a href='./login.jsp'>Logging into the LTER Data Portal</a> <em>may</em> let you read this resource.";
+                  " <a href='./login.jsp'>Logging into the EDI Data Portal</a> <em>may</em> let you read this resource.";
     	  errorMessage = errorMessage + suggestion;
       }
     	  
