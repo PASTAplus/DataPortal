@@ -141,6 +141,12 @@
     <servlet-class>edu.lternet.pasta.portal.ScopeBrowseServlet</servlet-class>
   </servlet>
   <servlet>
+    <description>Thumbnail Manager Servlet</description>
+    <display-name>ThumbnailManagerServlet</display-name>
+    <servlet-name>ThumbnailManagerServlet</servlet-name>
+    <servlet-class>edu.lternet.pasta.portal.ThumbnailManagerServlet</servlet-class>
+  </servlet>
+  <servlet>
     <description>Identifier Browse Servlet</description>
     <display-name>IdentifierBrowseServlet</display-name>
     <servlet-name>IdentifierBrowseServlet</servlet-name>
@@ -229,12 +235,6 @@
     <display-name>CodeGenerationDownloadServlet</display-name>
     <servlet-name>CodeGenerationDownloadServlet</servlet-name>
     <servlet-class>edu.lternet.pasta.portal.codegeneration.CodeGenerationDownloadServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>Data Package Citation Servlet</description>
-    <display-name>DataPackageCitationServlet</display-name>
-    <servlet-name>DataPackageCitationServlet</servlet-name>
-    <servlet-class>edu.lternet.pasta.portal.DataPackageCitationServlet</servlet-class>
   </servlet>
   <servlet>
     <description>Archive Download Servlet</description>
@@ -370,6 +370,10 @@
     <url-pattern>/scopebrowse</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>ThumbnailManagerServlet</servlet-name>
+    <url-pattern>/thumbnailmanager</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>IdentifierBrowseServlet</servlet-name>
     <url-pattern>/identifierbrowse</url-pattern>
   </servlet-mapping>
@@ -430,10 +434,6 @@
     <url-pattern>/codegenerationdownload</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>DataPackageCitationServlet</servlet-name>
-    <url-pattern>/dataPackageCitation</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>ArchiveDownloadServlet</servlet-name>
     <url-pattern>/archiveDownload</url-pattern>
   </servlet-mapping>
@@ -482,10 +482,4 @@
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  <!-- Multipart-config -->
-  <multipart-config>
-    <max-file-size>10737418240</max-file-size>
-    <max-request-size>10737418240</max-request-size>
-    <file-size-threshold>0</file-size-threshold>
-  </multipart-config>
 </web-app>
