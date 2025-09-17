@@ -80,8 +80,7 @@ public class HarvesterServlet extends DataPortalServlet {
 
   private static String desktopUrlHead = null;
   private static String harvesterPath = null;
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.HarvesterServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.HarvesterServlet.class);
   private static final long serialVersionUID = 1L;
   public static final String DESKTOP_DATA_DIR = "data";
   
@@ -190,9 +189,7 @@ public class HarvesterServlet extends DataPortalServlet {
 				 * forms.
 				 */
 				String mode = request.getParameter("submit");
-				if ((mode != null) && 
-					(mode.equalsIgnoreCase("evaluate"))
-				   ) {
+				if ((mode != null) && (mode.equalsIgnoreCase("evaluate"))) {
 					isEvaluate = true;
 				}
 
