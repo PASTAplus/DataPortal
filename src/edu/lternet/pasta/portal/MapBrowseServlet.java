@@ -1194,7 +1194,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 
                 if (isAuthorized) {
                     thumbnailManagementHTMLBuilder.append("<div>\n");
-                    thumbnailManagementHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"thumbnailmanagement\" name=\"thumbnailmanagementform\" method=\"post\" action=\"./thumbnailManagement.jsp\" target=\"_top\">\n");
+                    thumbnailManagementHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"thumbnailmanagement\" name=\"thumbnailmanagementform\" method=\"post\" action=\"./thumbnailmanager\" target=\"_top\">\n");
                     thumbnailManagementHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
                     thumbnailManagementHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"thumbnailmanagementbutton\" value=\"Manage Thumbnails\" >\n");
                     thumbnailManagementHTMLBuilder.append("</form>\n");
