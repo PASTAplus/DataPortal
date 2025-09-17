@@ -26,13 +26,21 @@ package edu.lternet.pasta.client;
 
 import static org.junit.Assert.fail;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 
@@ -46,6 +54,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -2357,6 +2366,146 @@ public class DataPackageManagerClient extends PastaClient {
             closeHttpClient(httpClient);
         }
         return hasThumbnail;
+    }
+
+    /**
+     * Executes the 'readThumbnail' web service method.
+     *
+     * @param scope
+     *          the scope value, e.g. "knb-lter-lno"
+     * @param identifier
+     *          the identifier value, e.g. 10
+     * @param revision
+     *          the revision value, e.g. "1"
+     * @param entityId
+     *          the entity id value or null if no entity
+     * @return the thumbnail image as a bufferedImage
+     */
+    public BufferedImage readThumbnail(String scope, Integer identifier, String revision, String entityId) throws Exception {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String urlTail = makeUrlTail(scope, identifier.toString(), revision, entityId);
+        String url = BASE_URL + "/thumbnail/eml" + urlTail;
+
+        HttpGet httpGet = new HttpGet(url);
+        if (this.token != null && this.ediToken != null) {
+            httpGet.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpGet.setHeader("User-Agent", userAgent);
+        BufferedImage bufferedImage = null;
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                handleStatusCode(statusCode, url);
+            }
+            HttpEntity httpEntity = httpResponse.getEntity();
+            if (httpEntity != null) {
+                try (InputStream is = httpEntity.getContent()) {
+                    bufferedImage = ImageIO.read(is);
+                }
+            }
+        } finally {
+            closeHttpClient(httpClient);
+        }
+
+        return bufferedImage;
+    }
+
+    /**
+     * Executes the 'deleteThumbnail' web service method.
+     *
+     * @param scope
+     *          the scope value, e.g. "knb-lter-lno"
+     * @param identifier
+     *          the identifier value, e.g. 10
+     * @param revision
+     *          the revision value, e.g. "1"
+     * @param entityId
+     *          the entity id value or null if no entity
+     * @return an empty string if the data package was successfully deleted
+     */
+    public String deleteThumbnail(String scope, Integer identifier, String revision, String entityId) throws Exception {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String urlTail = makeUrlTail(scope, identifier.toString(), revision, entityId);
+        HttpDelete httpDelete = new HttpDelete(BASE_URL + "/thumbnail/eml" + urlTail);
+        String entityString = null;
+
+        // Set header content
+        if (this.token != null && this.ediToken != null) {
+            httpDelete.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpDelete);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            HttpEntity httpEntity = httpResponse.getEntity();
+            entityString = EntityUtils.toString(httpEntity);
+            if (statusCode != HttpStatus.SC_OK) {
+                handleStatusCode(statusCode, entityString);
+            }
+        } finally {
+            closeHttpClient(httpClient);
+        }
+
+        return entityString;
+    }
+
+    /**
+     * Executes the 'createThumbnail' web service method.
+     *
+     * @param scope
+     *          the scope value, e.g. "knb-lter-lno"
+     * @param identifier
+     *          the identifier value, e.g. 10
+     * @param revision
+     *          the revision value, e.g. "1"
+     * @param entityId
+     *          the entity id value or null if no entity
+     * @param imageFilePath
+     *          the thumbnail image file
+     * @return an empty string if the data package was successfully deleted
+     */
+    public String createThumbnail(
+            String scope,
+            Integer identifier,
+            String revision,
+            String entityId,
+            String imageFilePath
+    ) throws Exception {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String urlTail = makeUrlTail(scope, identifier.toString(), revision, entityId);
+        HttpPost httpPost = new HttpPost(BASE_URL + "/thumbnail/eml" + urlTail);
+        String entityString = null;
+        String imageType = ThumbnailUtility.getImageType(imageFilePath);
+
+        // Set header content
+        if (this.token != null && this.ediToken != null) {
+            httpPost.setHeader("Cookie", makePastaCookie(this.token, this.ediToken));
+        }
+        httpPost.setHeader("User-Agent", userAgent);
+
+        File imageFile = new File(imageFilePath);
+        BufferedImage originalImage = ImageIO.read(imageFile);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(originalImage, imageType, baos);
+        byte[] imageInBytes = baos.toByteArray();
+        String imageMimeType = String.format("image/%s", imageType);
+        HttpEntity entity = new ByteArrayEntity(imageInBytes, ContentType.create(imageMimeType));
+        httpPost.setEntity(entity);
+
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            HttpEntity httpEntity = httpResponse.getEntity();
+            entityString = EntityUtils.toString(httpEntity);
+            if (statusCode != HttpStatus.SC_OK) {
+                handleStatusCode(statusCode, entityString);
+            }
+        } finally {
+            closeHttpClient(httpClient);
+        }
+
+        return entityString;
     }
 
 }
