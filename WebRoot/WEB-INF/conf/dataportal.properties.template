@@ -65,6 +65,7 @@ auth.port=443
 auth.uriTail=/auth/login/pasta
 auth.target=portal.edirepository.org
 edi.auth.use=false
+edi.public.id=PUBLIC_ID
 edi.authenticated.id=AUTHENTICATED_ID
 edi.vetted.id=VETTED_ID
 
