@@ -337,6 +337,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		boolean wasDeleted = false;
 		String pastaHost = null;
 		boolean productionTier = true;
+        boolean hasWritePermission = false;
 
 		String uid = (String) httpSession.getAttribute("uid");
 
@@ -411,6 +412,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				String previous = "";
 				String next = "";
 				String revisions = "";
+                String thumbnailAddDelete = "";
 
                 String packageUri = pastaUriHead + "eml";
 				String metadataUri = pastaUriHead + "metadata/eml";
@@ -431,7 +433,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                 JournalCitationsClient jcClient = null;
 				RevisionUtility revUtil = null;
 
-				try {
+                try {
 
 					String userAgent = request.getHeader("User-Agent");
 					dpmClient = new DataPackageManagerClient(uid, userAgent);
@@ -471,7 +473,21 @@ public class MapBrowseServlet extends DataPortalServlet {
 					    moreRecentRevisionHTML = String.format("&nbsp;%s", url);
 					}
 
-					packageId = scope + "." + id.toString() + "." + revision;
+                    String ediToken = (String) httpSession.getAttribute("edi-token");
+                    if (ediToken != null && !ediToken.isEmpty()) {
+                        IAM iam = new IAM(authProtocol, authHost, authPort);
+                        iam.setEdiToken(ediToken);
+                        String resourceId = String.format("%s/%s/%s/%s", packageUri, scope, identifier, revision);
+                        try {
+                            JSONObject resp = iam.isAuthorized(resourceId, "write");
+                            hasWritePermission = true;
+                        }
+                        catch (Exception e) {
+                            logger.warn(e);
+                        }
+                    }
+
+                    packageId = scope + "." + id.toString() + "." + revision;
 					predecessor = revUtil.getPredecessor(Integer
 							.valueOf(revision));
 					successor = revUtil.getSuccessor(Integer.valueOf(revision));
@@ -546,17 +562,36 @@ public class MapBrowseServlet extends DataPortalServlet {
 						savedDataHTML = savedDataHTMLBuilder.toString();
 					}
 
-					if (titles != null) {
-						titleHTMLBuilder
-								.append("<ul class=\"no-list-style\">\n");
+                    thumbnailAddDelete = "";
+                    boolean hasPackageThumbnail = dpmClient.hasThumbnail(scope, identifier, revision, null);
+                    if (hasWritePermission) {
+                        String imageName = hasPackageThumbnail ? "minus_blue_small.png" : "plus_blue_small.png";
+                        String alt = "Add or delete thumbnail";
+                        StringBuilder thumbnailHTMLBuilder = new StringBuilder();
+                        thumbnailHTMLBuilder.append("<form style=\"display:inline-block\" id=\"thumbnail\" class=\"form-no-margin\" name=\"thumbnailForm\" method=\"post\" action=\"./thumbnailServlet\" >\n");
+                        thumbnailHTMLBuilder.append("  <sup><input type=\"image\" name=\"submit\" src=\"images/" + imageName +  "\" alt=\"" + alt + "\" title=\"" + alt + "\"></sup>\n");
+                        thumbnailHTMLBuilder.append("</form>\n");
+                        thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                    }
 
+                    if (titles != null) {
+						titleHTMLBuilder.append("<ul class=\"no-list-style\">\n");
+                        int numTitles = titles.size();
+                        int counter = 1;
+                        String listItem;
 						for (Title title : titles) {
-							String listItem = "<li>" + title.getTitle() + "</li>\n";
+                            if (counter == numTitles) {
+                                listItem = String.format("<li>%s %s</li>\n", title.getTitle(), thumbnailAddDelete);
+                            }
+                            else {
+                                listItem = String.format("<li>%s</li>\n", title.getTitle());
+                            }
 							titleHTMLBuilder.append(listItem);
+                            counter++;
 						}
 
 						titleHTMLBuilder.append("</ul>\n");
-                        if (dpmClient.hasThumbnail(scope, identifier, revision, null)) {
+                        if (hasPackageThumbnail) {
                             String style = "style=\"" +
                                     "max-height: 200px; " +
                                     "max-width: 400px; " +
@@ -810,9 +845,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 								if (entitySize != null) {
 									try {
 										String downloadsStr = nonRobotReads.equals(1) ? "download" : "downloads";
-										resourceReadsStr =
-											String.format("; %d %s",
-													      nonRobotReads, downloadsStr);
+										resourceReadsStr = String.format("; %d %s", nonRobotReads, downloadsStr);
 										long l = Long.parseLong(entitySize);
 										String s = scaledNumberFormat.format(l);
 										entitySizeStr = String.format("&nbsp;<em>(%s%s)</em>&nbsp;",
@@ -889,7 +922,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 									}
 
                                     String thumbnail = "";
-                                    if (dpmClient.hasThumbnail(scope, identifier, revision, realEntityId)) {
+                                    boolean hasEntityThumbnail = dpmClient.hasThumbnail(scope, identifier, revision, realEntityId);
+                                    if (hasEntityThumbnail) {
                                         String style = "style=\"" +
                                                 "max-height: 50px; " +
                                                 "max-width: 50px; " +
@@ -907,8 +941,19 @@ public class MapBrowseServlet extends DataPortalServlet {
                                         );
                                     }
 
-                                        data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s<br/>%s %s %s</li>",
-											entityName, entitySizeStr, downloadLink, dex, thumbnail);
+                                    thumbnailAddDelete = "";
+                                    if (hasWritePermission) {
+                                        String imageName = hasEntityThumbnail ? "minus_blue_small.png" : "plus_blue_small.png";
+                                        String alt = "Add or delete thumbnail";
+                                        StringBuilder thumbnailHTMLBuilder = new StringBuilder();
+                                        thumbnailHTMLBuilder.append("<form style=\"display:inline-block\" id=\"thumbnail\" class=\"form-no-margin\" name=\"thumbnailForm\" method=\"post\" action=\"./thumbnailServlet\" >\n");
+                                        thumbnailHTMLBuilder.append("  <sup><input type=\"image\" name=\"submit\" src=\"images/" + imageName +  "\" alt=\"" + alt + "\" title=\"" + alt + "\"></sup>\n");
+                                        thumbnailHTMLBuilder.append("</form>\n");
+                                        thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                                    }
+
+                                    data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s %s<br/>%s %s %s</li>",
+											entityName, entitySizeStr, thumbnailAddDelete, downloadLink, dex, thumbnail);
 								}
 								else {
 									entityName = "Data object";
@@ -1176,32 +1221,17 @@ public class MapBrowseServlet extends DataPortalServlet {
 					codeGenerationHTML = codeGenerationHTML.substring(0, codeGenerationHTML.length() - 12); // trim the last two character entities
 				}
 
-                // Thumbnail management
-                String ediToken = (String) httpSession.getAttribute("edi-token");
-                boolean isAuthorized = false;
-                if (ediToken != null && !ediToken.isEmpty()) {
-                    IAM iam = new IAM(authProtocol, authHost, authPort);
-                    iam.setEdiToken(ediToken);
-                    String resourceId = String.format("%s/%s/%s/%s", packageUri, scope, identifier, revision);
-                    try {
-                        JSONObject resp = iam.isAuthorized(resourceId, "write");
-                        isAuthorized = true;
-                    }
-                    catch (Exception e) {
-                        logger.warn(e);
-                    }
-                }
-
-                if (isAuthorized) {
-                    thumbnailManagementHTMLBuilder.append("<div>\n");
-                    thumbnailManagementHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"thumbnailmanagement\" name=\"thumbnailmanagementform\" method=\"post\" action=\"./thumbnailmanager\" target=\"_top\">\n");
-                    thumbnailManagementHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
-                    thumbnailManagementHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"thumbnailmanagementbutton\" value=\"Manage Thumbnails\" >\n");
-                    thumbnailManagementHTMLBuilder.append("</form>\n");
-                    thumbnailManagementHTMLBuilder.append("</div>\n");
-                    thumbnailManagementHTMLBuilder.append("<br/>");
-                    thumbnailManagementHTML = thumbnailManagementHTMLBuilder.toString();
-                }
+//                // Thumbnail management
+//                if (hasWritePermission) {
+//                    thumbnailManagementHTMLBuilder.append("<div>\n");
+//                    thumbnailManagementHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"thumbnailmanagement\" name=\"thumbnailmanagementform\" method=\"post\" action=\"./thumbnailmanager\" target=\"_top\">\n");
+//                    thumbnailManagementHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
+//                    thumbnailManagementHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"thumbnailmanagementbutton\" value=\"Manage Thumbnails\" >\n");
+//                    thumbnailManagementHTMLBuilder.append("</form>\n");
+//                    thumbnailManagementHTMLBuilder.append("</div>\n");
+//                    thumbnailManagementHTMLBuilder.append("<br/>");
+//                    thumbnailManagementHTML = thumbnailManagementHTMLBuilder.toString();
+//                }
 
 			}
 			else {
