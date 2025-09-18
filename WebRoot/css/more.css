@@ -75,7 +75,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* A semi-transparent black background */
+    background-color: rgba(0, 0, 0, 0.7); /* A semi-transparent black background */
     display: flex; /* Use flexbox to easily center the image */
     justify-content: center;
     align-items: center;
