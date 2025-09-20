@@ -615,6 +615,7 @@ $("#jqxExpander").jqxExpander(
 
 <script src="./js/more.js" type="text/javascript"></script>
 <script src="./js/lightbox.js" type="text/javascript"></script>
+<script src="./js/thumbnail.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 function copyCitation()
