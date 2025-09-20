@@ -473,6 +473,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 					    moreRecentRevisionHTML = String.format("&nbsp;%s", url);
 					}
 
+                    String authToken = (String) httpSession.getAttribute("auth-token");
                     String ediToken = (String) httpSession.getAttribute("edi-token");
                     if (ediToken != null && !ediToken.isEmpty()) {
                         IAM iam = new IAM(authProtocol, authHost, authPort);
@@ -565,12 +566,24 @@ public class MapBrowseServlet extends DataPortalServlet {
                     thumbnailAddDelete = "";
                     boolean hasPackageThumbnail = dpmClient.hasThumbnail(scope, identifier, revision, null);
                     if (hasWritePermission) {
+                        String thumbnailData = String.format(
+                                "<div id=\"thumbnail-data\" data-thumbnail-api=\"%s\" data-edi-token=\"%s\" data-auth-token=\"%s\"" +
+                                "data-scope=\"%s\" data-identifier=\"%s\" data-revision=\"%s\"></div>\n",
+                                pastaUriHead + "thumbnail/eml",
+                                ediToken,
+                                authToken,
+                                scope,
+                                identifier,
+                                revision
+                                );
                         String imageName = hasPackageThumbnail ? "minus_blue_small.png" : "plus_blue_small.png";
                         String alt = "Add or delete thumbnail";
                         StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                        thumbnailHTMLBuilder.append("<form style=\"display:inline-block\" id=\"thumbnail\" class=\"form-no-margin\" name=\"thumbnailForm\" method=\"post\" action=\"./thumbnailServlet\" >\n");
-                        thumbnailHTMLBuilder.append("  <sup><input type=\"image\" name=\"submit\" src=\"images/" + imageName +  "\" alt=\"" + alt + "\" title=\"" + alt + "\"></sup>\n");
-                        thumbnailHTMLBuilder.append("</form>\n");
+                        thumbnailHTMLBuilder.append("<div id=\"thumbnailUploadTrigger\" style=\"display:inline-block\">");
+                        thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
+                        thumbnailHTMLBuilder.append("</div>\n");
+                        thumbnailHTMLBuilder.append("<input type=\"file\" id=\"fileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n");
+                        thumbnailHTMLBuilder.append(thumbnailData);
                         thumbnailAddDelete = thumbnailHTMLBuilder.toString();
                     }
 
