@@ -576,15 +576,27 @@ public class MapBrowseServlet extends DataPortalServlet {
                                 identifier,
                                 revision
                                 );
-                        String imageName = hasPackageThumbnail ? "minus_blue_small.png" : "plus_blue_small.png";
-                        String alt = "Add or delete thumbnail";
-                        StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                        thumbnailHTMLBuilder.append("<div id=\"thumbnailUploadTrigger\" style=\"display:inline-block\">");
-                        thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
-                        thumbnailHTMLBuilder.append("</div>\n");
-                        thumbnailHTMLBuilder.append("<input type=\"file\" id=\"fileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n");
-                        thumbnailHTMLBuilder.append(thumbnailData);
-                        thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                        if (hasPackageThumbnail) {
+                            String imageName = "minus_blue_small.png";
+                            String alt = "Delete thumbnail";
+                            StringBuilder thumbnailHTMLBuilder = new StringBuilder();
+                            thumbnailHTMLBuilder.append("<div id=\"thumbnailDeleteTrigger\" data-thumbnail-action=\"delete\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("</div>\n");
+                            thumbnailHTMLBuilder.append(thumbnailData);
+                            thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                        }
+                        else {
+                            String imageName = "plus_blue_small.png";
+                            String alt = "Add thumbnail";
+                            StringBuilder thumbnailHTMLBuilder = new StringBuilder();
+                            thumbnailHTMLBuilder.append("<div id=\"thumbnailUploadTrigger\" data-thumbnail-action=\"add\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("</div>\n");
+                            thumbnailHTMLBuilder.append("<input type=\"file\" id=\"fileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n");
+                            thumbnailHTMLBuilder.append(thumbnailData);
+                            thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                        }
                     }
 
                     if (titles != null) {
