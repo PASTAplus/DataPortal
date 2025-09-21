@@ -6,52 +6,52 @@ const scope = thumbnailData.dataset.scope;
 const identifier = thumbnailData.dataset.identifier;
 const revision = thumbnailData.dataset.revision;
 
-let entityId;
-let endpoint;
+const container = document.querySelector('.container');
 
-const thumbnailTrigger = document.getElementById('thumbnailTrigger');
-
-if (thumbnailTrigger) {
-    let thumbnailAction = thumbnailTrigger.dataset.thumbnailAction;
-    console.log(thumbnailAction);
-
-    entityId = thumbnailTrigger.dataset.entityId;
-    console.log(entityId);
-
-    // Setup thumbnail API endpoint
-    if (entityId) {
-        endpoint = `${thumbnailApi}\\${scope}\\${identifier}\\${revision}\\${entityId}`;
-    } else {
-        endpoint = `${thumbnailApi}\\${scope}\\${identifier}\\${revision}`;
-    }
-    console.log(endpoint);
-
-    if (thumbnailAction === 'add') {
-        const fileInput = document.getElementById('fileInput');
+document.addEventListener('click', event => {
+    // Allow closest target to thumbnailTrigger
+    const thumbnailTrigger = event.target.closest('.thumbnailTrigger');
+    if (thumbnailTrigger) {
+        let endpoint;
+        const entityId = thumbnailTrigger.dataset.entityId;
+        console.log('entityId', entityId);
+        if (entityId) {
+            endpoint = `${thumbnailApi}/${scope}/${identifier}/${revision}/${entityId}`;
+        } else {
+            endpoint = `${thumbnailApi}/${scope}/${identifier}/${revision}`;
+        }
+        console.log('endpoint', endpoint);
         thumbnailTrigger.addEventListener('click', () => {
             fileInput.click();
         });
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const fileName = file.name
-                uploadFile(file);
-            }
-        });
-    } else {  // thumbnailAction === 'delete'
-        thumbnailTrigger.addEventListener('click', () => {
+        const thumbnailAction = thumbnailTrigger.dataset.thumbnailAction;
+        console.log('thumbnailAction', thumbnailAction);
+        if (thumbnailAction === 'add') {
+            const fileInput = document.getElementById('thumbnailFileInput');
+            fileInput.click();
+            // Set up the change listener once, outside of the click handler
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const fileName = file.name;
+                    console.log('Upload fileName', fileName);
+                    uploadFile(file, endpoint);
+                }
+            }, { once: true }); // Use { once: true } to auto-remove listener
+        } else {  // thumbnailAction === 'delete'
             const userConfirmed =  confirm('Continue deleting thumbnail image?');
             if (userConfirmed) {
                 console.log('Deleting thumbnail');
-                deleteThumbnail();
+                deleteThumbnail(endpoint);
             } else {
                 console.log('Deleting thumbnail cancelled');
             }
-        });
-    }
-}
+        }
 
-async function uploadFile(file) {
+    }
+});
+
+async function uploadFile(file, endpoint) {
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -75,7 +75,7 @@ async function uploadFile(file) {
     }
 }
 
-async function deleteThumbnail() {
+async function deleteThumbnail(endpoint) {
     try {
         const response = await fetch(endpoint, {
             method: 'DELETE',

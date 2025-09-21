@@ -576,11 +576,12 @@ public class MapBrowseServlet extends DataPortalServlet {
                                 identifier,
                                 revision
                                 );
+                        thumbnailData += "<input type=\"file\" id=\"thumbnailFileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n";
                         if (hasPackageThumbnail) {
                             String imageName = "minus_blue_small.png";
                             String alt = "Delete thumbnail";
                             StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                            thumbnailHTMLBuilder.append("<div id=\"thumbnailTrigger\" data-thumbnail-action=\"delete\" data-entity-id=\"\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("<div class=\"thumbnailTrigger\" data-thumbnail-action=\"delete\" data-entity-id=\"\" style=\"display:inline-block\" title=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("</div>\n");
                             thumbnailHTMLBuilder.append(thumbnailData);
@@ -590,10 +591,9 @@ public class MapBrowseServlet extends DataPortalServlet {
                             String imageName = "plus_blue_small.png";
                             String alt = "Add thumbnail";
                             StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                            thumbnailHTMLBuilder.append("<div id=\"thumbnailTrigger\" data-thumbnail-action=\"add\" data-entity-id=\"\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("<div class=\"thumbnailTrigger\" data-thumbnail-action=\"add\" data-entity-id=\"\" style=\"display:inline-block\" title=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("</div>\n");
-                            thumbnailHTMLBuilder.append("<input type=\"file\" id=\"fileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n");
                             thumbnailHTMLBuilder.append(thumbnailData);
                             thumbnailAddDelete = thumbnailHTMLBuilder.toString();
                         }
@@ -968,14 +968,24 @@ public class MapBrowseServlet extends DataPortalServlet {
 
                                     thumbnailAddDelete = "";
                                     if (hasWritePermission) {
-                                        String imageName = hasEntityThumbnail ? "minus_blue_small.png" : "plus_blue_small.png";
-                                        String alt = "Add or delete thumbnail";
-                                        StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                                        thumbnailHTMLBuilder.append("<form style=\"display:inline-block\" id=\"thumbnail\" class=\"form-no-margin\" name=\"thumbnailForm\" method=\"post\" action=\"./thumbnailServlet\" >\n");
-                                        thumbnailHTMLBuilder.append("  <sup><input type=\"image\" name=\"submit\" src=\"images/" + imageName +  "\" alt=\"" + alt + "\" title=\"" + alt + "\"></sup>\n");
-                                        thumbnailHTMLBuilder.append("</form>\n");
-                                        thumbnailAddDelete = thumbnailHTMLBuilder.toString();
-                                    }
+                                        if (hasEntityThumbnail) {
+                                            String imageName = "minus_blue_small.png";
+                                            String alt = "Delete thumbnail";
+                                            StringBuilder thumbnailHTMLBuilder = new StringBuilder();
+                                            thumbnailHTMLBuilder.append("<div class=\"thumbnailTrigger\" data-thumbnail-action=\"delete\" data-entity-id=\"" + realEntityId + "\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                                            thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
+                                            thumbnailHTMLBuilder.append("</div>\n");
+                                            thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                                        }
+                                        else {
+                                            String imageName = "plus_blue_small.png";
+                                            String alt = "Add thumbnail";
+                                            StringBuilder thumbnailHTMLBuilder = new StringBuilder();
+                                            thumbnailHTMLBuilder.append("<div class=\"thumbnailTrigger\" data-thumbnail-action=\"add\" data-entity-id=\"" + realEntityId + "\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                                            thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
+                                            thumbnailHTMLBuilder.append("</div>\n");
+                                            thumbnailAddDelete = thumbnailHTMLBuilder.toString();
+                                        }                                    }
 
                                     data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s %s<br/>%s %s %s</li>",
 											entityName, entitySizeStr, thumbnailAddDelete, downloadLink, dex, thumbnail);
