@@ -21,8 +21,8 @@ fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
         const fileName = file.name
-        alert(fileName);
         uploadFile(file);
+        window.location.reload(true);
     }
 });
 
@@ -34,19 +34,15 @@ async function uploadFile(file) {
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
-                // Set the Content-Type header to the file's MIME type
-                'Content-Type': file.type,
-                'Cookie': `edi-token=${ediToken};auth-token=${authToken}`,
+                'X-New-Auth-Token': `edi-token=${ediToken};auth-token=${authToken}`,
             },
             // Send the raw file data as the body
             body: file,
         });
 
         if (response.ok) {
-            // Note: The response from the placeholder endpoint won't actually contain the file.
-            // This is just a simulation. A real server would handle this differently.
-            const result = await response.json();
-            alert('Upload Successful');
+            const result = await response.text();
+            console.log(result);
         } else {
             throw new Error('Upload failed with status ' + response.status);
         }
