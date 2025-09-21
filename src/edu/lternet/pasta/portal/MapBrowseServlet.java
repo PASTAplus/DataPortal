@@ -580,7 +580,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                             String imageName = "minus_blue_small.png";
                             String alt = "Delete thumbnail";
                             StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                            thumbnailHTMLBuilder.append("<div id=\"thumbnailDeleteTrigger\" data-thumbnail-action=\"delete\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("<div id=\"thumbnailTrigger\" data-thumbnail-action=\"delete\" data-entity-id=\"\" style=\"display:inline-block\" title=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("</div>\n");
                             thumbnailHTMLBuilder.append(thumbnailData);
@@ -590,7 +590,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                             String imageName = "plus_blue_small.png";
                             String alt = "Add thumbnail";
                             StringBuilder thumbnailHTMLBuilder = new StringBuilder();
-                            thumbnailHTMLBuilder.append("<div id=\"thumbnailUploadTrigger\" data-thumbnail-action=\"add\" style=\"display:inline-block\" title=\"" + alt + "\">");
+                            thumbnailHTMLBuilder.append("<div id=\"thumbnailTrigger\" data-thumbnail-action=\"add\" data-entity-id=\"\" style=\"display:inline-block\" title=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
                             thumbnailHTMLBuilder.append("</div>\n");
                             thumbnailHTMLBuilder.append("<input type=\"file\" id=\"fileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n");
@@ -1290,7 +1290,9 @@ public class MapBrowseServlet extends DataPortalServlet {
 		request.setAttribute("citationHTML", citationHTML);
         request.setAttribute("journalCitationsHTML", journalCitationsHTML);
         request.setAttribute("seoHTML", seoHTML);
-        request.setAttribute("thumbnailManagementHTML", thumbnailManagementHTML);
+        if (hasWritePermission) {
+            request.setAttribute("hasWritePermission", "hasWritePermission");
+        }
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
 		requestDispatcher.forward(request, response);
