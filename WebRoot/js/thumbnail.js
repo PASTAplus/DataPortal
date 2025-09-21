@@ -5,35 +5,53 @@ const authToken = thumbnailData.dataset.authToken;
 const scope = thumbnailData.dataset.scope;
 const identifier = thumbnailData.dataset.identifier;
 const revision = thumbnailData.dataset.revision;
-const entityId = thumbnailData.dataset.entityId;
 
-const uploadTrigger = document.getElementById('thumbnailUploadTrigger');
-const fileInput = document.getElementById('fileInput');
+let entityId;
+let endpoint;
 
-if (uploadTrigger) {
-    let thumbnailAction = uploadTrigger.dataset.thumbnailAction;
+const thumbnailTrigger = document.getElementById('thumbnailTrigger');
+
+if (thumbnailTrigger) {
+    let thumbnailAction = thumbnailTrigger.dataset.thumbnailAction;
     console.log(thumbnailAction);
-    uploadTrigger.addEventListener('click', () => {
-        fileInput.click();
-    });
 
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const fileName = file.name
-            uploadFile(file);
-        }
-    });
-}
+    entityId = thumbnailTrigger.dataset.entityId;
+    console.log(entityId);
 
-async function uploadFile(file) {
-    let endpoint;
+    // Setup thumbnail API endpoint
     if (entityId) {
         endpoint = `${thumbnailApi}\\${scope}\\${identifier}\\${revision}\\${entityId}`;
     } else {
         endpoint = `${thumbnailApi}\\${scope}\\${identifier}\\${revision}`;
     }
+    console.log(endpoint);
 
+    if (thumbnailAction === 'add') {
+        const fileInput = document.getElementById('fileInput');
+        thumbnailTrigger.addEventListener('click', () => {
+            fileInput.click();
+        });
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const fileName = file.name
+                uploadFile(file);
+            }
+        });
+    } else {  // thumbnailAction === 'delete'
+        thumbnailTrigger.addEventListener('click', () => {
+            const userConfirmed =  confirm('Continue deleting thumbnail image?');
+            if (userConfirmed) {
+                console.log('Deleting thumbnail');
+                deleteThumbnail();
+            } else {
+                console.log('Deleting thumbnail cancelled');
+            }
+        });
+    }
+}
+
+async function uploadFile(file) {
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -57,30 +75,7 @@ async function uploadFile(file) {
     }
 }
 
-const deleteTrigger = document.getElementById('thumbnailDeleteTrigger');
-
-if (deleteTrigger) {
-    let thumbnailAction = deleteTrigger.dataset.thumbnailAction;
-    console.log(thumbnailAction);
-    deleteTrigger.addEventListener('click', () => {
-        const userConfirmed =  confirm('Continue deleting thumbnail image?');
-        if (userConfirmed) {
-            console.log('Deleting thumbnail');
-            deleteThumbnail();
-        } else {
-            console.log('Deleting thumbnail cancelled');
-        }
-    });
-}
-
 async function deleteThumbnail() {
-    let endpoint;
-    if (entityId) {
-        endpoint = `${thumbnailApi}\\${scope}\\${identifier}\\${revision}\\${entityId}`;
-    } else {
-        endpoint = `${thumbnailApi}\\${scope}\\${identifier}\\${revision}`;
-    }
-
     try {
         const response = await fetch(endpoint, {
             method: 'DELETE',
