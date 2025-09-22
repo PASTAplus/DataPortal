@@ -34,7 +34,7 @@ public class TokenRefreshFilter implements Filter {
         String authProtocol = options.getString("auth.protocol"); // https
         String authHostname = options.getString("auth.hostname"); // auth.edirepository.org
         Integer authPort = options.getInteger("auth.port", 443); // 443
-        this.tokenRefreshUrl = String.format("%s://%s:%d/auth/refresh", authProtocol, authHostname, authPort);
+        this.tokenRefreshUrl = String.format("%s://%s:%d/auth/v1/refresh", authProtocol, authHostname, authPort);
         context = fConfig.getServletContext();
         logger.info("TokenRefreshFilter initialized");
         logger.info("Token refresh URL: " + this.tokenRefreshUrl);
