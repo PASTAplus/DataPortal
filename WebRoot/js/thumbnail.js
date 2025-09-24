@@ -35,7 +35,7 @@ document.addEventListener('click', event => {
                 if (file) {
                     const fileName = file.name;
                     console.log('Upload fileName', fileName);
-                    uploadFile(file, endpoint);
+                    addThumbnail(file, endpoint);
                 }
             }, { once: true }); // Use { once: true } to auto-remove listener
         } else {  // thumbnailAction === 'delete'
@@ -51,10 +51,11 @@ document.addEventListener('click', event => {
     }
 });
 
-async function uploadFile(file, endpoint) {
+async function addThumbnail(file, endpoint) {
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'X-New-Auth-Token': `edi-token=${ediToken};auth-token=${authToken}`,
             },
@@ -79,6 +80,7 @@ async function deleteThumbnail(endpoint) {
     try {
         const response = await fetch(endpoint, {
             method: 'DELETE',
+            credentials: 'include',
             headers: {
                 'X-New-Auth-Token': `edi-token=${ediToken};auth-token=${authToken}`,
             },
@@ -93,6 +95,27 @@ async function deleteThumbnail(endpoint) {
         }
     } catch (error) {
         alert(`Delete Failed - Error: ${error.message}`);
+        console.error('Error:', error);
+    }
+}
+
+async function getSetCookie(endpoint) {
+    try {
+        const response = await fetch(endpoint, {
+            method: 'OPTIONS',
+            credentials: 'include',
+            headers: {
+                'X-New-Auth-Token': `edi-token=${ediToken};auth-token=${authToken}`,
+            },
+        });
+
+        if (response.ok) {
+            const result = await response.text();
+            console.log(result);
+        } else {
+            throw new Error('getSetCookie failed with status ' + response.status);
+        }
+    } catch (error) {
         console.error('Error:', error);
     }
 }
