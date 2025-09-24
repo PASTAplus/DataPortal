@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -106,6 +107,18 @@ public class LogoutServlet extends DataPortalServlet
             // one of them logs out. See ticket https://github.com/PASTAplus/DataPortal/issues/126
             // String uid = (String) httpSession.getAttribute("uid");
             // TokenManager.deleteToken(uid);
+
+            // Remove EDI and PASTA authentication token cookies
+            Cookie ediTokenCookie = new Cookie("edi-token", "");
+            ediTokenCookie.setMaxAge(0);
+            ediTokenCookie.setPath("/");
+            response.addCookie(ediTokenCookie);
+
+            Cookie authTokenCookie = new Cookie("auth-token", "");
+            authTokenCookie.setMaxAge(0);
+            authTokenCookie.setPath("/");
+            response.addCookie(authTokenCookie);
+
         } catch (Exception e) {
             handleDataPortalError(logger, e);
         } finally {
