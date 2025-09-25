@@ -30,7 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +38,6 @@ import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import edu.lternet.pasta.client.*;
 import edu.lternet.pasta.common.eml.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.text.StrTokenizer;
@@ -55,6 +53,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.lternet.pasta.client.*;
 import edu.lternet.pasta.common.EmlPackageId;
 import edu.lternet.pasta.common.EmlPackageIdFormat;
 import edu.lternet.pasta.common.JournalCitation;
@@ -63,6 +62,7 @@ import edu.lternet.pasta.common.UserErrorException;
 import edu.lternet.pasta.common.edi.IAM;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet;
 import edu.lternet.pasta.portal.user.SavedData;
+import edu.lternet.pasta.token.TokenManager;
 
 
 /**
@@ -95,6 +95,7 @@ public class MapBrowseServlet extends DataPortalServlet {
     private static String authProtocol;
     private static Integer authPort;
     private static String authKey;
+    private static String publicId;
 
 	/**
 	 * Constructor of the object.
@@ -338,15 +339,31 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String pastaHost = null;
 		boolean productionTier = true;
         boolean hasWritePermission = false;
+        String ediToken = null;
+        String authToken = null;
 
 		String uid = (String) httpSession.getAttribute("uid");
 
-		if (uid == null || uid.isEmpty()) {
-			uid = "public";
+        if (uid == null || uid.isEmpty()) {
+			uid = publicId;
 		}
 		else {
-			showSaved = true;
+            try {
+                HashMap<String, String> tokenSet = TokenManager.getTokenSet(uid);
+                ediToken = tokenSet.get("edi-token");
+                authToken = tokenSet.get("auth-token");
+            }
+            catch (Exception e) {
+                String msg = String.format("Tokenset for uid '%s' not found.", uid);
+                logger.error(msg);
+                uid = publicId;
+                httpSession.invalidate();
+            }
 		}
+
+        if (!uid.equals(publicId)) {
+            showSaved = true;
+        }
 
 		Integer id = null;
 		boolean isPackageId = false;
@@ -473,8 +490,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 					    moreRecentRevisionHTML = String.format("&nbsp;%s", url);
 					}
 
-                    String authToken = (String) httpSession.getAttribute("auth-token");
-                    String ediToken = (String) httpSession.getAttribute("edi-token");
                     if (ediToken != null && !ediToken.isEmpty()) {
                         IAM iam = new IAM(authProtocol, authHost, authPort);
                         iam.setEdiToken(ediToken);
@@ -503,10 +518,8 @@ public class MapBrowseServlet extends DataPortalServlet {
 			            seoHTML = seoClient.fetchDatasetJSON(packageId) + "\n" + seoClient.fetchRepositoryJSON();
 			        }
 			        catch (Exception e) {
-			            String msg = String.format("Error fetching JSON from SEO server for %s: %s",
-			                                       packageId, e.getMessage());
+			            String msg = String.format("Error fetching JSON from SEO server for %s: %s", packageId, e.getMessage());
 			            logger.error(msg);
-			            e.printStackTrace();
 			        }
 
 
@@ -553,7 +566,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 						String operation = isSaved ? "unsave" : "save";
 						String display = isSaved ? "Remove from your data shelf" : "Add to your data shelf";
 						String imgName = isSaved ? "minus_blue_small.png" : "plus_blue_small.png";
-
 						savedDataHTMLBuilder.append("<form style=\"display:inline-block\" id=\"savedData\" class=\"form-no-margin\" name=\"savedDataForm\" method=\"post\" action=\"./savedDataServlet\" >\n");
 						savedDataHTMLBuilder.append("  <input type=\"hidden\" name=\"operation\" value=\""+ operation + "\" >\n");
 						savedDataHTMLBuilder.append("  <input type=\"hidden\" name=\"packageId\" value=\""+ packageId + "\" >\n");
@@ -993,7 +1005,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 								else {
 									entityName = "Data object";
 									String tooltip = null;
-									if (uid.equals("public")) {
+									if (uid.equals(publicId)) {
 										tooltip = "You may need to log in before you can access this data object.";
 									}
 									else {
@@ -1569,7 +1581,7 @@ public class MapBrowseServlet extends DataPortalServlet {
         authHost = options.getString("auth.hostname");
         authProtocol = options.getString("auth.protocol");
         authPort = options.getInt("auth.port");
-
+        publicId = options.getString("edi.public.id");
     }
 
 
