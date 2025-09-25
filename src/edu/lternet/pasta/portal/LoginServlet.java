@@ -88,7 +88,6 @@ public class LoginServlet extends DataPortalServlet {
    */
   public static String uidFromDistinguishedName(String dn) {
       String uid = null;
-      
       if (dn != null && dn.startsWith("uid=")) {
           String[] dnTokens = dn.split(",");
           if (dnTokens != null && dnTokens.length > 0) {
@@ -99,7 +98,6 @@ public class LoginServlet extends DataPortalServlet {
               }
           }
       }
-      
       return uid;
   }
 
@@ -178,7 +176,7 @@ public class LoginServlet extends DataPortalServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    String uid = null;
+    String uid;
     String distinguishedName = null;
     TokenManager tokenManager = null;
     boolean isTeapot = false;
@@ -189,7 +187,7 @@ public class LoginServlet extends DataPortalServlet {
     String forward = (String) httpSession.getAttribute("from");
     httpSession.removeAttribute("from");
 
-    String extToken = request.getParameter("token");
+    String authToken = request.getParameter("token");
     String ediToken = request.getParameter("edi_token");
     String cname = request.getParameter("common_name");
     String idProvider = request.getParameter("idp");
@@ -202,9 +200,9 @@ public class LoginServlet extends DataPortalServlet {
         return;
     }
 
-    if (extToken != null && ediToken != null) { // Other 3rd party login
+    if (authToken != null && ediToken != null) { // OAuth/IDC login
         HashMap<String, String> tokenSet = new HashMap<String, String>(2);
-        tokenSet.put("auth-token", extToken);
+        tokenSet.put("auth-token", authToken);
         tokenSet.put("edi-token", ediToken);
         tokenManager = new TokenManager(tokenSet);
         try {
@@ -213,31 +211,22 @@ public class LoginServlet extends DataPortalServlet {
             logger.error(e.getMessage());
         }
         distinguishedName = tokenManager.getUid();
-
     } else { // EDI LDAP login
-
         uid = request.getParameter("uid");
         String affiliation = "EDI";
-
         if (uid != null) {
             uid = uid.trim();
             cname = uid;  // Set common name to uid value
         }
-
         String password = request.getParameter("password");
-
         try {
-
           distinguishedName = PastaClient.composeDistinguishedName(uid, affiliation);
           LoginClient loginClient = new LoginClient();
           HashMap<String, String> tokenSet = loginClient.login(distinguishedName, password);
           ediToken = tokenSet.get("edi-token");
-          httpSession.setAttribute("edi-token", ediToken);
-          extToken = tokenSet.get("auth-token");
-          httpSession.setAttribute("auth-token", extToken);
+          authToken = tokenSet.get("auth-token");
           tokenManager = new TokenManager(tokenSet);
           tokenManager.storeToken();
-
         } catch (PastaAuthenticationException e) {
             String message = "<em>Login failed for user</em> " + uid;
             forward = "./login.jsp";
@@ -256,72 +245,55 @@ public class LoginServlet extends DataPortalServlet {
             response.sendRedirect(acceptUrl);
             return;
         }
-
     }
 
     boolean authenticated = false;
     boolean vetted = false;
-    if (tokenManager != null) {
-        ArrayList<String> groups = tokenManager.getGroups();
-        for (String group : groups) {
-            if (group.equals("authenticated")) {
+    if (this.ediUseAuth  && ediToken != null) {
+      EdiToken et = new EdiToken(ediToken);
+      List<String> principals = et.getPrincipals();
+      distinguishedName = et.getSubject();
+      cname = et.getCommonName();
+        for (String principal : principals) {
+            if (principal.equals(ediAuthenticatedId)) {
                 authenticated = true;
             }
-            if (group.equals("vetted")) {
+            if (principal.equals(ediVettedId)) {
                 vetted = true;
             }
         }
-        if (this.ediUseAuth  && ediToken != null) {
-            EdiToken et = new EdiToken(ediToken);
-            List<String> principals = et.getPrincipals();
-            distinguishedName = et.getSubject();
-            cname = et.getCommonName();
-            authenticated = false;
-            vetted = false;
-            for (int i=0; i<principals.size(); i++) {
-                if (principals.get(i).equals(ediAuthenticatedId)) {
-                    authenticated = true;
-                }
-                if (principals.get(i).equals(ediVettedId)) {
-                    vetted = true;
-                }
-            }
-        }
-        httpSession.setAttribute("authenticated", authenticated);
-        httpSession.setAttribute("vetted", vetted);
-        httpSession.setAttribute("uid", distinguishedName);
-        httpSession.setAttribute("cname", cname);
-        httpSession.setAttribute("idProvider", idProvider);
-        httpSession.setAttribute("idProviderToken", idProviderToken);
-
-        httpSession.setMaxInactiveInterval(maxInactiveIntervalMinutes * 60);
-        logger.info(
-            String.format("Session %s: Logged in session MaxInactiveInterval set to %d minutes",
-                httpSession.getId(), maxInactiveIntervalMinutes
-            )
-        );
     }
+    else {
+      if (tokenManager != null) {
+          ArrayList<String> groups = tokenManager.getGroups();
+          for (String group : groups) {
+              if (group.equals("authenticated")) {
+                  authenticated = true;
+              }
+              if (group.equals("vetted")) {
+                  vetted = true;
+              }
+          }
+      }
+    }
+
+    httpSession.setAttribute("authenticated", authenticated);
+    httpSession.setAttribute("vetted", vetted);
+    httpSession.setAttribute("uid", distinguishedName);
+    httpSession.setAttribute("cname", cname);
+    httpSession.setAttribute("idProvider", idProvider);
+    httpSession.setAttribute("idProviderToken", idProviderToken);
+
+    httpSession.setMaxInactiveInterval(maxInactiveIntervalMinutes * 60);
+    logger.info(
+        String.format("Session %s: Logged in session MaxInactiveInterval set to %d minutes",
+            httpSession.getId(), maxInactiveIntervalMinutes * 60
+        )
+    );
 
     /* Allows redirect back to page that forced a login action */
     if (forward == null || forward.isEmpty()) {
         forward = "./home.jsp";
-    }
-
-    try {
-        HashMap<String, String> tokenSet = TokenManager.getTokenSet(distinguishedName);
-        tokenManager = new TokenManager(tokenSet);
-        logger.info(tokenManager.getToken());
-        logger.info(tokenManager.getUid());
-        logger.info(tokenManager.getAuthSystem());
-        logger.info(tokenManager.getTtl());
-        ArrayList<String> groups = tokenManager.getGroups();
-        for (String group : groups) {
-            logger.info(group);
-        }
-        logger.info(tokenManager.getSignature());
-    }
-    catch (ClassNotFoundException | SQLException e) {
-        logger.error(e);
     }
 
     forward = forward.replace("./", this.dataportalTarget + "/");
