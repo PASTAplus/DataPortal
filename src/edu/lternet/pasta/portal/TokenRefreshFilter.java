@@ -28,12 +28,15 @@ public class TokenRefreshFilter implements Filter {
 
     String tokenRefreshUrl = null;
     ServletContext context = null;
+    HttpSession httpSession = null;
+    String publicId;
 
     public void init(FilterConfig fConfig) throws ServletException {
         Configuration options = ConfigurationListener.getOptions();
         String authProtocol = options.getString("auth.protocol"); // https
         String authHostname = options.getString("auth.hostname"); // auth.edirepository.org
         Integer authPort = options.getInteger("auth.port", 443); // 443
+        publicId = options.getString("edi.public.id");
         this.tokenRefreshUrl = String.format("%s://%s:%d/auth/v1/token/refresh", authProtocol, authHostname, authPort);
         context = fConfig.getServletContext();
         logger.info("TokenRefreshFilter initialized");
@@ -41,19 +44,15 @@ public class TokenRefreshFilter implements Filter {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpSession httpSession = ((HttpServletRequest) request).getSession();
+        httpSession = ((HttpServletRequest) request).getSession();
         String uid = (String) httpSession.getAttribute("uid");
-        if (uid == null || uid.isEmpty()) {
-            uid = "public";
-            // logger.debug("Skipped token refresh for public user");
-        }
-
-        if (!uid.equals("public")) {
-            try {
+        // Only perform refresh if real user
+        if (uid != null && !uid.isEmpty() && !uid.equals(publicId)) {
+           try {
                 refreshToken(uid);
-            } catch (Exception e) {
+           } catch (Exception e) {
                 throw new RuntimeException(e);
-            }
+           }
         }
 
         // Pass the request along the filter chain
@@ -62,16 +61,19 @@ public class TokenRefreshFilter implements Filter {
 
     private void refreshToken(String uid) throws Exception {
         HashMap<String, String> tokenSet = getTokenSet(uid);
-        String authToken = tokenSet.get("auth-token");
-        String ediToken = tokenSet.get("edi-token");
-        if (authToken == null) {
-            logger.error("Token not found for user: " + uid);
-            return;
+        if (tokenSet != null) {
+            String authToken = tokenSet.get("auth-token");
+            String ediToken = tokenSet.get("edi-token");
+            if (ediToken != null) {
+                HashMap<String, String> refreshedTokenSet = fetchRefreshedTokenSet(authToken, ediToken);
+                if (refreshedTokenSet != null) {
+                    setTokenSet(refreshedTokenSet);
+                    logger.info("Refreshed token for user: " + uid);
+                }
+            }
         }
-        HashMap<String, String> refreshedTokenSet = fetchRefreshedTokenSet(authToken, ediToken);
-        if (refreshedTokenSet != null) {
-            setTokenSet(refreshedTokenSet);
-            logger.info("Refreshed token for user: " + uid);
+        else {
+            httpSession.invalidate();
         }
     }
 
