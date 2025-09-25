@@ -1,6 +1,13 @@
 package edu.lternet.pasta.portal;
 
-import edu.lternet.pasta.token.TokenManager;
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,22 +21,16 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.HashMap;
+import edu.lternet.pasta.token.TokenManager;
+
 
 @WebFilter("/TokenRefreshFilter")
 public class TokenRefreshFilter implements Filter {
     private static final Logger logger = Logger.getLogger(TokenRefreshFilter.class);
 
-    String tokenRefreshUrl = null;
-    ServletContext context = null;
-    HttpSession httpSession = null;
-    String publicId;
+    private HttpSession httpSession = null;
+    private static String tokenRefreshUrl;
+    private static String publicId;
 
     public void init(FilterConfig fConfig) throws ServletException {
         Configuration options = ConfigurationListener.getOptions();
@@ -37,10 +38,9 @@ public class TokenRefreshFilter implements Filter {
         String authHostname = options.getString("auth.hostname"); // auth.edirepository.org
         Integer authPort = options.getInteger("auth.port", 443); // 443
         publicId = options.getString("edi.public.id");
-        this.tokenRefreshUrl = String.format("%s://%s:%d/auth/v1/token/refresh", authProtocol, authHostname, authPort);
-        context = fConfig.getServletContext();
+        tokenRefreshUrl = String.format("%s://%s:%d/auth/v1/token/refresh", authProtocol, authHostname, authPort);
         logger.info("TokenRefreshFilter initialized");
-        logger.info("Token refresh URL: " + this.tokenRefreshUrl);
+        logger.info("Token refresh URL: " + tokenRefreshUrl);
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
