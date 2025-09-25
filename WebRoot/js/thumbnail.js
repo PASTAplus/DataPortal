@@ -68,10 +68,10 @@ async function addThumbnail(file, endpoint) {
             console.log(result);
             window.location.reload(true);
         } else {
-            throw new Error('Upload failed with status ' + response.status);
+            throw new Error('Adding thumbnail failed with status ' + response.status);
         }
     } catch (error) {
-        alert(`Upload Failed - Error: ${error.message}`);
+        alert(`Error: Adding thumbnail failed`);
         console.error('Error:', error);
     }
 }
@@ -91,31 +91,10 @@ async function deleteThumbnail(endpoint) {
             console.log(result);
             window.location.reload(true);
         } else {
-            throw new Error('Delete failed with status ' + response.status);
+            throw new Error('Deleting thumbnail failed with status ' + response.status);
         }
     } catch (error) {
-        alert(`Delete Failed - Error: ${error.message}`);
-        console.error('Error:', error);
-    }
-}
-
-async function getSetCookie(endpoint) {
-    try {
-        const response = await fetch(endpoint, {
-            method: 'OPTIONS',
-            credentials: 'include',
-            headers: {
-                'X-New-Auth-Token': `edi-token=${ediToken};auth-token=${authToken}`,
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.text();
-            console.log(result);
-        } else {
-            throw new Error('getSetCookie failed with status ' + response.status);
-        }
-    } catch (error) {
+        alert(`Error: Deleting thumbnail failed.`);
         console.error('Error:', error);
     }
 }
