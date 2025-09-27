@@ -173,23 +173,4 @@ public class SEOClient extends PastaClient {
 
         return jsonString;
     }
-
-
-    public static void main(String[] args) {
-        ConfigurationListener.configure();
-        String uid = "public";
-        String packageId = args[0];
-        String jsonString = "";
-        
-        try {
-            SEOClient seoClient = new SEOClient(uid);
-            jsonString = seoClient.fetchDatasetJSON(packageId);
-        }
-        catch (Exception e) {
-           e.printStackTrace();
-        }
-        
-        System.out.println(jsonString);
-    }
-
 }
