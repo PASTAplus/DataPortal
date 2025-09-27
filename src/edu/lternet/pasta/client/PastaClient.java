@@ -76,12 +76,11 @@ public class PastaClient {
   protected Integer maxIdleTime;
   protected Integer idleSleepTime;
   protected Integer initialSleepTime;
-
   protected String uid;
   protected String token = null;
   protected String ediToken = null;
   protected HashMap<String, String> tokenSet = null;
-  
+  protected String publicId;
   protected String portalUrlHead;
   
   /*
@@ -91,56 +90,40 @@ public class PastaClient {
   public PastaClient(String uid) throws PastaAuthenticationException, PastaConfigurationException {
 
     PropertiesConfiguration options = ConfigurationListener.getOptions();
-    
     if (options == null) {
       throw new PastaConfigurationException();
     }
 
     this.uid = uid;
-    String gripe;
-
     this.portalUrlHead = options.getString("dataportal.portalUrlHead");
-
     this.pastaHost = options.getString("pasta.hostname");
     this.pastaProtocol = options.getString("pasta.protocol");
     this.pastaPort = options.getInt("pasta.port");
     this.pastaUriHead = options.getString("pasta.uriHead");
-
     this.maxIdleTime = options.getInt("pastaclient.maxidletime");
     this.idleSleepTime = options.getInt("pastaclient.idlesleeptime");
     this.initialSleepTime = options.getInt("pastaclient.initialsleeptime");
+    this.publicId = options.getString("edi.public.id");
 
-
-    if (this.uid == null) {
-
-      gripe = "User identifier 'uid' is 'null'";
-      throw new PastaAuthenticationException(gripe);
-
-    } else {
-
-      if (!this.uid.equals("public")) {  // Get authentication token for uid
-
-        try {
-
-          this.tokenSet = TokenManager.getTokenSet(uid);
-          this.token = this.tokenSet.get("auth-token");
-          this.ediToken = this.tokenSet.get("edi-token");
-
-
-          // Throw exception if user not "public" and token not in store
-          if (this.token == null) {
-            gripe = String.format("A token for user '%s' does not exist in the 'TokenStore'", this.uid);
-            throw new PastaAuthenticationException(gripe);
-          }
-
-        } catch (SQLException | ClassNotFoundException e) {
-          logger.error(e);
-        }
-
-      }
-
+    if (this.uid == null || this.uid.isEmpty()) {
+        String msg = "The 'uid' is either null or empty.";
+        logger.error(msg);
+        throw new PastaAuthenticationException(msg);
     }
 
+    if (!this.uid.equals(publicId)) {
+      try {
+        this.tokenSet = TokenManager.getTokenSet(uid);
+        this.token = this.tokenSet.get("auth-token");
+        this.ediToken = this.tokenSet.get("edi-token");
+        if (this.token == null) {
+          String msg = String.format("A token for user '%s' does not exist in the 'TokenStore'", this.uid);
+          throw new PastaAuthenticationException(msg);
+        }
+      } catch (SQLException | ClassNotFoundException e) {
+        logger.error(e);
+      }
+    }
   }
 
   protected String makePastaCookie(String authToken, String ediToken) {
