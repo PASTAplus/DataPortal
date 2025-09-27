@@ -88,7 +88,7 @@ public class DynamicContentServlet extends HttpServlet {
         logger.info("Refreshing PASTA data package growth stats.");
 
         try {
-			PastaStatistics pastaStats = new PastaStatistics("public");
+			PastaStatistics pastaStats = new PastaStatistics();
 			numDataPackages = pastaStats.getNumDataPackages(true).toString();
 			numDataPackagesSites = pastaStats.getNumDataPackages(false).toString();
 			numDataPackagesAll = pastaStats.getNumDataPackagesAllRevisions(true).toString();
