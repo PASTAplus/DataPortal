@@ -64,7 +64,7 @@ public class TokenManager {
      * Instance variables
      */
 
-    private String extToken = null;
+    private String authToken = null;
     private String b64Token = null;
     private String token = null;
     private String signature = null;
@@ -73,7 +73,6 @@ public class TokenManager {
     private Long ttl;
     private ArrayList<String> groups;
     private String ediToken = null;
-    private boolean ediUseAuth = false;
 
     /*
      * Constructors
@@ -82,13 +81,13 @@ public class TokenManager {
     public TokenManager(HashMap<String, String> tokenSet) {
 
         Configuration options = ConfigurationListener.getOptions();
-        this.ediUseAuth = Boolean.parseBoolean(options.getString("edi.auth.use"));
+        boolean ediUseAuth = Boolean.parseBoolean(options.getString("edi.auth.use"));
 
-        this.extToken = tokenSet.get("auth-token");
-        if (extToken != null) {
-            this.b64Token = extToken.split("-")[0];
+        this.authToken = tokenSet.get("auth-token");
+        if (authToken != null) {
+            this.b64Token = authToken.split("-")[0];
             this.token = new String(Base64.decodeBase64(this.b64Token));
-            this.signature = extToken.split("-")[1];
+            this.signature = authToken.split("-")[1];
             String[] tokenParts = this.token.split("\\*");
             this.uid = tokenParts[0];
             this.authSystem = tokenParts[1];
@@ -107,8 +106,8 @@ public class TokenManager {
      * Methods
      */
 
-    public String getExtToken() {
-        return this.extToken;
+    public String getAuthToken() {
+        return this.authToken;
     }
 
     public String getB64Token() {
@@ -217,7 +216,7 @@ public class TokenManager {
                     sql = String.format(
                             "UPDATE authtoken.tokenstore SET token=%s, edi_token=%s, date_created=now()" +
                                     " WHERE authtoken.tokenstore.user_id=%s",
-                            SqlEscape.str(this.extToken),
+                            SqlEscape.str(this.authToken),
                             SqlEscape.str(this.ediToken),
                             SqlEscape.str(this.uid)
                     );
@@ -234,7 +233,7 @@ public class TokenManager {
                     sql = String.format(
                             "INSERT INTO authtoken.tokenstore VALUES (%s,%s, %s, now())",
                             SqlEscape.str(this.uid),
-                            SqlEscape.str(this.extToken),
+                            SqlEscape.str(this.authToken),
                             SqlEscape.str(this.ediToken)
                     );
                     logger.info(String.format("sql=%s", sql));

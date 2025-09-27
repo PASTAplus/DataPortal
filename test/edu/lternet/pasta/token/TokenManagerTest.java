@@ -165,10 +165,10 @@ public class TokenManagerTest {
         HashMap<String, String> tokenSet = new HashMap<String, String>(2);
         tokenSet.put("auth-token", testToken);
         tokenSet.put("edi-token", "");
-		String extToken = null;
+		String authToken;
         this.tokenManager = new TokenManager(tokenSet);
-		extToken = this.tokenManager.getExtToken();
-		boolean isTokenEqual = testToken.equals(extToken);
+		authToken = this.tokenManager.getAuthToken();
+		boolean isTokenEqual = testToken.equals(authToken);
 		// Test whether the token returned from the database is equal to the test token.
 		assertTrue(isTokenEqual);
 		
