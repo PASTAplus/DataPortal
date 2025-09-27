@@ -137,23 +137,4 @@ public class CiteClient extends PastaClient {
 
         return citeString;
     }
-    
-    
-    public static void main(String[] args) {
-        ConfigurationListener.configure();
-        String uid = "public";
-        String packageId = args[0];
-        String jsonString = "";
-        
-        try {
-            CiteClient citeClient = new CiteClient(uid);
-            jsonString = citeClient.fetchCitation(packageId);
-        }
-        catch (Exception e) {
-           e.printStackTrace();
-        }
-        
-        System.out.println(jsonString);
-    }
-
 }
