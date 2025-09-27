@@ -518,7 +518,7 @@ public class JournalCitationsClient extends PastaClient {
     public String citationsTableHTML() throws Exception {
         String html = "";
 
-        if (this.uid != null && !this.uid.equals("public")) {
+        if (this.uid != null && !this.uid.equals(this.publicId)) {
             StringBuilder sb = new StringBuilder("");
             String xmlString = listPrincipalOwnerCitations(this.uid);
 
@@ -651,7 +651,7 @@ public class JournalCitationsClient extends PastaClient {
     public String citationsOptionsHTML() throws Exception {
         String html = "";
 
-        if (this.uid != null && !this.uid.equals("public")) {
+        if (this.uid != null && !this.uid.equals(this.publicId)) {
             StringBuilder sb = new StringBuilder("");
             String xmlString = listPrincipalOwnerCitations(this.uid);
 
