@@ -185,23 +185,4 @@ public class RidareClient extends PastaClient {
     }
     return null;
   }
-
-  public static void main(String[] args)
-  {
-    ConfigurationListener.configure();
-    String uid = "public";
-    String packageId = args[0];
-    String textTypeXpath = args[1];
-    String htmlStr = "";
-
-    try {
-      RidareClient ridareClient = new RidareClient(uid);
-      htmlStr = ridareClient.fetchTextType(packageId, textTypeXpath);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    System.out.println(htmlStr);
-  }
-
 }
