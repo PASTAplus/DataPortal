@@ -95,12 +95,10 @@ public class PastaStatistics {
 	/**
 	 * Constructs a new PastaStatistic object for user "uid".
 	 * 
-	 * @param uid The user identifier.
 	 * @throws PastaAuthenticationException
 	 * @throws PastaConfigurationException
 	 */
-	public PastaStatistics(String uid) 
-			throws PastaAuthenticationException, PastaConfigurationException {
+	public PastaStatistics() throws PastaAuthenticationException, PastaConfigurationException {
 	    Configuration options = ConfigurationListener.getOptions();
 
 	    String dbDriver = options.getString("db.pkg.Driver");
@@ -198,7 +196,7 @@ public class PastaStatistics {
 		ConfigurationListener.configure();
 
 		try {
-			PastaStatistics pastaStatistics = new PastaStatistics("public");
+			PastaStatistics pastaStatistics = new PastaStatistics();
 			Integer totalUnique = pastaStatistics.getNumDataPackages(true);
 			System.out.println("totalUnique: " + totalUnique);
 		} 
