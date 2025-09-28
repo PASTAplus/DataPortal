@@ -62,8 +62,7 @@ public class CodeGenerationClient extends PastaClient {
 	 * Class variables
 	 */
 
-	private static final Logger logger = Logger
-			.getLogger(edu.lternet.pasta.portal.codegeneration.CodeGenerationClient.class);
+	private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.codegeneration.CodeGenerationClient.class);
 
 	/*
 	 * Instance variables
@@ -87,9 +86,9 @@ public class CodeGenerationClient extends PastaClient {
 	 * @param statisticalFileType   the statisical file type, an enumerated type
 	 * @param packageId  the package ID string  
 	 */
-	public CodeGenerationClient(StatisticalFileType statisticalFileType, String packageId)
+	public CodeGenerationClient(String uid, StatisticalFileType statisticalFileType, String packageId)
 			throws PastaAuthenticationException, PastaConfigurationException {
-	    super("public");
+	    super(uid);
 		if (statisticalFileType == null) {
 			throw new IllegalArgumentException("null statisticalFileType");
 		}

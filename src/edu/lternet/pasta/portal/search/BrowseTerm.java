@@ -30,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -37,6 +38,7 @@ import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.client.PastaAuthenticationException;
 import edu.lternet.pasta.client.PastaConfigurationException;
 import edu.lternet.pasta.client.ResultSetUtility;
+import edu.lternet.pasta.portal.ConfigurationListener;
 
 
 /**
@@ -232,13 +234,14 @@ public class BrowseTerm {
    * @return resultsetXML  XML search results from the Data Package Manager web service
    */
   public String runQuery() {
-    String uid = "public";         // All browse-based searches are by public user
-    String resultsetXML = null;
-    
+    PropertiesConfiguration options = ConfigurationListener.getOptions();
+    String publicId = options.getString("edi.public.id");    String resultsetXML = null;
     try {  
-      DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
-      String extendedQueryString = String.format("%s&start=%d&rows=%d&sort=%s", 
-    		  this.queryStr, Search.DEFAULT_START, Search.DEFAULT_ROWS, Search.DEFAULT_SORT);
+      DataPackageManagerClient dpmClient = new DataPackageManagerClient(publicId);
+      String extendedQueryString = String.format(
+              "%s&start=%d&rows=%d&sort=%s",
+    		  this.queryStr, Search.DEFAULT_START, Search.DEFAULT_ROWS, Search.DEFAULT_SORT
+      );
       resultsetXML = dpmClient.searchDataPackages(extendedQueryString);    
     } 
     catch (PastaAuthenticationException e) {

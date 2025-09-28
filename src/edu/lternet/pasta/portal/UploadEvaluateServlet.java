@@ -52,13 +52,8 @@ public class UploadEvaluateServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.UploadEvaluateServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.UploadEvaluateServlet.class);
   private static final long serialVersionUID = 1L;
-
-  private static String cwd = null;
-  private static String xslpath = null;
-
   private static final String HTMLHEAD = "<html lang=\"en\">\n" +
 	      "<head>\n" +
 	      "    <title>LTER :: Network Data Portal</title>\n" +
@@ -69,7 +64,11 @@ public class UploadEvaluateServlet extends DataPortalServlet {
 
   private static final String HTMLTAIL = "    </div>\n</body>\n</html>\n";
 
-  /**
+  private static String cwd = null;
+  private static String xslpath = null;
+  private static String publicId;
+
+    /**
    * Constructor of the object.
    */
   public UploadEvaluateServlet() {
@@ -124,12 +123,13 @@ public class UploadEvaluateServlet extends DataPortalServlet {
 
     HttpSession httpSession = request.getSession();
 
-    String uid = (String) httpSession.getAttribute("uid");
     String useChecksumStr = (String) request.getAttribute("useChecksum");
     boolean useChecksum = (useChecksumStr != null);
-    
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+
+    String uid = (String) httpSession.getAttribute("uid");
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String html = null;
 
@@ -199,11 +199,10 @@ public class UploadEvaluateServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("reportutility.xslpath");
-    cwd = options.getString("system.cwd");
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      xslpath = options.getString("reportutility.xslpath");
+      cwd = options.getString("system.cwd");
+      publicId = options.getString("edi.public.id");
   }
 
   /**

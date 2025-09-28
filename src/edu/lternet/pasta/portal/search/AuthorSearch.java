@@ -29,11 +29,13 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.lternet.pasta.umbra.UmbraClientException;
+import edu.lternet.pasta.portal.ConfigurationListener;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
+import edu.lternet.pasta.umbra.UmbraClientException;
 import edu.lternet.pasta.umbra.UmbraClient;
 
 
@@ -293,8 +295,9 @@ public class AuthorSearch extends Search {
 	 */
 	private static String executeQuery(String queryText) throws Exception
 	{
-		String uid = "public";
-		DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        String publicId = options.getString("edi.public.id");
+        DataPackageManagerClient dpmClient = new DataPackageManagerClient(publicId);
 		String xml = dpmClient.searchDataPackages(queryText);
 		return xml;
 	}

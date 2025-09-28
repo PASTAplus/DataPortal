@@ -33,10 +33,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
-import edu.lternet.pasta.portal.codegeneration.CodeGenerationClient;
 import edu.lternet.pasta.portal.codegeneration.CodeGenerationClient.StatisticalFileType;
+import edu.lternet.pasta.portal.ConfigurationListener;
 import edu.lternet.pasta.common.UserErrorException;
 import edu.lternet.pasta.portal.DataPortalServlet;
 import edu.lternet.pasta.portal.MapBrowseServlet;
@@ -47,25 +48,21 @@ public class CodeGenerationServlet extends DataPortalServlet {
 	 * Class variables
 	 */
 
-	private static final Logger logger = Logger
-			.getLogger(edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet.class);
+	private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.codegeneration.CodeGenerationServlet.class);
 	private static final long serialVersionUID = 1L;
 	private static final String forward = "./codeGeneration.jsp";
-	
-    private static final String pythonInstructions =
+	private static final String pythonInstructions =
         "Download the Python program and run it as you would any other Python program. Alternatively, you can " +
         "copy and paste the program code into the Python IDLE editor and run it from there.<br/><br/>" +
         "For datasets that require authenticated access to data tables, you may need to download the " +
         "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
         "is stored on your computer.<br/>&nbsp;";
-     
     private static final String rInstructions =
         "Download the R program and open it in R to run. Alternatively, you can " +
         "copy and paste the program code into the R console.<br/><br/>For datasets that " +
         "require authenticated access to data tables, you may need to download the " +
         "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
         "is stored on your computer.<br/>&nbsp;";
-        
     private static final String tidyrInstructions =
         "Download the R program and open it in R to run. Alternatively, you can " +
         "copy and paste the program code into the R console. " +
@@ -74,21 +71,18 @@ public class CodeGenerationServlet extends DataPortalServlet {
         "For datasets that require authenticated access to data tables, you may need to download the " +
         "data separately and alter the<br/><code class='nis'>infile <-</code> lines to reflect where the data " +
         "is stored on your computer.<br/>&nbsp;";
-        
 	private static final String sasInstructions =
 		"Download the .sas program and open it in SAS to run. Alternatively the " +
 		"code may be cut and pasted into the SAS program editor.<br/><br/>For datasets " +
 		"that require authenticated access to data tables, you may need to download " +
 		"the data separately and alter the <code class='nis'>filename datafile</code> lines to reflect " +
 		"where the data is stored on your computer.<br/>&nbsp;";
-			
 	private static final String spssInstructions =
 		"Download the .spss program and the data files. Open the .spss file as a " +
 		"syntax file and edit it so that the <code class='nis'>FILE=\"PUT-PATH-TO-DATA-FILE-HERE\"</code> " +
 		"statements contain the path to the appropriate data file on your computer. " +
 		"Alternatively the code may be cut and pasted into an SPSS Syntax Editor " +
 		"and altered there.<br/>&nbsp;";
-
 	private static final String matlabInstructions =
 		"Download the .m file and save it to a directory in the MATLAB path, then " +
 		"start MATLAB and run it using the syntax:<br/>" + 
@@ -105,6 +99,9 @@ public class CodeGenerationServlet extends DataPortalServlet {
 		"Note that username and password are only required for data tables where " +
 		"authenticated access is required, and the cURL executable must be present " +
 		"in the MATLAB path (see <a href=\"http://curl.haxx.se/\">http://curl.haxx.se/</a>).<br/>&nbsp;";
+
+    private static String publicId;
+
 
 	/*
 	 * Constructors
@@ -262,7 +259,7 @@ public class CodeGenerationServlet extends DataPortalServlet {
 			}
 
 			if (packageId != null) {
-				CodeGenerationClient codeGenerationClient = new CodeGenerationClient(statisticalFileType, packageId);
+				CodeGenerationClient codeGenerationClient = new CodeGenerationClient(publicId, statisticalFileType, packageId);
 				filename = codeGenerationClient.getDownloadFilename();
 				programCode = codeGenerationClient.getProgramCode();
 				statisticalPackageName = codeGenerationClient.getStatisticalPackageName();
@@ -294,6 +291,6 @@ public class CodeGenerationServlet extends DataPortalServlet {
 	 *             if an error occurs
 	 */
 	public void init() throws ServletException {
-	}
-
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        publicId = options.getString("edi.public.id");	}
 }
