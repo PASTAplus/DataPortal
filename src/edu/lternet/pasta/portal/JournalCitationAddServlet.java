@@ -37,7 +37,6 @@ import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.JournalCitationsClient;
 import edu.lternet.pasta.common.JournalCitation;
-import edu.lternet.pasta.common.UserErrorException;
 
 
 public class JournalCitationAddServlet extends DataPortalServlet {
@@ -46,11 +45,11 @@ public class JournalCitationAddServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.JournalCitationAddServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.JournalCitationAddServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./journalCitations.jsp";
+
+  private static String publicId;
 
   
   /**
@@ -101,8 +100,9 @@ public class JournalCitationAddServlet extends DataPortalServlet {
         request.setCharacterEncoding("UTF-8");
         HttpSession httpSession = request.getSession();
         String uid = (String) httpSession.getAttribute("uid");
-        if (uid == null || uid.isEmpty())
-            uid = "public";
+        if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
         String message = null;
         String messageType = "info";
         String createMessage = "";
@@ -116,8 +116,7 @@ public class JournalCitationAddServlet extends DataPortalServlet {
         /*
          * Check for valid input
          */
-        String inputMessage = 
-            validateInput(packageId, articleDoi, articleUrl, articleTitle, journalTitle, relationType);
+        String inputMessage = validateInput(packageId, articleDoi, articleUrl, articleTitle, journalTitle, relationType);
 
         JournalCitation journalCitation = new JournalCitation();
         journalCitation.setPackageId(packageId);
@@ -130,12 +129,12 @@ public class JournalCitationAddServlet extends DataPortalServlet {
         boolean includeDeclaration = true;
         String journalCitationXML = journalCitation.toXML(includeDeclaration);
 
-        if (uid.equals("public")) {
+        if (uid.equals(publicId)) {
             message = LOGIN_WARNING;
             messageType = "warning";
             request.setAttribute("message", message);
         }
-        else if (inputMessage != null && !inputMessage.isEmpty()) {
+        else if (!inputMessage.isEmpty()) {
             createMessage = inputMessage;
             messageType = "input-error";
         }
@@ -188,9 +187,8 @@ public class JournalCitationAddServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

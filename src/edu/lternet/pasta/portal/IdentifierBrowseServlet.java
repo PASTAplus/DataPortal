@@ -38,8 +38,7 @@ import org.apache.commons.lang3.text.StrTokenizer;
 import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.PastaAuthenticationException;
-import edu.lternet.pasta.client.PastaConfigurationException;
+
 
 public class IdentifierBrowseServlet extends DataPortalServlet {
 
@@ -47,14 +46,15 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.IdentifierBrowseServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.IdentifierBrowseServlet.class);
   private static final long serialVersionUID = 1L;
   private static final String forward = "./dataPackageBrowser.jsp";
   private static final String browseMessage = "Select a data package "
   		+ "<em>scope.identifier</em> value to view the most current "
   		+ "revision of the data package lineage.";
+
   private static String pastaUriHead = null;
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -113,8 +113,9 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
 
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String scope = request.getParameter("scope");
 
@@ -176,14 +177,9 @@ public class IdentifierBrowseServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-		PropertiesConfiguration options = ConfigurationListener.getOptions();
-		pastaUriHead = options.getString("pasta.uriHead");
-
-		if ((pastaUriHead == null) || (pastaUriHead.equals(""))) {
-			throw new ServletException(
-			    "No value defined for 'pasta.uriHead' property.");
-		}
-    // Put your code here
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      pastaUriHead = options.getString("pasta.uriHead");
+      publicId = options.getString("edi.public.id");
   }
 
 }

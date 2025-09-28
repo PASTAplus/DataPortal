@@ -99,21 +99,19 @@ public class EventTestServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
 
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String subscriptionId = request.getParameter("subscriptionid");
 
     String message = null;
     String type = null;
 
-    if (uid.equals("public")) {
-
+    if (uid.equals(publicId)) {
       message = LOGIN_WARNING;
       type = "warning";
-
     } else {
-
       try {
         EventSubscriptionClient eventClient = new EventSubscriptionClient(uid);
         eventClient.testSubscription(subscriptionId);
@@ -124,8 +122,7 @@ public class EventTestServlet extends DataPortalServlet {
       } 
       catch (Exception e) {
     	  handleDataPortalError(logger, e);
-      }    
-
+      }
     }
 
     request.setAttribute("testmessage", message);

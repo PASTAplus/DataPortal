@@ -1,6 +1,13 @@
 package edu.lternet.pasta.portal;
 
-import edu.lternet.pasta.client.RidareClient;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.*;
+
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -8,12 +15,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.*;
+import edu.lternet.pasta.client.RidareClient;
 
 
 public class JournalCitationsUtil
@@ -68,8 +70,11 @@ public class JournalCitationsUtil
 
     public static Document getRidareDataset(String packageId)
     {
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        String publicId = options.getString("edi.public.id");
+
         try {
-            RidareClient ridareClient = new RidareClient("public");
+            RidareClient ridareClient = new RidareClient(publicId);
             return ridareClient.fetchXml(packageId, "//dataset");
         } catch (Exception e) {
 			logger.error("Exception:\n" + e.getMessage());

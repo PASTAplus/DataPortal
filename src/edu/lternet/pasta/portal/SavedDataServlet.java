@@ -52,6 +52,7 @@ public class SavedDataServlet extends DataPortalServlet {
 
   private static String cwd = null;
   private static String xslpath = null;
+  private static String publicId;
   
   
   /*
@@ -139,11 +140,11 @@ public class SavedDataServlet extends DataPortalServlet {
 		
 		String uid = (String) httpSession.getAttribute("uid");
 		if (uid == null || uid.isEmpty()) {
-			uid = "public";
+			uid = publicId;
 		}
 
 		String message = null;
-		if (uid.equals("public")) {
+		if (uid.equals(publicId)) {
 			message = LOGIN_WARNING;
 			forward = "./login.jsp";
 			request.setAttribute("message", message);
@@ -222,6 +223,7 @@ public class SavedDataServlet extends DataPortalServlet {
 		PropertiesConfiguration options = ConfigurationListener.getOptions();
 		xslpath = options.getString("resultsetutility.xslpath");
 		cwd = options.getString("system.cwd");
+        publicId = options.getString("edi.public.id");
 	}
   
 }

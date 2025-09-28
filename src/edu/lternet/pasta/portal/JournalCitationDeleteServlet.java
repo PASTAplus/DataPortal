@@ -44,11 +44,11 @@ public class JournalCitationDeleteServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.JournalCitationDeleteServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.JournalCitationDeleteServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./journalCitations.jsp";
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -100,20 +100,20 @@ public class JournalCitationDeleteServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
 
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String journalCitationId = request.getParameter("journalcitationid");
 
     String deleteMessage = null;
     String messageType = null;
 
-    if (uid.equals("public")) {
+    if (uid.equals(publicId)) {
       messageType = "warning";
       request.setAttribute("message", LOGIN_WARNING);
     } 
     else {
-        
       try {
         JournalCitationsClient journalCitationsClient = new JournalCitationsClient(uid);
         journalCitationsClient.deleteByJournalCitationId(journalCitationId);
@@ -124,7 +124,6 @@ public class JournalCitationDeleteServlet extends DataPortalServlet {
       catch (Exception e) {
           handleDataPortalError(logger, e);
       }
-
     }
 
     request.setAttribute("deleteMessage", deleteMessage);
@@ -142,9 +141,8 @@ public class JournalCitationDeleteServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

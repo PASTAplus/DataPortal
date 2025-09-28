@@ -25,21 +25,16 @@
 package edu.lternet.pasta.portal;
 
 import java.io.IOException;
-import java.util.HashMap;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
-import edu.lternet.pasta.client.ProvenanceFactoryClient;
-import edu.lternet.pasta.client.XSLTUtility;
 import edu.lternet.pasta.common.UserErrorException;
-import edu.lternet.pasta.common.XmlUtility;
+
 
 public class ProvenanceGraphServlet extends DataPortalServlet {
 
@@ -47,11 +42,9 @@ public class ProvenanceGraphServlet extends DataPortalServlet {
 	 * Class variables
 	 */
 
-	private static final Logger logger = Logger
-	    .getLogger(edu.lternet.pasta.portal.ProvenanceGeneratorServlet.class);
+	private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ProvenanceGeneratorServlet.class);
 	private static final long serialVersionUID = 1L;
 	private static final String forward = "./provenanceGraph.jsp";
-	private static String cwd = null;
 
 
 	/*
@@ -109,9 +102,6 @@ public class ProvenanceGraphServlet extends DataPortalServlet {
 			throws ServletException, IOException {
 		try {
 			HttpSession httpSession = request.getSession();
-			String uid = (String) httpSession.getAttribute("uid");
-			if (uid == null || uid.isEmpty())
-				uid = "public";
 			String nSourcesStr = request.getParameter("nSources");
 			Integer nSources = new Integer(Integer.parseInt(nSourcesStr));
 			String sourcesHTML = request.getParameter("sourcesHTML");
@@ -141,9 +131,7 @@ public class ProvenanceGraphServlet extends DataPortalServlet {
 	 *           if an error occurs
 	 */
 	public void init() throws ServletException {
-		PropertiesConfiguration options = ConfigurationListener.getOptions();
-	    cwd = options.getString("system.cwd");
-	}
+    }
 	
 }
 	
