@@ -492,7 +492,7 @@ public class EventSubscriptionClient extends PastaClient {
 	public int numberOfSubscriptions() throws PastaEventException {
 		int numberOfSubscriptions = 0;
 
-		if (this.uid != null && !this.uid.equals("public")) {
+		if (this.uid != null && !this.uid.equals(this.publicId)) {
 			String xmlString = readByFilter("");
 
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
@@ -523,7 +523,7 @@ public class EventSubscriptionClient extends PastaClient {
 	public String subscriptionTableHTML() throws PastaEventException {
 		String html = "";
 
-		if (this.uid != null && !this.uid.equals("public")) {
+		if (this.uid != null && !this.uid.equals(this.publicId)) {
 			StringBuilder sb = new StringBuilder("");
 			String xmlString = readByFilter("");
 
@@ -611,7 +611,7 @@ public class EventSubscriptionClient extends PastaClient {
 	public String subscriptionOptionsHTML() throws PastaEventException {
 		String html = "";
 
-		if (this.uid != null && !this.uid.equals("public")) {
+		if (this.uid != null && !this.uid.equals(this.publicId)) {
 			StringBuilder sb = new StringBuilder("");
 			String xmlString = readByFilter("");
 
