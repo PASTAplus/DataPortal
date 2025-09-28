@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import edu.lternet.pasta.common.*;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,7 +41,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
+import edu.lternet.pasta.common.*;
+import edu.lternet.pasta.portal.ConfigurationListener;
 
 /**
  * @author costa
@@ -59,8 +61,7 @@ public class AuditManagerClient extends PastaClient {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.client.AuditManagerClient.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.client.AuditManagerClient.class);
 
   /*
    * The cache of RecentUpload objects.
@@ -91,9 +92,7 @@ public class AuditManagerClient extends PastaClient {
    * @throws PastaAuthenticationException
    * @throws PastaConfigurationException
    */
-  public AuditManagerClient(String uid) throws PastaAuthenticationException,
-      PastaConfigurationException {
-
+  public AuditManagerClient(String uid) throws PastaAuthenticationException, PastaConfigurationException {
     super(uid);
     String pastaUrl = PastaClient.composePastaUrl(this.pastaProtocol, this.pastaHost, this.pastaPort);
     this.BASE_URL = pastaUrl + "/audit";
@@ -161,27 +160,29 @@ public class AuditManagerClient extends PastaClient {
    * list of RecentUpload objects if the cache is empty or if it's time
    * to refresh the cache.
    */
-	private static List<RecentUpload> getRecentUploads(String serviceMethod,
-			Integer numberOfDays, Integer limit) {
-		List<RecentUpload> recentUploads = new ArrayList<RecentUpload>();
-		String uploadType = serviceMethod.equals("createDataPackage") ? "inserts" : "updates";
-
-		logger.info(String.format("Start refresh of recent %s", uploadType));
-
-		try {
-			DataPackageManagerClient dpmc = new DataPackageManagerClient("public");
-			// recentUploads = auditManagerClient.recentUploads(serviceMethod, numberOfDays, limit);
-			String recentUploadsXML = dpmc.listRecentUploads(serviceMethod, limit);
-			if ((recentUploadsXML != null) && (!recentUploadsXML.equals(""))) {
-				recentUploads = parseRecentUploadsXML(dpmc, recentUploadsXML);
-			}
-		}
-		catch (Exception e) {
-			logger.error("Error refreshing recent uploads: " + e.getMessage());
-		}
-
-		logger.info(String.format("Finish refresh of recent %s", uploadType));
-
+	private static List<RecentUpload> getRecentUploads(
+            String serviceMethod,
+            Integer numberOfDays,
+            Integer limit
+    ) {
+        List<RecentUpload> recentUploads = new ArrayList<RecentUpload>();
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        if (options != null) {
+            String publicId = options.getString("edi.public.id");
+            String uploadType = serviceMethod.equals("createDataPackage") ? "inserts" : "updates";
+            logger.info(String.format("Start refresh of recent %s", uploadType));
+            try {
+                DataPackageManagerClient dpmc = new DataPackageManagerClient(publicId);
+                // recentUploads = auditManagerClient.recentUploads(serviceMethod, numberOfDays, limit);
+                String recentUploadsXML = dpmc.listRecentUploads(serviceMethod, limit);
+                if ((recentUploadsXML != null) && (!recentUploadsXML.isEmpty())) {
+                    recentUploads = parseRecentUploadsXML(dpmc, recentUploadsXML);
+                }
+            } catch (Exception e) {
+                logger.error("Error refreshing recent uploads: " + e.getMessage());
+            }
+            logger.info(String.format("Finish refresh of recent %s", uploadType));
+        }
 		return recentUploads;
 	}
 
