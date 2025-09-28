@@ -21,17 +21,22 @@
 <%@ page import="edu.lternet.pasta.common.CalendarUtility" %>
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
-<%@ page import="edu.lternet.pasta.portal.PastaStatistics"%>
-<%@ page import="edu.lternet.pasta.portal.statistics.GrowthStats"%>
+<%@ page import="edu.lternet.pasta.portal.PastaStatistics" %>
+<%@ page import="edu.lternet.pasta.portal.statistics.GrowthStats" %>
+<%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
+<%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
 
 <%
-	final String pageTitle = "Home";
-	final String titleText = DataPortalServlet.getTitleText(pageTitle);
-	session.setAttribute("menuid", "home");
+    final String publicId = (String) ConfigurationListener.getOptions().getProperty("edi.public.id");
 
-	String uid = (String) session.getAttribute("uid");
+    final String pageTitle = "Home";
+    final String titleText = DataPortalServlet.getTitleText(pageTitle);
+
+    session.setAttribute("menuid", "home");
+
+    String uid = (String) session.getAttribute("uid");
 	if (uid == null || uid.isEmpty()) {
-		uid = "public";
+		uid = publicId;
 	}
 
 	//String jqueryString = LTERTerms.getJQueryString(); // for auto-complete using JQuery
@@ -42,7 +47,14 @@
 	String numDataPackagesSites = null;
     String numDataPackagesAll = null;
     String numDataPackagesSitesAll = null;
-	PastaStatistics pastaStats = new PastaStatistics("public");
+    PastaStatistics pastaStats = null;
+    try {
+        pastaStats = new PastaStatistics();
+    } catch (PastaAuthenticationException e) {
+        throw new RuntimeException(e);
+    } catch (PastaConfigurationException e) {
+        throw new RuntimeException(e);
+    }
 
     // Unique data packages, includes EcoTrends and Landsat
 	numDataPackages = (String) application.getAttribute("numDataPackages");

@@ -1,14 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%@ page import="edu.lternet.pasta.client.JournalCitationsClient" %>
-<%--<%@ page import="edu.lternet.pasta.portal.LoginServlet" %>--%>
-<%--<%@ page import="edu.lternet.pasta.portal.Tooltip" %>--%>
 <%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
 <%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
-<%--<%@ page import="org.apache.commons.io.IOUtils" %>--%>
-<%--<%@ page import="javax.xml.parsers.DocumentBuilder" %>--%>
-<%--<%@ page import="javax.xml.parsers.DocumentBuilderFactory" %>--%>
-<%--<%@ page import="org.apache.xpath.CachedXPathAPI" %>--%>
 <%@ page import="org.w3c.dom.Document" %>
 <%@ page import="javax.xml.parsers.ParserConfigurationException" %>
 <%@ page import="edu.lternet.pasta.portal.JournalCitationsUtil" %>
@@ -19,6 +13,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
+    final String publicId = (String) ConfigurationListener.getOptions().getProperty("edi.public.id");
+
     final String pageTitle = "Data Packages Cited by Journal Article";
     final String titleText = DataPortalServlet.getTitleText(pageTitle);
 
@@ -36,7 +32,7 @@
     journalDoi = journalDoi.replaceFirst("^https?://doi.org/", "");
 
     try {
-        jcc = new JournalCitationsClient("public");
+        jcc = new JournalCitationsClient(publicId);
     } catch (PastaAuthenticationException | PastaConfigurationException e) {
         throw new RuntimeException(e);
     }

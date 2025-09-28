@@ -1,22 +1,25 @@
 <%@ page import="edu.lternet.pasta.portal.LoginServlet" %>
 <%@ page import="edu.lternet.pasta.portal.Tooltip" %>
 <%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
+<%@ page import="edu.lternet.pasta.portal.ConfigurationListener" %>
 
 <!-- Header -->
 <%
 
-	HttpSession httpSession = request.getSession();
-	String uid = (String) httpSession.getAttribute("uid");
-	String cname = (String) httpSession.getAttribute("cname");
+    final String publicId = (String) ConfigurationListener.getOptions().getProperty("edi.public.id");
+
+    HttpSession httpSession = request.getSession();
+    String uid = (String) httpSession.getAttribute("uid");
+    String cname = (String) httpSession.getAttribute("cname");
 	String identity = null;
 	String uname = null;
 	String welcomeBack = null;
 	
-	if ((uid == null) || (uid.equals(""))) {
+	if ((uid == null) || (uid.isEmpty())) {
 		identity = "<a href='./login.jsp'>Login</a>";
 		uname = "";
 		welcomeBack = "";
-		uid = "public";
+		uid = publicId;
 	} 
 	else {
         identity = "<a id=\"login\" href=\"./logout\">Logout</a>";

@@ -8,9 +8,10 @@
 
 <%
   final String googleMapsKey = (String) ConfigurationListener.getOptions().getProperty("maps.google.key");
+  final String publicId = (String) ConfigurationListener.getOptions().getProperty("edi.public.id");
+
   final String pageTitle = "Data Package Summary";
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
-  final String publicId = "EDI-078e6e3cee4f7f2812f150701da9351acb51e089";
 
   String wasDeletedHTML = (String) request.getAttribute("wasDeletedHTML");
   String titleHTML = (String) request.getAttribute("dataPackageTitleHTML");
@@ -73,13 +74,12 @@
   String testHTML = "";
   String showTestHTML = "false";
 
-  DataPackageManagerClient dpmc;
+  DataPackageManagerClient dpmc = null;
   try {
       dpmc = new DataPackageManagerClient(uid);
   } catch (PastaAuthenticationException | PastaConfigurationException e) {
       throw new RuntimeException(e);
   }
-
   String pastaHost = dpmc.getPastaHost();
 
   if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
@@ -102,7 +102,7 @@
 
   String showNewestRevision = "false";
   String newestRevisionHTML = "";
-  if (!moreRecentRevisionHTML.isEmpty()) {
+  if (moreRecentRevisionHTML != "") {
     showNewestRevision = "true";
     String fontColor = "darkorange";
     newestRevisionHTML = String.format("<font color='%s'>This data package is not the most recent revision " + "of a series. %s</font>", fontColor, moreRecentRevisionHTML);

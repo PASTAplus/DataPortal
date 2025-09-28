@@ -33,32 +33,23 @@
     }
 %>
 <%
+    final String publicId = (String) ConfigurationListener.getOptions().getProperty("edi.public.id");
+
     final String pageTitle = "Login";
     final String titleText = DataPortalServlet.getTitleText(pageTitle);
-    HttpSession httpSession = request.getSession();
 
     String message = (String) request.getAttribute("message");
     request.removeAttribute("message");
 
+    HttpSession httpSession = request.getSession();
     String from = (String) request.getAttribute("from");
-
     if (from != null && !from.isEmpty()) {
         httpSession.setAttribute("from", from);
     }
 
     String uid = (String) session.getAttribute("uid");
     if (uid == null || uid.isEmpty()) {
-        uid = "public";
-    }
-
-    DataPackageManagerClient dpmc = null;
-    String pastaHost = null;
-    try {
-        dpmc = new DataPackageManagerClient(uid);
-        pastaHost = dpmc.getPastaHost();
-    } catch (PastaAuthenticationException | PastaConfigurationException e) {
-        e.printStackTrace();
-        return;
+        uid = publicId;
     }
 
     String authLoginUrl = getAuthLoginUrl();
