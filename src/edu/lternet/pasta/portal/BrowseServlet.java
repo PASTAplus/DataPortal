@@ -58,6 +58,7 @@ public class BrowseServlet extends DataPortalServlet {
 
   private static String cwd = null;
   private static String xslpath = null;
+  private static String publicId;
   
   
   /*
@@ -142,7 +143,9 @@ public class BrowseServlet extends DataPortalServlet {
     HttpSession httpSession = request.getSession();
     
     String uid = (String) httpSession.getAttribute("uid");   
-    if (uid == null || uid.isEmpty()) { uid = "public"; }
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
     
     String searchValue = request.getParameter("searchValue");      
     BrowseTerm browseTerm = new BrowseTerm(searchValue);
@@ -163,7 +166,7 @@ public class BrowseServlet extends DataPortalServlet {
       httpSession.setAttribute("termsListHTML", termsListHTML);
 
 	  ResultSetUtility resultSetUtility = null;
-	  if (uid.equals("public")) {
+	  if (uid.equals(publicId)) {
 		resultSetUtility = new ResultSetUtility(xml, Search.DEFAULT_SORT);
 	  }
 	  else {
@@ -199,6 +202,7 @@ public class BrowseServlet extends DataPortalServlet {
     PropertiesConfiguration options = ConfigurationListener.getOptions();
     xslpath = options.getString("resultsetutility.xslpath");
     cwd = options.getString("system.cwd");
+    publicId = options.getString("edi.public.id");
     String browseDirPath = options.getString("browse.dir");
     BrowseSearch.setBrowseCacheDir(browseDirPath);
     BrowseSearch browseSearch = null;

@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
 
@@ -42,9 +43,9 @@ public class ArchiveDownloadServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.ArchiveDownloadServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ArchiveDownloadServlet.class);
   private static final long serialVersionUID = 1L;
+  private static String publicId;
 
 
   /**
@@ -97,11 +98,10 @@ public class ArchiveDownloadServlet extends DataPortalServlet {
    * @throws IOException
    *           if an error occurred
    */
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     HttpSession httpSession = request.getSession();
     String uid = (String) httpSession.getAttribute("uid");
-    if (uid == null || uid.isEmpty()) uid = "public";
+    if (uid == null || uid.isEmpty()) uid = publicId;
     String packageId = request.getParameter("packageid");
     String scope = null;
     Integer identifier = null;
@@ -141,7 +141,8 @@ public class ArchiveDownloadServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-    // Put your code here
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

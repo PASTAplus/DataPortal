@@ -24,14 +24,6 @@
 
 package edu.lternet.pasta.portal;
 
-import edu.lternet.pasta.client.AuditManagerClient;
-import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.PastaClient;
-import edu.lternet.pasta.client.ReportUtility;
-import edu.lternet.pasta.common.MyPair;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.log4j.Logger;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +33,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
+
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
+
+import edu.lternet.pasta.client.AuditManagerClient;
+import edu.lternet.pasta.client.DataPackageManagerClient;
+import edu.lternet.pasta.client.PastaClient;
+import edu.lternet.pasta.client.ReportUtility;
+import edu.lternet.pasta.common.MyPair;
+
 
 public class AuditReportServlet extends DataPortalServlet {
 
@@ -55,6 +57,7 @@ public class AuditReportServlet extends DataPortalServlet {
   private static String cwd = null;
   private static String limit = null;
   private static String xslpath = null;
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -116,10 +119,10 @@ public class AuditReportServlet extends DataPortalServlet {
       String uid = (String) httpSession.getAttribute("uid");
 
       if (uid == null || uid.isEmpty()) {
-        uid = "public";
+        uid = publicId;
       }
 
-      if (uid.equals("public")) {
+      if (uid.equals(publicId)) {
         request.setAttribute("reportMessage", LOGIN_WARNING);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("./login.jsp");
         requestDispatcher.forward(request, response);
@@ -215,7 +218,7 @@ public class AuditReportServlet extends DataPortalServlet {
 
       String userIdParam = (String) request.getParameter("userId");
       if (userIdParam != null && !userIdParam.isEmpty()) {
-        String userParam = "public";
+        String userParam = publicId;
         if (!userIdParam.equalsIgnoreCase(userParam)) {
           userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
         }
@@ -339,15 +342,12 @@ public class AuditReportServlet extends DataPortalServlet {
 	 *             if an error occurs
 	 */
 	public void init() throws ServletException {
-
 		PropertiesConfiguration options = ConfigurationListener.getOptions();
-		
-		// limits the number of audit records returned
-		limit = options.getString("auditreport.limit");
-		
+		limit = options.getString("auditreport.limit");  // limits the number of audit records returned
 		xslpath = options.getString("auditreport.xslpath");
 		cwd = options.getString("system.cwd");
-	}
+        publicId = options.getString("edi.public.id");
+    }
 	
 	
 	public String serviceMethodsHTML(String uid) throws ServletException {

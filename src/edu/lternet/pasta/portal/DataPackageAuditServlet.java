@@ -55,6 +55,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
   private static String cwd = null;
   private static String limit = null;
   private static String xslpath = null;
+  private static String publicId;
 
   private static final String PACKAGE = "readDataPackage";
   private static final String METADATA = "readMetadata";
@@ -217,7 +218,7 @@ public class DataPackageAuditServlet extends DataPortalServlet {
 
     String userIdParam = (String) request.getParameter("userId");
     if (userIdParam != null && !userIdParam.isEmpty()) {
-      String userParam = "public";
+      String userParam = publicId;
       if (!userIdParam.equalsIgnoreCase(userParam)) {
         userParam = PastaClient.composeDistinguishedName(userIdParam, affiliation);
       }
@@ -382,11 +383,10 @@ public class DataPackageAuditServlet extends DataPortalServlet {
    */
   public void init() throws ServletException {
     PropertiesConfiguration options = ConfigurationListener.getOptions();
-    // limits the number of audit records returned
-    limit = options.getString("auditreport.limit");
-
+    limit = options.getString("auditreport.limit");  // limits the number of audit records returned
     xslpath = options.getString("datapackageaudit.xslpath");
     cwd = options.getString("system.cwd");
+    publicId = options.getString("edi.public.id");
   }
 
   private String getResourceId(String pastaUriHead, String packageId, String serviceMethod) {

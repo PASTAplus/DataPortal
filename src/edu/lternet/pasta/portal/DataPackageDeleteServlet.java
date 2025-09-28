@@ -45,11 +45,10 @@ public class DataPackageDeleteServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.DataPackageDeleteServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.DataPackageDeleteServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./dataPackageDelete.jsp";
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -109,19 +108,19 @@ public class DataPackageDeleteServlet extends DataPortalServlet {
     HttpSession httpSession = request.getSession();
 
     String uid = (String) httpSession.getAttribute("uid");
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String packageId = request.getParameter("packageid");    
-    String scope = null;
-    Integer identifier = null;
+    String scope;
+    Integer identifier;
     String[] tokens = packageId.split("\\.");
-    String message = null;
+    String msg;
 
     try {
-    if (uid.equals("public")) {
-
-      message = LOGIN_WARNING;
+    if (uid.equals(publicId)) {
+      msg = LOGIN_WARNING;
     } 
     else if (tokens.length == 2) {
       
@@ -131,21 +130,23 @@ public class DataPackageDeleteServlet extends DataPortalServlet {
       DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
       dpmClient.deleteDataPackage(scope, identifier);
         
-      message = "Data package with scope and identifier '<b>" + packageId
+      msg = "Data package with scope and identifier '<b>" + packageId
             + "</b>' has been deleted.";
     } 
     else if (tokens.length == 3) {
-        message = String.format("The provided packaged identifier '%s' could not be parsed correctly. A revision value should not be included.", 
-        		                packageId);
-        throw new UserErrorException(message);
+        msg = String.format(
+                "The provided packaged identifier '%s' could not be parsed correctly. A revision value should not be included.",
+        		   packageId
+        );
+        throw new UserErrorException(msg);
     }
     else {
-        message = String.format("The provided packaged identifier '%s' could not be parsed correctly.",
+        msg = String.format("The provided packaged identifier '%s' could not be parsed correctly.",
         		                packageId);
-        throw new UserErrorException(message);
+        throw new UserErrorException(msg);
     }
 
-    request.setAttribute("deletemessage", message);
+    request.setAttribute("deletemessage", msg);
     }
 	catch (Exception e) {
 		handleDataPortalError(logger, e);
@@ -163,9 +164,8 @@ public class DataPackageDeleteServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
     PropertiesConfiguration options = ConfigurationListener.getOptions();
-
+    publicId = options.getString("edi.public.id");
   }
 
 }
