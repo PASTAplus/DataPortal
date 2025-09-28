@@ -44,11 +44,11 @@ public class EventSubscribeServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.EventSubscribeServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.EventSubscribeServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./eventSubscribe.jsp";
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -97,8 +97,9 @@ public class EventSubscribeServlet extends DataPortalServlet {
       throws ServletException, IOException {
     HttpSession httpSession = request.getSession();
     String uid = (String) httpSession.getAttribute("uid");
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+      uid = publicId;
+    }
     String packageId = request.getParameter("packageid");
     String targetUrl = request.getParameter("targeturl");
     String subscription = "<subscription type=\"eml\"><packageId>" + packageId
@@ -106,7 +107,7 @@ public class EventSubscribeServlet extends DataPortalServlet {
     String message = null;
     String type = "info";
 
-    if (uid.equals("public")) {      
+    if (uid.equals(publicId)) {
       message = LOGIN_WARNING;
       type = "warning";
     } 
@@ -121,7 +122,7 @@ public class EventSubscribeServlet extends DataPortalServlet {
       } 
       catch (Exception e) {
     	  handleDataPortalError(logger, e);
-      }    
+      }
     }
 
     request.setAttribute("subscribemessage", message);
@@ -137,9 +138,8 @@ public class EventSubscribeServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

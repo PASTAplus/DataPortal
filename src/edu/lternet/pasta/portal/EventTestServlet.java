@@ -43,14 +43,11 @@ public class EventTestServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.EventTestServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.EventTestServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./eventSubscribe.jsp";
 
-  private static String cwd = null;
-  private static String xslpath = null;
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -146,11 +143,8 @@ public class EventTestServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("subscriptionutility.xslpath");
-    cwd = options.getString("system.cwd");
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

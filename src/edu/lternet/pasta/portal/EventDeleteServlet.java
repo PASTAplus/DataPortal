@@ -44,11 +44,11 @@ public class EventDeleteServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.EventDeleteServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.EventDeleteServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./eventSubscribe.jsp";
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -100,34 +100,29 @@ public class EventDeleteServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
 
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String subscriptionId = request.getParameter("subscriptionid");
 
     String message = null;
     String type = null;
 
-    if (uid.equals("public")) {
-
+    if (uid.equals(publicId)) {
       message = LOGIN_WARNING;
       type = "warning";
-
     } else {
-
       try {
-
         EventSubscriptionClient eventClient = new EventSubscriptionClient(uid);
         eventClient.deleteBySid(subscriptionId);
         message = "Event subscription with identifier '<b>" + subscriptionId
             + "</b>' has been deleted.";
         type = "info";
-
-      } 
+      }
       catch (Exception e) {
     	  handleDataPortalError(logger, e);
       }
-
     }
 
     request.setAttribute("deletemessage", message);
@@ -145,9 +140,8 @@ public class EventDeleteServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

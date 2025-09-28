@@ -43,6 +43,7 @@ public class DownloadSearchServlet extends DataPortalServlet {
 
   private static String cwd = null;
   private static String xslPath = null;
+  private static String publicId;
 
   /*
    * Instance variables
@@ -89,7 +90,7 @@ public class DownloadSearchServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
     if (uid == null || uid.isEmpty()) {
-      uid = "public";
+      uid = publicId;
     }
     DataPackageManagerClient dpmClient;
     try {
@@ -121,12 +122,12 @@ public class DownloadSearchServlet extends DataPortalServlet {
    *
    * @throws ServletException if an error occurs
    */
-  public void init() throws ServletException
-  {
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslPath = options.getString("resultsetutility.xslpath");
-    logger.debug("XSL PATH: " + xslPath);
-    cwd = options.getString("system.cwd");
-    logger.debug("CWD: " + cwd);
+  public void init() throws ServletException {
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      xslPath = options.getString("resultsetutility.xslpath");
+      logger.debug("XSL PATH: " + xslPath);
+      cwd = options.getString("system.cwd");
+      logger.debug("CWD: " + cwd);
+      publicId = options.getString("edi.public.id");
   }
 }

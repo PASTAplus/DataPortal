@@ -44,14 +44,14 @@ public class EventReviewServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.EventReviewServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.EventReviewServlet.class);
   private static final long serialVersionUID = 1L;
 
   private static final String forward = "./eventSubscribe.jsp";
 
   private static String cwd = null;
   private static String xslpath = null;
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -101,13 +101,14 @@ public class EventReviewServlet extends DataPortalServlet {
     String xml = null;
     String filter = "";
     String uid = (String) httpSession.getAttribute("uid");
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
     String subscriptionId = request.getParameter("subscriptionid");
     String message = null;
     String type = null;
 
-    if (uid.equals("public")) {
+    if (uid.equals(publicId)) {
       message = LOGIN_WARNING;
       type = "warning";
     } 
@@ -143,11 +144,10 @@ public class EventReviewServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("subscriptionutility.xslpath");
-    cwd = options.getString("system.cwd");
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      xslpath = options.getString("subscriptionutility.xslpath");
+      cwd = options.getString("system.cwd");
+      publicId = options.getString("edi.public.id");
   }
 
 }

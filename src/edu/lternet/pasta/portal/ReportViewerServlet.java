@@ -48,12 +48,12 @@ public class ReportViewerServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.ReportViewerServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ReportViewerServlet.class);
   private static final long serialVersionUID = 1L;
   
   private static String cwd = null;
   private static String xslpath = null;
+  private static String publicId;
   
   private static final String HTMLHEAD = "<html lang=\"en\">\n" +
 	      "<head>\n" +
@@ -114,8 +114,9 @@ public class ReportViewerServlet extends DataPortalServlet {
 		HttpSession httpSession = request.getSession();
 		String uid = (String) httpSession.getAttribute("uid");
 
-		if (uid == null || uid.isEmpty())
-			uid = "public";
+		if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
 
 		String packageId = request.getParameter("packageid");
 		String encodedName = request.getParameter("localPath");
@@ -128,7 +129,6 @@ public class ReportViewerServlet extends DataPortalServlet {
 		String html = null;
 
 		try {
-			
 				/*
 				 * The quality report XML could be read either from a local file
 				 * or from PASTA via the DataPackageManagerClient.
@@ -189,12 +189,10 @@ public class ReportViewerServlet extends DataPortalServlet {
    * @throws ServletException if an error occurs
    */
   public void init() throws ServletException {
-
     PropertiesConfiguration options = ConfigurationListener.getOptions();
     xslpath = options.getString("reportutility.xslpath");
     cwd = options.getString("system.cwd");
-
-
+    publicId = options.getString("edi.public.id");
   }
 
 }

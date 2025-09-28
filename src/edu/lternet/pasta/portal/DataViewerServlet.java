@@ -25,13 +25,13 @@
 package edu.lternet.pasta.portal;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
 import edu.lternet.pasta.common.UserErrorException;
@@ -42,9 +42,10 @@ public class DataViewerServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.DataViewerServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.DataViewerServlet.class);
   private static final long serialVersionUID = 1L;
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -100,7 +101,9 @@ public class DataViewerServlet extends DataPortalServlet {
 			throws ServletException, IOException {
 		HttpSession httpSession = request.getSession();
 		String uid = (String) httpSession.getAttribute("uid");
-		if (uid == null || uid.isEmpty()) uid = "public";
+		if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
 		String packageId = request.getParameter("packageid");
 		String entityId = request.getParameter("entityid");
 		String scope = null;
@@ -140,7 +143,6 @@ public class DataViewerServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-    // Put your code here
-  }
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");  }
 }
