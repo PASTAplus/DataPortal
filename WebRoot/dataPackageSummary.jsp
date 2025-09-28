@@ -2,12 +2,15 @@
 <%@ page import="edu.lternet.pasta.portal.ConfigurationListener" %>
 <%@ page import="edu.lternet.pasta.portal.DataPortalServlet" %>
 <%@ page import="edu.lternet.pasta.client.DataPackageManagerClient" %>
+<%@ page import="edu.lternet.pasta.client.PastaAuthenticationException" %>
+<%@ page import="edu.lternet.pasta.client.PastaConfigurationException" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
   final String googleMapsKey = (String) ConfigurationListener.getOptions().getProperty("maps.google.key");
   final String pageTitle = "Data Package Summary";
   final String titleText = DataPortalServlet.getTitleText(pageTitle);
+  final String publicId = "EDI-078e6e3cee4f7f2812f150701da9351acb51e089";
 
   String wasDeletedHTML = (String) request.getAttribute("wasDeletedHTML");
   String titleHTML = (String) request.getAttribute("dataPackageTitleHTML");
@@ -57,19 +60,26 @@
     showCoordinates = "false";
   }
   String showWasDeleted = "true";
-  if ((wasDeletedHTML == null) || (wasDeletedHTML.equals(""))) {
+  if ((wasDeletedHTML == null) || (wasDeletedHTML.isEmpty())) {
     showWasDeleted = "false";
   }
 
   HttpSession httpSession = request.getSession();
-  if ((uid == null) || (uid.equals(""))) {
-    uid = "public";
+  if ((uid == null) || (uid.isEmpty())) {
+    uid = publicId;
   }
 
   String tier = null;
   String testHTML = "";
   String showTestHTML = "false";
-  DataPackageManagerClient dpmc = new DataPackageManagerClient(uid);
+
+  DataPackageManagerClient dpmc;
+  try {
+      dpmc = new DataPackageManagerClient(uid);
+  } catch (PastaAuthenticationException | PastaConfigurationException e) {
+      throw new RuntimeException(e);
+  }
+
   String pastaHost = dpmc.getPastaHost();
 
   if (pastaHost.startsWith("pasta-d") || pastaHost.startsWith("localhost")) {
@@ -92,7 +102,7 @@
 
   String showNewestRevision = "false";
   String newestRevisionHTML = "";
-  if (moreRecentRevisionHTML != "") {
+  if (!moreRecentRevisionHTML.isEmpty()) {
     showNewestRevision = "true";
     String fontColor = "darkorange";
     newestRevisionHTML = String.format("<font color='%s'>This data package is not the most recent revision " + "of a series. %s</font>", fontColor, moreRecentRevisionHTML);

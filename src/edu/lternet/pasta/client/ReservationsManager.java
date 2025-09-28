@@ -144,7 +144,7 @@ public class ReservationsManager extends PastaClient {
 	public int numberOfReservations() throws Exception {
 		int numberOfReservations = 0;
 
-		if (this.uid != null && !this.uid.equals("public")) {
+		if (this.uid != null && !this.uid.equals(this.publicId)) {
 			String xmlString = listActiveReservations();
 
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -203,7 +203,7 @@ public class ReservationsManager extends PastaClient {
 		String html;
 		StringBuilder sb = new StringBuilder("");
 
-		if (this.uid != null && !this.uid.equals("public")) {
+		if (this.uid != null && !this.uid.equals(this.publicId)) {
 			String xmlString = listActiveReservations();
 
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -315,7 +315,7 @@ public class ReservationsManager extends PastaClient {
 		String html;
 		StringBuilder sb = new StringBuilder("");
 
-		if (this.uid != null && !this.uid.equals("public")) {
+		if (this.uid != null && !this.uid.equals(this.publicId)) {
 			String xmlString = listActiveReservations();
 
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
