@@ -51,13 +51,11 @@ public class MetadataPreviewerServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.MetadataPreviewerServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.MetadataPreviewerServlet.class);
   private static final long serialVersionUID = 1L;
 
   private static String cwd = null;
   private static String xslpath = null;
-  
 
   /**
    * Constructor of the object.
@@ -105,11 +103,7 @@ public class MetadataPreviewerServlet extends DataPortalServlet {
       throws ServletException, IOException {
 
     HttpSession httpSession = request.getSession();
-    String uid = (String) httpSession.getAttribute("uid");
 	String forward = "./metadataViewer.jsp";
-
-    if (uid == null || uid.isEmpty())
-      uid = "public";
 
     String html = null;
 
@@ -162,11 +156,9 @@ public class MetadataPreviewerServlet extends DataPortalServlet {
    * @throws ServletException if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("emlutility.xslpath");
-    cwd = options.getString("system.cwd");
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      xslpath = options.getString("emlutility.xslpath");
+      cwd = options.getString("system.cwd");
   }
   
   private String processUploadedFile(FileItem item) throws Exception {

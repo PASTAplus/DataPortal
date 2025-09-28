@@ -48,14 +48,13 @@ public class MetadataViewerServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.MetadataViewerServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.MetadataViewerServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./metadataViewer.jsp";
 
   private static String cwd = null;
   private static String xslpath = null;
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -111,7 +110,9 @@ public class MetadataViewerServlet extends DataPortalServlet {
       throws ServletException, IOException {
     HttpSession httpSession = request.getSession();
     String uid = (String) httpSession.getAttribute("uid");
-    if (uid == null || uid.isEmpty()) uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
     String message = null;
     String metadataStr = null;
 
@@ -244,11 +245,10 @@ public class MetadataViewerServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("emlutility.xslpath");
-    cwd = options.getString("system.cwd");
-
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      xslpath = options.getString("emlutility.xslpath");
+      cwd = options.getString("system.cwd");
+      publicId = options.getString("edi.public.id");
   }
 
 }

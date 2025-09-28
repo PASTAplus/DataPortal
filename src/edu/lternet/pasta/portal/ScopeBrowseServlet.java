@@ -34,11 +34,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.text.StrTokenizer;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.PastaAuthenticationException;
-import edu.lternet.pasta.client.PastaConfigurationException;
 
 public class ScopeBrowseServlet extends DataPortalServlet {
 
@@ -46,12 +45,12 @@ public class ScopeBrowseServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.ScopeBrowseServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ScopeBrowseServlet.class);
   private static final long serialVersionUID = 1L;
   private static final String forward = "./dataPackageBrowser.jsp";
-	private static final String browseMessage = "Select a data package " +
-			"<em>scope</em> value to view a list of associated identifiers.";
+  private static final String browseMessage = "Select a data package <em>scope</em> value to view a list of associated identifiers.";
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -110,8 +109,9 @@ public class ScopeBrowseServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
 
-    if (uid == null || uid.isEmpty())
-      uid = "public";
+    if (uid == null || uid.isEmpty()) {
+        uid = publicId;
+    }
 
     String text = null;
     String html = null;
@@ -162,7 +162,8 @@ public class ScopeBrowseServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-    // Put your code here
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

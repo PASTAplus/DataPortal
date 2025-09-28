@@ -24,15 +24,6 @@
 
 package edu.lternet.pasta.portal;
 
-import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.ResultSetUtility;
-import edu.lternet.pasta.portal.search.Search;
-import edu.lternet.pasta.portal.search.SimpleSearch;
-import edu.lternet.pasta.portal.search.TermsList;
-import edu.lternet.pasta.portal.user.SavedData;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.log4j.Logger;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -40,21 +31,30 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import edu.lternet.pasta.client.DataPackageManagerClient;
+import edu.lternet.pasta.client.ResultSetUtility;
+import edu.lternet.pasta.portal.search.Search;
+import edu.lternet.pasta.portal.search.SimpleSearch;
+import edu.lternet.pasta.portal.search.TermsList;
+import edu.lternet.pasta.portal.user.SavedData;
+
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
+
+
 public class SimpleSearchServlet extends DataPortalServlet {
 
   /*
    * Class variables
    */
 
-  private static final Logger logger =
-      Logger.getLogger(edu.lternet.pasta.portal.SimpleSearchServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.SimpleSearchServlet.class);
   private static final long serialVersionUID = 1L;
+  private static final String forward = "./searchResult.jsp";
 
   private static String cwd = null;
   private static String xslpath = null;
-
-  private static final String forward = "./searchResult.jsp";
-
+  private static String publicId;
 
   /*
    * Instance variables
@@ -110,7 +110,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
     else {
       String uid = (String) httpSession.getAttribute("uid");
       if (uid == null || uid.isEmpty()) {
-        uid = "public";
+        uid = publicId;
       }
 
       resultSetUtility = executeQuery(uid, queryText, sort);
@@ -162,7 +162,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
 
     String uid = (String) httpSession.getAttribute("uid");
     if (uid == null || uid.isEmpty()) {
-      uid = "public";
+      uid = publicId;
     }
 
     String termsParam = (String) request.getParameter("terms");
@@ -242,7 +242,7 @@ public class SimpleSearchServlet extends DataPortalServlet {
     try {
       DataPackageManagerClient dpmClient = new DataPackageManagerClient(uid);
       String xml = dpmClient.searchDataPackages(queryText);
-      if (uid.equals("public")) {
+      if (uid.equals(publicId)) {
         resultSetUtility = new ResultSetUtility(xml, sort);
       }
       else {
@@ -265,14 +265,13 @@ public class SimpleSearchServlet extends DataPortalServlet {
    *
    * @throws ServletException if an error occurs
    */
-  public void init() throws ServletException
-  {
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("resultsetutility.xslpath");
-    logger.debug("XSLPATH: " + xslpath);
-    cwd = options.getString("system.cwd");
-    logger.debug("CWD: " + cwd);
+  public void init() throws ServletException {
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
+      xslpath = options.getString("resultsetutility.xslpath");
+      logger.debug("XSLPATH: " + xslpath);
+      cwd = options.getString("system.cwd");
+      logger.debug("CWD: " + cwd);
   }
-
 
 }

@@ -52,10 +52,11 @@ public class ReserveIdentifierDeleteServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = 
-      Logger.getLogger(edu.lternet.pasta.portal.ReserveIdentifierDeleteServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ReserveIdentifierDeleteServlet.class);
   private static final long serialVersionUID = 1L;
   private static final String forward = "./reservations.jsp";
+
+  private static String publicId;
 
   
   /**
@@ -108,8 +109,9 @@ public class ReserveIdentifierDeleteServlet extends DataPortalServlet {
 
 		String uid = (String) httpSession.getAttribute("uid");
 
-		if (uid == null || uid.isEmpty())
-			uid = "public";
+		if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
 
 		String docid = request.getParameter("docid");
 		if (docid != null) {
@@ -119,7 +121,7 @@ public class ReserveIdentifierDeleteServlet extends DataPortalServlet {
 				String identifierStr = tokens[1];
 				Integer identifier = Integer.parseInt(identifierStr);
 
-				if (uid.equals("public")) {
+				if (uid.equals(publicId)) {
 					messageType = "warning";
 					request.setAttribute("message", LOGIN_WARNING);
 				} 
@@ -155,7 +157,8 @@ public class ReserveIdentifierDeleteServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

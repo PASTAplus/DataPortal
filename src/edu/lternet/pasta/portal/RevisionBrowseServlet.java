@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.text.StrTokenizer;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
 import edu.lternet.pasta.client.DataPackageManagerClient;
@@ -44,13 +45,14 @@ public class RevisionBrowseServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.RevisionBrowseServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.RevisionBrowseServlet.class);
   private static final long serialVersionUID = 1L;
   private static final String forward = "./dataPackageBrowser.jsp";
   private static final String browseMessage = "Select a data package "
   		+ "<em>scope.identifer.revision</em> value to view a specific "
   		+ "revision of the data package lineage.";
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -102,16 +104,16 @@ public class RevisionBrowseServlet extends DataPortalServlet {
    * @throws IOException
    *           if an error occurred
    */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession httpSession = request.getSession();
 		String uid = (String) httpSession.getAttribute("uid");
-		if (uid == null || uid.isEmpty())
-			uid = "public";
+		if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
 		String scope = request.getParameter("scope");
 		String identifier = request.getParameter("identifier");
 		Integer id = Integer.valueOf(identifier);
-		String text = null;
+		String text;
 		String html = null;
 		Integer count = 0;
 
@@ -176,7 +178,8 @@ public class RevisionBrowseServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-    // Put your code here
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      publicId = options.getString("edi.public.id");
   }
 
 }

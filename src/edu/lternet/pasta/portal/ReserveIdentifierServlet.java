@@ -52,11 +52,11 @@ public class ReserveIdentifierServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.ReserveIdentifierServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ReserveIdentifierServlet.class);
   private static final long serialVersionUID = 1L;
-
   private static final String forward = "./reservations.jsp";
+
+  private static String publicId;
 
   /**
    * Constructor of the object.
@@ -105,14 +105,16 @@ public class ReserveIdentifierServlet extends DataPortalServlet {
 			throws ServletException, IOException {
 		HttpSession httpSession = request.getSession();
 		String uid = (String) httpSession.getAttribute("uid");
-		if (uid == null || uid.isEmpty()) uid = "public";
+		if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
 		String scope = request.getParameter("scope");
 		String numberStr = request.getParameter("numberOfIdentifiers");
 		int numberOfIdentifiers = Integer.parseInt(numberStr);
 		String message = null;
 		String type = "info";
 
-		if (uid.equals("public")) {
+		if (uid.equals(publicId)) {
 			message = LOGIN_WARNING;
 			type = "warning";
 		} 
@@ -158,9 +160,10 @@ public class ReserveIdentifierServlet extends DataPortalServlet {
 	 *             if an error occurs
 	 */
 	public void init() throws ServletException {
-		final String propertyName = "dataportal.maxNumberOfReservations";
 		PropertiesConfiguration options = ConfigurationListener.getOptions();
-		String maxNumberOfReservations = options.getString(propertyName);
+        publicId = options.getString("edi.public.id");
+        String propertyName = "dataportal.maxNumberOfReservations";
+        String maxNumberOfReservations = options.getString(propertyName);
 		if (maxNumberOfReservations != null && !maxNumberOfReservations.isEmpty()) {
 			try {
 				int maxNumber = Integer.parseInt(maxNumberOfReservations);
@@ -168,8 +171,10 @@ public class ReserveIdentifierServlet extends DataPortalServlet {
 				ReservationsManager.setMaxNumberOfReservations(maxNumber);
 			}
 			catch (NumberFormatException e) {
-				logger.warn(String.format("Could not determine the value of property %s: %s",
-						                  propertyName, maxNumberOfReservations));
+				logger.warn(String.format(
+                        "Could not determine the value of property %s: %s",
+						   propertyName, maxNumberOfReservations)
+                );
 			}
 		}
 	}

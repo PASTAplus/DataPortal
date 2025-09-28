@@ -44,15 +44,14 @@ public class MapSearchServlet extends DataPortalServlet {
    * Class variables
    */
 
-  private static final Logger logger = Logger
-      .getLogger(edu.lternet.pasta.portal.MapSearchServlet.class);
+  private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.MapSearchServlet.class);
   private static final long serialVersionUID = 1L;
+  private static final String forward = "./mapSearchResult.jsp";
 
   private static String cwd = null;
   private static String xslpath = null;
-  private static final String forward = "./mapSearchResult.jsp";
-  
-  
+  private static String publicId;
+
   /*
    * Instance variables
    */
@@ -115,7 +114,9 @@ public class MapSearchServlet extends DataPortalServlet {
 		HttpSession httpSession = request.getSession();
 		
 		String uid = (String) httpSession.getAttribute("uid");
-		if (uid == null || uid.isEmpty()) uid = "public";
+		if (uid == null || uid.isEmpty()) {
+            uid = publicId;
+        }
 		
 		String queryText = (String) httpSession.getAttribute("queryText");
 		mapSearchResults = executeQuery(uid, queryText);
@@ -156,11 +157,12 @@ public class MapSearchServlet extends DataPortalServlet {
    *           if an error occurs
    */
   public void init() throws ServletException {
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("mapresultsetutility.xslpath");
-    logger.debug("XSLPATH: " + xslpath);
-    cwd = options.getString("system.cwd");
-    logger.debug("CWD: " + cwd);
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
+      xslpath = options.getString("mapresultsetutility.xslpath");
+      logger.debug("XSLPATH: " + xslpath);
+      cwd = options.getString("system.cwd");
+      logger.debug("CWD: " + cwd);
+      publicId = options.getString("edi.public.id");
   }
 
   
