@@ -47,12 +47,12 @@ public class ProvenanceGeneratorServlet extends DataPortalServlet {
 	 * Class variables
 	 */
 
-	private static final Logger logger = Logger
-	    .getLogger(edu.lternet.pasta.portal.ProvenanceGeneratorServlet.class);
+	private static final Logger logger = Logger.getLogger(edu.lternet.pasta.portal.ProvenanceGeneratorServlet.class);
 	private static final long serialVersionUID = 1L;
 	private static final String forward = "./provenanceGenerator.jsp";
 	private static String cwd = null;
 	private static String xslPath = "/WEB-INF/xsl/provenance.xsl";
+    private static String publicId;
 
 
 	/*
@@ -112,7 +112,7 @@ public class ProvenanceGeneratorServlet extends DataPortalServlet {
 			HttpSession httpSession = request.getSession();
 			String uid = (String) httpSession.getAttribute("uid");
 			if (uid == null || uid.isEmpty())
-				uid = "public";
+				uid = publicId;
 			String packageId = request.getParameter("packageid");
 
 			if (packageId != null) {
@@ -157,6 +157,7 @@ public class ProvenanceGeneratorServlet extends DataPortalServlet {
 	public void init() throws ServletException {
 		PropertiesConfiguration options = ConfigurationListener.getOptions();
 	    cwd = options.getString("system.cwd");
+        publicId = options.getString("edi.public.id");
 	}
 	
 }

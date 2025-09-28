@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
@@ -108,7 +107,7 @@ public class LoginServlet extends DataPortalServlet {
   public LoginServlet() {
     super();
 
-      Configuration options = ConfigurationListener.getOptions();
+      PropertiesConfiguration options = ConfigurationListener.getOptions();
 
       String authHost = options.getString("auth.hostname");
       String authProtocol = options.getString("auth.protocol");

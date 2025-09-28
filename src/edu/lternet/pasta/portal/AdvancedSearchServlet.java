@@ -24,9 +24,6 @@
 package edu.lternet.pasta.portal;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,9 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.lternet.pasta.client.DataPackageManagerClient;
-import edu.lternet.pasta.client.PastaAuthenticationException;
-import edu.lternet.pasta.client.PastaConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
@@ -59,7 +53,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
 
   private static String cwd = null;
   private static String xslpath = null;
-
+  private static String publicId;
 
   /*
    * Instance variables
@@ -150,7 +144,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
     String uid = (String) httpSession.getAttribute("uid");
 
     if (uid == null || uid.isEmpty())
-      uid = "public";
+      uid = publicId;
 
     if (request.getCharacterEncoding() == null) {
       request.setCharacterEncoding("UTF-8");
@@ -221,7 +215,7 @@ public class AdvancedSearchServlet extends DataPortalServlet {
       httpSession.setAttribute("termsListHTML", termsListHTML);
 
       ResultSetUtility resultSetUtility = null;
-      if (uid.equals("public")) {
+      if (uid.equals(publicId)) {
         resultSetUtility = new ResultSetUtility(xml, Search.DEFAULT_SORT);
       }
       else {
@@ -246,20 +240,20 @@ public class AdvancedSearchServlet extends DataPortalServlet {
   }
 
 
-  /**
-   * Initialization of the servlet. <br>
-   *
-   * @throws ServletException
-   *          if an error occurs
-   */
-  public void init() throws ServletException
-  {
+    /**
+     * Initialization of the servlet. <br>
+     *
+     * @throws ServletException if an error occurs
+     */
+    public void init() throws ServletException {
+        PropertiesConfiguration options = ConfigurationListener.getOptions();
+        xslpath = options.getString("resultsetutility.xslpath");
+        logger.debug("XSLPATH: " + xslpath);
 
-    PropertiesConfiguration options = ConfigurationListener.getOptions();
-    xslpath = options.getString("resultsetutility.xslpath");
-    logger.debug("XSLPATH: " + xslpath);
-    cwd = options.getString("system.cwd");
-    logger.debug("CWD: " + cwd);
-  }
+        publicId = options.getString("edi.public.id");
+
+        cwd = options.getString("system.cwd");
+        logger.debug("CWD: " + cwd);
+    }
 
 }
