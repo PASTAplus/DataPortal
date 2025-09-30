@@ -588,7 +588,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                                 identifier,
                                 revision
                                 );
-                        thumbnailData += "<input type=\"file\" id=\"thumbnailFileInput\" accept=\"image/jpeg, image/png\" class=\"hidden\">\n";
+                        thumbnailData += "<input type=\"file\" id=\"thumbnailFileInput\" accept=\"image/jpeg, image/png, image/svg+xml\" class=\"hidden\">\n";
                         if (hasPackageThumbnail) {
                             String imageName = "minus_blue_small.png";
                             String alt = "Delete thumbnail";
