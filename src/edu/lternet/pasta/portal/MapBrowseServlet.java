@@ -96,6 +96,7 @@ public class MapBrowseServlet extends DataPortalServlet {
     private static Integer authPort;
     private static String authKey;
     private static String publicId;
+    private static boolean thumbnailModify;
 
 	/**
 	 * Constructor of the object.
@@ -962,8 +963,8 @@ public class MapBrowseServlet extends DataPortalServlet {
                                     boolean hasEntityThumbnail = dpmClient.hasThumbnail(scope, identifier, revision, realEntityId);
                                     if (hasEntityThumbnail) {
                                         String style = "style=\"" +
-                                                "max-height: 50px; " +
-                                                "max-width: 50px; " +
+                                                "max-height: 2.25em; " +
+                                                "max-width: 2.25em; " +
                                                 "height: auto; " +
                                                 "width: auto; " +
                                                 "\"";
@@ -979,7 +980,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                                     }
 
                                     thumbnailAddDelete = "";
-                                    if (hasWritePermission) {
+                                    if (thumbnailModify) {
                                         if (hasEntityThumbnail) {
                                             String imageName = "minus_blue_small.png";
                                             String alt = "Delete thumbnail";
@@ -1581,6 +1582,7 @@ public class MapBrowseServlet extends DataPortalServlet {
         authHost = options.getString("auth.hostname");
         authProtocol = options.getString("auth.protocol");
         authPort = options.getInt("auth.port");
+        thumbnailModify = options.getBoolean("dataportal.thumbnail.modify");
         publicId = options.getString("edi.public.id");
     }
 

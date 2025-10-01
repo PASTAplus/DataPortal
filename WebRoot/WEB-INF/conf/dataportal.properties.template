@@ -29,6 +29,7 @@ dataportal.context=nis
 # should be set to a value slightly lower than the token TTL value.
 # 8 hours = 60 * 8 = 480
 dataportal.session.timeout=480
+dataportal.thumbnail.modify=false
 
 # Junit test properties
 dataportal.test.emlFileName=NoneSuchBugCount.xml
