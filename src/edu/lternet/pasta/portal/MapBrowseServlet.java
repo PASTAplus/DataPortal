@@ -960,17 +960,37 @@ public class MapBrowseServlet extends DataPortalServlet {
 									}
 
                                     String thumbnail = "";
+                                    String alt;
+                                    String style;
+                                    String imageUrl;
+
+                                    style = "style=\"" +
+                                            "max-height: 2.25em; " +
+                                            "max-width: 2.25em; " +
+                                            "height: auto; " +
+                                            "width: auto; " +
+                                            "\"";
+                                    imageUrl = String.format("%s/thumbnail/system/%s/%s/%s/%s", dpmClient.getBaseUrl(), scope, identifier, revision, realEntityId);
+                                    alt = String.format("%s-thumbnail", packageId);
+                                    thumbnail = String.format(
+                                            "<a href=\"%s\" class=\"lightbox-trigger\"><img %s src=\"%s\" alt=\"%s\"/></a>\n",
+                                            imageUrl,
+                                            style,
+                                            imageUrl,
+                                            alt
+                                    );
+
                                     boolean hasEntityThumbnail = dpmClient.hasThumbnail(scope, identifier, revision, realEntityId);
                                     if (hasEntityThumbnail) {
-                                        String style = "style=\"" +
-                                                "max-height: 2.25em; " +
-                                                "max-width: 2.25em; " +
+                                        style = "style=\"" +
+                                                "max-height: 4em; " +
+                                                "max-width: 4em; " +
                                                 "height: auto; " +
                                                 "width: auto; " +
                                                 "\"";
-                                        String imageUrl = String.format("%s/thumbnail/eml/%s/%s/%s/%s", dpmClient.getBaseUrl(), scope, identifier, revision, realEntityId);
-                                        String alt = String.format("%s-thumbnail", packageId);
-                                        thumbnail = String.format(
+                                        imageUrl = String.format("%s/thumbnail/eml/%s/%s/%s/%s", dpmClient.getBaseUrl(), scope, identifier, revision, realEntityId);
+                                        alt = String.format("%s-thumbnail", packageId);
+                                        thumbnail += String.format(
                                                 "<a href=\"%s\" class=\"lightbox-trigger\"><img %s src=\"%s\" alt=\"%s\"/></a>\n",
                                                 imageUrl,
                                                 style,
@@ -980,10 +1000,10 @@ public class MapBrowseServlet extends DataPortalServlet {
                                     }
 
                                     thumbnailAddDelete = "";
-                                    if (thumbnailModify) {
+                                    if (hasWritePermission && thumbnailModify) {
                                         if (hasEntityThumbnail) {
                                             String imageName = "minus_blue_small.png";
-                                            String alt = "Delete thumbnail";
+                                            alt = "Delete thumbnail";
                                             StringBuilder thumbnailHTMLBuilder = new StringBuilder();
                                             thumbnailHTMLBuilder.append("<div class=\"thumbnailTrigger\" data-thumbnail-action=\"delete\" data-entity-id=\"" + realEntityId + "\" style=\"display:inline-block\" title=\"" + alt + "\">");
                                             thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
@@ -992,7 +1012,7 @@ public class MapBrowseServlet extends DataPortalServlet {
                                         }
                                         else {
                                             String imageName = "plus_blue_small.png";
-                                            String alt = "Add thumbnail";
+                                            alt = "Add thumbnail";
                                             StringBuilder thumbnailHTMLBuilder = new StringBuilder();
                                             thumbnailHTMLBuilder.append("<div class=\"thumbnailTrigger\" data-thumbnail-action=\"add\" data-entity-id=\"" + realEntityId + "\" style=\"display:inline-block\" title=\"" + alt + "\">");
                                             thumbnailHTMLBuilder.append("<img src=\"images/" + imageName + "\" alt=\"" + alt + "\">");
