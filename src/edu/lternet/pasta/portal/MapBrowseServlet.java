@@ -959,7 +959,6 @@ public class MapBrowseServlet extends DataPortalServlet {
 										dex = String.format("<button class=\"btn btn-info btn-default pasta-link\" data-dex-base-url=\"%s\" data-entity-url=\"%s\">Explore Data</button>", dexUrl, dataUrl);
 									}
 
-                                    String thumbnail = "";
                                     String alt;
                                     String style;
                                     String imageUrl;
@@ -969,10 +968,11 @@ public class MapBrowseServlet extends DataPortalServlet {
                                             "max-width: 2.25em; " +
                                             "height: auto; " +
                                             "width: auto; " +
+                                            "padding-right: 0.5em;" +
                                             "\"";
                                     imageUrl = String.format("%s/thumbnail/system/%s/%s/%s/%s", dpmClient.getBaseUrl(), scope, identifier, revision, realEntityId);
                                     alt = String.format("%s-thumbnail", packageId);
-                                    thumbnail = String.format(
+                                    String systemThumbnail = String.format(
                                             "<a href=\"%s\" class=\"lightbox-trigger\"><img %s src=\"%s\" alt=\"%s\"/></a>\n",
                                             imageUrl,
                                             style,
@@ -981,16 +981,18 @@ public class MapBrowseServlet extends DataPortalServlet {
                                     );
 
                                     boolean hasEntityThumbnail = dpmClient.hasThumbnail(scope, identifier, revision, realEntityId);
+                                    String entityThumbnail = "";
                                     if (hasEntityThumbnail) {
                                         style = "style=\"" +
                                                 "max-height: 4em; " +
                                                 "max-width: 4em; " +
                                                 "height: auto; " +
                                                 "width: auto; " +
+                                                "padding-left: 0.5em;" +
                                                 "\"";
                                         imageUrl = String.format("%s/thumbnail/eml/%s/%s/%s/%s", dpmClient.getBaseUrl(), scope, identifier, revision, realEntityId);
                                         alt = String.format("%s-thumbnail", packageId);
-                                        thumbnail += String.format(
+                                        entityThumbnail = String.format(
                                                 "<a href=\"%s\" class=\"lightbox-trigger\"><img %s src=\"%s\" alt=\"%s\"/></a>\n",
                                                 imageUrl,
                                                 style,
@@ -1020,8 +1022,8 @@ public class MapBrowseServlet extends DataPortalServlet {
                                             thumbnailAddDelete = thumbnailHTMLBuilder.toString();
                                         }                                    }
 
-                                    data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s %s<br/>%s %s %s</li>",
-											entityName, entitySizeStr, thumbnailAddDelete, downloadLink, dex, thumbnail);
+                                    data += String.format("<li style=\"padding-bottom: 0.5em;\">%s %s %s<br/>%s %s %s %s</li>",
+											entityName, entitySizeStr, thumbnailAddDelete, systemThumbnail, downloadLink, dex, entityThumbnail);
 								}
 								else {
 									entityName = "Data object";
