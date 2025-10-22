@@ -141,8 +141,8 @@ public class CodeGenerationClient extends PastaClient {
 		}
 		
 		String baseUrlSuffix = pastaHost.contains("-s") ? "-S" : "";
-		this.url = String.format("%s%s/%s", BASE_URL, baseUrlSuffix, urlFilename);
-//        this.url = String.format("%s%s&statPackage=%s", BASE_URL, packageId, statisticalFileType);
+//		this.url = String.format("%s%s/%s", BASE_URL, baseUrlSuffix, urlFilename);
+        this.url = String.format("%s%s&statPackage=%s", BASE_URL, packageId, statisticalFileType);
 	}
 
 
