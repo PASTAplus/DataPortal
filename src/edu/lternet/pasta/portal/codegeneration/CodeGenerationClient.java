@@ -69,7 +69,7 @@ public class CodeGenerationClient extends PastaClient {
 	 */
 
 //	private final String BASE_URL = "http://www.vcrlter.virginia.edu/webservice/PASTAprog";
-	private final String BASE_URL = "https://www.vcrlter.virginia.edu/data/eml2/getStatProgPASTA.php?knb_package=";
+	private final String BASE_URL = "https://www.vcrlter.virginia.edu/data/eml2/getStatProgPASTA.php";
 	private String downloadFilename = null;
 	private String statisticalPackageName = null;
 	private String url;
@@ -92,9 +92,11 @@ public class CodeGenerationClient extends PastaClient {
 		if (statisticalFileType == null) {
 			throw new IllegalArgumentException("null statisticalFileType");
 		}
-		
+
 		String urlFilename = null;
-		
+
+		String emlUrl = String.format("%smetadata/eml/%s", this.pastaUriHead, packageId.replace(".", "/"));
+
 		switch (statisticalFileType) {
 		case m:
 			urlFilename = String.format("%s.m", packageId);
@@ -142,7 +144,7 @@ public class CodeGenerationClient extends PastaClient {
 		
 		String baseUrlSuffix = pastaHost.contains("-s") ? "-S" : "";
 //		this.url = String.format("%s%s/%s", BASE_URL, baseUrlSuffix, urlFilename);
-        this.url = String.format("%s%s&statPackage=%s", BASE_URL, packageId, statisticalFileType);
+        this.url = String.format("%s?emlURL=%s&statPackage=%s", BASE_URL, emlUrl, statisticalFileType);
 	}
 
 
