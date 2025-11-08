@@ -168,8 +168,7 @@ public class HarvesterServlet extends DataPortalServlet {
 			}
 			else {
 				
-				String harvesterPathSubdir = 
-					HarvestReport.composeHarvesterPathSubdir(harvesterPath, distinguishedName);
+				String harvesterPathSubdir = HarvestReport.composeHarvesterPathSubdir(harvesterPath, distinguishedName);
 				
 				// Create the sub-directory if it doesn't already exist
 			    File dirFile = new File(harvesterPathSubdir);
@@ -193,15 +192,14 @@ public class HarvesterServlet extends DataPortalServlet {
 					isEvaluate = true;
 				}
 
-				if ((metadataSource != null) && 
-					(!metadataSource.equals("desktopHarvester"))
+				if ((metadataSource != null) && (!metadataSource.equals("desktopHarvester"))
 				   ) {
 					harvestId = generateHarvestId();
 					if (isEvaluate) {
-						harvestReportId = uid + "-evaluate-" + harvestId;
+						harvestReportId = distinguishedName + "-evaluate-" + harvestId;
 					}
 					else {
-						harvestReportId = uid + "-upload-" + harvestId;
+						harvestReportId = distinguishedName + "-upload-" + harvestId;
 					}
 				}
 				
@@ -334,10 +332,7 @@ public class HarvesterServlet extends DataPortalServlet {
 							"No value specified for request parameter 'metadataSource'");
 				}
 
-				if (harvester == null) {
-					harvester = new Harvester(harvesterPathSubdir,
-						harvestReportId, distinguishedName, isEvaluate, useChecksum);
-				}
+                harvester = new Harvester(harvesterPathSubdir, harvestReportId, distinguishedName, isEvaluate, useChecksum);
 
 				if (emlTextArea != null) {
 					harvester.processSingleDocument(emlTextArea);

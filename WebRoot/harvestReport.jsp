@@ -12,7 +12,6 @@
       + ":" + request.getServerPort() + path + "/";
 
   String distinguishedName = (String) session.getAttribute("uid");
-  String uid = LoginServlet.uidFromDistinguishedName(distinguishedName);
   Boolean vetted = (Boolean) session.getAttribute("vetted");
 
   if (vetted == null || !vetted) {
@@ -29,7 +28,7 @@
   }
 
   HarvestReport harvestReport = new HarvestReport();
-  String newestReportID = harvestReport.newestHarvestReport(distinguishedName, uid);
+  String newestReportID = harvestReport.newestHarvestReport(distinguishedName);
   String harvestReportHTML = null;
   String harvestReportID = (String) session.getAttribute("harvestReportID");
   
@@ -45,7 +44,7 @@
     harvestReportHTML = "";
   }
 
-  String harvestReportList = harvestReport.composeHarvestReports(distinguishedName, uid, harvestReportID);
+  String harvestReportList = harvestReport.composeHarvestReports(distinguishedName, harvestReportID);
   long daysToLive = HarvestReportServlet.harvesterReportDaysToLive;
 %>
 

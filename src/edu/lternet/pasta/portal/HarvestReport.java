@@ -77,33 +77,36 @@ public class HarvestReport {
    *          "/home/pasta/local/harvester/EDI-edirepository-org"
    */
   public static String composeHarvesterPathSubdir(String harvesterPath, String distinguishedName) {
-	  String path = null;
-	  StringBuffer pathBuffer = new StringBuffer(harvesterPath);
-	  
-	  pathBuffer.append("/");
-	  
-	  if (distinguishedName != null) {
-		  String[] components = distinguishedName.split(",");
-		  if (components != null && components.length > 1) {
-			  for (int i = 1; i < components.length; i++) {
-				  String propVal = components[i];
-				  String[] propValArray = propVal.split("=");
-				  if (propValArray != null && propValArray.length == 2) {
-					  String prop = propValArray[0];
-					  String val = propValArray[1];
-					  if (prop != null && !prop.contentEquals("uid")) {
-						  pathBuffer.append(val);
-						  if ((i+1) < components.length) {
-							  pathBuffer.append("-");
-						  }
-					  }
-				  }
-			  }
-		  }
-	  }
-	  
-	  path = pathBuffer.toString();
-	  return path;
+
+      return String.format("%s/%s", harvesterPath, distinguishedName);
+
+//	  String path = null;
+//	  StringBuffer pathBuffer = new StringBuffer(harvesterPath);
+//
+//	  pathBuffer.append("/");
+//
+//	  if (distinguishedName != null) {
+//		  String[] components = distinguishedName.split(",");
+//		  if (components != null && components.length > 1) {
+//			  for (int i = 1; i < components.length; i++) {
+//				  String propVal = components[i];
+//				  String[] propValArray = propVal.split("=");
+//				  if (propValArray != null && propValArray.length == 2) {
+//					  String prop = propValArray[0];
+//					  String val = propValArray[1];
+//					  if (prop != null && !prop.contentEquals("uid")) {
+//						  pathBuffer.append(val);
+//						  if ((i+1) < components.length) {
+//							  pathBuffer.append("-");
+//						  }
+//					  }
+//				  }
+//			  }
+//		  }
+//	  }
+//
+//	  path = pathBuffer.toString();
+//	  return path;
   }
   
   
@@ -130,19 +133,17 @@ public class HarvestReport {
    * Composes harvest report HTML list for use inside a JSP. A list
    * of reports is generated based on the user id.
    * 
-   * @param uid  the user id, e.g. "ucarroll"
+   * @param distinguishedName  the user id, e.g. "ucarroll"
    * @return  the HTML string, a "<ul>" element
    */
-  public String composeHarvestReports(String distinguishedName, String uid, String reportId) {
+  public String composeHarvestReports(String distinguishedName, String reportId) {
     StringBuffer htmlStringBuffer = new StringBuffer(""); 
-    ArrayList<String> harvestDirs = getHarvestDirs(distinguishedName, uid);  
+    ArrayList<String> harvestDirs = getHarvestDirs(distinguishedName);
     
     for (String harvestDir : harvestDirs) {
       String selected = (harvestDir.equals(reportId)) ? " selected='selected'" : "";
-      String formattedReportId = reportIdFormatter(harvestDir);
-      htmlStringBuffer.append(String.format("<option value='%s'%s>%s</option>\n",
-      				                        harvestDir, selected, formattedReportId)
-      				         );
+      String formattedReportId = reportIdFormatter(harvestDir, distinguishedName);
+      htmlStringBuffer.append(String.format("<option value='%s'%s>%s</option>\n", harvestDir, selected, formattedReportId));
     }
     
     return htmlStringBuffer.toString();
@@ -497,14 +498,14 @@ public class HarvestReport {
    * Returns the report identifier for the newest harvest report
    * that has been generated for the specified user.
    * 
-   * @param uid    the user id, e.g. "ucarroll"
+   * @param distinguishedName    the user id, e.g. "ucarroll"
    * @return  a report identifier value for the newest report
    */
-  public String newestHarvestReport(String distinguishedName, String uid) {
+  public String newestHarvestReport(String distinguishedName) {
     String newestReport = null;
     
-    if (uid != null && uid.length() > 0) {
-      ArrayList<String> harvestDirs = getHarvestDirs(distinguishedName, uid);
+    if (distinguishedName != null && !distinguishedName.isEmpty()) {
+      ArrayList<String> harvestDirs = getHarvestDirs(distinguishedName);
       newestReport = getNewestReport(harvestDirs);    
     }
     
@@ -516,10 +517,10 @@ public class HarvestReport {
    * Gets a list of harvest report directory names for the specified 
    * user id.
    */
-  private ArrayList<String> getHarvestDirs(String distinguishedName, String uid) {
+  private ArrayList<String> getHarvestDirs(String distinguishedName) {
     ArrayList<String> harvestDirs = new ArrayList<String>();
     
-    if (uid != null && !uid.equals("")) {
+    if (distinguishedName != null && !distinguishedName.equals("")) {
       String harvesterPath = HarvestReportServlet.getHarvesterPath();
       String harvesterPathSubdir = composeHarvesterPathSubdir(harvesterPath, distinguishedName);
       File dir = new File(harvesterPathSubdir);
@@ -528,8 +529,8 @@ public class HarvestReport {
         for (int i = 0; i < fileNames.length; i++) {
           String fileName = fileNames[i];
           if (fileName != null && 
-               (fileName.startsWith(uid + "-evaluate-") || 
-                fileName.startsWith(uid + "-upload-")
+               (fileName.startsWith(distinguishedName + "-evaluate-") ||
+                fileName.startsWith(distinguishedName + "-upload-")
                )
              ) {
             harvestDirs.add(fileName);
@@ -593,7 +594,7 @@ public class HarvestReport {
   }
   
   
-  private String reportIdFormatter(String reportId) {
+  private String reportIdFormatter(String reportId, String distinguishedName) {
     
     String newId;
     
@@ -606,7 +607,7 @@ public class HarvestReport {
       Time time = new Time(epoch);
       Date date = new Date(epoch);
 
-      newId = getReportPackageId(reportId) + " (" + tokens[1] + " - " + date.toString() + ")";
+      newId = getReportPackageId(reportId, distinguishedName) + " (" + tokens[2] + " - " + date.toString() + ")";
 
       return newId;
 //      return newId + " (" + tokens[1] + ")";
@@ -617,10 +618,10 @@ public class HarvestReport {
   }
 
 
-  private String getReportPackageId(String harvestDir) {
+  private String getReportPackageId(String harvestDir, String distinguishedName) {
     String packageId = "unknown";
     String harvesterPath = HarvestReportServlet.getHarvesterPath();
-    String harvesterPathSubdir = harvesterPath + "/EDI-edirepository-org/" + harvestDir;
+    String harvesterPathSubdir = String.format("%s/%s/%s",harvesterPath, distinguishedName, harvestDir);
     File dir = new File(harvesterPathSubdir);
     String[] fileNames = dir.list( DirectoryFileFilter.INSTANCE );
 
