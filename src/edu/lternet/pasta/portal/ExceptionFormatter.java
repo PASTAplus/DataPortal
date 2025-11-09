@@ -2,6 +2,9 @@ package edu.lternet.pasta.portal;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -35,7 +38,13 @@ public class ExceptionFormatter {
                 message = jsonObject.getString("message");
             }
         } catch (Exception e) {
-            message = "Could not determine exception message";
+            if (jsonString == null || jsonString.isEmpty()) {
+                message = "Could not determine exception message";
+            } else {
+                // Sanitize all exception messages for XSS payloads
+                PolicyFactory policy = Sanitizers.STYLES;
+                message = policy.sanitize(jsonString);
+            }
         }
         return message;
     }
