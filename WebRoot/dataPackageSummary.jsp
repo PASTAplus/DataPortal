@@ -36,7 +36,9 @@
   String googleMapHTML = (String) request.getAttribute("googleMapHTML");
   String savedDataHTML = (String) request.getAttribute("savedDataHTML");
   String seoHTML = (String) request.getAttribute("seoHTML");
+  String permHTML = (String) request.getAttribute("permHTML");
   String hasWritePermission = (String) request.getAttribute("hasWritePermission");
+  String hasChangePermission = (String) request.getAttribute("hasChangePermission");
   String jsonCoordinates = (String) request.getAttribute("jsonCoordinates");
   Boolean expandCoordinates = (Boolean) request.getAttribute("expandCoordinates");
   Double northCoord = (Double) request.getAttribute("northCoord");
@@ -55,6 +57,7 @@
   boolean showJournalCitations = !(journalCitationsHTML == null || journalCitationsHTML.isEmpty());
   boolean showSEO = !(seoHTML == null || seoHTML.isEmpty());
   boolean importThumbnailJS =  !(hasWritePermission == null || hasWritePermission.isEmpty());
+  boolean showPermManagement = !(hasChangePermission == null || hasChangePermission.isEmpty());
 
   String showCoordinates = "true";
   if ((expandCoordinates != null) && !expandCoordinates) {
@@ -575,22 +578,22 @@
                       </c:when>
                     </c:choose>
 
-<%--                      <c:set var="showThumbnailManagement" value="<%= showThumbnailManagement %>"/>--%>
-<%--                      <c:choose>--%>
-<%--                          <c:when test="${showThumbnailManagement}">--%>
-<%--                              <div class="table-row">--%>
-<%--                                  <div class="table-cell text-align-right">--%>
-<%--                                      <label class="labelBold">Thumbnail Management:</label>--%>
-<%--                                  </div>--%>
-<%--                                  <div class="table-cell">--%>
-<%--                                      <ul class="no-list-style">--%>
-<%--                                          <li><%= thumbnailManagementHTML %>--%>
-<%--                                          </li>--%>
-<%--                                      </ul>--%>
-<%--                                  </div>--%>
-<%--                              </div>--%>
-<%--                          </c:when>--%>
-<%--                      </c:choose>--%>
+                      <c:set var="showPermManagement" value="<%= showPermManagement %>"/>
+                      <c:choose>
+                          <c:when test="${showPermManagement}">
+                              <div class="table-row">
+                                  <div class="table-cell text-align-right">
+                                      <label class="labelBold">Permission Management:</label>
+                                  </div>
+                                  <div class="table-cell">
+                                      <ul class="no-list-style">
+                                          <li><%= permHTML %>
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </div>
+                          </c:when>
+                      </c:choose>
 
                   </div>
                 </div> <!-- end display table -->

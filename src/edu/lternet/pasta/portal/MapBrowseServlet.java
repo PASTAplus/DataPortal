@@ -331,7 +331,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String savedDataHTML = "";
 		String wasDeletedHTML = "";
 		String seoHTML = "";
-        String thumbnailManagementHTML = "";
+        String permHTML = "";
 		EmlObject emlObject = null;
 		boolean showSaved = false;
 		boolean isSaved = false;
@@ -340,6 +340,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 		String pastaHost = null;
 		boolean productionTier = true;
         boolean hasWritePermission = false;
+        boolean hasChangePermission = false;
         String ediToken = null;
         String authToken = null;
 
@@ -420,7 +421,7 @@ public class MapBrowseServlet extends DataPortalServlet {
 				StringBuilder codeGenerationHTMLBuilder = new StringBuilder();
 				StringBuilder savedDataHTMLBuilder = new StringBuilder();
                 StringBuilder journalCitationsHTMLBuilder = new StringBuilder();
-                StringBuilder thumbnailManagementHTMLBuilder = new StringBuilder();
+                StringBuilder permissionManagementHTMLBuilder = new StringBuilder();
 
 				String packageId = null;
 
@@ -498,6 +499,13 @@ public class MapBrowseServlet extends DataPortalServlet {
                         try {
                             JSONObject resp = iam.isAuthorized(resourceId, "write");
                             hasWritePermission = true;
+                        }
+                        catch (Exception e) {
+                            logger.warn(e);
+                        }
+                        try {
+                            JSONObject resp = iam.isAuthorized(resourceId, "changePermission");
+                            hasChangePermission = true;
                         }
                         catch (Exception e) {
                             logger.warn(e);
@@ -1291,17 +1299,23 @@ public class MapBrowseServlet extends DataPortalServlet {
 					codeGenerationHTML = codeGenerationHTML.substring(0, codeGenerationHTML.length() - 12); // trim the last two character entities
 				}
 
-//                // Thumbnail management
-//                if (hasWritePermission) {
-//                    thumbnailManagementHTMLBuilder.append("<div>\n");
-//                    thumbnailManagementHTMLBuilder.append("<form style=\"margin: 0 0 -15px;\" id=\"thumbnailmanagement\" name=\"thumbnailmanagementform\" method=\"post\" action=\"./thumbnailmanager\" target=\"_top\">\n");
-//                    thumbnailManagementHTMLBuilder.append("  <input type=\"hidden\" name=\"packageid\" id=\"packageid\" value=\"" + packageId + "\" >\n");
-//                    thumbnailManagementHTMLBuilder.append("  <input class=\"btn btn-info btn-default\" type=\"submit\" name=\"thumbnailmanagementbutton\" value=\"Manage Thumbnails\" >\n");
-//                    thumbnailManagementHTMLBuilder.append("</form>\n");
-//                    thumbnailManagementHTMLBuilder.append("</div>\n");
-//                    thumbnailManagementHTMLBuilder.append("<br/>");
-//                    thumbnailManagementHTML = thumbnailManagementHTMLBuilder.toString();
-//                }
+                // Permission management
+                if (hasChangePermission) {
+                    String authURL = String.format(
+                            "%s://%s:%s/auth/package?id=%s&token=%s",
+                            authProtocol,
+                            authHost,
+                            authPort,
+                            packageId,
+                            ediToken
+                    );
+                    String button = String.format("<button class=\"btn btn-info btn-default\"><a href=\"%s\" target=blank>Manage Permissions</a></button>", authURL);
+                    permissionManagementHTMLBuilder.append("<div>\n");
+                    permissionManagementHTMLBuilder.append(button);
+                    permissionManagementHTMLBuilder.append("</div>\n");
+                    permissionManagementHTMLBuilder.append("<br/>");
+                    permHTML = permissionManagementHTMLBuilder.toString();
+                }
 
 			}
 			else {
@@ -1311,6 +1325,23 @@ public class MapBrowseServlet extends DataPortalServlet {
 		}
 		catch (Exception e) {
 			handleDataPortalError(logger, e);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		}
 
 		request.setAttribute("wasDeletedHTML", wasDeletedHTML);
@@ -1337,6 +1368,10 @@ public class MapBrowseServlet extends DataPortalServlet {
         request.setAttribute("seoHTML", seoHTML);
         if (hasWritePermission) {
             request.setAttribute("hasWritePermission", "hasWritePermission");
+        }
+        if (hasChangePermission) {
+            request.setAttribute("hasChangePermission", "hasChangePermission");
+            request.setAttribute("permHTML", permHTML);
         }
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(forward);
